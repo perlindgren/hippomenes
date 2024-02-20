@@ -6,9 +6,8 @@ package pc_mux_pkg;
   } t_state;
 endpackage
 
-import pc_mux_pkg::*;
-
-module pc_mux (
+module pc_mux import pc_mux_pkg::*;
+(
 
     input t_state select,
     input logic [31:0] next,
@@ -17,7 +16,7 @@ module pc_mux (
 );
   always @(select, next, branch) begin
     case (select)
-      NEXT: out <= next;
+      pc_mux_pkg::NEXT: out <= next;
       BRANCH: out <= branch;
     endcase
   end

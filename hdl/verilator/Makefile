@@ -1,7 +1,11 @@
 core = ../src/core
+root = ../src
+
 register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
 
-top_ = $(register_file) $(core)/pc_adder.sv $(core)/pc_mux.sv $(core)/tb_top.sv
+top_ = $(register_file) $(core)/pc_adder.sv $(core)/pc_mux.sv $(root)/tb_top.sv
+
+dmem_ = $(root)/config_pkg.sv $(root)/dmem.sv $(root)/tb_dmem.sv
 
 all: top
 
@@ -9,6 +13,11 @@ top: $(top_)
 	verilator --binary $(top_) --top-module tb_top --trace-fst --assert
 	obj_dir/Vtb_top
 	gtkwave -a top.gtkw top.fst
+
+dmem: $(dmem_)
+	verilator --binary $(dmem_) --top-module tb_dmem --trace-fst --assert
+	obj_dir/Vtb_dmem
+	gtkwave -a dmem.gtkw dmem.fst
 
 rf: $(register_file)
 	verilator --binary $(register_file) --top-module tb_register_file --trace-fst --assert

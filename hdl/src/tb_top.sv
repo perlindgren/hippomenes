@@ -4,10 +4,10 @@
 // import register_file::*;
 // import decoder::*;
 
-import pc_mux_pkg::*;
+// import pc_mux_pkg::*;
 
 module tb_top;
-    t_state pc_mux_select;
+    pc_mux_pkg::t_state pc_mux_select;
     logic [31:0] pc_mux_next;
     logic [31:0] pc_mux_branch;
     logic [31:0] pc_mux_out;
@@ -23,14 +23,14 @@ module tb_top;
     $dumpfile("top.fst");
     $dumpvars;
 
-    pc_mux_select = NEXT;
+    pc_mux_select = pc_mux_pkg::NEXT;
     pc_mux_next = 'h0000_0004;
     pc_mux_branch = 'h0000_0008;
 
 
     #10;
 
-    pc_mux_select = BRANCH;
+    pc_mux_select = pc_mux_pkg::BRANCH;
 
 
     #10 $finish;
