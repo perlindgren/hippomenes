@@ -1,10 +1,10 @@
 [*]
 [*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Tue Feb 20 11:49:32 2024
+[*] Tue Feb 20 14:13:25 2024
 [*]
-[dumpfile] "/data/riscv/hippomenes/hdl/verilator/top.vcd"
-[dumpfile_mtime] "Tue Feb 20 11:48:58 2024"
-[dumpfile_size] 675
+[dumpfile] "/data/riscv/hippomenes/hdl/verilator/top.fst"
+[dumpfile_mtime] "Tue Feb 20 14:12:54 2024"
+[dumpfile_size] 654
 [savefile] "/data/riscv/hippomenes/hdl/verilator/top.gtkw"
 [timestart] 0
 [size] 1168 619
@@ -19,7 +19,7 @@
 TOP.tb_top.pc_mux_branch[31:0]
 TOP.tb_top.pc_mux_next[31:0]
 TOP.tb_top.pc_mux_out[31:0]
-@28
+@100000028
 TOP.tb_top.pc_mux_select
 [pattern_trace] 1
 [pattern_trace] 0

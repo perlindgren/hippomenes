@@ -25,7 +25,7 @@ module tb_register_file;
   );
 
   initial begin
-    $dumpfile("register_file.vcd");
+    $dumpfile("register_file.fst");
     $dumpvars;
 
     clk = 0; 
