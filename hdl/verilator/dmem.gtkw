@@ -1,0 +1,19 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Tue Feb 20 19:01:53 2024
+[*]
+[dumpfile] "/home/pln/hippomenes/hdl/verilator/dmem.fst"
+[dumpfile_mtime] "Tue Feb 20 19:00:58 2024"
+[dumpfile_size] 597
+[savefile] "/home/pln/hippomenes/hdl/verilator/dmem.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-1.745736 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[sst_width] 214
+[signals_width] 78
+[sst_expanded] 1
+[sst_vpaned_height] 151
+[pattern_trace] 1
+[pattern_trace] 0
