@@ -1,20 +1,21 @@
 [*]
 [*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Tue Feb 20 07:36:11 2024
+[*] Tue Feb 20 08:34:53 2024
 [*]
-[dumpfile] "/home/pln/riscv/hippomenes/hdl/verilator/waveform.vcd"
-[dumpfile_mtime] "Tue Feb 20 07:33:50 2024"
-[dumpfile_size] 3690
-[savefile] "/home/pln/riscv/hippomenes/hdl/verilator/register_file.gtkw"
+[dumpfile] "/data/riscv/hippomenes/hdl/verilator/register_file.vcd"
+[dumpfile_mtime] "Tue Feb 20 08:34:07 2024"
+[dumpfile_size] 3740
+[savefile] "/data/riscv/hippomenes/hdl/verilator/register_file.gtkw"
 [timestart] 0
-[size] 1403 788
+[size] 1491 912
 [pos] -1 -1
 *-1.986944 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
+[treeopen] TOP.tb_register_file.
 [sst_width] 341
 [signals_width] 210
 [sst_expanded] 1
-[sst_vpaned_height] 222
+[sst_vpaned_height] 265
 @28
 TOP.tb_register_file.clk
 TOP.tb_register_file.writeEn
@@ -25,5 +26,37 @@ TOP.tb_register_file.readAddr1[4:0]
 TOP.tb_register_file.readAddr2[4:0]
 TOP.tb_register_file.readData1[31:0]
 TOP.tb_register_file.readData2[31:0]
+TOP.tb_register_file.dut.regs[0][31:0]
+TOP.tb_register_file.dut.regs[1][31:0]
+TOP.tb_register_file.dut.regs[2][31:0]
+TOP.tb_register_file.dut.regs[3][31:0]
+TOP.tb_register_file.dut.regs[4][31:0]
+TOP.tb_register_file.dut.regs[5][31:0]
+TOP.tb_register_file.dut.regs[6][31:0]
+TOP.tb_register_file.dut.regs[7][31:0]
+TOP.tb_register_file.dut.regs[8][31:0]
+TOP.tb_register_file.dut.regs[9][31:0]
+TOP.tb_register_file.dut.regs[10][31:0]
+TOP.tb_register_file.dut.regs[11][31:0]
+TOP.tb_register_file.dut.regs[12][31:0]
+TOP.tb_register_file.dut.regs[13][31:0]
+TOP.tb_register_file.dut.regs[14][31:0]
+TOP.tb_register_file.dut.regs[15][31:0]
+TOP.tb_register_file.dut.regs[16][31:0]
+TOP.tb_register_file.dut.regs[17][31:0]
+TOP.tb_register_file.dut.regs[18][31:0]
+TOP.tb_register_file.dut.regs[19][31:0]
+TOP.tb_register_file.dut.regs[20][31:0]
+TOP.tb_register_file.dut.regs[21][31:0]
+TOP.tb_register_file.dut.regs[22][31:0]
+TOP.tb_register_file.dut.regs[23][31:0]
+TOP.tb_register_file.dut.regs[24][31:0]
+TOP.tb_register_file.dut.regs[25][31:0]
+TOP.tb_register_file.dut.regs[26][31:0]
+TOP.tb_register_file.dut.regs[27][31:0]
+TOP.tb_register_file.dut.regs[28][31:0]
+TOP.tb_register_file.dut.regs[29][31:0]
+TOP.tb_register_file.dut.regs[30][31:0]
+TOP.tb_register_file.dut.regs[31][31:0]
 [pattern_trace] 1
 [pattern_trace] 0
