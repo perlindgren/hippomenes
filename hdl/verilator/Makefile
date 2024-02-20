@@ -3,9 +3,9 @@ root = ../src
 
 register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
 
-top_ = $(register_file) $(core)/pc_adder.sv $(core)/pc_mux.sv $(root)/tb_top.sv
+top_ = $(register_file) $(core)/pc_mux_pkg.sv $(core)/pc_adder.sv $(core)/pc_mux.sv $(root)/tb_top.sv
 
-dmem_ = $(root)/config_pkg.sv $(root)/dmem.sv $(root)/tb_dmem.sv
+dmem_ = $(root)/config_pkg.sv $(root)/dmem_pkg.sv $(root)/dmem.sv $(root)/tb_dmem.sv
 
 all: top
 
