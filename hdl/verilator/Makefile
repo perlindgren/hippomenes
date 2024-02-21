@@ -41,7 +41,7 @@ rf: $(register_file)
 	gtkwave -a register_file.gtkw register_file.fst 
 
 lint_rf: $(register_file) 
-	verilator --lint-only $(register_file)--top-module tb_p_clic --timing
+	verilator --lint-only $(register_file) --top-module tb_p_clic --timing
 	
 clean: 
 	rm -r obj_dir

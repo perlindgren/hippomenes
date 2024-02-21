@@ -1,25 +1,33 @@
 [*]
 [*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Tue Feb 20 14:13:25 2024
+[*] Wed Feb 21 13:03:20 2024
 [*]
 [dumpfile] "/data/riscv/hippomenes/hdl/verilator/top.fst"
-[dumpfile_mtime] "Tue Feb 20 14:12:54 2024"
-[dumpfile_size] 654
+[dumpfile_mtime] "Wed Feb 21 13:02:40 2024"
+[dumpfile_size] 1233
 [savefile] "/data/riscv/hippomenes/hdl/verilator/top.gtkw"
 [timestart] 0
 [size] 1168 619
 [pos] -1 -1
-*-2.622546 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-4.759036 20 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [sst_width] 209
 [signals_width] 182
 [sst_expanded] 1
 [sst_vpaned_height] 163
-@22
-TOP.tb_top.pc_mux_branch[31:0]
-TOP.tb_top.pc_mux_next[31:0]
-TOP.tb_top.pc_mux_out[31:0]
 @100000028
-TOP.tb_top.pc_mux_select
+TOP.tb_top.clk
+@22
+TOP.tb_top.pc[31:0]
+TOP.tb_top.pc_branch[31:0]
+TOP.tb_top.pc_next[31:0]
+TOP.tb_top.pc_plus_4[31:0]
+TOP.tb_top.pc_reg_out[31:0]
+@100000028
+TOP.tb_top.pc_select
+@28
+TOP.tb_top.reset
+@23
+TOP.tb_top.instr[31:0]
 [pattern_trace] 1
 [pattern_trace] 0

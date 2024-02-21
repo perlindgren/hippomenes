@@ -1,6 +1,7 @@
 // top module
 
 module tb_top;
+  import config_pkg::*;
 
   logic clk;
   logic reset;
@@ -12,6 +13,9 @@ module tb_top;
   logic [31:0] pc_branch;
   logic [31:0] pc_next;
   logic [31:0] pc;
+  logic [IMemAddrWidth -1:0] pc_imem;
+  logic i_alignment_error;
+  logic [31:0] instr;
 
 
   // instances
@@ -34,6 +38,19 @@ module tb_top;
       .out(pc)
   );
 
+  mem imem (
+      .clk(clk),
+      .write_enable(0),  // we never write to instruction memory
+      .width(mem_pkg::WORD),  // always read words
+      .sign_extend(0),  // not used
+      .address(pc_imem),
+      .data_in(0),
+      .data_out(instr),
+      .alignment_error(i_alignment_error)
+  );
+
+
+
   // clock and reset
   initial begin
     $display($time, " << Starting the Simulation >>");
@@ -43,6 +60,7 @@ module tb_top;
   end
 
   always #10 clk = ~clk;
+  always pc_imem = pc[IMemAddrWidth-1:0];
 
   initial begin
     $dumpfile("top.fst");
