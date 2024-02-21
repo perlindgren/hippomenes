@@ -8,7 +8,7 @@ module tb_top;
 
   logic [31:0] pc_reg_out;
 
-  pc_mux_pkg::state_t pc_select;
+  pc_mux_pkg::pc_mux_t pc_select;
   logic [31:0] pc_plus_4;
   logic [31:0] pc_branch;
   logic [31:0] pc_next;

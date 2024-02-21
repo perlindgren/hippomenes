@@ -18,6 +18,8 @@ mem_ = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
 
 di_mem_ = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_di_mem.sv
 
+decoder = $(core)/decoder_pkg.sv $(core)/decoder.sv $(core)/tb_decoder.sv
+
 all: top
 
 top: $(top_) 
@@ -25,6 +27,11 @@ top: $(top_)
 	obj_dir/Vtb_top
 	gtkwave -a top.gtkw top.fst
 
+dec: $(decoder)
+	verilator --binary $(decoder) --top-module tb_decoder --trace-fst --assert
+	obj_dir/Vtb_decoder
+	gtkwave -a decoder.gtkw decoder.fst
+	
 mem: $(mem_)
 	verilator --binary $(mem_) --top-module tb_mem --trace-fst --assert
 	obj_dir/Vtb_mem
