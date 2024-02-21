@@ -194,6 +194,160 @@ module tb_dmem;
     assert ((data_out == 'hb0a09080) && alignment_error);
     else $error("got %h, alignment_error %d", data_out, alignment_error);
 
+    // test write operations
+    write_enable = 1;
+    address = 0;
+    width = BYTE;
+    sign_extend = 1;
+    data_in = 'h0000_0077;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'h0000_0077) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    address = 1;
+    width = BYTE;
+    sign_extend = 1;
+    data_in = 'h0000_0066;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'h0000_0066) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    address = 2;
+    width = BYTE;
+    sign_extend = 1;
+    data_in = 'h0000_0055;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'h0000_0055) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    address = 3;
+    width = BYTE;
+    sign_extend = 1;
+    data_in = 'h0000_0044;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'h0000_0044) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    address = 7;
+    width = BYTE;
+    sign_extend = 1;
+    data_in = 'h0000_0022;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'h0000_0022) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    // check read back word
+    address = 0;
+    write_enable = 0;
+    width = WORD;
+    sign_extend = 1;
+    #10;
+    assert ((data_out == 'h4455_6677) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    address = 4;
+    write_enable = 0;
+    width = WORD;
+    sign_extend = 1;
+    #10;
+    assert ((data_out == 'h2200_1111) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    // check write half word
+    write_enable = 1;
+    address = 8;
+    width = HALFWORD;
+    sign_extend = 1;
+    data_in = 'h0000_AA33;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'hFFFF_AA33) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    address = 10;
+    width = HALFWORD;
+    sign_extend = 1;
+    data_in = 'h0000_BB44;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'hFFFF_BB44) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    address = 11;
+    width = HALFWORD;
+    sign_extend = 1;
+    data_in = 'h0000_BB44;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'hFFFF_BB44) && alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    // check read back word
+    address = 8;
+    write_enable = 0;
+    width = WORD;
+    sign_extend = 1;
+    #10;
+    assert ((data_out == 'hBB44_AA33) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    // check write word
+    write_enable = 1;
+    address = 16;
+    width = WORD;
+    sign_extend = 1;
+    data_in = 'hFFEE_DDCC;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'hFFEE_DDCC) && !alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    // check write word
+    write_enable = 1;
+    address = 21;
+    width = WORD;
+    sign_extend = 1;
+    data_in = 'hFFEE_DDCC;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'hFFEE_DDCC) && alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    address = 22;
+    width = WORD;
+    sign_extend = 1;
+    data_in = 'hFFEE_DD00;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'hFFEE_DD00) && alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
+    address = 23;
+    width = WORD;
+    sign_extend = 1;
+    data_in = 'hFF00_DD00;
+    clk = 0;
+    #10 clk = 1;
+    #10;
+    assert ((data_out == 'hFF00_DD00) && alignment_error);
+    else $error("got %h, alignment_error %d", data_out, alignment_error);
+
     $finish;
   end
 endmodule
