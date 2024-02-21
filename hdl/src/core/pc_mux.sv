@@ -9,11 +9,13 @@ module pc_mux
     input logic [31:0] branch,
     output logic [31:0] out
 );
-  always @(select, next, branch) begin
+
+  always begin
     case (select)
-      NEXT: out <= next;
-      BRANCH: out <= branch;
-      default: out <= next;
+      NEXT: out = next;
+      BRANCH: out = branch;
+      default: out = next;
     endcase
   end
+
 endmodule

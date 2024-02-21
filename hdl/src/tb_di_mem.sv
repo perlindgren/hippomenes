@@ -1,4 +1,4 @@
-// Data memory
+// Data memor   y
 
 module tb_di_mem;
   import config_pkg::*;

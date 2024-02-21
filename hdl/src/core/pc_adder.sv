@@ -1,9 +1,9 @@
 // can be refined based on mem size
 
-module PcAdder (
-    input  logic [31:0] in_pc,
-    output logic [31:0] out_pc
+module pc_adder (
+    input  logic [31:0] in,
+    output logic [31:0] out
 );
-  assign out_pc = in_pc + 4;
+  assign out = in + 4;
 endmodule
 

@@ -3,9 +3,16 @@ root = ../src
 
 register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
 
-top_ = $(register_file) $(core)/pc_mux_pkg.sv $(core)/pc_adder.sv $(core)/pc_mux.sv $(root)/tb_top.sv
-
-dmem_ = $(root)/config_pkg.sv $(root)/dmem_pkg.sv $(root)/dmem.sv $(root)/tb_dmem.sv
+top_ = \
+$(root)/config_pkg.sv \
+$(register_file) \
+$(core)/pc_mux_pkg.sv \
+$(root)/mem_pkg.sv \
+$(core)/reg32.sv \
+$(core)/pc_adder.sv \
+$(core)/pc_mux.sv \
+$(root)/mem.sv \
+$(root)/tb_top.sv
 
 mem_ = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
 
@@ -27,11 +34,6 @@ di_mem: $(di_mem_)
 	verilator --binary $(di_mem_) --top-module tb_di_mem --trace-fst --assert
 	obj_dir/Vtb_di_mem
 	gtkwave -a di_mem.gtkw di_mem.fst
-
-dmem: $(dmem_)
-	verilator --binary $(dmem_) --top-module tb_dmem --trace-fst --assert
-	obj_dir/Vtb_dmem
-	gtkwave -a dmem.gtkw dmem.fst
 
 rf: $(register_file)
 	verilator --binary $(register_file) --top-module tb_register_file --trace-fst --assert
