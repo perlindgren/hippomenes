@@ -1,0 +1,27 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Wed Feb 21 10:01:51 2024
+[*]
+[dumpfile] "/home/pln/hippomenes/hdl/verilator/di_mem.fst"
+[dumpfile_mtime] "Wed Feb 21 10:00:06 2024"
+[dumpfile_size] 1146
+[savefile] "/home/pln/hippomenes/hdl/verilator/dimem.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] 472 -624
+*-3.643856 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_di_mem.
+[sst_width] 214
+[signals_width] 142
+[sst_expanded] 1
+[sst_vpaned_height] 151
+@22
+TOP.tb_di_mem.d_mem.data_in[31:0]
+@23
+TOP.tb_di_mem.d_mem.data_out[31:0]
+@22
+TOP.tb_di_mem.i_mem.data_in[31:0]
+TOP.tb_di_mem.i_mem.data_out[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

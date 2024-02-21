@@ -9,6 +9,8 @@ dmem_ = $(root)/config_pkg.sv $(root)/dmem_pkg.sv $(root)/dmem.sv $(root)/tb_dme
 
 mem_ = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
 
+di_mem_ = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_di_mem.sv
+
 all: top
 
 top: $(top_) 
@@ -20,6 +22,11 @@ mem: $(mem_)
 	verilator --binary $(mem_) --top-module tb_mem --trace-fst --assert
 	obj_dir/Vtb_mem
 	gtkwave -a mem.gtkw mem.fst
+
+di_mem: $(di_mem_)
+	verilator --binary $(di_mem_) --top-module tb_di_mem --trace-fst --assert
+	obj_dir/Vtb_di_mem
+	gtkwave -a di_mem.gtkw di_mem.fst
 
 dmem: $(dmem_)
 	verilator --binary $(dmem_) --top-module tb_dmem --trace-fst --assert
