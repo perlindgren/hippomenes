@@ -31,8 +31,14 @@ module tb_mem;
     $dumpfile("mem.fst");
     $dumpvars;
 
+    // initialize memory for testing
+    dut.mem[0] = 'h1234_5678;
+    dut.mem[1] = 'h0000_1111;
+    dut.mem[2] = 'h1111_0000;
+    dut.mem[3] = 'hb0a0_9080;
+
     address = 0;
-    width   = WORD;
+    width = WORD;
     #10 assert ((data_out == 'h1234_5678) && !alignment_error);
 
     address = 4;

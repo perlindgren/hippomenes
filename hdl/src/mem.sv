@@ -49,13 +49,6 @@ module mem
 
   end
 
-  initial begin
-    mem[0] = 'h1234_5678;
-    mem[1] = 'h0000_1111;
-    mem[2] = 'h1111_0000;
-    mem[3] = 'hb0a0_9080;
-  end
-
   always begin
     read_word = mem[address[DMemAddrWidth-1:2]];
 

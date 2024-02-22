@@ -67,12 +67,13 @@ module tb_top;
     $dumpfile("top.fst");
     $dumpvars;
 
+    // #10;
+
+    $display("0 %h", imem.mem[0]);
+    $display("4 %h", imem.mem[4]);
+
     pc_sel = PC_NEXT;
     pc_branch = 'hdead_beef;
-
-
-
-
 
     #100 $finish;
   end
