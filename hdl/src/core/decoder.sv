@@ -38,13 +38,12 @@ module decoder (
   } csr_t;
 
   // R-type
-  logic [6:0] funct7;
-  logic [4:0] rs2;
-  logic [4:0] rs1;
-  logic [2:0] funct3;
-  logic [4:0] rd;
-  logic [6:0] op;
-  op_t opcode_e;
+  logic [ 6:0] funct7;
+  logic [ 4:0] rs2;
+  logic [ 4:0] rs1;
+  logic [ 2:0] funct3;
+  logic [ 4:0] rd;
+  logic [ 6:0] op;
 
   logic [31:0] imm;
 
@@ -52,15 +51,13 @@ module decoder (
   always @instr begin
     // R type
     {funct7, rs2, rs1, funct3, rd, op} = instr;
-    $cast(opcode_e, op);
 
-    $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b, op_t %s", instr, rs2, rs1, rd, op,
-             opcode_e.name());
+    $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b, op %s", instr, rs2, rs1, rd, op,);
 
     wb_reg = rd;
 
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
-    case (opcode_e)
+    case (op_t'(op))
       OP_LUI: begin
         $display("lui");
         imm = {instr[31:12], {12{1'b0}}};
