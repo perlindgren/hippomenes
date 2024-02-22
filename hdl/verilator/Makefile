@@ -5,8 +5,8 @@ register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
 
 top_ = \
 $(root)/config_pkg.sv \
+$(core)/decoder_pkg.sv \
 $(register_file) \
-$(core)/pc_mux_pkg.sv \
 $(root)/mem_pkg.sv \
 $(core)/reg32.sv \
 $(core)/pc_adder.sv \

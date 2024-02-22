@@ -9,7 +9,7 @@ module pc_mux (
 );
 
   always begin
-    case (select)
+    case (sel)
       PC_NEXT:   out = pc_next;
       PC_BRANCH: out = pc_branch;
       default:   out = pc_next;

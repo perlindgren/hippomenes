@@ -22,10 +22,6 @@ package decoder_pkg;
     ALU_OR   = 'b110,
     ALU_AND  = 'b111
   } alu_op_t;
-  // typedef enum {
-  //   RD,
-  //   XXX
-  // } wb_reg_mux_t;
 
   typedef enum {
     IMM,

@@ -2,13 +2,14 @@
 
 module tb_top;
   import config_pkg::*;
+  import decoder_pkg::*;
 
   logic clk;
   logic reset;
 
   logic [31:0] pc_reg_out;
 
-  pc_mux_pkg::pc_mux_t pc_select;
+  pc_mux_t pc_sel;
   logic [31:0] pc_plus_4;
   logic [31:0] pc_branch;
   logic [31:0] pc_next;
@@ -20,9 +21,9 @@ module tb_top;
 
   // instances
   pc_mux pc_mux (
-      .select(pc_select),
-      .next(pc_plus_4),
-      .branch(pc_branch),
+      .sel(pc_sel),
+      .pc_next(pc_plus_4),
+      .pc_branch(pc_branch),
       .out(pc_next)
   );
 
@@ -66,7 +67,7 @@ module tb_top;
     $dumpfile("top.fst");
     $dumpvars;
 
-    pc_select = pc_mux_pkg::NEXT;
+    pc_sel = PC_NEXT;
     pc_branch = 'hdead_beef;
 
 
