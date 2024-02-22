@@ -13,7 +13,7 @@ module decoder (
 );
   // https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
   // table on page 104
-  typedef enum {
+  typedef enum integer {
     OP_LUI    = 'b0110111,
     OP_AUIPC  = 'b0010111,
     OP_JAL    = 'b1101111,
@@ -38,65 +38,86 @@ module decoder (
   } csr_t;
 
   // R-type
-  logic [ 6:0] funct7;
-  logic [ 4:0] rs2;
-  logic [ 4:0] rs1;
-  logic [ 2:0] funct3;
-  logic [ 4:0] rd;
-  logic [ 6:0] opcode;
+  logic [6:0] funct7;
+  logic [4:0] rs2;
+  logic [4:0] rs1;
+  logic [2:0] funct3;
+  logic [4:0] rd;
+  logic [6:0] op;
+  op_t opcode_e;
 
   logic [31:0] imm;
 
 
-  always begin
+  always @instr begin
     // R type
-    {funct7, rs2, rs1, funct3, rd, opcode} = instr;
+    {funct7, rs2, rs1, funct3, rd, op} = instr;
+    $cast(opcode_e, op);
+
+    $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b, op_t %s", instr, rs2, rs1, rd, op,
+             opcode_e.name());
 
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
-    case (instr)
+    case (opcode_e)
       OP_LUI: begin
+        $display("lui");
         imm = {instr[31:12], {12{1'b0}}};
         alu_a_mux_sel = IMM;
-        // wb_data_mux_sel = ALU;
+        alu_b_mux_sel = PC;
+        wb_data_mux_sel = ALU;
         wb_reg_mux_sel = RD;
         wb_enable = 1;
       end
 
       OP_AUIPC: begin
+        $display("auipc");
         imm = {instr[31:12], {12{1'b0}}};
+        alu_a_mux_sel = IMM;
+        alu_b_mux_sel = PC;
         wb_data_mux_sel = ALU;
         wb_reg_mux_sel = RD;
         wb_enable = 0;
       end
 
       OP_JAL: begin
+        $display("jal");
       end
 
       OP_JALR: begin
+        $display("jalr");
       end
 
       OP_BRANCH: begin
+        $display("branch");
+
       end
 
       OP_LOAD: begin
+        $display("load");
       end
 
       OP_STORE: begin
+        $display("store");
       end
 
       OP_ALUI: begin
+        $display("alui");
       end
 
       OP_ALU: begin
+        $display("alu");
       end
 
       OP_FENCE: begin
+        $display("fence");
       end
 
       OP_CSR: begin
+        $display("csr");
       end
 
       default: begin
+        $display("-- non matched op --");
       end
     endcase
 

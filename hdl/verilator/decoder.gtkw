@@ -1,40 +1,36 @@
 [*]
-[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Wed Feb 21 18:30:25 2024
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Thu Feb 22 15:05:55 2024
 [*]
-[dumpfile] "/home/pln/hippomenes/hdl/verilator/decoder.fst"
-[dumpfile_mtime] "Wed Feb 21 18:29:38 2024"
-[dumpfile_size] 742
-[savefile] "/home/pln/hippomenes/hdl/verilator/decoder.gtkw"
+[dumpfile] "/data/riscv/hippomenes/hdl/verilator/decoder.fst"
+[dumpfile_mtime] "Thu Feb 22 15:03:09 2024"
+[dumpfile_size] 990
+[savefile] "/data/riscv/hippomenes/hdl/verilator/decoder.gtkw"
 [timestart] 0
-[size] 1000 600
-[pos] -2123 -794
-*-1.745736 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[size] 1269 631
+[pos] 1243 498
+*-2.873782 2 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.tb_decoder.
 [sst_width] 214
-[signals_width] 182
+[signals_width] 244
 [sst_expanded] 1
-[sst_vpaned_height] 151
-@22
-TOP.tb_decoder.instruction[31:0]
-@100000028
-TOP.tb_decoder.pc_mux_select
-@29
+[sst_vpaned_height] 160
+@28
 TOP.tb_decoder.dut.funct3[2:0]
 @22
 TOP.tb_decoder.dut.funct7[6:0]
-TOP.tb_decoder.dut.imm4[4:0]
-TOP.tb_decoder.dut.imm7[6:0]
-TOP.tb_decoder.dut.imm12[11:0]
-TOP.tb_decoder.dut.imm20[19:0]
-TOP.tb_decoder.dut.instruction[31:0]
+@29
 TOP.tb_decoder.dut.opcode[6:0]
-@100000028
-TOP.tb_decoder.dut.pc_mux_select[31:0]
 @22
 TOP.tb_decoder.dut.rd[4:0]
 TOP.tb_decoder.dut.rs1[4:0]
 TOP.tb_decoder.dut.rs2[4:0]
+@100000028
+TOP.tb_decoder.dut.alu_a_mux_sel[31:0]
+TOP.tb_decoder.dut.alu_b_mux_sel[31:0]
+TOP.tb_decoder.dut.pc_mux_sel[31:0]
+@22
+TOP.tb_decoder.dut.imm[31:0]
 [pattern_trace] 1
 [pattern_trace] 0
