@@ -1,0 +1,28 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Thu Feb 22 18:32:09 2024
+[*]
+[dumpfile] "/home/pln/hippomenes/hdl/verilator/alu.fst"
+[dumpfile_mtime] "Thu Feb 22 18:31:41 2024"
+[dumpfile_size] 697
+[savefile] "/home/pln/hippomenes/hdl/verilator/alu.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-2.678622 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_alu.
+[sst_width] 214
+[signals_width] 102
+[sst_expanded] 1
+[sst_vpaned_height] 151
+@22
+TOP.tb_alu.dut.a[31:0]
+@23
+TOP.tb_alu.dut.b[31:0]
+@100000029
+TOP.tb_alu.dut.op[31:0]
+@23
+TOP.tb_alu.dut.res[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

@@ -6,7 +6,7 @@ module decoder (
     input logic [31:0] instr,
     output pc_mux_t pc_mux_sel,
     output wb_data_mux_t wb_data_mux_sel,
-    output wb_reg_mux_t wb_reg_mux_sel,
+    logic [4:0] wb_reg,
     output logic wb_enable,
     output alu_a_mux_t alu_a_mux_sel,
     output alu_b_mux_t alu_b_mux_sel
@@ -57,6 +57,8 @@ module decoder (
     $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b, op_t %s", instr, rs2, rs1, rd, op,
              opcode_e.name());
 
+    wb_reg = rd;
+
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (opcode_e)
       OP_LUI: begin
@@ -65,7 +67,6 @@ module decoder (
         alu_a_mux_sel = IMM;
         alu_b_mux_sel = PC;
         wb_data_mux_sel = ALU;
-        wb_reg_mux_sel = RD;
         wb_enable = 1;
       end
 
@@ -75,8 +76,7 @@ module decoder (
         alu_a_mux_sel = IMM;
         alu_b_mux_sel = PC;
         wb_data_mux_sel = ALU;
-        wb_reg_mux_sel = RD;
-        wb_enable = 0;
+        wb_enable = 1;
       end
 
       OP_JAL: begin

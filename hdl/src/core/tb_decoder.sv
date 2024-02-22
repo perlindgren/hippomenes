@@ -5,7 +5,7 @@ module tb_decoder;
   logic [31:0] instr;
   pc_mux_t pc_mux_sel;
   wb_data_mux_t wb_data_mux_sel;
-  wb_reg_mux_t wb_reg_mux_sel;
+  logic [4:0] wb_reg;
   logic wb_enable;
   alu_a_mux_t alu_a_mux_sel;
   alu_b_mux_t alu_b_mux_sel;
@@ -14,7 +14,7 @@ module tb_decoder;
       .instr(instr),
       .pc_mux_sel(pc_mux_sel),
       .wb_data_mux_sel(wb_data_mux_sel),
-      .wb_reg_mux_sel(wb_reg_mux_sel),
+      .wb_reg(wb_reg),
       .wb_enable(wb_enable),
       .alu_a_mux_sel(alu_a_mux_sel),
       .alu_b_mux_sel(alu_b_mux_sel)
@@ -36,6 +36,10 @@ module tb_decoder;
     #10;
     $display("test csr");
     instr = 'h35015073;  // CSR
+
+    #10;
+    $display("test lui");
+    instr = 'h01000337;  // lui     t1,0x1000
 
 
 
