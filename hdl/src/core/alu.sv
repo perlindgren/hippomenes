@@ -2,12 +2,12 @@
 
 import decoder_pkg::*;
 module alu (
-    input logic [31:0] a,
-    input logic [31:0] b,
-    input logic sub_arith,
+    input word a,
+    input word b,
+    input reg sub_arith,
     input alu_op_t op,
 
-    output logic [31:0] res
+    output word res
 );
 
   always begin

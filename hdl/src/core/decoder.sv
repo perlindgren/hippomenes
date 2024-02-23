@@ -15,7 +15,9 @@ module decoder (
     output word imm,
     output r rs1,
     output r rs2,
-    output reg dmem_write_enable
+    output reg dmem_write_enable,
+    output reg branch_instr,
+    output branch_op_t branch_op
 );
   // https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
   // table on page 104

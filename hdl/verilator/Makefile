@@ -8,6 +8,7 @@ $(root)/config_pkg.sv \
 $(core)/decoder_pkg.sv \
 $(core)/decoder.sv \
 $(register_file) \
+$(core)/branch_logic.sv \
 $(root)/mem_pkg.sv \
 $(core)/alu.sv \
 $(core)/reg_n.sv \

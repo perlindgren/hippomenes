@@ -56,12 +56,64 @@ module tb_top;
       .out(pc_mux_out)
   );
 
+  // adder
   word pc_adder_out;
   pc_adder pc_adder (
       .in (pc_reg_out),
       .out(pc_adder_out)
   );
 
+  // instruction memory
+  word imem_data_out;
+  reg  imem_alignment_error;
+  mem imem (
+      // in
+      .clk(clk),
+      .write_enable(0),  // we never write to instruction memory
+      .width(mem_pkg::WORD),  // always read words
+      .sign_extend(0),  // not used
+      .address(pc_reg_out[IMemAddrWidth-1:0]),
+      .data_in(0),
+      // out
+      .data_out(imem_data_out),
+      .alignment_error(imem_alignment_error)
+  );
+
+  // decoder
+  pc_mux_t decoder_pc_mux_sel;
+  wb_data_mux_t decoder_wb_data_mux_sel;
+  r decoder_wb_r;
+  reg decoder_wb_write_enable;
+  alu_a_mux_t decoder_alu_a_mux_sel;
+  alu_b_mux_t decoder_alu_b_mux_sel;
+  alu_op_t decoder_alu_op;
+  reg decoder_sub_arith;
+  word decoder_imm;
+  r decoder_rs1;
+  r decoder_rs2;
+  reg decoder_dmem_write_enable;
+  reg decoder_branch_instr;
+  branch_op_t decoder_branch_op;
+
+  decoder decoder (
+      // in
+      .instr(imem_data_out),
+      // out
+      .pc_mux_sel(decoder_pc_mux_sel),
+      .wb_data_mux_sel(decoder_wb_data_mux_sel),
+      .wb_r(decoder_wb_r),
+      .wb_write_enable(decoder_wb_write_enable),
+      .alu_a_mux_sel(decoder_alu_a_mux_sel),
+      .alu_b_mux_sel(decoder_alu_b_mux_sel),
+      .alu_op(decoder_alu_op),
+      .sub_arith(decoder_sub_arith),
+      .imm(decoder_imm),
+      .rs1(decoder_rs1),
+      .rs2(decoder_rs2),
+      .dmem_write_enable(decoder_dmem_write_enable),
+      .branch_instr(decoder_branch_instr),
+      .branch_op(decoder_branch_op)
+  );
 
   // register file
   word rf_rs1;
@@ -78,6 +130,18 @@ module tb_top;
       // out
       .readData1(rf_rs1),
       .readData2(rf_rs2)
+  );
+
+  // branch logic
+  branch_op_t branch_logic_res;
+  branch_logic branch_logic (
+      // in
+      .a(rf_rs1),
+      .b(rf_rs2),
+      .branch_instr(decoder_branch_instr),
+      .op(decoder_branch_op),
+      //out
+      .res(branch_logic_res)
   );
 
   // Alu related
@@ -113,20 +177,7 @@ module tb_top;
       .res(alu_res)
   );
 
-  word imem_data_out;
-  reg  imem_alignment_error;
-  mem imem (
-      // in
-      .clk(clk),
-      .write_enable(0),  // we never write to instruction memory
-      .width(mem_pkg::WORD),  // always read words
-      .sign_extend(0),  // not used
-      .address(pc_reg_out[IMemAddrWidth-1:0]),
-      .data_in(0),
-      // out
-      .data_out(imem_data_out),
-      .alignment_error(imem_alignment_error)
-  );
+
 
   word dmem_data_out;
   reg  dmem_alignment_error;
@@ -143,35 +194,7 @@ module tb_top;
       .alignment_error(dmem_alignment_error)
   );
 
-  pc_mux_t decoder_pc_mux_sel;
-  wb_data_mux_t decoder_wb_data_mux_sel;
-  r decoder_wb_r;
-  reg decoder_wb_write_enable;
-  alu_a_mux_t decoder_alu_a_mux_sel;
-  alu_b_mux_t decoder_alu_b_mux_sel;
-  alu_op_t decoder_alu_op;
-  reg decoder_sub_arith;
-  word decoder_imm;
-  r decoder_rs1;
-  r decoder_rs2;
-  reg decoder_dmem_write_enable;
-  decoder decoder (
-      // in
-      .instr(imem_data_out),
-      // out
-      .pc_mux_sel(decoder_pc_mux_sel),
-      .wb_data_mux_sel(decoder_wb_data_mux_sel),
-      .wb_r(decoder_wb_r),
-      .wb_write_enable(decoder_wb_write_enable),
-      .alu_a_mux_sel(decoder_alu_a_mux_sel),
-      .alu_b_mux_sel(decoder_alu_b_mux_sel),
-      .alu_op(decoder_alu_op),
-      .sub_arith(decoder_sub_arith),
-      .imm(decoder_imm),
-      .rs1(decoder_rs1),
-      .rs2(decoder_rs2),
-      .dmem_write_enable(decoder_dmem_write_enable)
-  );
+
 
   word wb_mux_out;
   wb_mux wb_mux (
