@@ -7,7 +7,7 @@ module branch_logic (
     input reg branch_instr,
     input branch_op_t op,
 
-    output pc_mux_t res
+    output pc_mux_t out
 );
   reg take;
 
@@ -22,7 +22,7 @@ module branch_logic (
       default: take = 0;
     endcase
 
-    res = pc_mux_t'(branch_instr && take);
+    out = pc_mux_t'(branch_instr && take);
   end
 
 endmodule

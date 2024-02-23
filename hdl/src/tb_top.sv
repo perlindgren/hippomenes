@@ -50,7 +50,7 @@ module tb_top;
   // pc related
   word pc_mux_out;
   pc_mux pc_mux (
-      .sel(decoder_pc_mux_sel),
+      .sel(branch_logic_out),
       .pc_next(pc_adder_out),
       .pc_branch(alu_res),
       .out(pc_mux_out)
@@ -80,8 +80,8 @@ module tb_top;
   );
 
   // decoder
-  pc_mux_t decoder_pc_mux_sel;
-  wb_data_mux_t decoder_wb_data_mux_sel;
+
+  wb_mux_t decoder_wb_mux_sel;
   r decoder_wb_r;
   reg decoder_wb_write_enable;
   alu_a_mux_t decoder_alu_a_mux_sel;
@@ -99,20 +99,26 @@ module tb_top;
       // in
       .instr(imem_data_out),
       // out
-      .pc_mux_sel(decoder_pc_mux_sel),
-      .wb_data_mux_sel(decoder_wb_data_mux_sel),
-      .wb_r(decoder_wb_r),
-      .wb_write_enable(decoder_wb_write_enable),
+      //   // pc
+      //   .pc_mux_sel(decoder_pc_mux_sel),
+      // register files
+      .rs1(decoder_rs1),
+      .rs2(decoder_rs2),
+      .imm(decoder_imm),
+      // branch logic
+      .branch_instr(decoder_branch_instr),
+      .branch_op(decoder_branch_op),
+      // alu
       .alu_a_mux_sel(decoder_alu_a_mux_sel),
       .alu_b_mux_sel(decoder_alu_b_mux_sel),
       .alu_op(decoder_alu_op),
       .sub_arith(decoder_sub_arith),
-      .imm(decoder_imm),
-      .rs1(decoder_rs1),
-      .rs2(decoder_rs2),
+      // data memory
       .dmem_write_enable(decoder_dmem_write_enable),
-      .branch_instr(decoder_branch_instr),
-      .branch_op(decoder_branch_op)
+      // write back
+      .wb_mux_sel(decoder_wb_mux_sel),
+      .wb_r(decoder_wb_r),
+      .wb_write_enable(decoder_wb_write_enable)
   );
 
   // register file
@@ -133,15 +139,15 @@ module tb_top;
   );
 
   // branch logic
-  branch_op_t branch_logic_res;
+  branch_op_t branch_logic_out;
   branch_logic branch_logic (
       // in
       .a(rf_rs1),
       .b(rf_rs2),
       .branch_instr(decoder_branch_instr),
       .op(decoder_branch_op),
-      //out
-      .res(branch_logic_res)
+      // out
+      .out(branch_logic_out)
   );
 
   // Alu related
@@ -194,11 +200,9 @@ module tb_top;
       .alignment_error(dmem_alignment_error)
   );
 
-
-
   word wb_mux_out;
   wb_mux wb_mux (
-      .sel(decoder_wb_data_mux_sel),
+      .sel(decoder_wb_mux_sel),
       .dm (dmem_data_out),
       .alu(alu_res),
       .out(wb_mux_out)
@@ -209,7 +213,7 @@ module tb_top;
     $display($time, " << Starting the Simulation >>");
 
     // notice raw access to memory is in words
-    imem.mem[0] = 'h50000117;  // LUI
+    imem.mem[0] = 'h50000117;  // auipc   sp,0x50000
     imem.mem[1] = 'h50010113;  // ADDI
     imem.mem[2] = 'h35015073;  // CSR
     imem.mem[3] = 'h01000337;  // lui     t1,0x1000

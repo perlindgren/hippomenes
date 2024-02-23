@@ -1,33 +1,75 @@
 [*]
-[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Wed Feb 21 13:03:20 2024
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Feb 23 23:20:13 2024
 [*]
-[dumpfile] "/data/riscv/hippomenes/hdl/verilator/top.fst"
-[dumpfile_mtime] "Wed Feb 21 13:02:40 2024"
-[dumpfile_size] 1233
-[savefile] "/data/riscv/hippomenes/hdl/verilator/top.gtkw"
+[dumpfile] "/home/pln/hippomenes/hdl/verilator/top.fst"
+[dumpfile_mtime] "Fri Feb 23 23:10:30 2024"
+[dumpfile_size] 2610
+[savefile] "/home/pln/hippomenes/hdl/verilator/top.gtkw"
 [timestart] 0
-[size] 1168 619
-[pos] -1 -1
-*-4.759036 20 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[size] 1168 1217
+[pos] 1065 660
+*-4.759036 4 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
-[sst_width] 209
-[signals_width] 182
+[treeopen] TOP.tb_top.
+[sst_width] 214
+[signals_width] 315
 [sst_expanded] 1
-[sst_vpaned_height] 163
+[sst_vpaned_height] 371
+@28
+TOP.tb_top.reset
 @100000028
 TOP.tb_top.clk
 @22
-TOP.tb_top.pc[31:0]
-TOP.tb_top.pc_branch[31:0]
-TOP.tb_top.pc_next[31:0]
-TOP.tb_top.pc_plus_4[31:0]
 TOP.tb_top.pc_reg_out[31:0]
+TOP.tb_top.pc_adder_out[31:0]
 @100000028
-TOP.tb_top.pc_select
+TOP.tb_top.branch_logic.out[31:0]
+@22
+TOP.tb_top.pc_mux_out[31:0]
+TOP.tb_top.imem_data_out[31:0]
 @28
-TOP.tb_top.reset
-@23
-TOP.tb_top.instr[31:0]
+TOP.tb_top.imem_alignment_error
+@22
+TOP.tb_top.decoder_rs1[4:0]
+TOP.tb_top.decoder_rs2[4:0]
+TOP.tb_top.rf_rs1[31:0]
+TOP.tb_top.rf_rs2[31:0]
+@28
+TOP.tb_top.decoder_branch_instr
+@100000028
+TOP.tb_top.decoder_branch_op
+@22
+TOP.tb_top.decoder_imm[31:0]
+@100000028
+TOP.tb_top.decoder_alu_a_mux_sel
+@22
+TOP.tb_top.alu_a_mux.out[31:0]
+@100000028
+TOP.tb_top.decoder_alu_b_mux_sel
+@22
+TOP.tb_top.alu_b_mux.out[31:0]
+@100000028
+TOP.tb_top.decoder_alu_op
+@28
+TOP.tb_top.decoder_sub_arith
+@22
+TOP.tb_top.alu_res[31:0]
+@28
+TOP.tb_top.decoder_dmem_write_enable
+TOP.tb_top.dmem_alignment_error
+@22
+TOP.tb_top.dmem_data_out[31:0]
+TOP.tb_top.decoder_wb_r[4:0]
+@28
+TOP.tb_top.decoder_wb_write_enable
+@22
+TOP.tb_top.dummy[31:0]
+TOP.tb_top.wb_data_reg_out[31:0]
+@28
+TOP.tb_top.wb_enable_reg_out
+@22
+TOP.tb_top.wb_mux_out[31:0]
+TOP.tb_top.wb_r_reg_out[4:0]
 [pattern_trace] 1
 [pattern_trace] 0

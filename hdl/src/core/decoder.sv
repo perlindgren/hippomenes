@@ -4,20 +4,26 @@ import decoder_pkg::*;
 
 module decoder (
     input word instr,
-    output pc_mux_t pc_mux_sel,
-    output wb_data_mux_t wb_data_mux_sel,
-    output r wb_r,
-    output logic wb_write_enable,
+    // pc
+    //  output pc_mux_t pc_mux_sel,
+    // register file
+    output r rs1,
+    output r rs2,
+    output word imm,
+    // branch logic
+    output reg branch_instr,
+    output branch_op_t branch_op,
+    // alu
     output alu_a_mux_t alu_a_mux_sel,
     output alu_b_mux_t alu_b_mux_sel,
     output alu_op_t alu_op,
     output reg sub_arith,
-    output word imm,
-    output r rs1,
-    output r rs2,
+    // data memory
     output reg dmem_write_enable,
-    output reg branch_instr,
-    output branch_op_t branch_op
+    // write back
+    output wb_mux_t wb_mux_sel,
+    output r wb_r,
+    output logic wb_write_enable
 );
   // https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
   // table on page 104
@@ -66,16 +72,17 @@ module decoder (
         imm = {instr[31:12], {12{1'b0}}};
         alu_a_mux_sel = IMM;
         alu_b_mux_sel = PC;
-        wb_data_mux_sel = ALU;
+        wb_mux_sel = WB_ALU;
         wb_write_enable = 1;
       end
 
       OP_AUIPC: begin
         $display("auipc");
-        imm = {instr[31:12], {12{1'b0}}};
+        imm = {instr[31:12], {12{1'b0}}};  // 20 bit immediate + pc
         alu_a_mux_sel = IMM;
         alu_b_mux_sel = PC;
-        wb_data_mux_sel = ALU;
+        alu_op = ALU_ADD;
+        wb_mux_sel = WB_ALU;
         wb_write_enable = 1;
       end
 

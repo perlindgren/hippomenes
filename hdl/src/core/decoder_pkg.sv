@@ -6,11 +6,11 @@ package decoder_pkg;
     PC_BRANCH = 'b1
   } pc_mux_t;
 
-  typedef enum {
-    ALU,
-    DM,
-    CLIC
-  } wb_data_mux_t;
+  // typedef enum {
+  //   WB_ALU,
+  //   WB_DM
+  //   // WB_CLIC
+  // } wb_data_mux_t;
 
   typedef enum {
     ALU_ADD  = 'b000,
