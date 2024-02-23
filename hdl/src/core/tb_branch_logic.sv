@@ -3,16 +3,18 @@
 import decoder_pkg::*;
 module tb_branch_logic;
 
-  logic [31:0] a;
-  logic [31:0] b;
+  word a;
+  word b;
+  reg branch_instr;
   branch_op_t op;
 
-  logic res;
+  pc_mux_t res;
 
   branch_logic dut (
-      .a  (a),
-      .b  (b),
-      .op (op),
+      .a(a),
+      .b(b),
+      .branch_instr(branch_instr),
+      .op(op),
       .res(res)
   );
 
@@ -21,8 +23,9 @@ module tb_branch_logic;
     $dumpvars;
 
     // BEQ
-    a  = 3;
-    b  = 5;
+    branch_instr = 1;
+    a = 3;
+    b = 5;
     op = BL_BEQ;
     #10;
     assert (res == 0) $display("BEQ 3 == 5 -> false");
@@ -144,6 +147,12 @@ module tb_branch_logic;
     #10;
     assert (res == 1) $display("BGEU -3 >= -3  -> true");
     else $error();
+
+    branch_instr = 0;
+    #10;
+    assert (res == 0) $display("not a branch instruction");
+    else $error();
+
 
     #10 $finish;
 

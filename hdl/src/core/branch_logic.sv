@@ -2,23 +2,27 @@
 
 import decoder_pkg::*;
 module branch_logic (
-    input logic [31:0] a,
-    input logic [31:0] b,
+    input word a,
+    input word b,
+    input reg branch_instr,
     input branch_op_t op,
 
-    output logic res
+    output pc_mux_t res
 );
+  reg take;
 
   always begin
     case (op)
-      BL_BEQ:  res = a == b;
-      BL_BNE:  res = !(a == b);
-      BL_BLT:  res = $signed(a) < $signed(b);
-      BL_BGE:  res = !($signed(a) < $signed(b));
-      BL_BLTU: res = $unsigned(a) < $unsigned(b);
-      BL_BGEU: res = !($unsigned(a) < $unsigned(b));
-      default: res = 0;
+      BL_BEQ:  take = (a == b);
+      BL_BNE:  take = !(a == b);
+      BL_BLT:  take = $signed(a) < $signed(b);
+      BL_BGE:  take = !($signed(a) < $signed(b));
+      BL_BLTU: take = $unsigned(a) < $unsigned(b);
+      BL_BGEU: take = !($unsigned(a) < $unsigned(b));
+      default: take = 0;
     endcase
+
+    res = pc_mux_t'(branch_instr && take);
   end
 
 endmodule
