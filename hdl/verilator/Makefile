@@ -6,12 +6,16 @@ register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
 top_ = \
 $(root)/config_pkg.sv \
 $(core)/decoder_pkg.sv \
+$(core)/decoder.sv \
 $(register_file) \
 $(root)/mem_pkg.sv \
-$(core)/reg32.sv \
+$(core)/reg_n.sv \
 $(core)/pc_adder.sv \
 $(core)/pc_mux.sv \
+$(core)/alu_a_mux.sv \
+$(core)/alu_b_mux.sv \
 $(root)/mem.sv \
+$(core)/wb_mux.sv \
 $(root)/tb_top.sv
 
 mem_ = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv

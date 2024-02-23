@@ -1,10 +1,12 @@
-module reg32 (
+module reg_n #(
+    parameter DataWidth = 32
+) (
     input logic clk,
     input logic reset,
-    input logic [31:0] in,
-    output logic [31:0] out
+    input logic [DataWidth -1:0] in,
+    output logic [DataWidth -1:0] out
 );
-  logic [31:0] pc_reg;
+  logic [DataWidth -1:0] pc_reg;
 
   always_ff @(posedge clk) begin
     if (reset) pc_reg <= 0;

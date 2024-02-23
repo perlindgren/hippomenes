@@ -46,6 +46,12 @@ package decoder_pkg;
     BL_BGEU = 'b111
   } branch_op_t;
 
+  typedef enum {
+    WB_ALU,
+    WB_DM
+  } wb_mux_t;
+
+  typedef logic [31:0] word;
 endpackage
 
 

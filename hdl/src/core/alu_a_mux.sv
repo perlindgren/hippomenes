@@ -10,7 +10,7 @@ module alu_a_mux (
 );
 
   always begin
-    case (select)
+    case (sel)
       IMM: out = imm;
       RS1: out = rs1;
       ZERO: out = zero;
