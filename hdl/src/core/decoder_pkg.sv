@@ -52,6 +52,8 @@ package decoder_pkg;
   } wb_mux_t;
 
   typedef logic [31:0] word;
+  typedef logic [4:0] r;
+
 endpackage
 
 

@@ -9,12 +9,12 @@ module tb_top;
 
   // registers
   word pc_reg_out;
-  // reg_n pc_reg (
-  //     .clk(clk),
-  //     .reset(reset),
-  //     .in(pc_reg_in),
-  //     .out(pc_reg_out)
-  // );
+  reg_n pc_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(pc_adder_out),
+      .out(pc_reg_out)
+  );
 
   word wb_data_reg_out;
   // reg_n wb_data_reg (
@@ -77,6 +77,15 @@ module tb_top;
   //     .out(alu_b_mux_out)
   // );
 
+  word alu_res;
+  // alu alu (
+  //     .a(alu_a_mux_out),
+  //     .b(alu_b_mux_out),
+  //     .sub_arith(),
+  //     .op(),
+  //     .res(alu_res)
+  // );
+
   word imem_data_out;
   reg  imem_alignment_error;
   mem imem (
@@ -93,7 +102,7 @@ module tb_top;
   );
 
   word dmem_data_out;
-  reg  dmem_alignment_error;
+  reg dmem_alignment_error;
   // mem dmem (
   //     // in
   //     .clk(clk),
@@ -107,23 +116,23 @@ module tb_top;
   //     .alignment_error(dmem_alignment_error)
   // );
 
-  wire decoder_pc_mux_sel;
-  wire decoder_wb_data_mux_sel;
-  wire decoder_wb_reg;
-  wire decoder_wb_enable;
-  wire decoder_alu_a_mux_sel;
-  wire decoder_alu_b_mux_sel;
-  // decoder decoder (
-  //     // in
-  //     .instr(instr),
-  //     // out
-  //     .pc_mux_sel(decoder_pc_mux_sel),
-  //     .wb_data_mux_sel(decoder_wb_data_mux_sel),
-  //     .wb_reg(decoder_wb_reg),
-  //     .wb_enable(decoder_wb_enable),
-  //     .alu_a_mux_sel(decoder_alu_a_mux_sel),
-  //     .alu_b_mux_sel(decoder_alu_b_mux_sel)
-  // );
+  pc_mux_t decoder_pc_mux_sel;
+  wb_data_mux_t decoder_wb_data_mux_sel;
+  r decoder_wb_reg;
+  logic decoder_wb_enable;
+  alu_a_mux_t decoder_alu_a_mux_sel;
+  alu_b_mux_t decoder_alu_b_mux_sel;
+  decoder decoder (
+      // in
+      .instr(imem_data_out),
+      // out
+      .pc_mux_sel(decoder_pc_mux_sel),
+      .wb_data_mux_sel(decoder_wb_data_mux_sel),
+      .wb_reg(decoder_wb_reg),
+      .wb_enable(decoder_wb_enable),
+      .alu_a_mux_sel(decoder_alu_a_mux_sel),
+      .alu_b_mux_sel(decoder_alu_b_mux_sel)
+  );
 
   wire wb_mux_out;
   // wb_mux wb_mux (
