@@ -3,13 +3,19 @@
 import decoder_pkg::*;
 
 module decoder (
-    input logic [31:0] instr,
+    input word instr,
     output pc_mux_t pc_mux_sel,
     output wb_data_mux_t wb_data_mux_sel,
-    logic [4:0] wb_reg,
-    output logic wb_enable,
+    output r wb_r,
+    output logic wb_write_enable,
     output alu_a_mux_t alu_a_mux_sel,
-    output alu_b_mux_t alu_b_mux_sel
+    output alu_b_mux_t alu_b_mux_sel,
+    output alu_op_t alu_op,
+    output reg sub_arith,
+    output word imm,
+    output r rs1,
+    output r rs2,
+    output reg dmem_write_enable
 );
   // https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
   // table on page 104
@@ -38,15 +44,10 @@ module decoder (
   } csr_t;
 
   // R-type
-  logic [ 6:0] funct7;
-  logic [ 4:0] rs2;
-  logic [ 4:0] rs1;
-  logic [ 2:0] funct3;
-  logic [ 4:0] rd;
-  logic [ 6:0] op;
-
-  logic [31:0] imm;
-
+  logic [6:0] funct7;
+  logic [2:0] funct3;
+  logic [4:0] rd;
+  logic [6:0] op;
 
   always @instr begin
     // R type
@@ -54,7 +55,7 @@ module decoder (
 
     $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b, op %s", instr, rs2, rs1, rd, op,);
 
-    wb_reg = rd;
+    wb_r = rd;
 
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
@@ -64,7 +65,7 @@ module decoder (
         alu_a_mux_sel = IMM;
         alu_b_mux_sel = PC;
         wb_data_mux_sel = ALU;
-        wb_enable = 1;
+        wb_write_enable = 1;
       end
 
       OP_AUIPC: begin
@@ -73,7 +74,7 @@ module decoder (
         alu_a_mux_sel = IMM;
         alu_b_mux_sel = PC;
         wb_data_mux_sel = ALU;
-        wb_enable = 1;
+        wb_write_enable = 1;
       end
 
       OP_JAL: begin

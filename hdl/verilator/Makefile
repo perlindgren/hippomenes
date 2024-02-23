@@ -9,6 +9,7 @@ $(core)/decoder_pkg.sv \
 $(core)/decoder.sv \
 $(register_file) \
 $(root)/mem_pkg.sv \
+$(core)/alu.sv \
 $(core)/reg_n.sv \
 $(core)/pc_adder.sv \
 $(core)/pc_mux.sv \
