@@ -1,10 +1,11 @@
 // tb_register_file
 module tb_register_file;
-  parameter DataWidth  = 32;
-  parameter NumRegs    = 32;
+  parameter DataWidth = 32;
+  parameter NumRegs = 32;
   parameter IndexWidth = $clog2(NumRegs);
 
   logic                  clk;
+  logic                  reset;
   logic                  writeEn;
   logic [IndexWidth-1:0] writeAddr;
   logic [ DataWidth-1:0] writeData;
@@ -14,37 +15,49 @@ module tb_register_file;
   logic [ DataWidth-1:0] readData2;
 
   RegisterFile dut (
-      clk,
-      writeEn,
-      writeAddr,
-      writeData,
-      readAddr1,
-      readAddr2,
-      readData1,
-      readData2
+      .clk(clk),
+      .reset(reset),
+      .writeEn(writeEn),
+      .writeAddr(writeAddr),
+      .writeData(writeData),
+      .readAddr1(readAddr1),
+      .readAddr2(readAddr2),
+      .readData1(readData1),
+      .readData2(readData2)
   );
+
+  always #10 clk = ~clk;
 
   initial begin
     $dumpfile("register_file.fst");
     $dumpvars;
 
-    clk = 0; 
-    writeEn = 0;
-    writeAddr = 0;
+    clk = 0;
     readAddr1 = 0;
-    readAddr2 = 0;
+    readAddr2 = 1;
+    writeEn = 1;
+    writeAddr = 1;
+    writeData = 'h12345678;
 
-    writeEn = 1; writeAddr = 'b00001; writeData = 'h12345678;
+    #15;
+    assert ((readData1 == 0) && (readData2 == 'h12345678)) $display("ok");
+    else $error("rs1 %h, rs2 %h", readData1, readData2);
 
-    #10 clk = 1; #10 clk = 0;
+    writeAddr = 0;
+    #10;
+
+    assert ((readData1 == 0) && (readData2 == 'h12345678)) $display("ok");
+    else $error("rs1 %h, rs2 %h", readData1, readData2);
+    #10;
+
+    writeAddr = 31;
+    writeData = 'hdead_beef;
+    readAddr1 = 31;
+    #10;
+    assert ((readData1 == 'hdead_beef) && (readData2 == 'h12345678)) $display("ok");
+    else $error("rs1 %h, rs2 %h", readData1, readData2);
 
     #10 $finish;
-    // highest entry (leftmost), represent the threshold
-    // all at prio zero
-    // entries = {{3'b000}, {3'b000}, {3'b000}, {3'b000}};
-    // #10 $display("(0), is_interrupt %d, index %d", is_interrupt, index);
-    // assert (is_interrupt == 0 && index == 3) $display("filtered by threshold");
-    // else $error("should be filtered by threshold");
 
   end
 endmodule

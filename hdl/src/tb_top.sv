@@ -55,8 +55,13 @@ module tb_top;
   // clock and reset
   initial begin
     $display($time, " << Starting the Simulation >>");
+    imem.mem[0] = 'h50000117;  // LUI
+    imem.mem[4] = 'h50010113;  // ADDI
+    imem.mem[8] = 'h35015073;  // CSR
+    imem.mem[12] = 'h01000337;  // lui     t1,0x1000
+
     reset = 1;
-    clk   = 0;
+    clk = 0;
     #5 reset = 0;
   end
 
