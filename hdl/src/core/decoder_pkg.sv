@@ -2,8 +2,8 @@
 package decoder_pkg;
 
   typedef enum {
-    PC_NEXT,
-    PC_BRANCH
+    PC_NEXT   = 'b0,
+    PC_BRANCH = 'b1
   } pc_mux_t;
 
   typedef enum {
