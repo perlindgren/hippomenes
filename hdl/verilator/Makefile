@@ -29,30 +29,31 @@ all: top
 top: $(top_) 
 	verilator --binary $(top_) --top-module tb_top --trace-fst --assert
 	obj_dir/Vtb_top
+
+top_g: top
 	gtkwave -a top.gtkw top.fst
 
 dec: $(decoder)
 	verilator --binary $(decoder) --top-module tb_decoder --trace-fst --assert
 	obj_dir/Vtb_decoder
-	gtkwave -a decoder.gtkw decoder.fst
 
-alu_g: $(alu_)
-	verilator --binary $(alu_) --top-module tb_alu --trace-fst --assert
-	obj_dir/Vtb_alu
-	gtkwave -a alu.gtkw alu.fst
+dec_g: dec
+	gtkwave -a decoder.gtkw decoder.fst
 
 alu: $(alu_)
 	verilator --binary $(alu_) --top-module tb_alu --trace-fst --assert
 	obj_dir/Vtb_alu
 
-bl_g: $(brach_logic_)
-	verilator --binary $(branch_logic_) --top-module tb_branch_logic --trace-fst --assert
-	obj_dir/Vtb_branch_logic
-	gtkwave -a branch_logic.gtkw branch_logic.fst
+alu_g: alu
+	gtkwave -a alu.gtkw alu.fst
 
 bl: $(brach_logic_)
 	verilator --binary $(branch_logic_) --top-module tb_branch_logic --trace-fst --assert
 	obj_dir/Vtb_branch_logic
+
+bl_g: bl
+	gtkwave -a branch_logic.gtkw branch_logic.fst
+
 	
 	
 mem: $(mem_)

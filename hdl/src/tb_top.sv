@@ -55,10 +55,12 @@ module tb_top;
   // clock and reset
   initial begin
     $display($time, " << Starting the Simulation >>");
+
+    // notice raw access to memory is in words
     imem.mem[0] = 'h50000117;  // LUI
-    imem.mem[4] = 'h50010113;  // ADDI
-    imem.mem[8] = 'h35015073;  // CSR
-    imem.mem[12] = 'h01000337;  // lui     t1,0x1000
+    imem.mem[1] = 'h50010113;  // ADDI
+    imem.mem[2] = 'h35015073;  // CSR
+    imem.mem[3] = 'h01000337;  // lui     t1,0x1000
 
     reset = 1;
     clk = 0;
