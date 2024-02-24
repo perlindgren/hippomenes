@@ -17,6 +17,7 @@ $(core)/pc_mux.sv \
 $(core)/alu_a_mux.sv \
 $(core)/alu_b_mux.sv \
 $(root)/mem.sv \
+$(core)/csr.sv \
 $(core)/wb_mux.sv \
 $(root)/tb_top.sv
 

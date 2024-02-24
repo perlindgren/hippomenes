@@ -20,9 +20,10 @@ module decoder (
     output reg sub_arith,
     // data memory
     output reg dmem_write_enable,
+
     // write back
     output wb_mux_t wb_mux_sel,
-    output r wb_r,
+    output r rd,
     output logic wb_write_enable
 );
   // https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
@@ -38,24 +39,13 @@ module decoder (
     OP_ALUI   = 'b0010011,
     OP_ALU    = 'b0110011,
     OP_FENCE  = 'b0001111,
-    OP_CSR    = 'b1110011
+    OP_SYSTEM = 'b1110011
   } op_t;
 
-  typedef enum {
-    ECALL,
-    CSRRW,
-    CSRRS,
-    CSRRC,
-    CSRRWI,
-    CSRRSI,
-    CSRRCI
-  } csr_t;
-
   // R-type
-  logic [6:0] funct7;
-  logic [2:0] funct3;
-  logic [4:0] rd;
-  logic [6:0] op;
+  reg [6:0] funct7;
+  reg [2:0] funct3;
+  reg [6:0] op;
 
   always @instr begin
     // R type
@@ -63,8 +53,6 @@ module decoder (
 
     $display();  // new line
     $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b", instr, rs2, rs1, rd, op);
-
-    wb_r = rd;
 
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
@@ -127,8 +115,8 @@ module decoder (
         $display("fence");
       end
 
-      OP_CSR: begin
-        $display("csr");
+      OP_SYSTEM: begin
+        $display("system");
         // TODO
         wb_write_enable = 0;
       end

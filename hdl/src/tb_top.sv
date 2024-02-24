@@ -33,7 +33,7 @@ module tb_top;
   ) wb_rd_reg (
       .clk(clk),
       .reset(reset),
-      .in(decoder_wb_r),
+      .in(decoder_rd),
       .out(wb_rd_reg_out)
   );
 
@@ -80,9 +80,7 @@ module tb_top;
   );
 
   // decoder
-
   wb_mux_t decoder_wb_mux_sel;
-  r decoder_wb_r;
   reg decoder_wb_write_enable;
   alu_a_mux_t decoder_alu_a_mux_sel;
   alu_b_mux_t decoder_alu_b_mux_sel;
@@ -91,9 +89,12 @@ module tb_top;
   word decoder_imm;
   r decoder_rs1;
   r decoder_rs2;
+  r decoder_rd;
   reg decoder_dmem_write_enable;
   reg decoder_branch_instr;
   branch_op_t decoder_branch_op;
+  csr_t decoder_csr_op;
+  reg decoder_csr_en;
 
   decoder decoder (
       // in
@@ -117,7 +118,7 @@ module tb_top;
       .dmem_write_enable(decoder_dmem_write_enable),
       // write back
       .wb_mux_sel(decoder_wb_mux_sel),
-      .wb_r(decoder_wb_r),
+      .rd(decoder_rd),
       .wb_write_enable(decoder_wb_write_enable)
   );
 
@@ -183,8 +184,6 @@ module tb_top;
       .res(alu_res)
   );
 
-
-
   word dmem_data_out;
   reg  dmem_alignment_error;
   mem dmem (
@@ -198,6 +197,20 @@ module tb_top;
       // out
       .data_out(dmem_data_out),
       .alignment_error(dmem_alignment_error)
+  );
+
+  word csr_old;
+  csr csr (
+      // in
+      .clk(clk),
+      .reset(reset),
+      .en(decoder_csr_en),
+      .rs1(decoder_rs1),
+      .rd(decoder_rd),
+      .op(decoder_csr_op),
+      .in(alu_res),
+      // out
+      .old(csr_old)
   );
 
   word wb_mux_out;
@@ -491,7 +504,7 @@ module tb_top;
 
     $display("dmem.mem[5008] %h", dmem.mem[0008]);
 
-    #100 $finish;
+    $finish;
   end
 
 endmodule

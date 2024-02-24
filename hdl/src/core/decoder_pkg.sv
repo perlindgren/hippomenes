@@ -2,6 +2,16 @@
 package decoder_pkg;
 
   typedef enum {
+    ECALL,
+    CSRRW,
+    CSRRS,
+    CSRRC,
+    CSRRWI,
+    CSRRSI,
+    CSRRCI
+  } csr_t;
+
+  typedef enum {
     PC_NEXT   = 'b0,
     PC_BRANCH = 'b1
   } pc_mux_t;
