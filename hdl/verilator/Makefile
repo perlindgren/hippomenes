@@ -20,6 +20,8 @@ $(root)/mem.sv \
 $(core)/wb_mux.sv \
 $(root)/tb_top.sv
 
+csr_ = $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/tb_csr.sv
+
 mem_ = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
 
 di_mem_ = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_di_mem.sv
@@ -38,6 +40,10 @@ top: $(top_)
 
 top_g: 
 	gtkwave -a top.gtkw top.fst
+
+csr: $(csr_)
+	verilator --binary $(csr_) --top-module tb_csr --trace-fst --assert
+	obj_dir/Vtb_csr
 
 dec: $(decoder)
 	verilator --binary $(decoder) --top-module tb_decoder --trace-fst --assert
