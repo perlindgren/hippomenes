@@ -1,18 +1,20 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sat Feb 24 21:16:02 2024
+[*] Sat Feb 24 22:15:14 2024
 [*]
 [dumpfile] "/home/pln/hippomenes/hdl/verilator/test.fst"
-[dumpfile_mtime] "Sat Feb 24 21:13:00 2024"
-[dumpfile_size] 3267
+[dumpfile_mtime] "Sat Feb 24 22:14:26 2024"
+[dumpfile_size] 3361
 [savefile] "/home/pln/hippomenes/hdl/verilator/test.gtkw"
-[timestart] 1
+[timestart] 0
 [size] 2159 1354
 [pos] -1 -1
-*-4.259294 73 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-4.438742 165 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.tb_test.
 [treeopen] TOP.tb_test.top.
+[treeopen] TOP.tb_test.top.wb_rd_reg.
+[treeopen] TOP.tb_test.top.wb_write_enable_reg.
 [sst_width] 214
 [signals_width] 316
 [sst_expanded] 1
@@ -22,8 +24,9 @@ TOP.tb_test.top.reset
 TOP.tb_test.top.clk
 @22
 TOP.tb_test.top.pc_reg_out[31:0]
-@23
 TOP.tb_test.top.imem_data_out[31:0]
+@100000028
+TOP.tb_test.top.decoder_alu_op
 @22
 TOP.tb_test.top.alu_a_mux_out[31:0]
 TOP.tb_test.top.alu_b_mux_out[31:0]
@@ -35,7 +38,6 @@ TOP.tb_test.top.csr_old[31:0]
 @100000028
 TOP.tb_test.top.decoder_alu_a_mux_sel
 TOP.tb_test.top.decoder_alu_b_mux_sel
-TOP.tb_test.top.decoder_alu_op
 @28
 TOP.tb_test.top.decoder_branch_instr
 @100000028
@@ -107,12 +109,26 @@ TOP.tb_test.top.wb_data_reg_out[31:0]
 TOP.tb_test.top.wb_enable_reg_out
 @22
 TOP.tb_test.top.wb_mux_out[31:0]
+@23
 TOP.tb_test.top.wb_rd_reg_out[4:0]
 @100000028
 TOP.tb_test.top.pc_mux.sel[31:0]
 @22
 TOP.tb_test.top.pc_mux.pc_next[31:0]
 TOP.tb_test.top.pc_mux.pc_branch[31:0]
-TOP.tb_test.top.pc_mux.out[31:0]
+@200
+-WB ENABLE
+@28
+TOP.tb_test.top.wb_write_enable_reg.in[0]
+@c00022
+TOP.tb_test.top.wb_rd_reg.in[4:0]
+@28
+(0)TOP.tb_test.top.wb_rd_reg.in[4:0]
+(1)TOP.tb_test.top.wb_rd_reg.in[4:0]
+(2)TOP.tb_test.top.wb_rd_reg.in[4:0]
+(3)TOP.tb_test.top.wb_rd_reg.in[4:0]
+(4)TOP.tb_test.top.wb_rd_reg.in[4:0]
+@1401200
+-group_end
 [pattern_trace] 1
 [pattern_trace] 0

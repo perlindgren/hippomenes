@@ -93,6 +93,7 @@ module top (
   reg decoder_dmem_write_enable;
   reg decoder_branch_instr;
   branch_op_t decoder_branch_op;
+  reg decoder_branch_always;
   // csr_t decoder_csr_op;
   reg decoder_csr_enable;
 
@@ -100,13 +101,12 @@ module top (
       // in
       .instr(imem_data_out),
       // out
-      //   // pc
-      //   .pc_mux_sel(decoder_pc_mux_sel),
-      // register files
+      // register file
       .rs1(decoder_rs1),
       .rs2(decoder_rs2),
       .imm(decoder_imm),
       // branch logic
+      .branch_always(decoder_branch_always),
       .branch_instr(decoder_branch_instr),
       .branch_op(decoder_branch_op),
       // alu
@@ -147,6 +147,7 @@ module top (
       // in
       .a(rf_rs1),
       .b(rf_rs2),
+      .branch_always(decoder_branch_always),
       .branch_instr(decoder_branch_instr),
       .op(decoder_branch_op),
       // out
@@ -218,9 +219,10 @@ module top (
   word wb_mux_out;
   wb_mux wb_mux (
       .sel(decoder_wb_mux_sel),
-      .dm (dmem_data_out),
+      .dm(dmem_data_out),
       .alu(alu_res),
       .csr(csr_old),
+      .pc_plus_4(pc_adder_out),
       .out(wb_mux_out)
   );
 endmodule

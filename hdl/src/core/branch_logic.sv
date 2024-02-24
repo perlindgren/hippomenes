@@ -4,6 +4,7 @@ import decoder_pkg::*;
 module branch_logic (
     input word a,
     input word b,
+    input reg branch_always,
     input reg branch_instr,
     input branch_op_t op,
 
@@ -22,7 +23,7 @@ module branch_logic (
       default: take = 0;
     endcase
 
-    out = pc_mux_t'(branch_instr && take);
+    out = pc_mux_t'(branch_always || (branch_instr && take));
   end
 
 endmodule

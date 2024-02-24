@@ -11,6 +11,7 @@ module decoder (
     output r rs2,
     output word imm,
     // branch logic
+    output reg branch_always,
     output reg branch_instr,
     output branch_op_t branch_op,
     // alu
@@ -55,8 +56,11 @@ module decoder (
     $display();  // new line
     $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b", instr, rs2, rs1, rd, op);
 
-    csr_enable   = 0;  // set only for csr
+    csr_enable = 0;  // set only for csr
     branch_instr = 0;  // set only for branch logic operation
+    branch_always = 0;  // set only for jal/jalr
+    wb_write_enable = 0;  // set only for instructions writing to rf
+
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
       OP_LUI: begin
@@ -82,16 +86,27 @@ module decoder (
 
       OP_JAL: begin
         $display("jal");
+        wb_write_enable = 1;
+        imm = {12'($signed(instr[31])), instr[19:12], instr[20], instr[30:21], 1'b0};
+        $display("--------  bl imm %h", imm);
+        alu_a_mux_sel = A_IMM;
+        alu_b_mux_sel = B_PC;
+        wb_mux_sel = WB_PC_PLUS_4;
+        branch_always = 1;
       end
 
       OP_JALR: begin
         $display("jalr");
+        wb_write_enable = 1;
+        alu_a_mux_sel = A_IMM;
+        alu_b_mux_sel = B_PC;
+        wb_mux_sel = WB_PC_PLUS_4;
+        branch_always = 1;
       end
 
       OP_BRANCH: begin
         $display("branch");
         branch_instr = 1;
-        // TODO BAL?
         wb_write_enable = 0;
         imm = {20'($signed(instr[31])), instr[7], instr[30:25], instr[11:8], 1'b0};
         $display("--------  bl imm %h", imm);

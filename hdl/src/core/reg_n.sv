@@ -6,14 +6,14 @@ module reg_n #(
     input logic [DataWidth -1:0] in,
     output logic [DataWidth -1:0] out
 );
-  logic [DataWidth -1:0] pc_reg;
+  logic [DataWidth -1:0] data;
 
   always_ff @(posedge clk) begin
-    if (reset) pc_reg <= 0;
-    else pc_reg <= in;
+    if (reset) data <= 0;
+    else data <= in;
 
   end
 
-  assign out = pc_reg;
+  assign out = data;
 
 endmodule

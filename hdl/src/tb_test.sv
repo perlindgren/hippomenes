@@ -59,7 +59,7 @@ module tb_test;
 
 
 
-    #140;
+    #160;
     $finish;
   end
 
