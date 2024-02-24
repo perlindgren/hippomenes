@@ -71,6 +71,8 @@ bl_g: bl
 mem: $(mem_)
 	verilator --binary $(mem_) --top-module tb_mem --trace-fst --assert
 	obj_dir/Vtb_mem
+
+mem_g:	
 	gtkwave -a mem.gtkw mem.fst
 
 di_mem: $(di_mem_)
