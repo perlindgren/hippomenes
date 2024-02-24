@@ -14,7 +14,7 @@ module top (
   reg_n pc_reg (
       .clk(clk),
       .reset(reset),
-      .in(pc_adder_out),
+      .in(pc_mux_out),
       .out(pc_reg_out)
   );
 
@@ -142,7 +142,7 @@ module top (
   );
 
   // branch logic
-  branch_op_t branch_logic_out;
+  pc_mux_t branch_logic_out;
   branch_logic branch_logic (
       // in
       .a(rf_rs1),

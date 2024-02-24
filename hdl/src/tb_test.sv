@@ -23,7 +23,7 @@ module tb_test;
     //        8: 13 03 10 00    li      t1, 1
     top.imem.mem[0] = 'h5000_0117;  // auipc    sp, 327680
     top.imem.mem[1] = 'h5001_0113;  // addi     sp, sp, 1280
-    top.imem.mem[2] = 'h0010_0313;  // li       t1, 1
+    top.imem.mem[2] = 'h0020_0313;  // li       t1, 2
 
     // 0000000c <l>:
     //        c: 13 03 f3 ff    addi    t1, t1, -1
@@ -59,7 +59,7 @@ module tb_test;
 
 
 
-    #100;
+    #140;
     $finish;
   end
 

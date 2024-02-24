@@ -55,7 +55,8 @@ module decoder (
     $display();  // new line
     $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b", instr, rs2, rs1, rd, op);
 
-    csr_enable = 0;  // set only for csr
+    csr_enable   = 0;  // set only for csr
+    branch_instr = 0;  // set only for branch logic operation
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
       OP_LUI: begin
@@ -89,7 +90,15 @@ module decoder (
 
       OP_BRANCH: begin
         $display("branch");
-
+        branch_instr = 1;
+        // TODO BAL?
+        wb_write_enable = 0;
+        imm = {20'($signed(instr[31])), instr[7], instr[30:25], instr[11:8], 1'b0};
+        $display("--------  bl imm %h", imm);
+        branch_op = branch_op_t'(funct3);
+        alu_a_mux_sel = A_IMM;
+        alu_b_mux_sel = B_PC;
+        alu_op = ALU_ADD;
       end
 
       OP_LOAD: begin

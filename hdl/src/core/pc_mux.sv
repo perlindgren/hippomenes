@@ -3,9 +3,9 @@
 import decoder_pkg::*;
 module pc_mux (
     input pc_mux_t sel,
-    input logic [31:0] pc_next,
-    input logic [31:0] pc_branch,
-    output logic [31:0] out
+    input word pc_next,
+    input word pc_branch,
+    output word out
 );
 
   always begin
