@@ -22,13 +22,12 @@ module RegisterFile #(
     // do not write to register 0
     if (reset) begin
       regs <= 0;
-    end else if (writeEn) begin
-      //if (writeEn & writeAddr != '0') begin
+    end else if (writeEn && (writeAddr != 0)) begin
       regs[writeAddr] <= writeData;
     end
   end
 
-  assign readData1 = regs[readAddr1];
-  assign readData2 = regs[readAddr2];
+  assign readData1 = (writeEn && (readAddr1==writeAddr) && writeAddr != 0) ? writeData : regs[readAddr1];
+  assign readData2 = (writeEn && (readAddr2==writeAddr) && writeAddr != 0) ? writeData : regs[readAddr2];
 
 endmodule

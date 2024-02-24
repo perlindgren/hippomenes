@@ -1,21 +1,22 @@
 [*]
-[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Fri Feb 23 23:20:13 2024
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Sat Feb 24 03:02:54 2024
 [*]
-[dumpfile] "/home/pln/hippomenes/hdl/verilator/top.fst"
-[dumpfile_mtime] "Fri Feb 23 23:10:30 2024"
-[dumpfile_size] 2610
-[savefile] "/home/pln/hippomenes/hdl/verilator/top.gtkw"
+[dumpfile] "/home/pln/riscv/hippomenes/hdl/verilator/top.fst"
+[dumpfile_mtime] "Sat Feb 24 03:02:15 2024"
+[dumpfile_size] 2832
+[savefile] "/home/pln/riscv/hippomenes/hdl/verilator/top.gtkw"
 [timestart] 0
-[size] 1168 1217
-[pos] 1065 660
-*-4.759036 4 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[size] 2146 1500
+[pos] -1 -1
+*-4.000995 5 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.tb_top.
-[sst_width] 214
-[signals_width] 315
+[treeopen] TOP.tb_top.rf.
+[sst_width] 341
+[signals_width] 330
 [sst_expanded] 1
-[sst_vpaned_height] 371
+[sst_vpaned_height] 858
 @28
 TOP.tb_top.reset
 @100000028
@@ -70,6 +71,13 @@ TOP.tb_top.wb_data_reg_out[31:0]
 TOP.tb_top.wb_enable_reg_out
 @22
 TOP.tb_top.wb_mux_out[31:0]
-TOP.tb_top.wb_r_reg_out[4:0]
+TOP.tb_top.rf.readAddr1[4:0]
+TOP.tb_top.rf.readAddr2[4:0]
+TOP.tb_top.rf.readData1[31:0]
+TOP.tb_top.rf.readData2[31:0]
+TOP.tb_top.rf.writeAddr[4:0]
+TOP.tb_top.rf.writeData[31:0]
+@28
+TOP.tb_top.rf.writeEn
 [pattern_trace] 1
 [pattern_trace] 0

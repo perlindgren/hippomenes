@@ -33,10 +33,10 @@ branch_logic_ = $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch
 all: top
 
 top: $(top_) 
-	verilator --binary $(top_) --top-module tb_top --trace-fst --assert
+	verilator --binary $(top_) --top-module tb_top --trace-fst --assert --timing
 	obj_dir/Vtb_top
 
-top_g: top
+top_g: 
 	gtkwave -a top.gtkw top.fst
 
 dec: $(decoder)

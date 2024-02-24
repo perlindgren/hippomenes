@@ -3,17 +3,17 @@
 import decoder_pkg::*;
 module alu_a_mux (
     input alu_a_mux_t sel,
-    input logic [31:0] imm,
-    input logic [31:0] rs1,
-    input logic [31:0] zero,
-    output logic [31:0] out
+    input word imm,
+    input word rs1,
+    input word zero,
+    output word out
 );
 
   always begin
     case (sel)
-      IMM: out = imm;
-      RS1: out = rs1;
-      ZERO: out = zero;
+      A_IMM:   out = imm;
+      A_RS1:   out = rs1;
+      A_ZERO:  out = zero;
       default: out = imm;
     endcase
   end

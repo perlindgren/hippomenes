@@ -61,7 +61,7 @@ module decoder (
     // R type
     {funct7, rs2, rs1, funct3, rd, op} = instr;
 
-    $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b, op %s", instr, rs2, rs1, rd, op,);
+    $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b", instr, rs2, rs1, rd, op);
 
     wb_r = rd;
 
@@ -70,8 +70,9 @@ module decoder (
       OP_LUI: begin
         $display("lui");
         imm = {instr[31:12], {12{1'b0}}};
-        alu_a_mux_sel = IMM;
-        alu_b_mux_sel = PC;
+        alu_a_mux_sel = A_ZERO;
+        alu_b_mux_sel = B_IMM_EXT;
+        alu_op = ALU_OR;
         wb_mux_sel = WB_ALU;
         wb_write_enable = 1;
       end
@@ -79,8 +80,8 @@ module decoder (
       OP_AUIPC: begin
         $display("auipc");
         imm = {instr[31:12], {12{1'b0}}};  // 20 bit immediate + pc
-        alu_a_mux_sel = IMM;
-        alu_b_mux_sel = PC;
+        alu_a_mux_sel = A_IMM;
+        alu_b_mux_sel = B_PC;
         alu_op = ALU_ADD;
         wb_mux_sel = WB_ALU;
         wb_write_enable = 1;
@@ -109,6 +110,12 @@ module decoder (
 
       OP_ALUI: begin
         $display("alui");
+        imm = 32'($signed(instr[31:20]));
+        alu_a_mux_sel = A_RS1;
+        alu_b_mux_sel = B_IMM_EXT;
+        alu_op = alu_op_t'(funct3);
+        wb_mux_sel = WB_ALU;
+        wb_write_enable = 1;
       end
 
       OP_ALU: begin
@@ -121,6 +128,8 @@ module decoder (
 
       OP_CSR: begin
         $display("csr");
+        // TODO
+        wb_write_enable = 0;
       end
 
       default: begin

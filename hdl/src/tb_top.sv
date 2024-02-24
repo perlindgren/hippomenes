@@ -27,20 +27,20 @@ module tb_top;
   );
 
   // 5 bit register
-  r wb_r_reg_out;
+  r wb_rd_reg_out;
   reg_n #(
       .DataWidth(5)
-  ) wb_reg (
+  ) wb_rd_reg (
       .clk(clk),
       .reset(reset),
       .in(decoder_wb_r),
-      .out(wb_r_reg_out)
+      .out(wb_rd_reg_out)
   );
 
   reg wb_enable_reg_out;
   reg_n #(
       .DataWidth(1)
-  ) wb_enable_reg (
+  ) wb_write_enable_reg (
       .clk(clk),
       .reset(reset),
       .in(decoder_wb_write_enable),
@@ -129,7 +129,7 @@ module tb_top;
       .clk(clk),
       .reset(reset),
       .writeEn(wb_enable_reg_out),
-      .writeAddr(wb_r_reg_out),
+      .writeAddr(wb_rd_reg_out),
       .writeData(wb_data_reg_out),
       .readAddr1(decoder_rs1),
       .readAddr2(decoder_rs2),
@@ -214,9 +214,19 @@ module tb_top;
 
     // notice raw access to memory is in words
     imem.mem[0] = 'h50000117;  // auipc   sp,0x50000
-    imem.mem[1] = 'h50010113;  // ADDI
+    imem.mem[1] = 'h50010113;  // addi    sp,sp,1280 # 50000500 
     imem.mem[2] = 'h35015073;  // CSR
     imem.mem[3] = 'h01000337;  // lui     t1,0x1000
+    imem.mem[4] = 'h10030313;  // addi    t1,t1,256 # 1000100 
+    imem.mem[5] = 'h020003b7;  // lui     t2,0x2000
+    imem.mem[6] = 'h10038393;  // addi    t2,t2,256 # 2000100 
+    imem.mem[7] = 'h03000e37;  // lui     t3,0x3000
+    imem.mem[8] = 'h100e0e13;  // addi    t3,t3,256 # 3000100 
+    imem.mem[9] = 'h04000eb7;  // lui     t4,0x4000
+    imem.mem[10] = 'h100e8e93;  // addi    t4,t4,256 # 4000100 
+    imem.mem[11] = 'h05000f37;  // lui     t5,0x5000
+    imem.mem[12] = 'h100f0f13;  // addi    t5,t5,256 # 5000100 
+
 
     reset = 1;
     clk = 0;
@@ -229,7 +239,31 @@ module tb_top;
     $dumpfile("top.fst");
     $dumpvars;
 
-    // #10;
+    #10;  // auipc   sp,0x50000
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("wb_data_reg.in %h", wb_data_reg.in);
+    assert (wb_data_reg.in == 'h5000_0000);
+    assert (wb_rd_reg.in == 2);  // sp
+    assert (wb_write_enable_reg.in == 1);  // should write to rf
+
+    #20;  // addi sp,sp,1280 # 50000500 // sign ext
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("wb_data_reg.in %h", wb_data_reg.in);
+
+    assert (wb_data_reg.in == 'h5000_0500);
+    assert (wb_rd_reg.in == 2);  // sp
+    assert (wb_write_enable_reg.in == 1);  // should write to rf
+
+    #20;  // csrrw 350 2 zero
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+
+    #20;  // lui     t1,0x1000
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+
+    #20;  //  addi    t1,t1,256 # 1000100 
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
 
     #100 $finish;
   end

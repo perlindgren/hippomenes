@@ -24,17 +24,17 @@ package decoder_pkg;
   } alu_op_t;
 
   typedef enum {
-    IMM,
-    RS1,
-    ZERO
+    A_IMM,
+    A_RS1,
+    A_ZERO
   } alu_a_mux_t;
 
   typedef enum {
-    RS2,
-    IMM_EXT,
-    PC_PLUS_4,
-    PC,
-    SHAMT
+    B_RS2,
+    B_IMM_EXT,
+    B_PC_PLUS_4,
+    B_PC,
+    B_SHAMT
   } alu_b_mux_t;
 
   typedef enum {

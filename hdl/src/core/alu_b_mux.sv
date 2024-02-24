@@ -13,10 +13,10 @@ module alu_b_mux (
 
   always begin
     case (sel)
-      RS2: out = rs2;
-      IMM_EXT: out = imm;
-      PC_PLUS_4: out = pc_plus_4;
-      PC: out = pc;
+      B_RS2: out = rs2;
+      B_IMM_EXT: out = imm;
+      B_PC_PLUS_4: out = pc_plus_4;
+      B_PC: out = pc;
       default: out = rs2;
     endcase
   end
