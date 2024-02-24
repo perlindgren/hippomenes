@@ -25,12 +25,11 @@ module mem
     // do not write to register 0
     if (write_enable) begin
       write_word = mem[address[DMemAddrWidth-1:2]];
-      $display("clk: write_word = %h", write_word);
+      // $display("clk: write_word = %h", write_word);
       case (width)
         BYTE: begin
           write_word[address[1:0]] = data_in[7:0];
-          $display("data_in = %h, data_in[7:0] = %h,  write_word = %h", data_in, data_in[7:0],
-                   write_word);
+          // $display("data_in = %h, data_in[7:0] = %h, write_word = %h", data_in, data_in[7:0], write_word);
         end
 
         HALFWORD: begin
@@ -74,7 +73,7 @@ module mem
       default: data_out = 0;
     endcase
 
-    $display("data = %h", data_out);
+    // $display("data = %h", data_out);
   end
 
 endmodule

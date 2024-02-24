@@ -214,18 +214,39 @@ module tb_top;
 
     // notice raw access to memory is in words
     imem.mem[0] = 'h50000117;  // auipc   sp,0x50000
-    imem.mem[1] = 'h50010113;  // addi    sp,sp,1280 # 50000500 
+    imem.mem[1] = 'h50010113;  // addi    sp,sp,1280 # 50000500
     imem.mem[2] = 'h35015073;  // CSR
     imem.mem[3] = 'h01000337;  // lui     t1,0x1000
-    imem.mem[4] = 'h10030313;  // addi    t1,t1,256 # 1000100 
+    imem.mem[4] = 'h10030313;  // addi    t1,t1,256 # 1000100
     imem.mem[5] = 'h020003b7;  // lui     t2,0x2000
-    imem.mem[6] = 'h10038393;  // addi    t2,t2,256 # 2000100 
+    imem.mem[6] = 'h10038393;  // addi    t2,t2,256 # 2000100
     imem.mem[7] = 'h03000e37;  // lui     t3,0x3000
-    imem.mem[8] = 'h100e0e13;  // addi    t3,t3,256 # 3000100 
+    imem.mem[8] = 'h100e0e13;  // addi    t3,t3,256 # 3000100
     imem.mem[9] = 'h04000eb7;  // lui     t4,0x4000
-    imem.mem[10] = 'h100e8e93;  // addi    t4,t4,256 # 4000100 
+    imem.mem[10] = 'h100e8e93;  // addi    t4,t4,256 # 4000100
     imem.mem[11] = 'h05000f37;  // lui     t5,0x5000
-    imem.mem[12] = 'h100f0f13;  // addi    t5,t5,256 # 5000100 
+    imem.mem[12] = 'h100f0f13;  // addi    t5,t5,256 # 5000100
+    //   34:   06000fb7                lui     t6,0x6000
+    //   38:   100f8f93                addi    t6,t6,256 # 6000100 <trap_9+0x5fff78c>
+    //   3c:   070005b7                lui     a1,0x7000
+    //   40:   10058593                addi    a1,a1,256 # 7000100 <trap_9+0x6fff78c>
+    //   44:   08000637                lui     a2,0x8000
+    //   48:   10060613                addi    a2,a2,256 # 8000100 <trap_9+0x7fff78c>
+    //   4c:   090006b7                lui     a3,0x9000
+    //   50:   10068693                addi    a3,a3,256 # 9000100 <trap_9+0x8fff78c>
+    //   54:   b0131073                .4byte  0xb0131073
+    //   58:   b0239073                .4byte  0xb0239073
+    //   5c:   b03e1073                .4byte  0xb03e1073
+    //   60:   b04e9073                .4byte  0xb04e9073
+    //   64:   b05f1073                .4byte  0xb05f1073
+    //   68:   b06f9073                .4byte  0xb06f9073
+    //   6c:   b0759073                .4byte  0xb0759073
+    //   70:   b0861073                .4byte  0xb0861073
+    //   74:   b0969073                .4byte  0xb0969073
+    //   78:   00005337                lui     t1,0x5
+    //   7c:   00830313                addi    t1,t1,8 # 5008 <trap_9+0x4694>
+    //   80:   03200393                li      t2,50
+    //   84:   00732023                sw      t2,0(t1)
 
 
     reset = 1;
@@ -240,6 +261,7 @@ module tb_top;
     $dumpvars;
 
     #10;  // auipc   sp,0x50000
+    $warning("auipc   sp,0x50000");
     $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
     $display("wb_data_reg.in %h", wb_data_reg.in);
     assert (wb_data_reg.in == 'h5000_0000);
@@ -247,6 +269,7 @@ module tb_top;
     assert (wb_write_enable_reg.in == 1);  // should write to rf
 
     #20;  // addi sp,sp,1280 # 50000500 // sign ext
+    $warning("addi sp,sp,1280 # 50000500");
     $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
     $display("wb_data_reg.in %h", wb_data_reg.in);
 
@@ -255,13 +278,66 @@ module tb_top;
     assert (wb_write_enable_reg.in == 1);  // should write to rf
 
     #20;  // csrrw 350 2 zero
+    $warning("csrrw 350 2 zero");
     $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
 
     #20;  // lui     t1,0x1000
+    $warning("lui t1,0x1000");
     $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
     $display("alu %h", alu.res);
 
-    #20;  //  addi    t1,t1,256 # 1000100 
+    #20;  //  addi    t1,t1,256 # 1000100
+    $warning("addi t1,t1,256 # 1000100");
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+
+    #20;  //  lui     t2,0x2000
+    $warning("lui t2,0x2000");
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+
+    #20;  //  addi    t2,t2,256 # 2000100
+    $warning("addi  t2,t2,256 # 2000100");
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+
+    #20;  //  lui     t3,0x3000
+    $warning("lui     t3,0x3000");
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+
+    #20;  //  addi    t3,t3,256 # 3000100
+    $warning("addi    t3,t3,256 # 3000100");
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+
+    #20;  //  lui     t4,0x4000
+    $warning("lui     t4,0x4000");
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+
+    #20;  //  addi    t4,t4,256 # 4000100
+    $warning("addi    t4,t4,256 # 40001000");
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+
+    #20;  //  lui     t5,0x5000
+    $warning("lui     t5,0x5000");
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+
+    #20;  //  addi    t5,t5,256 # 5000100
+    $warning("addi    t5,t5,256 # 5000100");
+    $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
+    $display("alu %h", alu.res);
+    $display("rf[t1 6] %h", rf.regs[6]);
+    $display("rf[t2 7] %h", rf.regs[7]);
+    $display("rf[t3 28] %h", rf.regs[28]);
+    $display("rf[t4 29] %h", rf.regs[29]);
+    $display("rf[t5 30] %h", rf.regs[30]);
+
+    #20;  //  addi    t4,t4,256 # 4000100
+    $warning("addi    t4,t4,256 # 40001000");
     $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
     $display("alu %h", alu.res);
 
