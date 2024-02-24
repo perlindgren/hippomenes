@@ -93,8 +93,8 @@ module tb_top;
   reg decoder_dmem_write_enable;
   reg decoder_branch_instr;
   branch_op_t decoder_branch_op;
-  csr_t decoder_csr_op;
-  reg decoder_csr_en;
+  // csr_t decoder_csr_op;
+  reg decoder_csr_enable;
 
   decoder decoder (
       // in
@@ -116,6 +116,8 @@ module tb_top;
       .sub_arith(decoder_sub_arith),
       // data memory
       .dmem_write_enable(decoder_dmem_write_enable),
+      // csr
+      .csr_enable(decoder_csr_enable),
       // write back
       .wb_mux_sel(decoder_wb_mux_sel),
       .rd(decoder_rd),
@@ -204,10 +206,10 @@ module tb_top;
       // in
       .clk(clk),
       .reset(reset),
-      .en(decoder_csr_en),
+      .en(decoder_csr_enable),
       .rs1(decoder_rs1),
       .rd(decoder_rd),
-      .op(decoder_csr_op),
+      .op(csr_t'(decoder_rs2)),
       .in(alu_res),
       // out
       .old(csr_old)
@@ -218,6 +220,7 @@ module tb_top;
       .sel(decoder_wb_mux_sel),
       .dm (dmem_data_out),
       .alu(alu_res),
+      .csr(csr_old),
       .out(wb_mux_out)
   );
 
@@ -501,6 +504,9 @@ module tb_top;
     $display("rf[a1 11] %h", rf.regs[11]);
     $display("rf[a2 12] %h", rf.regs[12]);
     $display("rf[a3 13] %h", rf.regs[13]);
+
+    // dump csr
+    $display("csr %h", csr.data);
 
     $display("dmem.mem[5008] %h", dmem.mem[0008]);
 

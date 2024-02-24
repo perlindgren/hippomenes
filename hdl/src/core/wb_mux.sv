@@ -5,6 +5,7 @@ module wb_mux (
     input wb_mux_t sel,
     input word alu,
     input word dm,
+    input word csr,
     output word out
 );
 
@@ -12,6 +13,7 @@ module wb_mux (
     case (sel)
       WB_ALU:  out = alu;
       WB_DM:   out = dm;
+      WB_CSR:  out = csr;
       default: out = alu;
     endcase
   end

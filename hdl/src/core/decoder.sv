@@ -20,7 +20,8 @@ module decoder (
     output reg sub_arith,
     // data memory
     output reg dmem_write_enable,
-
+    // csr
+    output reg csr_enable,
     // write back
     output wb_mux_t wb_mux_sel,
     output r rd,
@@ -54,6 +55,7 @@ module decoder (
     $display();  // new line
     $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b", instr, rs2, rs1, rd, op);
 
+    csr_enable = 0;  // set only for csr
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
       OP_LUI: begin
@@ -74,6 +76,7 @@ module decoder (
         alu_op = ALU_ADD;
         wb_mux_sel = WB_ALU;
         wb_write_enable = 1;
+
       end
 
       OP_JAL: begin
@@ -119,6 +122,7 @@ module decoder (
         $display("system");
         // TODO
         wb_write_enable = 0;
+        csr_enable = 1;
       end
 
       default: begin
