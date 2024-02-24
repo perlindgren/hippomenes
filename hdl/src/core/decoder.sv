@@ -61,6 +61,7 @@ module decoder (
     // R type
     {funct7, rs2, rs1, funct3, rd, op} = instr;
 
+    $display();  // new line
     $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b", instr, rs2, rs1, rd, op);
 
     wb_r = rd;
