@@ -6,10 +6,11 @@ register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
 top_dep = \
 $(root)/config_pkg.sv \
 $(core)/decoder_pkg.sv \
+$(root)/mem_pkg.sv \
+$(root)/top.sv \
 $(core)/decoder.sv \
 $(register_file) \
 $(core)/branch_logic.sv \
-$(root)/mem_pkg.sv \
 $(core)/alu.sv \
 $(core)/reg_n.sv \
 $(core)/pc_adder.sv \
@@ -20,9 +21,9 @@ $(root)/mem.sv \
 $(core)/csr.sv \
 $(core)/wb_mux.sv 
 
-top_tb_ = $(top_dep) $(root)/tb_top.sv
+tb_top = $(top_dep) $(root)/tb_top.sv
 
-tb_test = $(top_dep) $(root)/top.sv $(root)/tb_test.sv
+tb_test = $(top_dep) $(root)/tb_test.sv
 
 csr_ = $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/tb_csr.sv
 
@@ -38,8 +39,8 @@ branch_logic_ = $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch
 
 all: top
 
-top: $(top_tb_) 
-	verilator --binary $(top_tb_) --top-module tb_top --trace-fst --assert --timing
+top: $(tb_top) 
+	verilator --binary $(tb_top) --top-module tb_top --trace-fst --assert --timing
 	obj_dir/Vtb_top
 
 top_g: 
@@ -48,6 +49,9 @@ top_g:
 test: $(tb_test) 
 	verilator --binary $(tb_test) --top-module tb_test --trace-fst --assert --timing
 	obj_dir/Vtb_test
+
+test_g: 
+	gtkwave -a test.gtkw test.fst
 
 
 csr: $(csr_)
