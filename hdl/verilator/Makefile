@@ -25,6 +25,8 @@ tb_top = $(top_dep) $(root)/tb_top.sv
 
 tb_test = $(top_dep) $(root)/tb_test.sv
 
+tb_test_mem = $(top_dep) $(root)/tb_test_mem.sv
+
 csr_ = $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/tb_csr.sv
 
 mem_ = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
@@ -52,6 +54,13 @@ test: $(tb_test)
 
 test_g: 
 	gtkwave -a test.gtkw test.fst
+
+tm: $(tb_test_mem) 
+	verilator --binary $(tb_test_mem) --top-module tb_test_mem --trace-fst --assert --timing
+	obj_dir/Vtb_test_mem
+
+tm_g: 
+	gtkwave -a test_mem.gtkw test_mem.fst
 
 
 csr: $(csr_)
