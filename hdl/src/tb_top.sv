@@ -1,4 +1,4 @@
-// tb_top test bench
+// tb_top
 
 module tb_top;
   import config_pkg::*;

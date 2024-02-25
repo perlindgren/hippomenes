@@ -1,4 +1,4 @@
-// Data memor   y
+// tb_di_mem
 
 module tb_di_mem;
   import config_pkg::*;
@@ -7,22 +7,22 @@ module tb_di_mem;
   logic clk;
 
   // Data memory
-  logic d_write_enable;
+  reg d_write_enable;
   mem_width_t d_width;
-  logic d_sign_extend;
-  logic [DMemAddrWidth-1:0] d_address;
-  logic [31:0] d_data_in;
-  logic [31:0] d_data_out;
-  logic d_alignment_error;
+  reg d_sign_extend;
+  reg [DMemAddrWidth-1:0] d_address;
+  word d_data_in;
+  word d_data_out;
+  reg d_alignment_error;
 
   // Instruction memory
-  logic i_write_enable;
+  reg i_write_enable;
   mem_width_t i_width;
-  logic i_sign_extend;
-  logic [IMemAddrWidth-1:0] i_address;
-  logic [31:0] i_data_in;
-  logic [31:0] i_data_out;
-  logic i_alignment_error;
+  reg i_sign_extend;
+  reg [IMemAddrWidth-1:0] i_address;
+  word i_data_in;
+  word i_data_out;
+  reg i_alignment_error;
 
   mem d_mem (
       .clk(clk),
@@ -50,13 +50,23 @@ module tb_di_mem;
     $dumpfile("di_mem.fst");
     $dumpvars;
 
+    d_mem.mem[0] = 'h1234_5678;
+    d_mem.mem[1] = 'h0000_1111;
+    d_mem.mem[2] = 'h1111_0000;
+    d_mem.mem[3] = 'hb0a0_9080;
+
+    i_mem.mem[0] = 'h1234_5678;
+    i_mem.mem[1] = 'h0000_1111;
+    i_mem.mem[2] = 'h1111_0000;
+    i_mem.mem[3] = 'hb0a0_9080;
+
     // test successful data mem
     d_address = 0;
-    d_width   = WORD;
+    d_width = WORD;
 
     // test read instruction mem with alignment error
     i_address = 5;
-    i_width   = WORD;
+    i_width = WORD;
     #10;
     assert ((d_data_out == 'h1234_5678) && !d_alignment_error);
     assert ((i_data_out == 'h0000_1111) && i_alignment_error);

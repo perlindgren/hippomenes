@@ -139,10 +139,8 @@ module decoder (
       OP_STORE: begin
         $display("store");
 
-        $display("load");
-
-        imm = {20'($signed(instr[31])), instr[31:20]};
-        $display("--------  load imm %h", imm);
+        imm = {20'($signed(instr[31])), instr[31:25], instr[11:7]};
+        $display("--------  store imm %h", imm);
         branch_op = branch_op_t'(funct3);
         alu_a_mux_sel = A_RS1;
         alu_b_mux_sel = B_IMM_EXT;
@@ -150,9 +148,10 @@ module decoder (
 
         dmem_width = mem_width_t'(funct3[1:0]);
         dmem_sign_extend = !funct3[2];
+        dmem_write_enable = 1;
 
         wb_mux_sel = WB_DM;
-        wb_write_enable = 1;
+        wb_write_enable = 0;
       end
 
       OP_ALUI: begin

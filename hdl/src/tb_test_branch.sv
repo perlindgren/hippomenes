@@ -1,6 +1,6 @@
-// tb_test test bench
+// tb_test_branch
 
-module tb_test;
+module tb_test_branch;
   import config_pkg::*;
   import decoder_pkg::*;
 
@@ -45,7 +45,7 @@ module tb_test;
   always #10 clk = ~clk;
 
   initial begin
-    $dumpfile("test.fst");
+    $dumpfile("test_branch.fst");
     $dumpvars;
 
     #10;  // auipc   sp,0x50000

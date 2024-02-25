@@ -57,8 +57,8 @@ package decoder_pkg;
     WB_PC_PLUS_4
   } wb_mux_t;
 
-  typedef logic [31:0] word;
-  typedef logic [4:0] r;
+  typedef reg [4:0] r;
+  typedef reg [31:0] word;
 
 endpackage
 

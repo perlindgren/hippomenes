@@ -13,4 +13,7 @@ package config_pkg;
   localparam integer IMemAddrWidth = $clog2(IMemSize);  // derived
   localparam integer DMemAddrWidth = $clog2(DMemSize);  // derived
 
+  // Move to common?
+  typedef reg [31:0] word;
+
 endpackage

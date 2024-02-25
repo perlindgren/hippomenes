@@ -1,4 +1,4 @@
-// tb_test_mem test bench
+// tb_test_mem
 
 module tb_test_mem;
   import config_pkg::*;
@@ -106,11 +106,27 @@ module tb_test_mem;
     #20;
     $display("lw  t6, 0(a0)", $time);
 
+    $warning("dmem address %h", top.dmem.address);
+    $warning("dmem signed_extend  %b", top.dmem.sign_extend);
+    $warning("dmem out %h", top.dmem.data_out);
+
+    $warning("rf[t0 x5] %h", top.rf.regs[5]);
+    $warning("rf[t1 x6] %h", top.rf.regs[6]);
+    $warning("rf[t2 x7] %h", top.rf.regs[7]);
+    $warning("rf[t3 x28] %h", top.rf.regs[28]);
+    $warning("rf[t4 x29] %h", top.rf.regs[29]);
+    $warning("rf[t5 x30] %h", top.rf.regs[30]);
+    $warning("rf[t6 x31] %h", top.rf.regs[31]);
+
     #20;
     $display("lbu t0, 0(a0)", $time);
+    $warning("rf[t5 x30] %h", top.rf.regs[30]);
+    $warning("rf[t6 x31] %h", top.rf.regs[31]);
 
     #20;
     $display("lbu t1, 1(a0)", $time);
+    $warning("rf[t5 x30] %h", top.rf.regs[30]);
+    $warning("rf[t6 x31] %h", top.rf.regs[31]);
 
     #20;
     $display("lbu t2, 2(a0)", $time);
@@ -126,16 +142,22 @@ module tb_test_mem;
 
     #20;
     $display("sb  t0, 4(a0)", $time);
+    $warning("rf[a0 x10] %h", top.rf.regs[10]);
     $warning("dmem address %h", top.dmem.address);
+    $warning("alu_op %h", top.alu.op);
+    $warning("alu_a_mux_out %h", top.alu_a_mux_out);
+    $warning("alu_b_mux_out %h", top.alu_b_mux_out);
+
+    $warning("alu_res %h", top.alu.res);
+
     $warning("dmem width %h", top.dmem.width);
-    $warning("dmem write_enable %h", top.dmem.writ);
+    $warning("dmem write_enable %h", top.dmem.write_enable);
     $warning("dmem in  %b", top.dmem.data_in);
+    $warning("rf[t0 x5] %h", top.rf.regs[5]);
     $warning("dmem out %h", top.dmem.data_out);
 
     $warning("dmem.mem %h", top.dmem.mem[0]);  // in words
     $warning("dmem.mem %h", top.dmem.mem[1]);  // in words
-
-    $finish();
 
     #20;
     $display("sb  t1, 5(a0)", $time);
@@ -154,6 +176,14 @@ module tb_test_mem;
 
     #20;
     $display(" j   0x5c <s>", $time);
+
+    #20;
+
+    $warning("dmem.mem %h", top.dmem.mem[0]);  // in words
+    $warning("dmem.mem %h", top.dmem.mem[1]);  // in words
+    $warning("dmem.mem %h", top.dmem.mem[2]);  // in words
+    $warning("dmem.mem %h", top.dmem.mem[3]);  // in words
+
 
     #120;
     $finish;

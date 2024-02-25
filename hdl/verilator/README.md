@@ -19,23 +19,26 @@ This will remove the `obj_dir` where compilation artifacts are stored. (Not doin
 
 ## Makefile structure
 
-The HippoMenes design is modular, with separate test benches for each larger module.
+The HippoMenes design is modular, with separate test benches for each larger module. Useage:
 
-Separately testable modules in the `core`.
+```
+make <tb> # to run test
+make <tb>_g # to open corresponding gtkwave
+```
 
-- `tb_alu` 
-- `tb_branch_logic`
-- `tb_decoder` (may be superseded by `top`)
+
+Testbenches for the `core`.
+
+- `alu` 
+- `branch_logic`
+- `csr`
+- `register_file`
 
 And at `top` level:
-- `tb_mem` (tests the generic memory module)
-- `tb_di_mem` (tests separation of memory banks)
-- `tb_top`
+- `top` (test the top modul)
+- `test_mem` (test storage operations)
+- `test_branch` (test branching operations)
+- `mem` (tests the generic memory module)
+- `di_mem` (tests separation of memory banks)
 
-## Running tests
-
-```shell
-make <test>_g # runs tests and opens gtkwave
-make <test>   # runs just the test
-```
 
