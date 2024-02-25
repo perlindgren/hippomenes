@@ -1,9 +1,9 @@
 // Register file
 
-module RegisterFile #(
-    parameter DataWidth  = 32,
-    parameter NumRegs    = 32,
-    parameter IndexWidth = $clog2(NumRegs)
+module register_file #(
+    parameter integer unsigned DataWidth  = 32,
+    parameter integer unsigned NumRegs    = 32,
+    parameter integer unsigned IndexWidth = $clog2(NumRegs)
 ) (
     input  logic                  clk,
     input  logic                  reset,
@@ -27,7 +27,9 @@ module RegisterFile #(
     end
   end
 
-  assign readData1 = (writeEn && (readAddr1==writeAddr) && writeAddr != 0) ? writeData : regs[readAddr1];
-  assign readData2 = (writeEn && (readAddr2==writeAddr) && writeAddr != 0) ? writeData : regs[readAddr2];
+  assign readData1 = (writeEn && (readAddr1==writeAddr) && writeAddr != 0) ?
+  writeData : regs[readAddr1];
+  assign readData2 = (writeEn && (readAddr2==writeAddr) && writeAddr != 0) ?
+  writeData : regs[readAddr2];
 
 endmodule

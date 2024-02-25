@@ -137,7 +137,7 @@ module top (
   // register file
   word rf_rs1;
   word rf_rs2;
-  RegisterFile rf (
+  register_file rf (
       // in
       .clk(clk),
       .reset(reset),

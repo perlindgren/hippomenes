@@ -1,5 +1,5 @@
 module reg_n #(
-    parameter DataWidth = 32
+    parameter integer DataWidth = 32
 ) (
     input logic clk,
     input logic reset,

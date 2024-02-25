@@ -1,8 +1,8 @@
 // tb_register_file
 module tb_register_file;
-  parameter DataWidth = 32;
-  parameter NumRegs = 32;
-  parameter IndexWidth = $clog2(NumRegs);
+  parameter integer unsigned DataWidth = 32;
+  parameter integer unsigned NumRegs = 32;
+  parameter integer unsigned IndexWidth = $clog2(NumRegs);
 
   logic                  clk;
   logic                  reset;
@@ -14,7 +14,7 @@ module tb_register_file;
   logic [ DataWidth-1:0] readData1;
   logic [ DataWidth-1:0] readData2;
 
-  RegisterFile dut (
+  register_file dut (
       .clk(clk),
       .reset(reset),
       .writeEn(writeEn),
