@@ -79,9 +79,14 @@ module tb_test_mem;
 
     #20;
     $display("lb  t0, 0(a0)", $time);
-
+    $warning("dmem address %h", top.dmem.address);
+    $warning("dmem signed_extend  %b", top.dmem.sign_extend);
+    $warning("dmem out %h", top.dmem.data_out);
     #20;
     $display("lb  t1, 1(a0)", $time);
+    $warning("dmem address %h", top.dmem.address);
+    $warning("dmem signed_extend  %b", top.dmem.sign_extend);
+    $warning("dmem out %h", top.dmem.data_out);
 
     #20;
     $display("lb  t2, 2(a0)", $time);
@@ -91,6 +96,9 @@ module tb_test_mem;
 
     #20;
     $display("lh  t4, 0(a0)", $time);
+    $warning("dmem address %h", top.dmem.address);
+    $warning("dmem signed_extend  %b", top.dmem.sign_extend);
+    $warning("dmem out %h", top.dmem.data_out);
 
     #20;
     $display("lh  t5, 2(a0)", $time);
@@ -118,6 +126,16 @@ module tb_test_mem;
 
     #20;
     $display("sb  t0, 4(a0)", $time);
+    $warning("dmem address %h", top.dmem.address);
+    $warning("dmem width %h", top.dmem.width);
+    $warning("dmem write_enable %h", top.dmem.writ);
+    $warning("dmem in  %b", top.dmem.data_in);
+    $warning("dmem out %h", top.dmem.data_out);
+
+    $warning("dmem.mem %h", top.dmem.mem[0]);  // in words
+    $warning("dmem.mem %h", top.dmem.mem[1]);  // in words
+
+    $finish();
 
     #20;
     $display("sb  t1, 5(a0)", $time);

@@ -16,21 +16,15 @@ package decoder_pkg;
     PC_BRANCH = 'b1
   } pc_mux_t;
 
-  // typedef enum {
-  //   WB_ALU,
-  //   WB_DM
-  //   // WB_CLIC
-  // } wb_data_mux_t;
-
   typedef enum {
-    ALU_ADD  = 'b000,
-    ALU_SLL  = 'b001,
-    ALU_SLT  = 'b010,
-    ALU_SLTU = 'b011,
-    ALU_EXOR = 'b100,
-    ALU_SR   = 'b101,
-    ALU_OR   = 'b110,
-    ALU_AND  = 'b111
+    ALU_ADD  = 'b000,  // ADDI
+    ALU_SLL  = 'b001,  // SLLI
+    ALU_SLT  = 'b010,  // SLLI
+    ALU_SLTU = 'b011,  // SLTIU
+    ALU_EXOR = 'b100,  // EXORI
+    ALU_SR   = 'b101,  // SRL, SRA, SRLI, SRAI
+    ALU_OR   = 'b110,  // ORI
+    ALU_AND  = 'b111   // ANDI
   } alu_op_t;
 
   typedef enum {

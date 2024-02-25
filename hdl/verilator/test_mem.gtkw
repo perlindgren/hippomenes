@@ -1,0 +1,75 @@
+[*]
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Sun Feb 25 16:14:25 2024
+[*]
+[dumpfile] "/data/riscv/hippomenes/hdl/verilator/test_mem.fst"
+[dumpfile_mtime] "Sun Feb 25 16:13:46 2024"
+[dumpfile_size] 3730
+[savefile] "/data/riscv/hippomenes/hdl/verilator/test_mem.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*0.000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_test_mem.
+[sst_width] 209
+[signals_width] 230
+[sst_expanded] 1
+[sst_vpaned_height] 157
+@22
+TOP.tb_test_mem.top.alu_a_mux_out[31:0]
+TOP.tb_test_mem.top.alu_b_mux_out[31:0]
+TOP.tb_test_mem.top.alu_res[31:0]
+@100000028
+TOP.tb_test_mem.top.branch_logic_out
+@28
+TOP.tb_test_mem.top.clk
+@22
+TOP.tb_test_mem.top.csr_old[31:0]
+@100000028
+TOP.tb_test_mem.top.decoder_alu_a_mux_sel
+TOP.tb_test_mem.top.decoder_alu_b_mux_sel
+TOP.tb_test_mem.top.decoder_alu_op
+@28
+TOP.tb_test_mem.top.decoder_branch_always
+TOP.tb_test_mem.top.decoder_branch_instr
+@100000028
+TOP.tb_test_mem.top.decoder_branch_op
+@28
+TOP.tb_test_mem.top.decoder_csr_enable
+TOP.tb_test_mem.top.decoder_dmem_write_enable
+@22
+TOP.tb_test_mem.top.decoder_imm[31:0]
+TOP.tb_test_mem.top.decoder_rd[4:0]
+TOP.tb_test_mem.top.decoder_rs1[4:0]
+TOP.tb_test_mem.top.decoder_rs2[4:0]
+@28
+TOP.tb_test_mem.top.decoder_sub_arith
+@100000028
+TOP.tb_test_mem.top.decoder_wb_mux_sel
+@28
+TOP.tb_test_mem.top.decoder_wb_write_enable
+TOP.tb_test_mem.top.dmem_alignment_error
+@22
+TOP.tb_test_mem.top.dmem_data_out[31:0]
+TOP.tb_test_mem.top.dummy[31:0]
+@28
+TOP.tb_test_mem.top.imem_alignment_error
+@22
+TOP.tb_test_mem.top.imem_data_out[31:0]
+TOP.tb_test_mem.top.pc_adder_out[31:0]
+TOP.tb_test_mem.top.pc_mux_out[31:0]
+TOP.tb_test_mem.top.pc_reg_out[31:0]
+@28
+TOP.tb_test_mem.top.reset
+@22
+TOP.tb_test_mem.top.rf_rs1[31:0]
+TOP.tb_test_mem.top.rf_rs2[31:0]
+TOP.tb_test_mem.top.wb_data_reg_out[31:0]
+@28
+TOP.tb_test_mem.top.wb_enable_reg_out
+@22
+TOP.tb_test_mem.top.wb_mux_out[31:0]
+TOP.tb_test_mem.top.wb_rd_reg_out[4:0]
+[pattern_trace] 1
+[pattern_trace] 0

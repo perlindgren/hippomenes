@@ -6,6 +6,7 @@ module top (
 );
   import config_pkg::*;
   import decoder_pkg::*;
+  import mem_pkg::*;
 
   word dummy;
 
@@ -90,12 +91,19 @@ module top (
   r decoder_rs1;
   r decoder_rs2;
   r decoder_rd;
+
+  // mem
   reg decoder_dmem_write_enable;
+  reg decoder_dmem_sign_extend;
+  mem_width_t decoder_mem_with;
+
+  // branch
   reg decoder_branch_instr;
   branch_op_t decoder_branch_op;
   reg decoder_branch_always;
   // csr_t decoder_csr_op;
   reg decoder_csr_enable;
+  mem_width_t decoder_dmem_width;
 
   decoder decoder (
       // in
@@ -116,6 +124,8 @@ module top (
       .sub_arith(decoder_sub_arith),
       // data memory
       .dmem_write_enable(decoder_dmem_write_enable),
+      .dmem_sign_extend(decoder_dmem_sign_extend),
+      .dmem_width(decoder_dmem_width),
       // csr
       .csr_enable(decoder_csr_enable),
       // write back
@@ -193,8 +203,8 @@ module top (
       // in
       .clk(clk),
       .write_enable(decoder_dmem_write_enable),
-      .width(mem_pkg::WORD),  // TODO
-      .sign_extend(0),  // TODO
+      .width(decoder_dmem_width),
+      .sign_extend(decoder_dmem_sign_extend),
       .address(alu_res[DMemAddrWidth-1:0]),
       .data_in(rf_rs2),
       // out

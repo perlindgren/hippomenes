@@ -1,6 +1,7 @@
 // Instruction decoder
 
 import decoder_pkg::*;
+import mem_pkg::*;
 
 module decoder (
     input word instr,
@@ -21,6 +22,8 @@ module decoder (
     output reg sub_arith,
     // data memory
     output reg dmem_write_enable,
+    output reg dmem_sign_extend,
+    output mem_width_t dmem_width,
     // csr
     output reg csr_enable,
     // write back
@@ -118,15 +121,44 @@ module decoder (
 
       OP_LOAD: begin
         $display("load");
+
+        imm = {20'($signed(instr[31])), instr[31:20]};
+        $display("--------  load imm %h", imm);
+        branch_op = branch_op_t'(funct3);
+        alu_a_mux_sel = A_RS1;
+        alu_b_mux_sel = B_IMM_EXT;
+        alu_op = ALU_ADD;
+
+        dmem_width = mem_width_t'(funct3[1:0]);
+        dmem_sign_extend = !funct3[2];
+
+        wb_mux_sel = WB_DM;
+        wb_write_enable = 1;
       end
 
       OP_STORE: begin
         $display("store");
+
+        $display("load");
+
+        imm = {20'($signed(instr[31])), instr[31:20]};
+        $display("--------  load imm %h", imm);
+        branch_op = branch_op_t'(funct3);
+        alu_a_mux_sel = A_RS1;
+        alu_b_mux_sel = B_IMM_EXT;
+        alu_op = ALU_ADD;
+
+        dmem_width = mem_width_t'(funct3[1:0]);
+        dmem_sign_extend = !funct3[2];
+
+        wb_mux_sel = WB_DM;
+        wb_write_enable = 1;
       end
 
       OP_ALUI: begin
         $display("alui");
         imm = 32'($signed(instr[31:20]));
+        sub_arith = instr[30];
         alu_a_mux_sel = A_RS1;
         alu_b_mux_sel = B_IMM_EXT;
         alu_op = alu_op_t'(funct3);
@@ -136,6 +168,13 @@ module decoder (
 
       OP_ALU: begin
         $display("alu");
+        // imm = 32'($signed(instr[31:20]));
+        sub_arith = instr[30];
+        alu_a_mux_sel = A_RS1;
+        alu_b_mux_sel = B_RS2;
+        alu_op = alu_op_t'(funct3);
+        wb_mux_sel = WB_ALU;
+        wb_write_enable = 1;
       end
 
       OP_FENCE: begin
