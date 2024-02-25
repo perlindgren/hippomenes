@@ -5,15 +5,15 @@ module register_file #(
     parameter integer unsigned NumRegs    = 32,
     parameter integer unsigned IndexWidth = $clog2(NumRegs)
 ) (
-    input  logic                  clk,
-    input  logic                  reset,
-    input  logic                  writeEn,
-    input  logic [IndexWidth-1:0] writeAddr,
-    input  logic [ DataWidth-1:0] writeData,
-    input  logic [IndexWidth-1:0] readAddr1,
-    input  logic [IndexWidth-1:0] readAddr2,
-    output logic [ DataWidth-1:0] readData1,
-    output logic [ DataWidth-1:0] readData2
+    input  reg                  clk,
+    input  reg                  reset,
+    input  reg                  writeEn,
+    input  reg [IndexWidth-1:0] writeAddr,
+    input  reg [ DataWidth-1:0] writeData,
+    input  reg [IndexWidth-1:0] readAddr1,
+    input  reg [IndexWidth-1:0] readAddr2,
+    output reg [ DataWidth-1:0] readData1,
+    output reg [ DataWidth-1:0] readData2
 );
 
   logic [NumRegs-1:0][DataWidth-1:0] regs;
