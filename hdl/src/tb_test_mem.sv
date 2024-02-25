@@ -65,39 +65,69 @@ module tb_test_mem;
 
     #10;  // auipc   sp,0x50000
 
-    $display("%3s auipc   a0, 327680", $time);
-    // addi    a0, a0, -8
-    // lb  t0, 0(a0)
-    // lb  t1, 1(a0)
-    // lb  t2, 2(a0)
-    // lb  t3, 3(a0)
-    // lh  t4, 0(a0)
-    // lh  t5, 2(a0)
-    // lw  t6, 0(a0)
-    // lbu t0, 0(a0)
-    // lbu t1, 1(a0)
-    // lbu t2, 2(a0)
-    // lbu t3, 3(a0)
-    // lhu t4, 0(a0)
-    // lhu t5, 2(a0)
-    // sb  t0, 4(a0)
-    // sb  t1, 5(a0)
-    // sb  t2, 6(a0)
-    // sb  t3, 7(a0)
-    // sh  t4, 8(a0)
-    // sh  t5, 10(a0)
+    $display("auipc   a0, 327680", $time);
 
+    #20;
+    $display("addi    a0, a0, -8", $time);
 
-    // $display("rf_rs1 %h rf_rs2 %h", rf_rs1, rf_rs2);
-    // $display("wb_data_reg.in %h", wb_data_reg.in);
-    // assert (pc_reg.out == 0);
+    #20;
+    $display("lb  t0, 0(a0)", $time);
 
+    #20;
+    $display("lb  t1, 1(a0)", $time);
 
+    #20;
+    $display("lb  t2, 2(a0)", $time);
 
+    #20;
+    $display("lb  t3, 3(a0)", $time);
 
+    #20;
+    $display("lh  t4, 0(a0)", $time);
 
+    #20;
+    $display("lh  t5, 2(a0)", $time);
 
-    #160;
+    #20;
+    $display("lw  t6, 0(a0)", $time);
+
+    #20;
+    $display("lbu t0, 0(a0)", $time);
+
+    #20;
+    $display("lbu t1, 1(a0)", $time);
+
+    #20;
+    $display("lbu t2, 2(a0)", $time);
+
+    #20;
+    $display("lbu t3, 3(a0)", $time);
+
+    #20;
+    $display("lhu t4, 0(a0)", $time);
+
+    #20;
+    $display("lhu t5, 2(a0)", $time);
+
+    #20;
+    $display("sb  t0, 4(a0)", $time);
+
+    #20;
+    $display("sb  t1, 5(a0)", $time);
+
+    #20;
+    $display("sb  t2, 6(a0)", $time);
+
+    #20;
+    $display("sb  t3, 7(a0)", $time);
+
+    #20;
+    $display("sh  t4, 8(a0)", $time);
+
+    #20;
+    $display("sh  t5, 10(a0", $time);
+
+    #120;
     $finish;
   end
 
