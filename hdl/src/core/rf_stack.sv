@@ -10,33 +10,40 @@ module rf_stack #(
     input  reg                   clk,
     input  reg                   reset,
     input  reg                   writeEn,
-    input  reg                   writeSpEn,
-    input  reg [  DataWidth-1:0] writeSpData,
+    input  reg                   writeRaEn,
+    input  reg [  DataWidth-1:0] writeRaData,
     input  reg [IndexLevels-1:0] level,
     input  reg [ IndexWidth-1:0] writeAddr,
     input  reg [  DataWidth-1:0] writeData,
     input  reg [ IndexWidth-1:0] readAddr1,
     input  reg [ IndexWidth-1:0] readAddr2,
     output reg [  DataWidth-1:0] readData1,
-    output reg [  DataWidth-1:0] readData2
+    output reg [  DataWidth-1:0] readData2,
+    output reg [  DataWidth-1:0] readRa
 );
 
   reg [NumLevels-1:0][NumRegs-1:0][DataWidth-1:0] regs;
+
+  reg [IndexLevels-1:0] level_minus_1;
+
+  always_comb level_minus_1 = level - 1;
 
   always_ff @(posedge clk) begin
     // do not write to register 0
     if (reset) begin
       regs <= 0;
-    end else if (writeEn && (writeAddr != 0)) begin
-      // is this a bug in verilator?
-      // regs[(writeAddr==2)?0 : 11'(level)][writeAddr] <= writeData;
-      if (writeAddr == 2) regs[0][writeAddr] <= writeData;
-      else regs[level][writeAddr] <= writeData;
-
+    end else begin
+      if (writeEn && (writeAddr != 0)) begin
+        // is this a bug in verilator?
+        // regs[(writeAddr==2)?0 : 11'(level)][writeAddr] <= writeData;
+        if (writeAddr == 2) regs[0][writeAddr] <= writeData;
+        else regs[level][writeAddr] <= writeData;
+      end
+      if (writeRaEn) regs[level_minus_1][1] <= writeRaData;
     end
   end
 
-  always @* begin
+  always_comb begin
     // is this a bug in verilator?
     //   readData1 = (writeEn && (readAddr1==writeAddr) && writeAddr != 0) ?
     // writeData : regs[(readAddr1==2)? 0 : 11'(level)][readAddr1];
@@ -61,6 +68,8 @@ module rf_stack #(
     end else if (readAddr2 == 2) begin
       readData2 = regs[0][readAddr2];  // sp on level 0
     end else readData2 = regs[level][readAddr2];
+
+    readRa = regs[level][1];  // always output current ra
 
   end
 endmodule

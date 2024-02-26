@@ -9,9 +9,8 @@ module tb_rf_stack;
   reg                   clk;
   reg                   reset;
   reg                   writeEn;
-  reg                   writeSpEn;
-
-  reg [  DataWidth-1:0] writeSpData;
+  reg                   writeRaEn;
+  reg [  DataWidth-1:0] writeRaData;
   reg [IndexLevels-1:0] level;
   reg [ IndexWidth-1:0] writeAddr;
   reg [  DataWidth-1:0] writeData;
@@ -19,6 +18,8 @@ module tb_rf_stack;
   reg [ IndexWidth-1:0] readAddr2;
   reg [  DataWidth-1:0] readData1;
   reg [  DataWidth-1:0] readData2;
+  reg [  DataWidth-1:0] readRa;
+
 
   rf_stack #(
       .DataWidth(DataWidth),
@@ -28,15 +29,16 @@ module tb_rf_stack;
       .clk(clk),
       .reset(reset),
       .writeEn(writeEn),
-      .writeSpEn(writeSpEn),
-      .writeSpData(writeSpData),
+      .writeRaEn(writeRaEn),
+      .writeRaData(writeRaData),
       .level(level),
       .writeAddr(writeAddr),
       .writeData(writeData),
       .readAddr1(readAddr1),
       .readAddr2(readAddr2),
       .readData1(readData1),
-      .readData2(readData2)
+      .readData2(readData2),
+      .readRa(readRa)
   );
 
   always #10 clk = ~clk;
@@ -51,6 +53,8 @@ module tb_rf_stack;
     reset = 0;
 
     level = 1;
+    writeRaEn = 0;
+
     readAddr1 = 0;
     readAddr2 = 2;
     writeEn = 1;
@@ -112,6 +116,21 @@ module tb_rf_stack;
     assert (readData1 == 'h00000000);  // never written to, so 0
     assert (readData2 == 'h12345678);
 
+    // test ra
+    writeRaEn = 1;
+    writeRaData = 'heeeeffff;
+    writeEn = 1;
+    writeAddr = 1;  // ra register;
+    writeData = 'hffffeeee;
+
+    $display("\n-- level %d, writeEn %d, writeAddr %d, writeData %h", level, writeEn, writeAddr,
+             writeData);
+    $display("-- level %d, writeRaEn %d,  writeRaData %h", level, writeRaEn, writeRaData);
+
+    #18;
+
+    $display("regs[1][1] %h", dut.regs[2][1]);  // current level
+    $display("regs[0][1] %h", dut.regs[1][1]);  // preempt level
 
     $finish;
 
