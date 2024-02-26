@@ -2,12 +2,12 @@ core = ../src/core
 root = ../src
 
 register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
+rf_stack = $(core)/rf_stack.sv $(core)/tb_rf_stack.sv
 
 top_dep = \
 $(root)/config_pkg.sv \
 $(core)/decoder_pkg.sv \
 $(root)/mem_pkg.sv \
-$(root)/top.sv \
 $(core)/decoder.sv \
 $(register_file) \
 $(core)/branch_logic.sv \
@@ -21,11 +21,13 @@ $(root)/mem.sv \
 $(core)/csr.sv \
 $(core)/wb_mux.sv 
 
-top = $(top_dep) $(root)/tb_top.sv
+top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
-test_branch = $(top_dep) $(root)/tb_test_branch.sv
+top_clic = $(top_dep) $(root)/top_clic.sv $(root)/tb_top.sv
 
-test_mem = $(top_dep) $(root)/tb_test_mem.sv
+test_branch = $(top_dep) $(root)/top.sv $(root)/tb_test_branch.sv
+
+test_mem = $(top_dep) $(root)/top.sv $(root)/tb_test_mem.sv
 
 csr = $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/tb_csr.sv
 
@@ -45,6 +47,13 @@ top: $(top)
 
 top_g: 
 	gtkwave -a top.gtkw top.fst
+
+top_clic: $(top_clic) 
+	verilator --binary $(top_clic) --top-module tb_top_clic --trace-fst --assert 
+	obj_dir/Vtb_top
+
+top_clic_g: 
+	gtkwave -a top_clic.gtkw top_clic.fst
 
 test_branch: $(test_branch) 
 	verilator --binary $(test_branch) --top-module tb_test_branch --trace-fst --assert 
@@ -98,6 +107,13 @@ register_file: $(register_file)
 
 register_file_g:	
 	gtkwave -a register_file.gtkw register_file.fst 
+
+rf_stack: $(rf_stack)
+	verilator --binary $(rf_stack) --top-module tb_rf_stack --trace-fst --assert
+	obj_dir/Vtb_rf_stack 
+
+rf_stack_g:	
+	gtkwave -a rf_stack.gtkw rf_stack.fst 
 	
 clean: 
 	rm -r obj_dir
