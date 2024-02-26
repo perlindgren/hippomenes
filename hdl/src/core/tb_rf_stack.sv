@@ -9,6 +9,9 @@ module tb_rf_stack;
   reg                   clk;
   reg                   reset;
   reg                   writeEn;
+  reg                   writeSpEn;
+
+  reg [  DataWidth-1:0] writeSpData;
   reg [IndexLevels-1:0] level;
   reg [ IndexWidth-1:0] writeAddr;
   reg [  DataWidth-1:0] writeData;
@@ -25,6 +28,8 @@ module tb_rf_stack;
       .clk(clk),
       .reset(reset),
       .writeEn(writeEn),
+      .writeSpEn(writeSpEn),
+      .writeSpData(writeSpData),
       .level(level),
       .writeAddr(writeAddr),
       .writeData(writeData),
@@ -40,32 +45,75 @@ module tb_rf_stack;
     $dumpfile("rf_stack.fst");
     $dumpvars;
 
-    clk = 0;
+    clk   = 0;
+    reset = 1;
+    #10;
+    reset = 0;
+
+    level = 1;
     readAddr1 = 0;
-    readAddr2 = 1;
+    readAddr2 = 2;
     writeEn = 1;
-    writeAddr = 1;
+    writeAddr = 2;  // shared sp
     writeData = 'h12345678;
 
-    #15;
-    assert ((readData1 == 0) && (readData2 == 'h12345678)) $display("ok");
-    else $error("rs1 %h, rs2 %h", readData1, readData2);
+    $warning();
+    $display("-- level %d, writeAddr %d, writeData %h", level, writeAddr, writeData);
+    $display("regs[0][2] %h", dut.regs[0][2]);
+    $display("regs[1][2] %h", dut.regs[1][2]);
+    assert (dut.regs[0][2] == 'h00000000);
+    assert (dut.regs[1][2] == 'h00000000);
+    $display("-- level %d, writeAddr %d, writeData %h", level, writeAddr, writeData);
 
-    writeAddr = 0;
     #10;
+    $warning();
+    $display("regs[0][2] %h", dut.regs[0][2]);
+    $display("regs[1][2] %h", dut.regs[1][2]);
+    assert (dut.regs[0][2] == 'h12345678);
+    assert (dut.regs[1][2] == 'h00000000);
 
-    assert ((readData1 == 0) && (readData2 == 'h12345678)) $display("ok");
-    else $error("rs1 %h, rs2 %h", readData1, readData2);
-    #10;
+    writeAddr = 3;  // non shared register
+    writeData = 'h00001111;
+    $display("-- level %d, writeAddr %d, writeData %h", level, writeAddr, writeData);
 
-    writeAddr = 31;
-    writeData = 'hdead_beef;
-    readAddr1 = 31;
-    #10;
-    assert ((readData1 == 'hdead_beef) && (readData2 == 'h12345678)) $display("ok");
-    else $error("rs1 %h, rs2 %h", readData1, readData2);
+    #20;
+    $warning();
+    $display("regs[0][2] %h", dut.regs[0][2]);
+    $display("regs[1][2] %h", dut.regs[1][2]);
+    $display("regs[0][3] %h", dut.regs[0][3]);
+    $display("regs[1][3] %h", dut.regs[1][3]);
+    assert (dut.regs[0][2] == 'h12345678);
+    assert (dut.regs[1][2] == 'h00000000);
+    assert (dut.regs[0][3] == 'h00000000);
+    assert (dut.regs[1][3] == 'h00001111);
 
-    #10 $finish;
+
+    // test write through
+    level = 2;
+    readAddr1 = 3;
+    readAddr2 = 2;  // sp
+    writeAddr = 3;
+    writeData = 'h11110000;
+
+    $display("\n-- level %d, writeEn %d, writeAddr %d, writeData %h", level, writeEn, writeAddr,
+             writeData);
+    #1;  // wait to force Verilator update
+    $display("readAddr1 %d, readData1 %h", readAddr1, readData1);
+    $display("readAddr2 %d, readData2 %h", readAddr2, readData2);
+    assert (readData1 == 'h11110000);
+    assert (readData2 == 'h12345678);
+
+    writeEn = 0;
+    $display("\n-- level %d, writeEn %d, writeAddr %d, writeData %h", level, writeEn, writeAddr,
+             writeData);
+    #1;  // wait to force Verilator update
+    $display("readAddr1 %d, readData1 %h", readAddr1, readData1);
+    $display("readAddr2 %d, readData2 %h", readAddr2, readData2);
+    assert (readData1 == 'h00000000);  // never written to, so 0
+    assert (readData2 == 'h12345678);
+
+
+    $finish;
 
   end
 endmodule

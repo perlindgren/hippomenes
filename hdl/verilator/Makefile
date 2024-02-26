@@ -109,8 +109,8 @@ register_file_g:
 	gtkwave -a register_file.gtkw register_file.fst 
 
 rf_stack: $(rf_stack)
-	verilator --binary $(rf_stack) --top-module tb_rf_stack --trace-fst --assert
-	obj_dir/Vtb_rf_stack 
+	verilator --binary $(rf_stack) --top-module tb_rf_stack --trace-fst --assert 
+	obj_dir/Vtb_rf_stack
 
 rf_stack_g:	
 	gtkwave -a rf_stack.gtkw rf_stack.fst 
