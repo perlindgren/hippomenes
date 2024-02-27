@@ -1,4 +1,5 @@
 // rf_stack
+`timescale 1ns / 1ps
 
 module rf_stack #(
     parameter integer unsigned DataWidth  = 32,

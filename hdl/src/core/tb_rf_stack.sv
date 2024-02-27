@@ -1,4 +1,6 @@
 // tb_rf_stack
+`timescale 1ns / 1ps
+
 module tb_rf_stack;
   parameter integer unsigned DataWidth = 32;
   parameter integer unsigned NumRegs = 32;
@@ -49,7 +51,7 @@ module tb_rf_stack;
 
     clk   = 0;
     reset = 1;
-    #10;
+    #15;
     reset = 0;
 
     level = 1;
@@ -69,7 +71,7 @@ module tb_rf_stack;
     assert (dut.regs[1][2] == 'h00000000);
     $display("-- level %d, writeAddr %d, writeData %h", level, writeAddr, writeData);
 
-    #10;
+    #20;
     $warning();
     $display("regs[0][2] %h", dut.regs[0][2]);
     $display("regs[1][2] %h", dut.regs[1][2]);
