@@ -1,5 +1,6 @@
 // csr, individual register
 // dual ported
+`timescale 1ns / 1ps
 
 import decoder_pkg::*;
 
@@ -29,7 +30,7 @@ module csr #(
           data = data | in;
         end
         CSRRC: begin
-          data = data & in;
+          data = data & ~in;
         end
         CSRRWI: begin
           // use rs1 as immediate
@@ -41,7 +42,7 @@ module csr #(
         end
         CSRRCI: begin
           // use rs1 as immediate
-          data = data & 32'($unsigned(rs1));
+          data = data & (~32'($unsigned(rs1)));
         end
         default: ;
       endcase
