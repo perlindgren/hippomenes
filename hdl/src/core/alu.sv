@@ -1,4 +1,5 @@
 // alu
+`timescale 1ns/1ps
 
 import decoder_pkg::*;
 module alu (
@@ -10,7 +11,7 @@ module alu (
     output word res
 );
 
-  always begin
+  always_comb begin
     case (op)
       ALU_ADD:  res = a + b;
       ALU_SLL:  res = a << b[4:0];
