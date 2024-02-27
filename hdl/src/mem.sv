@@ -1,8 +1,5 @@
 // Program memory
 
-// Move to common?
-typedef reg [31:0] word;
-
 module mem
   import config_pkg::*;
   import mem_pkg::*;

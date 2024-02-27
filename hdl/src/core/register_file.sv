@@ -1,4 +1,5 @@
-// Register file
+// register_file
+`timescale 1ns / 1ps
 
 module register_file #(
     parameter integer unsigned DataWidth  = 32,
