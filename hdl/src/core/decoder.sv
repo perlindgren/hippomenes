@@ -1,12 +1,11 @@
-// Instruction decoder
+// decoder
+`timescale 1ns / 1ps
 
 import decoder_pkg::*;
 import mem_pkg::*;
 
 module decoder (
     input word instr,
-    // pc
-    //  output pc_mux_t pc_mux_sel,
     // register file
     output r rs1,
     output r rs2,

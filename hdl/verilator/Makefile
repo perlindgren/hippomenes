@@ -73,6 +73,9 @@ csr: $(csr)
 	verilator --binary $(csr) --top-module tb_csr --trace-fst --assert
 	obj_dir/Vtb_csr
 
+csr_g: 
+	gtkwave -a csr.gtkw csr.fst
+
 alu: $(alu)
 	verilator --binary $(alu) --top-module tb_alu --trace-fst --assert
 	obj_dir/Vtb_alu

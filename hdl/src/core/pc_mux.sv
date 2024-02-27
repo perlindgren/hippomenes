@@ -1,4 +1,5 @@
 // pc_mux
+`timescale 1ns / 1ps
 
 import decoder_pkg::*;
 module pc_mux (

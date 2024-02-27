@@ -1,3 +1,6 @@
+// reg_n
+`timescale 1ns / 1ps
+
 module reg_n #(
     parameter integer DataWidth = 32
 ) (

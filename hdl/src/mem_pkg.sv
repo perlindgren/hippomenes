@@ -1,4 +1,6 @@
-// Memory
+// mem_pkg
+`timescale 1ns / 1ps
+
 package mem_pkg;
 
   typedef enum {

@@ -1,4 +1,5 @@
-// can be refined based on mem size
+// pc_adder
+`timescale 1ns / 1ps
 
 module pc_adder (
     input  logic [31:0] in,

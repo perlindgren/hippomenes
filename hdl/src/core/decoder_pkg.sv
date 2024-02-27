@@ -1,4 +1,6 @@
-// decoder stuff
+// decoder_pkg
+`timescale 1ns / 1ps
+
 package decoder_pkg;
 
   typedef enum {

@@ -1,4 +1,5 @@
-// Program memory
+// mem
+`timescale 1ns / 1ps
 
 module mem
   import config_pkg::*;
