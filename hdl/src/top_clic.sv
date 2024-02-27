@@ -1,6 +1,7 @@
-// top module
+// top_clic
+`timescale 1ns / 1ps
 
-module top (
+module top_clic (
     input reg clk,
     input reg reset
 );

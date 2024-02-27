@@ -13,7 +13,7 @@ module branch_logic (
 );
   reg take;
 
-  always begin
+  always_comb begin
     case (op)
       BL_BEQ:  take = (a == b);
       BL_BNE:  take = !(a == b);

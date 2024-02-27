@@ -12,7 +12,7 @@ module alu_b_mux (
     output word out
 );
 
-  always begin
+  always_comb begin
     case (sel)
       B_RS2: out = rs2;
       B_IMM_EXT: out = imm;

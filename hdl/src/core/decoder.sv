@@ -62,6 +62,9 @@ module decoder (
     branch_instr = 0;  // set only for branch logic operation
     branch_always = 0;  // set only for jal/jalr
     wb_write_enable = 0;  // set only for instructions writing to rf
+    alu_a_mux_sel = A_ZERO; // 
+    alu_b_mux_sel = B_IMM_EXT; // 
+    
 
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))

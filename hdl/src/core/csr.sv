@@ -1,5 +1,5 @@
 // csr, individual register
-// dual ported
+
 `timescale 1ns / 1ps
 
 import decoder_pkg::*;
@@ -14,7 +14,8 @@ module csr #(
     input r rd,
     input csr_t op,
     input word in,
-    output word old
+    output word old,
+    output reg led
 );
   word data;
 
@@ -46,6 +47,7 @@ module csr #(
         end
         default: ;
       endcase
+      led = data[0];
     end
   end
 

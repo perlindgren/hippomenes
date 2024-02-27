@@ -1,4 +1,5 @@
 // tb_top_clic
+`timescale 1ns / 1ps
 
 module tb_top_clic;
   import config_pkg::*;

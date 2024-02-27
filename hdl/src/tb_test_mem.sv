@@ -1,4 +1,5 @@
 // tb_test_mem
+`timescale 1ns / 1ps
 
 module tb_test_mem;
   import config_pkg::*;

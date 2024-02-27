@@ -1,14 +1,16 @@
 // top module
+`timescale 1ns / 1ps
 
 module top (
-    input reg clk,
-    input reg reset
+    input clk,
+    input reg reset,
+    input reg led
 );
   import config_pkg::*;
   import decoder_pkg::*;
   import mem_pkg::*;
 
-  word dummy;
+  // word dummy;
 
   // registers
   word pc_reg_out;
@@ -223,7 +225,8 @@ module top (
       .op(csr_t'(decoder_rs2)),
       .in(alu_res),
       // out
-      .old(csr_old)
+      .old(csr_old),
+      .led(led)
   );
 
   word wb_mux_out;

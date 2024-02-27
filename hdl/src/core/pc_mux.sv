@@ -9,7 +9,7 @@ module pc_mux (
     output word out
 );
 
-  always begin
+  always_comb begin
     case (sel)
       PC_NEXT:   out = pc_next;
       PC_BRANCH: out = pc_branch;

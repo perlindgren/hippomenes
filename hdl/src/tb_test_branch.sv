@@ -1,4 +1,5 @@
 // tb_test_branch
+`timescale 1ns / 1ps
 
 module tb_test_branch;
   import config_pkg::*;

@@ -1,4 +1,5 @@
 // tb_top
+`timescale 1ns / 1ps
 
 module tb_top;
   import config_pkg::*;
@@ -57,7 +58,7 @@ module tb_top;
 
     reset = 1;
     clk = 0;
-    #5 reset = 0;
+    #15 reset = 0;
   end
 
   always #10 clk = ~clk;
@@ -66,7 +67,8 @@ module tb_top;
     $dumpfile("top.fst");
     $dumpvars;
 
-    #10;  // auipc   sp,0x50000
+    #30;  // auipc   sp,0x50000
+
     $warning("auipc   sp,0x50000");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("wb_data_reg.in %h", top.wb_data_reg.in);

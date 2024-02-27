@@ -10,7 +10,7 @@ module alu_a_mux (
     output word out
 );
 
-  always begin
+  always_comb begin
     case (sel)
       A_IMM:   out = imm;
       A_RS1:   out = rs1;

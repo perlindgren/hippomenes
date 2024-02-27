@@ -11,7 +11,7 @@ module wb_mux (
     output word out
 );
 
-  always begin
+  always_comb begin
     case (sel)
       WB_ALU: out = alu;
       WB_DM: out = dm;
