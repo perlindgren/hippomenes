@@ -1,4 +1,5 @@
 // tb_di_mem
+`timescale 1ns / 1ps
 
 module tb_di_mem;
   import config_pkg::*;
@@ -11,8 +12,8 @@ module tb_di_mem;
   mem_width_t d_width;
   reg d_sign_extend;
   reg [DMemAddrWidth-1:0] d_address;
-  word d_data_in;
-  word d_data_out;
+  reg [31:0] d_data_in;
+  reg [31:0] d_data_out;
   reg d_alignment_error;
 
   // Instruction memory
@@ -20,8 +21,8 @@ module tb_di_mem;
   mem_width_t i_width;
   reg i_sign_extend;
   reg [IMemAddrWidth-1:0] i_address;
-  word i_data_in;
-  word i_data_out;
+  reg [31:0] i_data_in;
+  reg [31:0] i_data_out;
   reg i_alignment_error;
 
   mem d_mem (
@@ -68,7 +69,7 @@ module tb_di_mem;
     i_address = 5;
     i_width = WORD;
     #10;
-    assert ((d_data_out == 'h1234_5678) && !d_alignment_error);
+    assert ((d_data_out == 'h1234_5678) && !d_alignment_error) $display("Ok");
     assert ((i_data_out == 'h0000_1111) && i_alignment_error);
 
     // test write operations
@@ -87,10 +88,10 @@ module tb_di_mem;
     clk = 0;
     #10 clk = 1;
     #10;
-    assert ((d_data_out == 'h0000_0077) && !d_alignment_error);
+    assert ((d_data_out == 'h0000_0077) && !d_alignment_error) $display("Ok");
     else $error("got %h, alignment_error %d", d_data_out, d_alignment_error);
 
-    assert ((i_data_out == 'hFFFF_FFCC) && !i_alignment_error);
+    assert ((i_data_out == 'hFFFF_FFCC) && !i_alignment_error) $display("Ok");
     else $error("got %h, alignment_error %d", i_data_out, i_alignment_error);
 
     d_address = 0;
@@ -102,10 +103,10 @@ module tb_di_mem;
     i_width = WORD;
 
     #10;
-    assert ((d_data_out == 'h1234_5677) && !d_alignment_error);
+    assert ((d_data_out == 'h1234_5677) && !d_alignment_error) $display("Ok");
     else $error("got %h, alignment_error %d", d_data_out, d_alignment_error);
 
-    assert ((i_data_out == 'hcc34_5678) && !i_alignment_error);
+    assert ((i_data_out == 'hcc34_5678) && !i_alignment_error) $display("Ok");
     else $error("got %h, alignment_error %d", i_data_out, i_alignment_error);
 
     $finish;
