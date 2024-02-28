@@ -69,17 +69,12 @@ module top (
   // instruction memory
   word imem_data_out;
   reg  imem_alignment_error;
-  mem imem (
+  rom imem (
       // in
       .clk(clk),
-      .write_enable(0),  // we never write to instruction memory
-      .width(mem_pkg::WORD),  // always read words
-      .sign_extend(0),  // not used
       .address(pc_reg_out[IMemAddrWidth-1:0]),
-      .data_in(0),
       // out
-      .data_out(imem_data_out),
-      .alignment_error(imem_alignment_error)
+      .data_out(imem_data_out)
   );
 
   // decoder
@@ -238,4 +233,5 @@ module top (
       .pc_plus_4(pc_adder_out),
       .out(wb_mux_out)
   );
+
 endmodule

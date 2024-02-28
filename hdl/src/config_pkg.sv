@@ -5,7 +5,7 @@ package config_pkg;
 
   // Instruction memory configuration
   parameter integer unsigned IMemStart = 'h0000_0000;
-  parameter integer unsigned IMemSize = 'h0000_1000;
+  parameter integer unsigned IMemSize = 'h0000_0100;
 
   // Data memory configuration
   parameter integer unsigned DMemStart = 'h0001_0000;
