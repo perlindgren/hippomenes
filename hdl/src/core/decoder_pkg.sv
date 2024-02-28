@@ -3,14 +3,15 @@
 
 package decoder_pkg;
 
-  typedef enum {
-    ECALL,
-    CSRRW,
-    CSRRS,
-    CSRRC,
-    CSRRWI,
-    CSRRSI,
-    CSRRCI
+  typedef enum reg [2:0] {
+    ECALL  = 3'b000,
+    // EBREAK = 3'b000,
+    CSRRW  = 3'b001,
+    CSRRS  = 3'b010,
+    CSRRC  = 3'b011,
+    CSRRWI = 3'b101,
+    CSRRSI = 3'b110,
+    CSRRCI = 3'b111
   } csr_t;
 
   typedef enum {
@@ -18,21 +19,21 @@ package decoder_pkg;
     PC_BRANCH = 'b1
   } pc_mux_t;
 
-  typedef enum {
-    ALU_ADD  = 'b000,  // ADDI
-    ALU_SLL  = 'b001,  // SLLI
-    ALU_SLT  = 'b010,  // SLLI
-    ALU_SLTU = 'b011,  // SLTIU
-    ALU_EXOR = 'b100,  // EXORI
-    ALU_SR   = 'b101,  // SRL, SRA, SRLI, SRAI
-    ALU_OR   = 'b110,  // ORI
-    ALU_AND  = 'b111   // ANDI
+  typedef enum reg [2:0] {
+    ALU_ADD  = 3'b000,  // ADDI
+    ALU_SLL  = 3'b001,  // SLLI
+    ALU_SLT  = 3'b010,  // SLLI
+    ALU_SLTU = 3'b011,  // SLTIU
+    ALU_EXOR = 3'b100,  // EXORI
+    ALU_SR   = 3'b101,  // SRL, SRA, SRLI, SRAI
+    ALU_OR   = 3'b110,  // ORI
+    ALU_AND  = 3'b111   // ANDI
   } alu_op_t;
 
-  typedef enum {
-    A_IMM,
-    A_RS1,
-    A_ZERO
+  typedef enum reg [1:0] {
+    A_IMM  = 2'b00,
+    A_RS1  = 2'b01,
+    A_ZERO = 2'b10
   } alu_a_mux_t;
 
   typedef enum {

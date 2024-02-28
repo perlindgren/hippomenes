@@ -25,6 +25,7 @@ module decoder (
     output mem_width_t dmem_width,
     // csr
     output reg csr_enable,
+    output csr_t csr_op,
     // write back
     output wb_mux_t wb_mux_sel,
     output r rd,
@@ -62,9 +63,9 @@ module decoder (
     branch_instr = 0;  // set only for branch logic operation
     branch_always = 0;  // set only for jal/jalr
     wb_write_enable = 0;  // set only for instructions writing to rf
-    alu_a_mux_sel = A_ZERO; // 
-    alu_b_mux_sel = B_IMM_EXT; // 
-    
+    alu_a_mux_sel = A_ZERO;  // default
+    alu_b_mux_sel = B_IMM_EXT;  // 
+
 
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
@@ -184,9 +185,12 @@ module decoder (
 
       OP_SYSTEM: begin
         $display("system");
-        // TODO
-        wb_write_enable = 0;
+
+        wb_write_enable = 1;
+        wb_mux_sel = WB_CSR;
         csr_enable = 1;
+        csr_op = csr_t'(funct3);
+
       end
 
       default: begin

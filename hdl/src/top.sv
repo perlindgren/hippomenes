@@ -68,7 +68,7 @@ module top (
 
   // instruction memory
   word imem_data_out;
-  reg  imem_alignment_error;
+
   rom #(
       .MemSize(IMemSize)
   ) imem (
@@ -94,14 +94,16 @@ module top (
   // mem
   reg decoder_dmem_write_enable;
   reg decoder_dmem_sign_extend;
-  mem_width_t decoder_mem_with;
 
   // branch
   reg decoder_branch_instr;
   branch_op_t decoder_branch_op;
   reg decoder_branch_always;
-  // csr_t decoder_csr_op;
+
+  // csr
   reg decoder_csr_enable;
+  csr_t decoder_csr_op;
+
   mem_width_t decoder_dmem_width;
 
   decoder decoder (
@@ -127,6 +129,7 @@ module top (
       .dmem_width(decoder_dmem_width),
       // csr
       .csr_enable(decoder_csr_enable),
+      .csr_op(decoder_csr_op),
       // write back
       .wb_mux_sel(decoder_wb_mux_sel),
       .rd(decoder_rd),
@@ -221,7 +224,7 @@ module top (
       .en(decoder_csr_enable),
       .rs1(decoder_rs1),
       .rd(decoder_rd),
-      .op(csr_t'(decoder_rs2)),
+      .op(decoder_csr_op),
       .in(alu_res),
       // out
       .old(csr_old),

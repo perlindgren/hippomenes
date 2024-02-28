@@ -12,6 +12,7 @@ module tb_csr;
   csr_t op;
   word in;
   word old;
+  reg led;
 
   csr dut (
       .clk(clk),
@@ -21,7 +22,8 @@ module tb_csr;
       .rd(rd),
       .op(op),
       .in(in),
-      .old(old)
+      .old(old),
+      .led(led)
   );
 
   always #10 clk = ~clk;

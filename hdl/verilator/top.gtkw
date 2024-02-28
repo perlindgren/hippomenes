@@ -1,18 +1,18 @@
 [*]
 [*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Sat Feb 24 03:02:54 2024
+[*] Wed Feb 28 10:58:55 2024
 [*]
-[dumpfile] "/home/pln/riscv/hippomenes/hdl/verilator/top.fst"
-[dumpfile_mtime] "Sat Feb 24 03:02:15 2024"
-[dumpfile_size] 2832
-[savefile] "/home/pln/riscv/hippomenes/hdl/verilator/top.gtkw"
+[dumpfile] "/data/riscv/hippomenes/hdl/verilator/top.fst"
+[dumpfile_mtime] "Wed Feb 28 10:54:29 2024"
+[dumpfile_size] 4790
+[savefile] "/data/riscv/hippomenes/hdl/verilator/top.gtkw"
 [timestart] 0
 [size] 2146 1500
 [pos] -1 -1
-*-4.000995 5 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-16.585463 5 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.tb_top.
-[treeopen] TOP.tb_top.rf.
+[treeopen] TOP.tb_top.top.
 [sst_width] 341
 [signals_width] 330
 [sst_expanded] 1
@@ -21,63 +21,66 @@
 TOP.tb_top.reset
 @100000028
 TOP.tb_top.clk
+@28
+TOP.tb_top.top.decoder_sub_arith
 @22
-TOP.tb_top.pc_reg_out[31:0]
-TOP.tb_top.pc_adder_out[31:0]
+TOP.tb_top.top.alu_a_mux_out[31:0]
+TOP.tb_top.top.alu_b_mux_out[31:0]
+TOP.tb_top.top.alu_res[31:0]
 @100000028
-TOP.tb_top.branch_logic.out[31:0]
+TOP.tb_top.top.branch_logic_out
 @22
-TOP.tb_top.pc_mux_out[31:0]
-TOP.tb_top.imem_data_out[31:0]
-@28
-TOP.tb_top.imem_alignment_error
-@22
-TOP.tb_top.decoder_rs1[4:0]
-TOP.tb_top.decoder_rs2[4:0]
-TOP.tb_top.rf_rs1[31:0]
-TOP.tb_top.rf_rs2[31:0]
-@28
-TOP.tb_top.decoder_branch_instr
+TOP.tb_top.top.csr_old[31:0]
 @100000028
-TOP.tb_top.decoder_branch_op
-@22
-TOP.tb_top.decoder_imm[31:0]
+TOP.tb_top.top.decoder_alu_a_mux_sel
+TOP.tb_top.top.decoder_alu_b_mux_sel
+TOP.tb_top.top.decoder_alu_op
+@28
+TOP.tb_top.top.decoder_branch_always
+TOP.tb_top.top.decoder_branch_instr
 @100000028
-TOP.tb_top.decoder_alu_a_mux_sel
-@22
-TOP.tb_top.alu_a_mux.out[31:0]
+TOP.tb_top.top.decoder_branch_op
+@28
+TOP.tb_top.top.decoder_csr_enable
+TOP.tb_top.top.decoder_dmem_sign_extend
 @100000028
-TOP.tb_top.decoder_alu_b_mux_sel
+TOP.tb_top.top.decoder_dmem_width
+@28
+TOP.tb_top.top.decoder_dmem_write_enable
 @22
-TOP.tb_top.alu_b_mux.out[31:0]
+TOP.tb_top.top.decoder_imm[31:0]
 @100000028
-TOP.tb_top.decoder_alu_op
-@28
-TOP.tb_top.decoder_sub_arith
+TOP.tb_top.top.decoder_mem_with
 @22
-TOP.tb_top.alu_res[31:0]
+TOP.tb_top.top.decoder_rd[4:0]
+TOP.tb_top.top.decoder_rs1[4:0]
+TOP.tb_top.top.decoder_rs2[4:0]
 @28
-TOP.tb_top.decoder_dmem_write_enable
-TOP.tb_top.dmem_alignment_error
+TOP.tb_top.top.decoder_sub_arith
+@100000028
+TOP.tb_top.top.decoder_wb_mux_sel
+@28
+TOP.tb_top.top.decoder_wb_write_enable
+TOP.tb_top.top.dmem_alignment_error
 @22
-TOP.tb_top.dmem_data_out[31:0]
-TOP.tb_top.decoder_wb_r[4:0]
+TOP.tb_top.top.dmem_data_out[31:0]
 @28
-TOP.tb_top.decoder_wb_write_enable
+TOP.tb_top.top.imem_alignment_error
 @22
-TOP.tb_top.dummy[31:0]
-TOP.tb_top.wb_data_reg_out[31:0]
+TOP.tb_top.top.imem_data_out[31:0]
 @28
-TOP.tb_top.wb_enable_reg_out
+TOP.tb_top.top.led
 @22
-TOP.tb_top.wb_mux_out[31:0]
-TOP.tb_top.rf.readAddr1[4:0]
-TOP.tb_top.rf.readAddr2[4:0]
-TOP.tb_top.rf.readData1[31:0]
-TOP.tb_top.rf.readData2[31:0]
-TOP.tb_top.rf.writeAddr[4:0]
-TOP.tb_top.rf.writeData[31:0]
+TOP.tb_top.top.pc_adder_out[31:0]
+TOP.tb_top.top.pc_mux_out[31:0]
+TOP.tb_top.top.pc_reg_out[31:0]
+TOP.tb_top.top.rf_rs1[31:0]
+TOP.tb_top.top.rf_rs2[31:0]
+TOP.tb_top.top.wb_data_reg_out[31:0]
 @28
-TOP.tb_top.rf.writeEn
+TOP.tb_top.top.wb_enable_reg_out
+@22
+TOP.tb_top.top.wb_mux_out[31:0]
+TOP.tb_top.top.wb_rd_reg_out[4:0]
 [pattern_trace] 1
 [pattern_trace] 0
