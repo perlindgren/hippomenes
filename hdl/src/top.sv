@@ -225,7 +225,7 @@ module top (
       .rs1(decoder_rs1),
       .rd(decoder_rd),
       .op(decoder_csr_op),
-      .in(alu_res),
+      .in(rf_rs1),
       // out
       .old(csr_old),
       .led(led)
