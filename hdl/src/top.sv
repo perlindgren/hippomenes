@@ -4,7 +4,7 @@
 module top (
     input clk,
     input reg reset,
-    input reg led
+    output reg led
 );
   import config_pkg::*;
   import decoder_pkg::*;
@@ -69,7 +69,9 @@ module top (
   // instruction memory
   word imem_data_out;
   reg  imem_alignment_error;
-  rom imem (
+  rom #(
+      .MemSize(IMemSize)
+  ) imem (
       // in
       .clk(clk),
       .address(pc_reg_out[IMemAddrWidth-1:0]),

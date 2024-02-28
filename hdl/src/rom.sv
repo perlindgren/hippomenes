@@ -15,9 +15,9 @@ module rom
 );
 
   reg [31:0] mem[MemSize >> 2];
- 
+
   always_comb begin
-    data_out = mem[address[DMemAddrWidth-1:2]];
+    data_out = mem[address[MemAddrWidth-1:2]];
   end
 
   // 00000000 <l>:

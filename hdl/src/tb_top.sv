@@ -7,10 +7,12 @@ module tb_top;
 
   reg clk;
   reg reset;
+  reg led;
 
   top top (
       .clk  (clk),
-      .reset(reset)
+      .reset(reset),
+      .led  (led)
   );
 
   // clock and reset

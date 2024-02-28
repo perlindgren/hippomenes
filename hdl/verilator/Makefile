@@ -18,10 +18,13 @@ $(core)/pc_mux.sv \
 $(core)/alu_a_mux.sv \
 $(core)/alu_b_mux.sv \
 $(root)/mem.sv \
+$(root)/rom.sv \
 $(core)/csr.sv \
 $(core)/wb_mux.sv 
 
 top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
+
+fgpa_top = $(top_dep) $(root)/top.sv $(root)/tb_fpga_top.sv
 
 top_clic = $(top_dep) $(root)/top_clic.sv $(root)/tb_top.sv
 
@@ -47,6 +50,14 @@ top: $(top)
 
 top_g: 
 	gtkwave -a top.gtkw top.fst
+
+fpga_top: $(fgpa_top) 
+	verilator --binary $(fgpa_top) --top-module tb_fpga_top --trace-fst --assert 
+	obj_dir/Vtb_fpga_top
+
+fgpa_top_g: 
+	gtkwave -a fpga_top.gtkw fpga_top.fst
+
 
 top_clic: $(top_clic) 
 	verilator --binary $(top_clic) --top-module tb_top_clic --trace-fst --assert 
