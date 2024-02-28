@@ -25,7 +25,7 @@ module mem
   always @(posedge clk) begin
     // do not write to register 0
     if (write_enable) begin
-      write_word = mem[address[DMemAddrWidth-1:2]];
+      write_word = mem[address[MemAddrWidth-1:2]];
       // $display("clk: write_word = %h", write_word);
       case (width)
         BYTE: begin
@@ -44,13 +44,13 @@ module mem
         default: begin
         end
       endcase
-      mem[address[DMemAddrWidth-1:2]] = write_word;
+      mem[address[MemAddrWidth-1:2]] = write_word;
     end
 
   end
 
   always_comb begin
-    read_word = mem[address[DMemAddrWidth-1:2]];
+    read_word = mem[address[MemAddrWidth-1:2]];
 
     case (width)
       BYTE: begin
@@ -74,7 +74,6 @@ module mem
       default: data_out = 0;
     endcase
 
-    // $display("data = %h", data_out);
   end
 
 endmodule

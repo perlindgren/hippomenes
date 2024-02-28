@@ -198,7 +198,9 @@ module top (
 
   word dmem_data_out;
   reg  dmem_alignment_error;
-  mem dmem (
+  mem #(
+      .MemSize(DMemSize)
+  ) dmem (
       // in
       .clk(clk),
       .write_enable(decoder_dmem_write_enable),
