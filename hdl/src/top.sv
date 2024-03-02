@@ -221,6 +221,7 @@ module top (
       .clk(clk),
       .reset(reset),
       .en(decoder_csr_enable),
+      .addr(decoder_csr_addr),
       .rs1(decoder_rs1),
       .rd(decoder_rd),
       .op(decoder_csr_op),

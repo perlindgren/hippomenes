@@ -1,15 +1,15 @@
-// csr, individual register
+// csr, led
+// Should later be put in GPIO
 
 `timescale 1ns / 1ps
 
 import decoder_pkg::*;
 
-module csr_led #(
-    parameter word DefaultValue = 0
-) (
+module csr_led (
     input logic clk,
     input logic reset,
     input logic en,
+    input csr_addr_t addr,
     input r rs1,
     input r rd,
     input csr_t op,
@@ -17,10 +17,13 @@ module csr_led #(
     output word old,
     output logic led
 );
-  csr csr_led (
+  csr #(
+      .Addr(0)
+  ) csr_led (
       .clk(clk),
       .reset(reset),
       .en(en),
+      .addr(addr),
       .rs1(rs1),
       .rd(rd),
       .op(op),
