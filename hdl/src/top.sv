@@ -10,8 +10,6 @@ module top (
   import decoder_pkg::*;
   import mem_pkg::*;
 
-  // word dummy;
-
   // registers
   word pc_reg_out;
   reg_n pc_reg (

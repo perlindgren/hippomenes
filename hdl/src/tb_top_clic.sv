@@ -1,4 +1,4 @@
-// tb_top_clic
+// tb_top
 `timescale 1ns / 1ps
 
 module tb_top_clic;
@@ -7,15 +7,19 @@ module tb_top_clic;
 
   logic clk;
   logic reset;
+  logic led;
 
-  top top_clic (
+  top_clic top (
       .clk  (clk),
-      .reset(reset)
+      .reset(reset),
+      .led  (led)
   );
 
   // clock and reset
   initial begin
     $display($time, " << Starting the Simulation >>");
+    $dumpfile("tb_top_clic.fst");
+    $dumpvars;
 
     // notice raw access to memory is in words
     top.imem.mem[0] = 'h50000117;  // auipc   sp,0x50000
@@ -58,7 +62,7 @@ module tb_top_clic;
 
     reset = 1;
     clk = 0;
-    #5 reset = 0;
+    #15 reset = 0;
   end
 
   always #10 clk = ~clk;
@@ -67,7 +71,8 @@ module tb_top_clic;
     $dumpfile("top.fst");
     $dumpvars;
 
-    #10;  // auipc   sp,0x50000
+    #30;  // auipc   sp,0x50000
+
     $warning("auipc   sp,0x50000");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("wb_data_reg.in %h", top.wb_data_reg.in);
@@ -294,7 +299,8 @@ module tb_top_clic;
     $display("rf[a3 13] %h", top.rf.regs[13]);
 
     // dump csr
-    $display("csr %h", top.csr.data);
+    $display("csr_led %h", top.csr_led.csr_led.data);
+    $display("led %h", led);
 
     $display("dmem.mem[5008] %h", top.dmem.mem[0008]);
 

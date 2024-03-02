@@ -27,7 +27,7 @@ top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
 fgpa_top = $(top_dep) $(root)/top.sv $(root)/tb_fpga_top.sv
 
-top_clic = $(top_dep) $(root)/top_clic.sv $(root)/tb_top.sv
+top_clic = $(top_dep) $(root)/top_clic.sv $(root)/tb_top_clic.sv
 
 top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
 
@@ -52,8 +52,16 @@ all: \
 	tb_di_mem \
 	tb_fpga_top \
 	tb_mem \
-	tb_top_branch
+	tb_top_branch \
+	tb_top_mem \
+	tb_top
 	
+tb_top_clic: $(top_clic) 
+	verilator --binary $(top) --top-module tb_top_clic --trace-fst --assert 
+	obj_dir/Vtb_top_clic
+
+tb_top_clic_g: 
+	gtkwave -a top.gtkw top_clic.fst
 
 tb_top: $(top) 
 	verilator --binary $(top) --top-module tb_top --trace-fst --assert 

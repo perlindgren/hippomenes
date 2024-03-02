@@ -2,14 +2,13 @@
 `timescale 1ns / 1ps
 
 module top_clic (
-    input logic clk,
-    input logic reset
+    input  logic clk,
+    input  logic reset,
+    output logic led
 );
   import config_pkg::*;
   import decoder_pkg::*;
   import mem_pkg::*;
-
-  word dummy;
 
   // registers
   word pc_reg_out;
@@ -66,19 +65,16 @@ module top_clic (
   );
 
   // instruction memory
-  word  imem_data_out;
-  logic imem_alignment_error;
-  mem imem (
+  word imem_data_out;
+
+  rom #(
+      .MemSize(IMemSize)
+  ) imem (
       // in
       .clk(clk),
-      .write_enable(0),  // we never write to instruction memory
-      .width(mem_pkg::WORD),  // always read words
-      .sign_extend(0),  // not used
       .address(pc_reg_out[IMemAddrWidth-1:0]),
-      .data_in(0),
       // out
-      .data_out(imem_data_out),
-      .alignment_error(imem_alignment_error)
+      .data_out(imem_data_out)
   );
 
   // decoder
@@ -102,8 +98,11 @@ module top_clic (
   logic decoder_branch_instr;
   branch_op_t decoder_branch_op;
   logic decoder_branch_always;
-  // csr_t decoder_csr_op;
+
+  // csr
   logic decoder_csr_enable;
+  csr_t decoder_csr_op;
+
   mem_width_t decoder_dmem_width;
 
   decoder decoder (
@@ -129,6 +128,7 @@ module top_clic (
       .dmem_width(decoder_dmem_width),
       // csr
       .csr_enable(decoder_csr_enable),
+      .csr_op(decoder_csr_op),
       // write back
       .wb_mux_sel(decoder_wb_mux_sel),
       .rd(decoder_rd),
@@ -214,17 +214,18 @@ module top_clic (
   );
 
   word csr_old;
-  csr csr (
+  csr_led csr_led (
       // in
       .clk(clk),
       .reset(reset),
       .en(decoder_csr_enable),
       .rs1(decoder_rs1),
       .rd(decoder_rd),
-      .op(csr_t'(decoder_rs2)),
-      .in(alu_res),
+      .op(decoder_csr_op),
+      .in(rf_rs1),
       // out
-      .old(csr_old)
+      .old(csr_old),
+      .led(led)
   );
 
   word wb_mux_out;
