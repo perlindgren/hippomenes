@@ -33,6 +33,8 @@ top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
 
 top_mem = $(top_dep) $(root)/top.sv $(root)/tb_top_mem.sv
 
+n_clic = $(core)/decoder_pkg.sv $(core)/n_clic.sv $(core)/csr.sv $(core)/tb_n_clic.sv
+
 csr = $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/tb_csr.sv
 
 mem = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
@@ -78,7 +80,6 @@ tb_fpga_top: $(fgpa_top)
 tb_fgpa_top_g: 
 	gtkwave -a fpga_top.gtkw fpga_top.fst
 
-
 tb_top_branch: $(test_branch) 
 	verilator --binary $(top_branch) --top-module tb_top_branch --trace-fst --assert 
 	obj_dir/Vtb_top_branch
@@ -99,6 +100,13 @@ tb_csr: $(csr)
 
 tb_csr_g: 
 	gtkwave -a csr.gtkw csr.fst
+
+tb_n_clic: $(n_clic)
+	verilator --binary $(n_clic) --top-module tb_n_clic --trace-fst --assert
+	obj_dir/Vtb_n_clic
+
+tb_n_clic_g: 
+	gtkwave -a n_clic.gtkw n_clic.fst
 
 tb_alu: $(alu)
 	verilator --binary $(alu) --top-module tb_alu --trace-fst --assert
