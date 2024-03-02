@@ -12,7 +12,7 @@ module tb_csr;
   word rs1_data;
   csr_t op;
   word out;
-  logic match;
+  // logic match;
 
   csr dut (
       // in
@@ -24,7 +24,7 @@ module tb_csr;
       .op(op),
       .rs1_zimm(rs1_zimm),
       // out
-      .match(match),
+      //.match(match),
       .out(out)
   );
 
@@ -47,25 +47,26 @@ module tb_csr;
     op = CSRRW;
     // notice out will be delayed
     $display("CSRRW 'b1011 out %h", out);
+    assert (out == 0);
 
     #20;
     $display("wait out %h", out);
-    assert (out == 0);
-    assert (match == 1);
+    assert (out == 'b1011);
+    // assert (match == 1);
     rs1_data = 'b1100;
     op = CSRRS;
     $display("CSRRS 'b1100 out %h", out);
 
     #20;
     $display("wait out %h", out);
-    assert (out == 'b1011);
+    assert (out == 'b1111);
     rs1_data = 'b1100;
     op = CSRRC;
     $display("CSRRC 'b1100 %h", out);
 
     #20;
     $display("wait out %h", out);
-    assert (out == 'b1111);
+    assert (out == 'b0011);
 
     rs1_zimm = 1;
     op = CSRRWI;
@@ -73,7 +74,7 @@ module tb_csr;
 
     #20;
     $display("wait out %h", out);
-    assert (out == 'b0011);
+    assert (out == 'b0001);
 
     rs1_zimm = 2;
     op = CSRRSI;
@@ -81,7 +82,7 @@ module tb_csr;
 
     #20;
     $display("wait out %h", out);
-    assert (out == 'b0001);
+    assert (out == 'b0011);
 
     rs1_zimm = 1;
     op = CSRRCI;
@@ -89,17 +90,16 @@ module tb_csr;
 
     #20;
     $display("wait out %h", out);
-    assert (out == 'b0011);
+    assert (out == 'b0010);
 
     rs1_zimm = 1;
     op = CSRRCI;
     $display("CSRRCI rs1 =1 out %h --- dummy just to get out", out);
 
-    addr = 1;  // should cause miss match
-    #20;
-    $display("wait out %h", out);
-    assert (out == 0);  // to ensure latch free implementation
-    assert (match == 0);
+    addr = 1;  // should cause address miss match
+    #1;
+    assert (out == 0);
+
 
     #20 $finish;
   end

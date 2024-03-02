@@ -17,25 +17,24 @@ module csr #(
     input csr_t op,
     input r rs1_zimm,
     input word rs1_data,
-    output logic match,
+    // output logic match,
     output word out
 );
   word data;
 
+  // asynchronous read, side effect (if any) later
+  assign out = Read && (addr == Addr) ? data : 0;
+
   always @(posedge clk) begin
     if (reset) begin
-      data  = ResetValue;
-      match = 0;
-      out   = 0;
+      data = ResetValue;
+      // match = 0;
+      // out  = 0;
     end else begin
       if (en && (addr == Addr)) begin
-        match = 1;
-        if (Read) begin
-          out = data;
-        end else begin
-          out = 0;  // always read 0 for write only
-        end
+        // here we can do side effect on both read and write
 
+        // match = 1;
         if (Write) begin
           case (op)
             CSRRW: begin
@@ -64,8 +63,8 @@ module csr #(
         end
 
       end else begin
-        match = 0;
-        out   = 0;  // needed?
+        // match = 0;
+        // out   = 0;  // needed?
       end
     end
   end

@@ -13,7 +13,7 @@ module csr_led (
     input r rs1_zimm,
     input word rs1_data,
     input csr_t op,
-    output logic match,
+    // output logic match,
     output word out,
     output logic led
 );
@@ -29,7 +29,7 @@ module csr_led (
       .rs1_zimm(rs1_zimm),
       .rs1_data(rs1_data),
       .op(op),
-      .match(match),
+      // .match(match),
       .out(out)
   );
 

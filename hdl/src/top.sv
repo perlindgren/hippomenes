@@ -227,7 +227,7 @@ module top (
       .rs1_data(rf_rs1),
       .op(decoder_csr_op),
       // out
-      .match(csr_led_match),
+      // .match(csr_led_match),
       .out(csr_led_out),
       .led(led)
   );
