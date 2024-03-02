@@ -14,7 +14,7 @@ module top (
 
   // registers
   word pc_reg_out;
-  reg_n pc_logic (
+  reg_n pc_reg (
       .clk(clk),
       .reset(reset),
       .in(pc_mux_out),
@@ -22,7 +22,7 @@ module top (
   );
 
   word wb_data_reg_out;
-  reg_n wb_data_logic (
+  reg_n wb_data_reg (
       .clk(clk),
       .reset(reset),
       .in(wb_mux_out),
@@ -33,7 +33,7 @@ module top (
   r wb_rd_reg_out;
   reg_n #(
       .DataWidth(5)
-  ) wb_rd_logic (
+  ) wb_rd_reg (
       .clk(clk),
       .reset(reset),
       .in(decoder_rd),
@@ -43,7 +43,7 @@ module top (
   logic wb_enable_reg_out;
   reg_n #(
       .DataWidth(1)
-  ) wb_write_enable_logic (
+  ) wb_write_enable_reg (
       .clk(clk),
       .reset(reset),
       .in(decoder_wb_write_enable),

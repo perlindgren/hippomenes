@@ -1,6 +1,7 @@
 // fpga_top
 `timescale 1ns / 1ps
 
+// This is just illustrative
 module fpga_top (
     input sysclk,
     output logic led,
@@ -15,7 +16,6 @@ module fpga_top (
       .led  (led2),
       .reset(reset_out)
   );
-
 
   // clock devider
   always @(posedge sysclk) begin

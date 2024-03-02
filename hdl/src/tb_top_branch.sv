@@ -1,16 +1,18 @@
-// tb_test_branch
+// tb_top_branch
 `timescale 1ns / 1ps
 
-module tb_test_branch;
+module tb_top_branch;
   import config_pkg::*;
   import decoder_pkg::*;
 
   logic clk;
   logic reset;
+  logic led;
 
   top top (
       .clk  (clk),
-      .reset(reset)
+      .reset(reset),
+      .led  (led)
   );
 
   // clock and reset

@@ -1,16 +1,18 @@
-// tb_test_mem
+// tb_top_mem
 `timescale 1ns / 1ps
 
-module tb_test_mem;
+module tb_top_mem;
   import config_pkg::*;
   import decoder_pkg::*;
 
   logic clk;
   logic reset;
+  logic led;
 
   top top (
       .clk  (clk),
-      .reset(reset)
+      .reset(reset),
+      .led  (led)
   );
 
   // clock and reset
