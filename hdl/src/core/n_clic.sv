@@ -2,56 +2,70 @@
 `timescale 1ns / 1ps
 
 module n_clic
-  import config_pkg::*;
-  import mem_pkg::*;
+  import decoder_pkg::*;
 #(
     parameter  integer VecSize  = 8,
-    localparam integer VecWidth = $clog2(VecSize)  // derived
+    localparam integer VecWidth = $clog2(VecSize), // derived
+
+    // registers
+    localparam csr_addr_t MStatusAddr = 'h305,
+    localparam csr_addr_t StackDepthAddr = 'h350
+
 ) (
     input logic clk,
     input logic reset,
     input logic csr_enable,
     input csr_addr_t csr_addr,
-    input r rs1,
-    input r rd,
+    input r rs1_zimm,
+    input word rs1_data,
     input csr_t op,
-    input word in,
     output word out
 );
 
   word  mstatus_out;
   logic mstatus_match;
   csr #(
-      .Addr('h305)
+      .Addr(MStatusAddr)
   ) mstatus (
       // in
       .clk(clk),
       .reset(reset),
       .en(csr_enable),
-      .rs1(rs1),
-      .rd(rd),
       .addr(csr_addr),
+      .rs1_zimm(rs1_zimm),
+      .rs1_data(rs1_data),
       .op(op),
-      .in(in),
       // out
-      .match(mstatus_match),
+      //.match(mstatus_match),
       .out(mstatus_out)
   );
 
-  // word stack_depth;
-  // csr #(
-  //     .Addr('h350)
-  // ) mstatus (
-  //     .clk(clk),
-  //     .reset(reset),
-  //     .en(csr_enable),
-  //     .rs1(rs1),
-  //     .rd(rd),
-  //     .addr(csr_addr),
-  //     .op(op),
-  //     .in(in),
-  //     .old(mstatus_out)
-  // );
+  word  stack_depth_out;
+  logic stack_depth_match;
+  csr #(
+      .Addr(StackDepthAddr)
+  ) stack_depth (
+      //in
+      .clk(clk),
+      .reset(reset),
+      .en(csr_enable),
+      .addr(csr_addr),
+      .rs1_zimm(rs1_zimm),
+      .rs1_data(rs1_data),
+      .op(op),
+      // out
+      //.match(stack_depth_match),
+      .out(stack_depth_out)
+  );
+
+  always_comb begin
+    case (csr_addr)
+      MStatusAddr: out = mstatus_out;
+      StackDepthAddr: out = stack_depth_out;
+      default: out = 0;
+    endcase
+
+  end
 
   //  csrstore.insert(0x300, 0); //mstatus
   //             csrstore.insert(0x305, 0b11); //mtvec, we only support vectored
