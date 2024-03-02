@@ -5,8 +5,8 @@ module tb_top_clic;
   import config_pkg::*;
   import decoder_pkg::*;
 
-  reg clk;
-  reg reset;
+  logic clk;
+  logic reset;
 
   top top_clic (
       .clk  (clk),

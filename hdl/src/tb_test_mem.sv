@@ -5,8 +5,8 @@ module tb_test_mem;
   import config_pkg::*;
   import decoder_pkg::*;
 
-  reg clk;
-  reg reset;
+  logic clk;
+  logic reset;
 
   top top (
       .clk  (clk),

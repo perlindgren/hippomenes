@@ -5,9 +5,9 @@ module tb_fpga_top;
   import config_pkg::*;
   import decoder_pkg::*;
 
-  reg clk;
-  reg reset;
-  reg led;
+  logic clk;
+  logic reset;
+  logic led;
 
   top top (
       .clk  (clk),

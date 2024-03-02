@@ -8,24 +8,24 @@ module rf_stack #(
     parameter integer unsigned IndexWidth = $clog2(NumRegs),
     parameter integer unsigned IndexLevels = $clog2(NumLevels)
 ) (
-    input  reg                   clk,
-    input  reg                   reset,
-    input  reg                   writeEn,
-    input  reg                   writeRaEn,
-    input  reg [  DataWidth-1:0] writeRaData,
-    input  reg [IndexLevels-1:0] level,
-    input  reg [ IndexWidth-1:0] writeAddr,
-    input  reg [  DataWidth-1:0] writeData,
-    input  reg [ IndexWidth-1:0] readAddr1,
-    input  reg [ IndexWidth-1:0] readAddr2,
-    output reg [  DataWidth-1:0] readData1,
-    output reg [  DataWidth-1:0] readData2,
-    output reg [  DataWidth-1:0] readRa
+    input  logic                   clk,
+    input  logic                   reset,
+    input  logic                   writeEn,
+    input  logic                   writeRaEn,
+    input  logic [  DataWidth-1:0] writeRaData,
+    input  logic [IndexLevels-1:0] level,
+    input  logic [ IndexWidth-1:0] writeAddr,
+    input  logic [  DataWidth-1:0] writeData,
+    input  logic [ IndexWidth-1:0] readAddr1,
+    input  logic [ IndexWidth-1:0] readAddr2,
+    output logic [  DataWidth-1:0] readData1,
+    output logic [  DataWidth-1:0] readData2,
+    output logic [  DataWidth-1:0] readRa
 );
 
-  reg [NumLevels-1:0][NumRegs-1:0][DataWidth-1:0] regs;
+  logic [NumLevels-1:0][NumRegs-1:0][DataWidth-1:0] regs;
 
-  reg [IndexLevels-1:0] level_minus_1;
+  logic [IndexLevels-1:0] level_minus_1;
 
   always_comb level_minus_1 = level - 1;
 

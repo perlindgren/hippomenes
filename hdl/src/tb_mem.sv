@@ -8,14 +8,14 @@ module tb_mem;
   parameter integer MemSize = 'h0000_1000;
   localparam integer MemAddrWidth = $clog2(MemSize);  // derived
 
-  reg clk;
-  reg write_enable;
+  logic clk;
+  logic write_enable;
   mem_width_t width;
-  reg sign_extend;
-  reg [MemAddrWidth-1:0] address;
-  reg [31:0] data_in;
-  reg [31:0] data_out;
-  reg alignment_error;
+  logic sign_extend;
+  logic [MemAddrWidth-1:0] address;
+  logic [31:0] data_in;
+  logic [31:0] data_out;
+  logic alignment_error;
 
   mem dut (
       .clk(clk),

@@ -8,22 +8,22 @@ module tb_di_mem;
   logic clk;
 
   // Data memory
-  reg d_write_enable;
+  logic d_write_enable;
   mem_width_t d_width;
-  reg d_sign_extend;
-  reg [DMemAddrWidth-1:0] d_address;
-  reg [31:0] d_data_in;
-  reg [31:0] d_data_out;
-  reg d_alignment_error;
+  logic d_sign_extend;
+  logic [DMemAddrWidth-1:0] d_address;
+  logic [31:0] d_data_in;
+  logic [31:0] d_data_out;
+  logic d_alignment_error;
 
   // Instruction memory
-  reg i_write_enable;
+  logic i_write_enable;
   mem_width_t i_width;
-  reg i_sign_extend;
-  reg [IMemAddrWidth-1:0] i_address;
-  reg [31:0] i_data_in;
-  reg [31:0] i_data_out;
-  reg i_alignment_error;
+  logic i_sign_extend;
+  logic [IMemAddrWidth-1:0] i_address;
+  logic [31:0] i_data_in;
+  logic [31:0] i_data_out;
+  logic i_alignment_error;
 
   mem d_mem (
       .clk(clk),

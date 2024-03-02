@@ -7,15 +7,15 @@ import decoder_pkg::*;
 module csr #(
     parameter word DefaultValue = 0
 ) (
-    input reg clk,
-    input reg reset,
-    input reg en,
+    input logic clk,
+    input logic reset,
+    input logic en,
     input r rs1,
     input r rd,
     input csr_t op,
     input word in,
     output word old,
-    output reg led
+    output logic led
 );
   word data;
 

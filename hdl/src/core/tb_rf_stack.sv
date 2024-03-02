@@ -8,19 +8,19 @@ module tb_rf_stack;
   localparam integer unsigned IndexWidth = $clog2(NumRegs);
   localparam integer unsigned IndexLevels = $clog2(NumLevels);
 
-  reg                   clk;
-  reg                   reset;
-  reg                   writeEn;
-  reg                   writeRaEn;
-  reg [  DataWidth-1:0] writeRaData;
-  reg [IndexLevels-1:0] level;
-  reg [ IndexWidth-1:0] writeAddr;
-  reg [  DataWidth-1:0] writeData;
-  reg [ IndexWidth-1:0] readAddr1;
-  reg [ IndexWidth-1:0] readAddr2;
-  reg [  DataWidth-1:0] readData1;
-  reg [  DataWidth-1:0] readData2;
-  reg [  DataWidth-1:0] readRa;
+  logic                   clk;
+  logic                   reset;
+  logic                   writeEn;
+  logic                   writeRaEn;
+  logic [  DataWidth-1:0] writeRaData;
+  logic [IndexLevels-1:0] level;
+  logic [ IndexWidth-1:0] writeAddr;
+  logic [  DataWidth-1:0] writeData;
+  logic [ IndexWidth-1:0] readAddr1;
+  logic [ IndexWidth-1:0] readAddr2;
+  logic [  DataWidth-1:0] readData1;
+  logic [  DataWidth-1:0] readData2;
+  logic [  DataWidth-1:0] readRa;
 
 
   rf_stack #(

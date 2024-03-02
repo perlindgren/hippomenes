@@ -3,7 +3,7 @@
 
 package decoder_pkg;
 
-  typedef enum reg [2:0] {
+  typedef enum logic [2:0] {
     ECALL  = 3'b000,
     // EBREAK = 3'b000,
     CSRRW  = 3'b001,
@@ -19,7 +19,7 @@ package decoder_pkg;
     PC_BRANCH = 'b1
   } pc_mux_t;
 
-  typedef enum reg [2:0] {
+  typedef enum logic [2:0] {
     ALU_ADD  = 3'b000,  // ADDI
     ALU_SLL  = 3'b001,  // SLLI
     ALU_SLT  = 3'b010,  // SLLI
@@ -30,7 +30,7 @@ package decoder_pkg;
     ALU_AND  = 3'b111   // ANDI
   } alu_op_t;
 
-  typedef enum reg [1:0] {
+  typedef enum logic [1:0] {
     A_IMM  = 2'b00,
     A_RS1  = 2'b01,
     A_ZERO = 2'b10
@@ -60,8 +60,8 @@ package decoder_pkg;
     WB_PC_PLUS_4
   } wb_mux_t;
 
-  typedef reg [4:0] r;
-  typedef reg [31:0] word;
+  typedef logic [4:0] r;
+  typedef logic [31:0] word;
 
 endpackage
 

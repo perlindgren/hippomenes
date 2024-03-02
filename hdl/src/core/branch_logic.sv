@@ -5,13 +5,13 @@ import decoder_pkg::*;
 module branch_logic (
     input word a,
     input word b,
-    input reg branch_always,
-    input reg branch_instr,
+    input logic branch_always,
+    input logic branch_instr,
     input branch_op_t op,
 
     output pc_mux_t out
 );
-  reg take;
+  logic take;
 
   always_comb begin
     case (op)

@@ -3,7 +3,7 @@
 
 package mem_pkg;
 
-  typedef enum {
+  typedef enum logic [1:0] {
     BYTE = 'b00,
     HALFWORD = 'b01,
     WORD = 'b10

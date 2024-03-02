@@ -1,15 +1,15 @@
 // tb_alu
-`timescale 1ns/1ps
+`timescale 1ns / 1ps
 
 import decoder_pkg::*;
 module tb_alu;
 
-  reg [31:0] a;
-  reg [31:0] b;
+  logic [31:0] a;
+  logic [31:0] b;
   alu_op_t op;
-  reg sub_arith;
+  logic sub_arith;
 
-  reg [31:0] res;
+  logic [31:0] res;
 
   alu dut (
       .a(a),
@@ -22,12 +22,12 @@ module tb_alu;
   initial begin
     $dumpfile("alu.fst");
     $dumpvars;
-    
-    a  = 3;
-    b  = 5;
+
+    a = 3;
+    b = 5;
     op = ALU_ADD;
     sub_arith = 0;
-    
+
     #10;
     assert (res == 8) $display("3 + 5 = 8");
     else $error();

@@ -6,15 +6,15 @@ module tb_register_file;
   parameter integer unsigned NumRegs = 32;
   parameter integer unsigned IndexWidth = $clog2(NumRegs);
 
-  reg                  clk;
-  reg                  reset;
-  reg                  writeEn;
-  reg [IndexWidth-1:0] writeAddr;
-  reg [ DataWidth-1:0] writeData;
-  reg [IndexWidth-1:0] readAddr1;
-  reg [IndexWidth-1:0] readAddr2;
-  reg [ DataWidth-1:0] readData1;
-  reg [ DataWidth-1:0] readData2;
+  logic                  clk;
+  logic                  reset;
+  logic                  writeEn;
+  logic [IndexWidth-1:0] writeAddr;
+  logic [ DataWidth-1:0] writeData;
+  logic [IndexWidth-1:0] readAddr1;
+  logic [IndexWidth-1:0] readAddr2;
+  logic [ DataWidth-1:0] readData1;
+  logic [ DataWidth-1:0] readData2;
 
   register_file dut (
       .clk(clk),

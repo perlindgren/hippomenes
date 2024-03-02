@@ -4,15 +4,15 @@
 import decoder_pkg::*;
 module tb_csr;
 
-  reg clk;
-  reg reset;
-  reg en;
+  logic clk;
+  logic reset;
+  logic en;
   r rs1;
   r rd;
   csr_t op;
   word in;
   word old;
-  reg led;
+  logic led;
 
   csr dut (
       .clk(clk),

@@ -1,11 +1,11 @@
 // alu
-`timescale 1ns/1ps
+`timescale 1ns / 1ps
 
 import decoder_pkg::*;
 module alu (
     input word a,
     input word b,
-    input reg sub_arith,
+    input logic sub_arith,
     input alu_op_t op,
 
     output word res

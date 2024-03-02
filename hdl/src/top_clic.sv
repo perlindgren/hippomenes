@@ -2,8 +2,8 @@
 `timescale 1ns / 1ps
 
 module top_clic (
-    input reg clk,
-    input reg reset
+    input logic clk,
+    input logic reset
 );
   import config_pkg::*;
   import decoder_pkg::*;
@@ -66,8 +66,8 @@ module top_clic (
   );
 
   // instruction memory
-  word imem_data_out;
-  reg  imem_alignment_error;
+  word  imem_data_out;
+  logic imem_alignment_error;
   mem imem (
       // in
       .clk(clk),
@@ -83,27 +83,27 @@ module top_clic (
 
   // decoder
   wb_mux_t decoder_wb_mux_sel;
-  reg decoder_wb_write_enable;
+  logic decoder_wb_write_enable;
   alu_a_mux_t decoder_alu_a_mux_sel;
   alu_b_mux_t decoder_alu_b_mux_sel;
   alu_op_t decoder_alu_op;
-  reg decoder_sub_arith;
+  logic decoder_sub_arith;
   word decoder_imm;
   r decoder_rs1;
   r decoder_rs2;
   r decoder_rd;
 
   // mem
-  reg decoder_dmem_write_enable;
-  reg decoder_dmem_sign_extend;
+  logic decoder_dmem_write_enable;
+  logic decoder_dmem_sign_extend;
   mem_width_t decoder_mem_with;
 
   // branch
-  reg decoder_branch_instr;
+  logic decoder_branch_instr;
   branch_op_t decoder_branch_op;
-  reg decoder_branch_always;
+  logic decoder_branch_always;
   // csr_t decoder_csr_op;
-  reg decoder_csr_enable;
+  logic decoder_csr_enable;
   mem_width_t decoder_dmem_width;
 
   decoder decoder (
@@ -198,8 +198,8 @@ module top_clic (
       .res(alu_res)
   );
 
-  word dmem_data_out;
-  reg  dmem_alignment_error;
+  word  dmem_data_out;
+  logic dmem_alignment_error;
   mem dmem (
       // in
       .clk(clk),

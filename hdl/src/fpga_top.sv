@@ -3,12 +3,12 @@
 
 module fgpa_top (
     input sysclk,
-    output reg led,
-    output reg led2
+    output logic led,
+    output logic led2
 );
 
-  reg [31:0] r_count = 0;
-  reg reset_out = 1;
+  logic [31:0] r_count = 0;
+  logic reset_out = 1;
 
   top hippo (
       .clk  (r_count[22]),  // really slow clock

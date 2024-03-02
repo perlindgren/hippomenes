@@ -11,20 +11,20 @@ module decoder (
     output r rs2,
     output word imm,
     // branch logic
-    output reg branch_always,
-    output reg branch_instr,
+    output logic branch_always,
+    output logic branch_instr,
     output branch_op_t branch_op,
     // alu
     output alu_a_mux_t alu_a_mux_sel,
     output alu_b_mux_t alu_b_mux_sel,
     output alu_op_t alu_op,
-    output reg sub_arith,
+    output logic sub_arith,
     // data memory
-    output reg dmem_write_enable,
-    output reg dmem_sign_extend,
+    output logic dmem_write_enable,
+    output logic dmem_sign_extend,
     output mem_width_t dmem_width,
     // csr
-    output reg csr_enable,
+    output logic csr_enable,
     output csr_t csr_op,
     // write back
     output wb_mux_t wb_mux_sel,
@@ -48,9 +48,9 @@ module decoder (
   } op_t;
 
   // R-type
-  reg [6:0] funct7;
-  reg [2:0] funct3;
-  reg [6:0] op;
+  logic [6:0] funct7;
+  logic [2:0] funct3;
+  logic [6:0] op;
 
   always @instr begin
     // R type

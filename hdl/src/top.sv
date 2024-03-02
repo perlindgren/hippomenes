@@ -3,8 +3,8 @@
 
 module top (
     input clk,
-    input reg reset,
-    output reg led
+    input logic reset,
+    output logic led
 );
   import config_pkg::*;
   import decoder_pkg::*;
@@ -14,7 +14,7 @@ module top (
 
   // registers
   word pc_reg_out;
-  reg_n pc_reg (
+  reg_n pc_logic (
       .clk(clk),
       .reset(reset),
       .in(pc_mux_out),
@@ -22,7 +22,7 @@ module top (
   );
 
   word wb_data_reg_out;
-  reg_n wb_data_reg (
+  reg_n wb_data_logic (
       .clk(clk),
       .reset(reset),
       .in(wb_mux_out),
@@ -33,17 +33,17 @@ module top (
   r wb_rd_reg_out;
   reg_n #(
       .DataWidth(5)
-  ) wb_rd_reg (
+  ) wb_rd_logic (
       .clk(clk),
       .reset(reset),
       .in(decoder_rd),
       .out(wb_rd_reg_out)
   );
 
-  reg wb_enable_reg_out;
+  logic wb_enable_reg_out;
   reg_n #(
       .DataWidth(1)
-  ) wb_write_enable_reg (
+  ) wb_write_enable_logic (
       .clk(clk),
       .reset(reset),
       .in(decoder_wb_write_enable),
@@ -81,27 +81,27 @@ module top (
 
   // decoder
   wb_mux_t decoder_wb_mux_sel;
-  reg decoder_wb_write_enable;
+  logic decoder_wb_write_enable;
   alu_a_mux_t decoder_alu_a_mux_sel;
   alu_b_mux_t decoder_alu_b_mux_sel;
   alu_op_t decoder_alu_op;
-  reg decoder_sub_arith;
+  logic decoder_sub_arith;
   word decoder_imm;
   r decoder_rs1;
   r decoder_rs2;
   r decoder_rd;
 
   // mem
-  reg decoder_dmem_write_enable;
-  reg decoder_dmem_sign_extend;
+  logic decoder_dmem_write_enable;
+  logic decoder_dmem_sign_extend;
 
   // branch
-  reg decoder_branch_instr;
+  logic decoder_branch_instr;
   branch_op_t decoder_branch_op;
-  reg decoder_branch_always;
+  logic decoder_branch_always;
 
   // csr
-  reg decoder_csr_enable;
+  logic decoder_csr_enable;
   csr_t decoder_csr_op;
 
   mem_width_t decoder_dmem_width;
@@ -199,8 +199,8 @@ module top (
       .res(alu_res)
   );
 
-  word dmem_data_out;
-  reg  dmem_alignment_error;
+  word  dmem_data_out;
+  logic dmem_alignment_error;
   mem #(
       .MemSize(DMemSize)
   ) dmem (

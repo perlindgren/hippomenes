@@ -8,19 +8,19 @@ module mem
     parameter integer MemSize = 'h0000_1000,
     localparam integer MemAddrWidth = $clog2(MemSize)  // derived
 ) (
-    input reg clk,
-    input reg write_enable,
+    input logic clk,
+    input logic write_enable,
     input mem_width_t width,
-    input reg sign_extend,
-    input reg [MemAddrWidth-1:0] address,
-    input reg [31:0] data_in,
-    output reg [31:0] data_out,
-    output reg alignment_error
+    input logic sign_extend,
+    input logic [MemAddrWidth-1:0] address,
+    input logic [31:0] data_in,
+    output logic [31:0] data_out,
+    output logic alignment_error
 );
 
-  reg [31:0] mem[MemSize >> 2];
-  reg [3:0][7:0] read_word;
-  reg [3:0][7:0] write_word;
+  logic [31:0] mem[MemSize >> 2];
+  logic [3:0][7:0] read_word;
+  logic [3:0][7:0] write_word;
 
   always @(posedge clk) begin
     // do not write to register 0

@@ -6,8 +6,8 @@ module tb_branch_logic;
 
   word a;
   word b;
-  reg branch_always;
-  reg branch_instr;
+  logic branch_always;
+  logic branch_instr;
   branch_op_t op;
 
   pc_mux_t out;
