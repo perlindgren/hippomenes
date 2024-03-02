@@ -14,8 +14,7 @@ module csr #(
     input r rd,
     input csr_t op,
     input word in,
-    output word old,
-    output logic led
+    output word old
 );
   word data;
 
@@ -47,7 +46,6 @@ module csr #(
         end
         default: ;
       endcase
-      led = data[0];
     end
   end
 

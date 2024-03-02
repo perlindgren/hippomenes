@@ -297,7 +297,8 @@ module tb_top;
     $display("rf[a3 13] %h", top.rf.regs[13]);
 
     // dump csr
-    $display("csr %h", top.csr.data);
+    $display("csr_led %h", top.csr_led.csr_led.data);
+    $display("led %h", led);
 
     $display("dmem.mem[5008] %h", top.dmem.mem[0008]);
 

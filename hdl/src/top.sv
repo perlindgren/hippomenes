@@ -217,7 +217,7 @@ module top (
   );
 
   word csr_old;
-  csr csr (
+  csr_led csr_led (
       // in
       .clk(clk),
       .reset(reset),
