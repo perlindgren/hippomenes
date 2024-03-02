@@ -102,13 +102,14 @@ module top_clic (
   // csr
   logic decoder_csr_enable;
   csr_t decoder_csr_op;
-
+  csr_addr_t decoder_csr_addr;
   mem_width_t decoder_dmem_width;
 
   decoder decoder (
       // in
       .instr(imem_data_out),
       // out
+      .csr_addr(decoder_csr_addr),
       // register file
       .rs1(decoder_rs1),
       .rs2(decoder_rs2),

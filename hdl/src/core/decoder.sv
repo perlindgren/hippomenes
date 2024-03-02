@@ -8,6 +8,7 @@ module decoder (
     input word instr,
     // immediates
     output word imm,
+    output csr_addr_t csr_addr,
     // register file
     output r rs1,
     output r rs2,
@@ -54,6 +55,9 @@ module decoder (
   logic [6:0] op;
 
   always @instr begin
+    // splitters
+    csr_addr = instr[31:20];
+
     // give defaults to avoid latches
     // R type
     {funct7, rs2, rs1, funct3, rd, op} = instr;

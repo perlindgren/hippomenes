@@ -3,6 +3,8 @@
 
 package decoder_pkg;
 
+  typedef logic [11:0] csr_addr_t;
+
   typedef enum logic [2:0] {
     ECALL  = 3'b000,
     // EBREAK = 3'b000,
