@@ -5,7 +5,7 @@
 import decoder_pkg::*;
 
 module csr #(
-    parameter word DefaultValue = 0,
+    parameter word ResetValue = 0,
     parameter csr_addr_t Addr = 0
 ) (
     input logic clk,
@@ -16,14 +16,18 @@ module csr #(
     input r rd,
     input csr_t op,
     input word in,
-    output word old
+    output logic match,
+    output word out
 );
   word data;
 
   always @(posedge clk) begin
-    if (reset) data = 0;
-    else if (en && (addr == Addr)) begin
-      old = data;  // always read
+    if (reset) begin
+      data  = ResetValue;
+      match = 0;
+    end else if (en && (addr == Addr)) begin
+      out   = data;  // always read
+      match = 1;
       case (op)
         CSRRW: begin
           data = in;
@@ -48,6 +52,9 @@ module csr #(
         end
         default: ;
       endcase
+    end else begin
+      match = 0;
+      out   = 0;  // to avoid latch
     end
   end
 

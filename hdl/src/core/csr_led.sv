@@ -14,10 +14,13 @@ module csr_led (
     input r rd,
     input csr_t op,
     input word in,
-    output word old,
+    output logic match,
+    output word out,
     output logic led
 );
+
   csr #(
+      // .ResetValue(0), sanity testing of ResetValue
       .Addr(0)
   ) csr_led (
       .clk(clk),
@@ -28,7 +31,8 @@ module csr_led (
       .rd(rd),
       .op(op),
       .in(in),
-      .old(old)
+      .match(match),
+      .out(out)
   );
 
   assign led = csr_led.data[0];

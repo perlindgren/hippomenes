@@ -215,7 +215,8 @@ module top (
       .alignment_error(dmem_alignment_error)
   );
 
-  word csr_old;
+  word  csr_led_out;
+  logic csr_led_match;
   csr_led csr_led (
       // in
       .clk(clk),
@@ -227,7 +228,8 @@ module top (
       .op(decoder_csr_op),
       .in(rf_rs1),
       // out
-      .old(csr_old),
+      .match(csr_led_match),
+      .out(csr_led_out),
       .led(led)
   );
 
@@ -236,7 +238,7 @@ module top (
       .sel(decoder_wb_mux_sel),
       .dm(dmem_data_out),
       .alu(alu_res),
-      .csr(csr_old),
+      .csr(csr_led_out),
       .pc_plus_4(pc_adder_out),
       .out(wb_mux_out)
   );

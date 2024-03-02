@@ -1,0 +1,62 @@
+verilator --binary ../src/core/decoder_pkg.sv ../src/core/alu.sv ../src/core/tb_alu.sv --top-module tb_alu --trace-fst --assert
+make[1]: Entering directory '/home/pln/hippomenes/hdl/verilator/obj_dir'
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated.o /usr/local/share/verilator/include/verilated.cpp
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_fst_c.o /usr/local/share/verilator/include/verilated_fst_c.cpp
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_timing.o /usr/local/share/verilator/include/verilated_timing.cpp
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_threads.o /usr/local/share/verilator/include/verilated_threads.cpp
+/usr/bin/python3 /usr/local/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vtb_alu.cpp Vtb_alu___024root__DepSet_h6aeb509f__0.cpp Vtb_alu___024root__DepSet_h2865a81d__0.cpp Vtb_alu__main.cpp Vtb_alu__Trace__0.cpp Vtb_alu___024root__Slow.cpp Vtb_alu___024root__DepSet_h6aeb509f__0__Slow.cpp Vtb_alu___024root__DepSet_h2865a81d__0__Slow.cpp Vtb_alu___024unit__Slow.cpp Vtb_alu___024unit__DepSet_hd13008a8__0__Slow.cpp Vtb_alu__Syms.cpp Vtb_alu__Trace__0__Slow.cpp Vtb_alu__TraceDecls__0__Slow.cpp > Vtb_alu__ALL.cpp
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o Vtb_alu__ALL.o Vtb_alu__ALL.cpp
+echo "" > Vtb_alu__ALL.verilator_deplist.tmp
+Archive ar -rcs Vtb_alu__ALL.a Vtb_alu__ALL.o
+g++    verilated.o verilated_fst_c.o verilated_timing.o verilated_threads.o Vtb_alu__ALL.a   -lz  -pthread -lpthread -latomic   -o Vtb_alu
+rm Vtb_alu__ALL.verilator_deplist.tmp
+make[1]: Leaving directory '/home/pln/hippomenes/hdl/verilator/obj_dir'
+obj_dir/Vtb_alu
+3 + 5 = 8
+(3 < 5) -> true
+signed (-3 < 5) -> true
+unsigned (-3 < 5) -> false
+signed (-3 < -5) -> false
+unsigned (-3 < -5) -> false
+unsigned (3 < -5) -> true
+signed (3 < -5) -> false
+(3 << 2) = 12
+unsigned (12 >> 2) = 3
+signed (12 >> 2) = 3
+signed(-12 >>> 2) = -3
+- ../src/core/tb_alu.sv:116: Verilog $finish
+verilator --binary ../src/core/decoder_pkg.sv ../src/core/branch_logic.sv ../src/core/tb_branch_logic.sv --top-module tb_branch_logic --trace-fst --assert
+make[1]: Entering directory '/home/pln/hippomenes/hdl/verilator/obj_dir'
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated.o /usr/local/share/verilator/include/verilated.cpp
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_fst_c.o /usr/local/share/verilator/include/verilated_fst_c.cpp
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_timing.o /usr/local/share/verilator/include/verilated_timing.cpp
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_threads.o /usr/local/share/verilator/include/verilated_threads.cpp
+/usr/bin/python3 /usr/local/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vtb_branch_logic.cpp Vtb_branch_logic___024root__DepSet_h9e20b3c4__0.cpp Vtb_branch_logic___024root__DepSet_h3c677dc8__0.cpp Vtb_branch_logic__main.cpp Vtb_branch_logic__Trace__0.cpp Vtb_branch_logic___024root__Slow.cpp Vtb_branch_logic___024root__DepSet_h9e20b3c4__0__Slow.cpp Vtb_branch_logic___024root__DepSet_h3c677dc8__0__Slow.cpp Vtb_branch_logic___024unit__Slow.cpp Vtb_branch_logic___024unit__DepSet_hb0f8e176__0__Slow.cpp Vtb_branch_logic__Syms.cpp Vtb_branch_logic__Trace__0__Slow.cpp Vtb_branch_logic__TraceDecls__0__Slow.cpp > Vtb_branch_logic__ALL.cpp
+ccache g++ -Os  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=1 -DVM_TRACE_FST=1 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-shadow -Wno-sign-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable    -DVL_TIME_CONTEXT   -fcoroutines -c -o Vtb_branch_logic__ALL.o Vtb_branch_logic__ALL.cpp
+echo "" > Vtb_branch_logic__ALL.verilator_deplist.tmp
+Archive ar -rcs Vtb_branch_logic__ALL.a Vtb_branch_logic__ALL.o
+g++    verilated.o verilated_fst_c.o verilated_timing.o verilated_threads.o Vtb_branch_logic__ALL.a   -lz  -pthread -lpthread -latomic   -o Vtb_branch_logic
+rm Vtb_branch_logic__ALL.verilator_deplist.tmp
+make[1]: Leaving directory '/home/pln/hippomenes/hdl/verilator/obj_dir'
+obj_dir/Vtb_branch_logic
+BEQ 3 == 5 -> false
+BEQ 7 == 7 -> true
+BNE 3 == 5 -> true
+BNE 7 == 7 -> false
+BNE 3 == 5 -> true
+BLT -3 < 7 -> true
+BLT 3 < -7  -> false
+BLT -3 < -3  -> false
+BGE 3 >= -7  -> true
+BGE -3 >= 7  -> false
+BGE -3 >= -3  -> true
+BLTU -3 < 7 -> false
+BLTU 3 < -7  -> true
+BLTU -3 < -3  -> false
+BGEU 3 >= -7  -> false
+BGEU -3 >= 7  -> true
+BGEU -3 >= -3  -> true
+not a branch instruction
+branch_always
+- ../src/core/tb_branch_logic.sv:167: Verilog $finish
+verilator --binary ../src/core/decoder_pkg.sv ../src/core/csr.sv ../src/core/tb_csr.sv --top-module tb_csr --trace-fst --assert

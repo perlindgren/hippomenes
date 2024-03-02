@@ -214,7 +214,8 @@ module top_clic (
       .alignment_error(dmem_alignment_error)
   );
 
-  word csr_old;
+  word  csr_led_out;
+  logic csr_led_match;
   csr_led csr_led (
       // in
       .clk(clk),
@@ -226,8 +227,22 @@ module top_clic (
       .op(decoder_csr_op),
       .in(rf_rs1),
       // out
-      .old(csr_old),
+      .match(csr_led_match),
+      .out(csr_led_out),
       .led(led)
+  );
+
+  word n_clic_out;
+  n_clic n_clic (
+      .clk(clk),
+      .reset(reset),
+      .csr_enable(decoder_csr_enable),
+      .csr_addr(decoder_csr_addr),
+      .rs1(decoder_rs1),
+      .rd(decoder_rd),
+      .op(decoder_csr_op),
+      .in(rf_rs1),
+      .out(n_clic_out)
   );
 
   word wb_mux_out;
@@ -235,7 +250,7 @@ module top_clic (
       .sel(decoder_wb_mux_sel),
       .dm(dmem_data_out),
       .alu(alu_res),
-      .csr(csr_old),
+      .csr(csr_led_out),
       .pc_plus_4(pc_adder_out),
       .out(wb_mux_out)
   );
