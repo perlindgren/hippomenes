@@ -223,10 +223,9 @@ module top (
       .reset(reset),
       .en(decoder_csr_enable),
       .addr(decoder_csr_addr),
-      .rs1(decoder_rs1),
-      .rd(decoder_rd),
+      .rs1_zimm(decoder_rs1),
+      .rs1_data(rf_rs1),
       .op(decoder_csr_op),
-      .in(rf_rs1),
       // out
       .match(csr_led_match),
       .out(csr_led_out),
