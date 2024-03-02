@@ -14,7 +14,7 @@ package decoder_pkg;
     CSRRCI = 3'b111
   } csr_t;
 
-  typedef enum {
+  typedef enum logic {
     PC_NEXT   = 'b0,
     PC_BRANCH = 'b1
   } pc_mux_t;
@@ -44,7 +44,7 @@ package decoder_pkg;
     B_SHAMT
   } alu_b_mux_t;
 
-  typedef enum {
+  typedef enum logic [2:0] {
     BL_BEQ  = 'b000,
     BL_BNE  = 'b001,
     BL_BLT  = 'b100,

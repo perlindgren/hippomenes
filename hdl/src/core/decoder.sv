@@ -6,10 +6,11 @@ import mem_pkg::*;
 
 module decoder (
     input word instr,
+    // immediates
+    output word imm,
     // register file
     output r rs1,
     output r rs2,
-    output word imm,
     // branch logic
     output logic branch_always,
     output logic branch_instr,
@@ -53,19 +54,35 @@ module decoder (
   logic [6:0] op;
 
   always @instr begin
+    // give defaults to avoid latches
     // R type
     {funct7, rs2, rs1, funct3, rd, op} = instr;
 
     $display();  // new line
     $display("inst %h, rs2 %b, rs1 %b, rd %b, opcode %b", instr, rs2, rs1, rd, op);
 
-    csr_enable = 0;  // set only for csr
+    // TODO, separate imm fields?
+    // imm
+    imm = 0;
+    // branch logic
+    branch_op = BL_BEQ;
     branch_instr = 0;  // set only for branch logic operation
     branch_always = 0;  // set only for jal/jalr
+    // alu
+    alu_a_mux_sel = A_ZERO;
+    alu_b_mux_sel = B_IMM_EXT;
+    alu_op = ALU_ADD;
+    sub_arith = 0;
+    // data memory
+    dmem_write_enable = 0;
+    dmem_sign_extend = 0;
+    dmem_width = WORD;
+    // csr
+    csr_enable = 0;
+    csr_op = CSRRW;
+    // write back
+    wb_mux_sel = WB_ALU;
     wb_write_enable = 0;  // set only for instructions writing to rf
-    alu_a_mux_sel = A_ZERO;  // default
-    alu_b_mux_sel = B_IMM_EXT;  // 
-
 
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))

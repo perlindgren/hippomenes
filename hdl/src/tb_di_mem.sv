@@ -25,7 +25,9 @@ module tb_di_mem;
   logic [31:0] i_data_out;
   logic i_alignment_error;
 
-  mem d_mem (
+  mem #(
+      .MemSize(DMemSize)
+  ) d_mem (
       .clk(clk),
       .write_enable(d_write_enable),
       .width(d_width),
@@ -36,7 +38,9 @@ module tb_di_mem;
       .alignment_error(d_alignment_error)
   );
 
-  mem i_mem (
+  mem #(
+      .MemSize(IMemSize)
+  ) i_mem (
       .clk(clk),
       .write_enable(i_write_enable),
       .width(i_width),

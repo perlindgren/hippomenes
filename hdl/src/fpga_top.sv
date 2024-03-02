@@ -1,7 +1,7 @@
 // fpga_top
 `timescale 1ns / 1ps
 
-module fgpa_top (
+module fpga_top (
     input sysclk,
     output logic led,
     output logic led2
