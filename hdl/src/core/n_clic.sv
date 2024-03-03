@@ -1,14 +1,17 @@
 // mem
 `timescale 1ns / 1ps
 
+
+
 module n_clic
   import decoder_pkg::*;
 #(
     parameter  integer VecSize  = 8,
     localparam integer VecWidth = $clog2(VecSize), // derived
 
-    // registers
-    localparam csr_addr_t MStatusAddr = 'h305,
+    // csr registers
+    localparam csr_addr_t MStatusAddr    = 'h305,
+    localparam csr_addr_t MIntThreshAddr = 'h347,
     localparam csr_addr_t StackDepthAddr = 'h350
 
 ) (
@@ -21,6 +24,44 @@ module n_clic
     input csr_t op,
     output word out
 );
+  typedef struct packed {
+    csr_addr_t addr;
+    word reset_val;
+    logic read;
+    logic write;
+  } csr_struct_t;
+
+  localparam csr_struct_t CsrVec[3] = {
+    '{MStatusAddr, 10, 1, 1},  //
+    '{MIntThreshAddr, 20, 1, 1},  //
+    '{StackDepthAddr, 8, 1, 0}
+  };
+
+  word temp[3];
+
+  generate
+    for (genvar k = 0; k < 3; k++) begin : gen_csr
+      csr #(
+          .Addr(CsrVec[k].addr),
+          .ResetValue(CsrVec[k].reset_val),
+          .Read(CsrVec[k].read),
+          .Write(CsrVec[k].write)
+      ) csr (
+          // in
+          .clk(clk),
+          .reset(reset),
+          .en(csr_enable),
+          .addr(csr_addr),
+          .rs1_zimm(rs1_zimm),
+          .rs1_data(rs1_data),
+          .op(op),
+          // out
+          //.match(mstatus_match),
+          .out(temp[k])
+      );
+    end
+
+  endgenerate
 
   word  mstatus_out;
   logic mstatus_match;
@@ -59,6 +100,7 @@ module n_clic
   );
 
   always_comb begin
+
     case (csr_addr)
       MStatusAddr: out = mstatus_out;
       StackDepthAddr: out = stack_depth_out;
@@ -66,6 +108,9 @@ module n_clic
     endcase
 
   end
+
+
+
 
   //  csrstore.insert(0x300, 0); //mstatus
   //             csrstore.insert(0x305, 0b11); //mtvec, we only support vectored

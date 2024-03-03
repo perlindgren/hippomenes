@@ -40,6 +40,8 @@ module tb_n_clic;
     dut.mstatus.data = 1;
     dut.stack_depth.data = 2;
 
+    // dut.gen_csr[0].csr.data = 23;
+
     csr_addr = 'h305;
     csr_enable = 1;
     rs1_zimm = 0;
@@ -47,16 +49,21 @@ module tb_n_clic;
     op = CSRRSI;
 
     #1;
-    $display("out %h", out);
+    $display("305 out %h", out);
+
     csr_addr = 'h350;
     #1;
-    $display("out %h", out);
+    $display("350 out %h", out);
 
 
-    #19;
+    #18;
     $display("out %h", out);
     $display("mstatus data %h", dut.mstatus.data);
     $display("stack_depth data %h", dut.stack_depth.data);
+
+    $display("[0] data %h", dut.gen_csr[0].csr.data);
+    $display("[1] data %h", dut.gen_csr[1].csr.data);
+    $display("[2] data %h", dut.gen_csr[2].csr.data);
 
 
     // assert (dut.regs[1][3] == 'h00001111);
