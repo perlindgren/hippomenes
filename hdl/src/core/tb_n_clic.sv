@@ -37,8 +37,8 @@ module tb_n_clic;
     #15;
     reset = 0;
 
-    dut.mstatus.data = 1;
-    dut.stack_depth.data = 2;
+    // dut.mstatus.data = 1;
+    // dut.stack_depth.data = 2;
 
     // dut.gen_csr[0].csr.data = 23;
 
@@ -58,12 +58,13 @@ module tb_n_clic;
 
     #18;
     $display("out %h", out);
-    $display("mstatus data %h", dut.mstatus.data);
-    $display("stack_depth data %h", dut.stack_depth.data);
+    // $display("mstatus data %h", dut.mstatus.data);
+    // $display("stack_depth data %h", dut.stack_depth.data);
 
     $display("[0] data %h", dut.gen_csr[0].csr.data);
     $display("[1] data %h", dut.gen_csr[1].csr.data);
     $display("[2] data %h", dut.gen_csr[2].csr.data);
+
 
 
     // assert (dut.regs[1][3] == 'h00001111);

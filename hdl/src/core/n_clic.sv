@@ -37,9 +37,10 @@ module n_clic
     '{StackDepthAddr, 8, 1, 0}
   };
 
-  word temp[3];
+
 
   generate
+    word temp[3];
     for (genvar k = 0; k < 3; k++) begin : gen_csr
       csr #(
           .Addr(CsrVec[k].addr),
@@ -59,58 +60,57 @@ module n_clic
           //.match(mstatus_match),
           .out(temp[k])
       );
+
+      assign out = (csr_addr == CsrVec[k].addr) ? temp[k] : 'z;
     end
 
   endgenerate
 
-  word  mstatus_out;
-  logic mstatus_match;
-  csr #(
-      .Addr(MStatusAddr)
-  ) mstatus (
-      // in
-      .clk(clk),
-      .reset(reset),
-      .en(csr_enable),
-      .addr(csr_addr),
-      .rs1_zimm(rs1_zimm),
-      .rs1_data(rs1_data),
-      .op(op),
-      // out
-      //.match(mstatus_match),
-      .out(mstatus_out)
-  );
+  // word  mstatus_out;
+  // logic mstatus_match;
+  // csr #(
+  //     .Addr(MStatusAddr)
+  // ) mstatus (
+  //     // in
+  //     .clk(clk),
+  //     .reset(reset),
+  //     .en(csr_enable),
+  //     .addr(csr_addr),
+  //     .rs1_zimm(rs1_zimm),
+  //     .rs1_data(rs1_data),
+  //     .op(op),
+  //     // out
+  //     //.match(mstatus_match),
+  //     .out(mstatus_out)
+  // );
 
-  word  stack_depth_out;
-  logic stack_depth_match;
-  csr #(
-      .Addr(StackDepthAddr)
-  ) stack_depth (
-      //in
-      .clk(clk),
-      .reset(reset),
-      .en(csr_enable),
-      .addr(csr_addr),
-      .rs1_zimm(rs1_zimm),
-      .rs1_data(rs1_data),
-      .op(op),
-      // out
-      //.match(stack_depth_match),
-      .out(stack_depth_out)
-  );
+  // word  stack_depth_out;
+  // logic stack_depth_match;
+  // csr #(
+  //     .Addr(StackDepthAddr)
+  // ) stack_depth (
+  //     //in
+  //     .clk(clk),
+  //     .reset(reset),
+  //     .en(csr_enable),
+  //     .addr(csr_addr),
+  //     .rs1_zimm(rs1_zimm),
+  //     .rs1_data(rs1_data),
+  //     .op(op),
+  //     // out
+  //     //.match(stack_depth_match),
+  //     .out(stack_depth_out)
+  // );
 
-  always_comb begin
+  // always_comb begin
 
-    case (csr_addr)
-      MStatusAddr: out = mstatus_out;
-      StackDepthAddr: out = stack_depth_out;
-      default: out = 0;
-    endcase
+  //   case (csr_addr)
+  //     MStatusAddr: out = mstatus_out;
+  //     StackDepthAddr: out = stack_depth_out;
+  //     default: out = 0;
+  //   endcase
 
-  end
-
-
-
+  // end
 
   //  csrstore.insert(0x300, 0); //mstatus
   //             csrstore.insert(0x305, 0b11); //mtvec, we only support vectored
