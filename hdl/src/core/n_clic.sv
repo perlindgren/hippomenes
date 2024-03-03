@@ -2,12 +2,14 @@
 `timescale 1ns / 1ps
 
 
-
 module n_clic
   import decoder_pkg::*;
 #(
     parameter  integer VecSize  = 8,
     localparam integer VecWidth = $clog2(VecSize), // derived
+
+    parameter  integer PrioLevels = 8,
+    localparam integer PrioWidth  = $clog2(PrioLevels), // derived
 
     // csr registers
     localparam csr_addr_t MStatusAddr    = 'h305,
@@ -21,7 +23,7 @@ module n_clic
     input csr_addr_t csr_addr,
     input r rs1_zimm,
     input word rs1_data,
-    input csr_t op,
+    input csr_op_t csr_op,
     output word out
 );
   typedef struct packed {
@@ -37,7 +39,29 @@ module n_clic
     '{StackDepthAddr, 8, 1, 0}
   };
 
+  // smart packed struct allowng for 5 bit immediates in CSR
+  typedef struct packed {
+    logic pended;
+    logic enable;
+    logic [PrioWidth-1:0] prio;
+  } entry_t;
 
+  word out2;
+
+  csr #(
+      .CsrWidth($bits(entry_t))
+  ) test_csr (
+      // in
+      .clk(clk),
+      .reset(reset),
+      .en(csr_enable),
+      .addr(csr_addr),
+      .rs1_zimm(rs1_zimm),
+      .rs1_data(rs1_data),
+      .csr_op(csr_op),
+      // out
+      .out(out2)
+  );
 
   generate
     word temp[3];
@@ -55,12 +79,12 @@ module n_clic
           .addr(csr_addr),
           .rs1_zimm(rs1_zimm),
           .rs1_data(rs1_data),
-          .op(op),
+          .csr_op(csr_op),
           // out
-          //.match(mstatus_match),
           .out(temp[k])
       );
 
+      // one hot encoding, only one match allowed
       assign out = (csr_addr == CsrVec[k].addr) ? temp[k] : 'z;
     end
 

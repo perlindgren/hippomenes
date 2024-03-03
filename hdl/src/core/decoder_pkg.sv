@@ -14,7 +14,7 @@ package decoder_pkg;
     CSRRWI = 3'b101,
     CSRRSI = 3'b110,
     CSRRCI = 3'b111
-  } csr_t;
+  } csr_op_t;
 
   typedef enum logic {
     PC_NEXT   = 'b0,

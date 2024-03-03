@@ -10,7 +10,7 @@ module tb_n_clic;
   csr_addr_t csr_addr;
   r rs1_zimm;
   word rs1_data;
-  csr_t op;
+  csr_op_t csr_op;
   word out;
 
   n_clic dut (
@@ -21,7 +21,7 @@ module tb_n_clic;
       .csr_addr(csr_addr),
       .rs1_zimm(rs1_zimm),
       .rs1_data(rs1_data),
-      .op(op),
+      .csr_op(csr_op),
       // out
       .out(out)
   );
@@ -46,7 +46,7 @@ module tb_n_clic;
     csr_enable = 1;
     rs1_zimm = 0;
     rs1_data = 0;
-    op = CSRRSI;
+    csr_op = CSRRSI;
 
     #1;
     $display("305 out %h", out);
