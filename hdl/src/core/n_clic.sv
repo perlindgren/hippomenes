@@ -12,13 +12,13 @@ module n_clic
     parameter  integer PrioLevels = 8,
     localparam integer PrioWidth  = $clog2(PrioLevels), // derived
 
-    parameter integer VecCsrBase = 'hb00,
+    parameter integer VecCsrBase   = 'hb00,
+    parameter integer EntryCsrBase = 'hb20,  // up to 32 vectors
 
     // csr registers
     localparam csr_addr_t MStatusAddr    = 'h305,
     localparam csr_addr_t MIntThreshAddr = 'h347,
     localparam csr_addr_t StackDepthAddr = 'h350
-
 ) (
     input logic clk,
     input logic reset,
@@ -36,6 +36,7 @@ module n_clic
     logic write;
   } csr_struct_t;
 
+  // TODO: move to config
   localparam csr_struct_t CsrVec[3] = {
     '{MStatusAddr, 10, 1, 1},  //
     '{MIntThreshAddr, 20, 1, 1},  //
@@ -49,39 +50,6 @@ module n_clic
     logic [PrioWidth-1:0] prio;
   } entry_t;
 
-  // emulating vector table entry
-  word out2;
-  csr #(
-      .ResetValue(3),
-      .CsrWidth($bits(entry_t)),
-      .Addr(10)
-  ) test_entry_csr (
-      // in
-      .clk(clk),
-      .reset(reset),
-      .csr_enable(csr_enable),
-      .csr_addr(csr_addr),
-      .rs1_zimm(rs1_zimm),
-      .rs1_data(rs1_data),
-      .csr_op(csr_op),
-      // out
-      .out(out2)
-  );
-
-  // emulting vector table address
-  word out3;
-  csr #(
-      .ResetValue('h10),  // default vector
-      .CsrWidth(IMemAddrWidth - 2),  // word indexes, RVI
-      .Addr(20)
-  ) test_vec_csr (
-      // in
-      .*,
-      // out
-      .out(out3)
-  );
-
-
   // generate generic csr registers
   generate
     word temp[3];
@@ -93,13 +61,7 @@ module n_clic
           .Write(CsrVec[k].write)
       ) csr (
           // in
-          .clk(clk),
-          .reset(reset),
-          .csr_enable(csr_enable),
-          .csr_addr(csr_addr),
-          .rs1_zimm(rs1_zimm),
-          .rs1_data(rs1_data),
-          .csr_op(csr_op),
+          .*,
           // out
           .out(temp[k])
       );
@@ -112,22 +74,39 @@ module n_clic
 
   // generate vector table
   generate
-    word temp_vec[VecSize];
+    word temp_vec  [VecSize];
+    word temp_entry[VecSize];
+
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
-          .Addr(12'(VecCsrBase + k))
-      ) csr (
+          .Addr(12'(VecCsrBase + k)),
+          .CsrWidth(IMemAddrWidth - 2)
+      ) csr_vec (
           // in
           .*,
           // out
           .out(temp_vec[k])
       );
 
+      csr #(
+          .Addr(12'(EntryCsrBase + k)),
+          .CsrWidth($bits(entry_t))
+      ) csr_entry (
+          // in
+          .*,
+          // out
+          .out(temp_entry[k])
+      );
+
       // one hot encoding, only one match allowed
       assign out = (csr_addr == 12'(VecCsrBase + k)) ? temp_vec[k] : 'z;
+      assign out = (csr_addr == 12'(EntryCsrBase + k)) ? temp_entry[k] : 'z;
+
     end
 
   endgenerate
+
+
 
   // word  mstatus_out;
   // logic mstatus_match;
