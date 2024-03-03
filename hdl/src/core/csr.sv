@@ -17,8 +17,8 @@ module csr #(
 ) (
     input logic clk,
     input logic reset,
-    input logic en,
-    input csr_addr_t addr,
+    input logic csr_en,
+    input csr_addr_t csr_addr,
     input csr_op_t csr_op,
     input r rs1_zimm,
     input word rs1_data,
@@ -27,14 +27,14 @@ module csr #(
   CsrDataT data;
 
   // asynchronous read, side effect (if any) later
-  assign out = Read && (addr == Addr) ? 32'($unsigned(data)) : 0;
+  assign out = Read && (csr_addr == Addr) ? 32'($unsigned(data)) : 0;
 
   always @(posedge clk) begin
     if (reset) begin
       data <= ResetValue;
     end else begin
       // here we can do side effect on both read and write
-      if (en && (addr == Addr) && Write) begin
+      if (csr_en && (csr_addr == Addr) && Write) begin
         case (csr_op)
           CSRRW: begin
             data <= CsrDataT'(rs1_data);

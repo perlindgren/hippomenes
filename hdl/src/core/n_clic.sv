@@ -12,6 +12,8 @@ module n_clic
     parameter  integer PrioLevels = 8,
     localparam integer PrioWidth  = $clog2(PrioLevels), // derived
 
+    parameter integer VecCsrBase = 'hb00,
+
     // csr registers
     localparam csr_addr_t MStatusAddr    = 'h305,
     localparam csr_addr_t MIntThreshAddr = 'h347,
@@ -57,8 +59,8 @@ module n_clic
       // in
       .clk(clk),
       .reset(reset),
-      .en(csr_enable),
-      .addr(csr_addr),
+      .csr_en(csr_enable),
+      .csr_addr(csr_addr),
       .rs1_zimm(rs1_zimm),
       .rs1_data(rs1_data),
       .csr_op(csr_op),
@@ -76,8 +78,8 @@ module n_clic
       // in
       .clk(clk),
       .reset(reset),
-      .en(csr_enable),
-      .addr(csr_addr),
+      .csr_en(csr_enable),
+      .csr_addr(csr_addr),
       .rs1_zimm(rs1_zimm),
       .rs1_data(rs1_data),
       .csr_op(csr_op),
@@ -99,8 +101,8 @@ module n_clic
           // in
           .clk(clk),
           .reset(reset),
-          .en(csr_enable),
-          .addr(csr_addr),
+          .csr_en(csr_enable),
+          .csr_addr(csr_addr),
           .rs1_zimm(rs1_zimm),
           .rs1_data(rs1_data),
           .csr_op(csr_op),
@@ -110,6 +112,31 @@ module n_clic
 
       // one hot encoding, only one match allowed
       assign out = (csr_addr == CsrVec[k].addr) ? temp[k] : 'z;
+    end
+
+  endgenerate
+
+  // generate vector table
+  generate
+    word temp_vec[VecSize];
+    for (genvar k = 0; k < VecSize; k++) begin : gen_vec
+      csr #(
+          .Addr(12'(VecCsrBase + k))
+      ) csr (
+          // in
+          .clk(clk),
+          .reset(reset),
+          .csr_en(csr_enable),
+          .csr_addr(csr_addr),
+          .rs1_zimm(rs1_zimm),
+          .rs1_data(rs1_data),
+          .csr_op(csr_op),
+          // out
+          .out(temp_vec[k])
+      );
+
+      // one hot encoding, only one match allowed
+      assign out = (csr_addr == 12'(VecCsrBase + k)) ? temp_vec[k] : 'z;
     end
 
   endgenerate
