@@ -37,7 +37,28 @@ module tb_n_clic;
     #15;
     reset = 0;
 
-    // dut.mstatus.data = 1;
+
+    // simple test of limited size csr
+    csr_addr = 10;
+    csr_enable = 1;
+    rs1_zimm = 0;
+    rs1_data = 0;
+    csr_op = CSRRSI;
+
+    #1;
+    $display("out2 %h", dut.out2);
+    rs1_zimm = 31;
+
+    #19;
+    $display("out2 %h", dut.out2);
+    rs1_data = 'hffff_ff0f;
+    csr_op   = CSRRW;
+
+    #20;
+    $display("out2 %h", dut.out2);
+
+
+
     // dut.stack_depth.data = 2;
 
     // dut.gen_csr[0].csr.data = 23;

@@ -4,6 +4,7 @@
 
 module n_clic
   import decoder_pkg::*;
+  import config_pkg::*;
 #(
     parameter  integer VecSize  = 8,
     localparam integer VecWidth = $clog2(VecSize), // derived
@@ -46,11 +47,13 @@ module n_clic
     logic [PrioWidth-1:0] prio;
   } entry_t;
 
+  // emulating vector table entry
   word out2;
-
   csr #(
-      .CsrWidth($bits(entry_t))
-  ) test_csr (
+      .ResetValue(3),
+      .CsrWidth($bits(entry_t)),
+      .Addr(10)
+  ) test_entry_csr (
       // in
       .clk(clk),
       .reset(reset),
@@ -63,6 +66,27 @@ module n_clic
       .out(out2)
   );
 
+  // emulting vector table address
+  word out3;
+  csr #(
+      .ResetValue('h10),  // default vector
+      .CsrWidth(IMemAddrWidth - 2),  // word indexes, RVI
+      .Addr(20)
+  ) test_vec_csr (
+      // in
+      .clk(clk),
+      .reset(reset),
+      .en(csr_enable),
+      .addr(csr_addr),
+      .rs1_zimm(rs1_zimm),
+      .rs1_data(rs1_data),
+      .csr_op(csr_op),
+      // out
+      .out(out3)
+  );
+
+
+  // generate generic csr registers
   generate
     word temp[3];
     for (genvar k = 0; k < 3; k++) begin : gen_csr
