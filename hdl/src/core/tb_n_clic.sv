@@ -39,23 +39,23 @@ module tb_n_clic;
 
 
     // simple test of limited size csr
-    csr_addr = 10;
+    csr_addr = 'hb00;
     csr_enable = 1;
     rs1_zimm = 0;
     rs1_data = 0;
     csr_op = CSRRSI;
 
     #1;
-    $display("out2 %h", dut.out2);
+    $display("out %h", out);
     rs1_zimm = 31;
 
     #19;
-    $display("out2 %h", dut.out2);
+    $display("out %h", out);
     rs1_data = 'hffff_ff0f;
     csr_op   = CSRRW;
 
     #20;
-    $display("out2 %h", dut.out2);
+    $display("out %h", out);
 
 
 

@@ -59,7 +59,7 @@ module n_clic
       // in
       .clk(clk),
       .reset(reset),
-      .csr_en(csr_enable),
+      .csr_enable(csr_enable),
       .csr_addr(csr_addr),
       .rs1_zimm(rs1_zimm),
       .rs1_data(rs1_data),
@@ -76,13 +76,7 @@ module n_clic
       .Addr(20)
   ) test_vec_csr (
       // in
-      .clk(clk),
-      .reset(reset),
-      .csr_en(csr_enable),
-      .csr_addr(csr_addr),
-      .rs1_zimm(rs1_zimm),
-      .rs1_data(rs1_data),
-      .csr_op(csr_op),
+      .*,
       // out
       .out(out3)
   );
@@ -101,7 +95,7 @@ module n_clic
           // in
           .clk(clk),
           .reset(reset),
-          .csr_en(csr_enable),
+          .csr_enable(csr_enable),
           .csr_addr(csr_addr),
           .rs1_zimm(rs1_zimm),
           .rs1_data(rs1_data),
@@ -124,13 +118,7 @@ module n_clic
           .Addr(12'(VecCsrBase + k))
       ) csr (
           // in
-          .clk(clk),
-          .reset(reset),
-          .csr_en(csr_enable),
-          .csr_addr(csr_addr),
-          .rs1_zimm(rs1_zimm),
-          .rs1_data(rs1_data),
-          .csr_op(csr_op),
+          .*,
           // out
           .out(temp_vec[k])
       );

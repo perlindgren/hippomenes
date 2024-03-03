@@ -17,7 +17,7 @@ module csr #(
 ) (
     input logic clk,
     input logic reset,
-    input logic csr_en,
+    input logic csr_enable,
     input csr_addr_t csr_addr,
     input csr_op_t csr_op,
     input r rs1_zimm,
@@ -34,7 +34,7 @@ module csr #(
       data <= ResetValue;
     end else begin
       // here we can do side effect on both read and write
-      if (csr_en && (csr_addr == Addr) && Write) begin
+      if (csr_enable && (csr_addr == Addr) && Write) begin
         case (csr_op)
           CSRRW: begin
             data <= CsrDataT'(rs1_data);
