@@ -22,7 +22,7 @@ module csr #(
     input csr_op_t csr_op,
     input r rs1_zimm,
     input word rs1_data,
-    output word out
+    output word out  // should prehaps be [CsrWidth-1:0]?
 );
   CsrDataT data;
 

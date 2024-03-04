@@ -30,6 +30,7 @@ module n_clic
     output word out
 );
   typedef struct packed {
+    integer width;
     csr_addr_t addr;
     word reset_val;
     logic read;
@@ -38,25 +39,18 @@ module n_clic
 
   // TODO: move to config
   localparam csr_struct_t CsrVec[3] = {
-    '{MStatusAddr, 10, 1, 1},  //
-    '{MIntThreshAddr, 20, 1, 1},  //
-    '{StackDepthAddr, 8, 1, 0}
+    '{PrioWidth, MIntThreshAddr, 20, 1, 1},  //
+    '{32, MStatusAddr, 10, 1, 1},  //
+    '{VecWidth, StackDepthAddr, 8, 1, 0}
   };
-
-  // smart packed struct allowng for 5 bit immediates in CSR
-  typedef struct packed {
-    logic pended;
-    logic enable;
-    logic [PrioWidth-1:0] prio;
-  } entry_t;
-
   // generate generic csr registers
   generate
     word temp[3];
     for (genvar k = 0; k < 3; k++) begin : gen_csr
       csr #(
+          .CsrWidth(CsrVec[k].width),
           .Addr(CsrVec[k].addr),
-          .ResetValue(CsrVec[k].reset_val),
+          .ResetValue(CsrVec[k].reset_val[CsrVec[k].width-1:0]),
           .Read(CsrVec[k].read),
           .Write(CsrVec[k].write)
       ) csr (
@@ -72,7 +66,21 @@ module n_clic
 
   endgenerate
 
+
+
+  // smart packed struct allowng for 5 bit immediates in CSR
+  typedef struct packed {
+    logic pended;
+    logic enable;
+    logic [PrioWidth-1:0] prio;
+  } entry_t;
+
+
+
   // generate vector table
+  logic [VecWidth -1:0] int_index;
+  logic take_interrupt;
+
   generate
     word temp_vec  [VecSize];
     word temp_entry[VecSize];
@@ -105,6 +113,26 @@ module n_clic
     end
 
   endgenerate
+
+  logic [PrioWidth-1:0] max_prio;
+  always_comb begin
+    // naive way to find highest prio
+    take_interrupt = 0;
+    max_prio = gen_csr[0].csr.data;
+
+    if (gen_vec[0].csr_entry.data.enable) begin
+      $display("enable", gen_vec[0].csr_entry.data.enable);
+    end
+
+    for (int k = 0; k < VecSize; k++) begin
+      // $display("enable[%d]= %d", k, csr_entry[k].enable);
+      // if (gen_vec[k].csr_entry.data.enable) begin
+      //   $display("enable[%d]", k);
+      // end
+
+    end
+
+  end
 
 
 

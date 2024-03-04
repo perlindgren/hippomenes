@@ -46,49 +46,49 @@ module tb_n_clic;
     csr_op = CSRRSI;
 
     #1;
-    $display("out %h", out);
-    rs1_zimm = 31;
+    // $display("out %h", out);
+    // rs1_zimm = 31;
 
-    #19;
-    $display("out %h", out);
-    rs1_data = 'hffff_ff0f;
-    csr_op   = CSRRW;
+    // #19;
+    // $display("out %h", out);
+    // rs1_data = 'hffff_ff0f;
+    // csr_op   = CSRRW;
 
-    #20;
-    $display("out %h", out);
-
-
-
-    // dut.stack_depth.data = 2;
-
-    // dut.gen_csr[0].csr.data = 23;
-
-    csr_addr = 'h305;
-    csr_enable = 1;
-    rs1_zimm = 0;
-    rs1_data = 0;
-    csr_op = CSRRSI;
-
-    #1;
-    $display("305 out %h", out);
-
-    csr_addr = 'h350;
-    #1;
-    $display("350 out %h", out);
-
-
-    #18;
-    $display("out %h", out);
-    // $display("mstatus data %h", dut.mstatus.data);
-    // $display("stack_depth data %h", dut.stack_depth.data);
-
-    $display("[0] data %h", dut.gen_csr[0].csr.data);
-    $display("[1] data %h", dut.gen_csr[1].csr.data);
-    $display("[2] data %h", dut.gen_csr[2].csr.data);
+    // #20;
+    // $display("out %h", out);
 
 
 
-    // assert (dut.regs[1][3] == 'h00001111);
+    // // dut.stack_depth.data = 2;
+
+    // // dut.gen_csr[0].csr.data = 23;
+
+    // csr_addr = 'h305;
+    // csr_enable = 1;
+    // rs1_zimm = 0;
+    // rs1_data = 0;
+    // csr_op = CSRRSI;
+
+    // #1;
+    // $display("305 out %h", out);
+
+    // csr_addr = 'h350;
+    // #1;
+    // $display("350 out %h", out);
+
+
+    // #18;
+    // $display("out %h", out);
+    // // $display("mstatus data %h", dut.mstatus.data);
+    // // $display("stack_depth data %h", dut.stack_depth.data);
+
+    // $display("[0] data %h", dut.gen_csr[0].csr.data);
+    // $display("[1] data %h", dut.gen_csr[1].csr.data);
+    // $display("[2] data %h", dut.gen_csr[2].csr.data);
+
+
+
+    // // assert (dut.regs[1][3] == 'h00001111);
 
     $finish;
 
