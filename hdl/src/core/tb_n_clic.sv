@@ -28,6 +28,18 @@ module tb_n_clic;
 
   always #10 clk = ~clk;
 
+
+
+  // logic [4:0] entry;
+  function void clic_dump();
+    $display("mintresh %d", dut.gen_csr[0].csr.data);
+    for (integer i = 0; i < 8; i++) begin
+      $display("%d, is_int %b max_prio %d, max_vec %d", i, dut.is_int[i], dut.max_prio[i],
+               dut.max_vec[i]);
+    end
+  endfunction
+
+
   initial begin
     $dumpfile("n_clic.fst");
     $dumpvars;
@@ -37,9 +49,53 @@ module tb_n_clic;
     #15;
     reset = 0;
 
-    dut.gen_csr[0].csr.data = 0;  // initial prio
+    dut.gen_csr[0].csr.data = 0;  // initial prio, minthresh
 
-    dut.gen_vec[0].csr_entry.data = 1 << 2;  // prio 1
+    dut.gen_vec[0].csr_entry.data = (1 << 2) | (1 << 1);  // prio 1, enabled
+    dut.gen_vec[2].csr_entry.data = (2 << 2) | (1 << 1);  // prio 2, enabled
+    dut.gen_vec[4].csr_entry.data = (1 << 2) | (1 << 1);  // prio 1, enabled
+    dut.gen_vec[7].csr_entry.data = (7 << 2) | (1 << 1);  // prio 7, enabled
+
+    #1;
+    clic_dump();
+    assert (dut.is_int[7] == 0 && dut.max_prio[7] == 0 && dut.max_vec[7] == 0);
+
+    dut.gen_vec[4].csr_entry.data |= (1 << 0);  // pended
+    #1;
+    clic_dump();
+    assert (dut.is_int[7] == 1 && dut.max_prio[7] == 1 && dut.max_vec[7] == 4);
+
+    dut.gen_vec[0].csr_entry.data |= (1 << 0);  // pended
+    #1;
+    clic_dump();
+    assert (dut.is_int[7] == 1 && dut.max_prio[7] == 1 && dut.max_vec[7] == 0);
+
+    dut.gen_vec[2].csr_entry.data |= (1 << 0);  // pended
+    #1;
+    clic_dump();
+    assert (dut.is_int[7] == 1 && dut.max_prio[7] == 2 && dut.max_vec[7] == 2);
+
+    dut.gen_vec[7].csr_entry.data |= (1 << 0);  // pended
+    #1;
+    clic_dump();
+    assert (dut.is_int[7] == 1 && dut.max_prio[7] == 7 && dut.max_vec[7] == 7);
+
+    dut.gen_vec[7].csr_entry.data ^= (1 << 0);  // un-pended
+    #1;
+    clic_dump();
+    assert (dut.is_int[7] == 1 && dut.max_prio[7] == 2 && dut.max_vec[7] == 2);
+
+    dut.gen_csr[0].csr.data = 7;  // raise threshold
+    #1;
+    clic_dump();
+    assert (dut.is_int[7] == 0 && dut.max_prio[7] == 7 && dut.max_vec[7] == 0);
+
+    // dut.gen_csr[0].csr.data = ;  // initial prio, minthresh
+    // #1;
+    // clic_dump();
+
+
+
 
 
 
@@ -49,12 +105,6 @@ module tb_n_clic;
     // rs1_zimm = 0;
     // rs1_data = 0;
     // csr_op = CSRRSI;
-
-    #1;
-    $display("mintresh %d", dut.gen_csr[0].csr.data);
-    $display("mintresh %d", dut.gen_vec[0].csr_entry.data);
-
-    $display("mintresh %d", dut.max_prio[0]);
 
 
     // $display("out %h", out);
