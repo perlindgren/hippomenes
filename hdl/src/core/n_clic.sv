@@ -120,7 +120,7 @@ module n_clic
     take_interrupt = 0;
     max_prio = gen_csr[0].csr.data;
 
-    if (gen_vec[0].csr_entry.data.enable) begin
+    if ((gen_vec[0].csr_entry.data).enable) begin
       $display("enable", gen_vec[0].csr_entry.data.enable);
     end
 
