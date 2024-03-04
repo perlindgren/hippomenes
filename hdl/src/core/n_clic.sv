@@ -75,15 +75,16 @@ module n_clic
     logic [PrioWidth-1:0] prio;
   } entry_t;
 
-
-
   // generate vector table
-  logic [VecWidth -1:0] int_index;
-  logic take_interrupt;
+  /* verilator lint_off UNOPTFLAT */
+  logic [PrioWidth-1:0] max_prio[VecSize];
+  logic [ VecWidth-1:0] max_vec [VecSize];
+  logic                 max_int [VecSize];
 
   generate
-    word temp_vec  [VecSize];
+    word temp_vec[VecSize];
     word temp_entry[VecSize];
+    entry_t entry;
 
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
@@ -110,29 +111,59 @@ module n_clic
       assign out = (csr_addr == 12'(VecCsrBase + k)) ? temp_vec[k] : 'z;
       assign out = (csr_addr == 12'(EntryCsrBase + k)) ? temp_entry[k] : 'z;
 
+      // stupid implementation to find max priority
+      always_comb begin
+        entry = csr_entry.data;  // a bit of a hack to please Verilator
+        if (k == 0) begin
+          if (entry.prio > gen_csr[0].csr.data) begin
+            max_int[0]  = 1;
+            max_prio[0] = entry.prio;
+            max_vec[0]  = 0;
+          end else begin
+            max_int[0]  = 0;
+            max_prio[0] = gen_csr[0].csr.data;
+            max_vec[0]  = 0;
+          end
+        end else begin
+          if (entry.prio > max_prio[k-1]) begin
+            max_int[k]  = 1;
+            max_prio[k] = entry.prio;
+            max_vec[k]  = k;
+          end else begin
+            max_int[k]  = max_int[k-1];
+            max_prio[k] = max_prio[k-1];
+            max_vec[k]  = max_vec[k-1];
+          end
+        end
+      end
     end
 
   endgenerate
 
-  logic [PrioWidth-1:0] max_prio;
-  always_comb begin
-    // naive way to find highest prio
-    take_interrupt = 0;
-    max_prio = gen_csr[0].csr.data;
+  // logic [PrioWidth-1:0] max_prio;
+  // entry_t en;
+  // always_comb begin
+  //   // naive way to find highest prio
+  //   take_interrupt = 0;
+  //   max_prio = gen_csr[0].csr.data;
 
-    if ((gen_vec[0].csr_entry.data).enable) begin
-      $display("enable", gen_vec[0].csr_entry.data.enable);
-    end
 
-    for (int k = 0; k < VecSize; k++) begin
-      // $display("enable[%d]= %d", k, csr_entry[k].enable);
-      // if (gen_vec[k].csr_entry.data.enable) begin
-      //   $display("enable[%d]", k);
-      // end
+  //   en = gen_vec[0].csr_entry.data;
 
-    end
+  //   // if ((gen_vec[0].csr_entry.data).enable) begin
+  //   //   $display("enable", entry_t'(gen_vec[0].csr_entry.data).enable);
+  //   // end
 
-  end
+  //   for (integer k = 0; k < VecSize; k++) begin
+  //     en = gen_vec[k].csr_entry.data;
+  //     $display("enable[%d]= %d", k, en.enable);
+  //     //   // if (gen_vec[k].csr_entry.data.enable) begin
+  //     //   //   $display("enable[%d]", k);
+  //     //   // end
+
+  //   end
+
+  // end
 
 
 

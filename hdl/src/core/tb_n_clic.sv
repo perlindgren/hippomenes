@@ -37,15 +37,26 @@ module tb_n_clic;
     #15;
     reset = 0;
 
+    dut.gen_csr[0].csr.data = 0;  // initial prio
 
-    // simple test of limited size csr
-    csr_addr = 'hb00;
-    csr_enable = 1;
-    rs1_zimm = 0;
-    rs1_data = 0;
-    csr_op = CSRRSI;
+    dut.gen_vec[0].csr_entry.data = 1 << 2;  // prio 1
+
+
+
+    // // simple test of limited size csr
+    // csr_addr = 'hb00;
+    // csr_enable = 1;
+    // rs1_zimm = 0;
+    // rs1_data = 0;
+    // csr_op = CSRRSI;
 
     #1;
+    $display("mintresh %d", dut.gen_csr[0].csr.data);
+    $display("mintresh %d", dut.gen_vec[0].csr_entry.data);
+
+    $display("mintresh %d", dut.max_prio[0]);
+
+
     // $display("out %h", out);
     // rs1_zimm = 31;
 
