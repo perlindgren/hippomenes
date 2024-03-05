@@ -39,8 +39,8 @@ module n_clic
 
   // TODO: move to config
   localparam csr_struct_t CsrVec[3] = {
-    '{PrioWidth, MIntThreshAddr, 20, 1, 1},  //
-    '{32, MStatusAddr, 10, 1, 1},  //
+    '{PrioWidth, MIntThreshAddr, 20, 1, 1},
+    '{32, MStatusAddr, 10, 1, 1},
     '{VecWidth, StackDepthAddr, 8, 1, 0}
   };
   // generate generic csr registers
@@ -140,6 +140,30 @@ module n_clic
     end
 
   endgenerate
+
+  // to test epc stack
+  logic push;
+  logic pop;
+  logic [IMemAddrWidth-1:0] data_in;
+  logic [IMemAddrWidth-1:0] data_out;
+  logic [PrioWidth-1:0] index_out;
+
+  // epc stack
+  stack #(
+      .StackDepth(PrioLevels),
+      .DataWidth (IMemAddrWidth)
+  ) dut (
+      // in
+      .clk,
+      .reset,
+      .push,
+      .pop,
+      .data_in,
+      // out,
+      .data_out,
+      .index_out
+  );
+
 
 endmodule
 

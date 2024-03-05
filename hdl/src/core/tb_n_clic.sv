@@ -51,45 +51,56 @@ module tb_n_clic;
 
     dut.gen_csr[0].csr.data = 0;  // initial prio, minthresh
 
-    dut.gen_vec[0].csr_entry.data = (1 << 2) | (1 << 1);  // prio 1, enabled
-    dut.gen_vec[2].csr_entry.data = (2 << 2) | (1 << 1);  // prio 2, enabled
-    dut.gen_vec[4].csr_entry.data = (1 << 2) | (1 << 1);  // prio 1, enabled
-    dut.gen_vec[7].csr_entry.data = (7 << 2) | (1 << 1);  // prio 7, enabled
+    dut.gen_vec[0].csr_entry.data = (1 << 2) | (1 << 1);  // 0, prio 1, enabled
+    dut.gen_vec[2].csr_entry.data = (2 << 2) | (1 << 1);  // 2, prio 2, enabled
+    dut.gen_vec[4].csr_entry.data = (1 << 2) | (1 << 1);  // 4, prio 1, enabled
+    dut.gen_vec[7].csr_entry.data = (7 << 2) | (1 << 1);  // 7, prio 7, enabled
 
     #1;
     clic_dump();
     assert (dut.is_int[7] == 0 && dut.max_prio[7] == 0 && dut.max_vec[7] == 0);
 
+    $display("pend vec 4");
     dut.gen_vec[4].csr_entry.data |= (1 << 0);  // pended
     #1;
     clic_dump();
     assert (dut.is_int[7] == 1 && dut.max_prio[7] == 1 && dut.max_vec[7] == 4);
 
+    $display("pend vec 0");
     dut.gen_vec[0].csr_entry.data |= (1 << 0);  // pended
     #1;
     clic_dump();
     assert (dut.is_int[7] == 1 && dut.max_prio[7] == 1 && dut.max_vec[7] == 0);
 
+    $display("pend vec 2");
     dut.gen_vec[2].csr_entry.data |= (1 << 0);  // pended
     #1;
     clic_dump();
     assert (dut.is_int[7] == 1 && dut.max_prio[7] == 2 && dut.max_vec[7] == 2);
 
+    $display("pend vec 7");
     dut.gen_vec[7].csr_entry.data |= (1 << 0);  // pended
     #1;
     clic_dump();
     assert (dut.is_int[7] == 1 && dut.max_prio[7] == 7 && dut.max_vec[7] == 7);
 
+    $display("un-pend vec 7");
     dut.gen_vec[7].csr_entry.data ^= (1 << 0);  // un-pended
     #1;
     clic_dump();
     assert (dut.is_int[7] == 1 && dut.max_prio[7] == 2 && dut.max_vec[7] == 2);
 
+    $display("raise threshold");
     dut.gen_csr[0].csr.data = 7;  // raise threshold
     #1;
     clic_dump();
     assert (dut.is_int[7] == 0 && dut.max_prio[7] == 7 && dut.max_vec[7] == 0);
 
+    $display("lower threshold");
+    dut.gen_csr[0].csr.data = 0;  // lower threshold
+    #1;
+    clic_dump();
+    assert (dut.is_int[7] == 1 && dut.max_prio[7] == 2 && dut.max_vec[7] == 2);
     // dut.gen_csr[0].csr.data = ;  // initial prio, minthresh
     // #1;
     // clic_dump();
