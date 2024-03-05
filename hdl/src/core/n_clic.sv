@@ -167,8 +167,8 @@ module n_clic
       end else if (pc_in == ~(IMemAddrWidth'(0))) begin
         push = 0;
         pop = 1;
-        pc_out = stack_addr_out;
-        m_int_thresh_data = 0;  // TODO
+        pc_out = stack_out.addr;
+        m_int_thresh_data = stack_out.prio;
         m_int_thresh_write_enable = 1;
         $display("pop");
       end else begin
@@ -180,30 +180,35 @@ module n_clic
         $display("interrupt NOT take");
       end
     end
-    // epc stack
-    stack #(
-        .StackDepth(PrioLevels),
-        .DataWidth (IMemAddrWidth)
-    ) dut (
-        // in
-        .clk,
-        .reset,
-        .push,
-        .pop,
-        .data_in  (pc_in),
-        // out,
-        .data_out (stack_addr_out),
-        .index_out(level_out)
-    );
   endgenerate
 
-  // to test epc stack
+  // stack
   logic push;
   logic pop;
-  logic [IMemAddrWidth-1:0] data_in;
-  logic [IMemAddrWidth-1:0] stack_addr_out;
+  typedef struct packed {
+    logic [IMemAddrWidth-1:0] addr;
+    logic [PrioWidth-1:0]     prio;
+  } stack_t;
+
+  // stack_t data_in;
+  stack_t stack_out;
   logic [PrioWidth-1:0] level_out;  // stack depth
 
+  // epc address stack
+  stack #(
+      .StackDepth(PrioLevels),
+      .DataWidth ($bits(stack_t))
+  ) epc_stack (
+      // in
+      .clk,
+      .reset,
+      .push,
+      .pop,
+      .data_in  ({pc_in, m_int_thresh.data}),
+      // out,
+      .data_out (stack_out),
+      .index_out(level_out)
+  );
 
 endmodule
 
