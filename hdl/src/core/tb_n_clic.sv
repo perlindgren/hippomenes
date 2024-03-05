@@ -76,7 +76,8 @@ module tb_n_clic;
 
     clk   = 0;
     reset = 1;
-    #15;
+    #15 $display("time ", $time());  // force clock
+
     reset = 0;
 
     dut.m_int_thresh.data = 0;  // initial prio, minthresh
@@ -93,36 +94,37 @@ module tb_n_clic;
 
     pc_mux_sel = PC_NEXT;
 
-    #20;  // force clocking
+    #20 $display("time ", $time());  // force clocking
 
     clic_dump();
     assert (dut.is_int[7] == 0 && dut.max_prio[7] == 0 && dut.max_vec[7] == 0);
 
     $display("pend vec 4");
     dut.gen_vec[4].csr_entry.data |= (1 << 0);  // pended
-    #20;  // force clock
+    #20 $display("time ", $time());  // force clock
     assert (dut.pc_out == 32);
     clic_dump();
 
     $display("pend vec 0 no interrupt");
     dut.gen_vec[0].csr_entry.data |= (1 << 0);  // pended
-    #20;  // force clock
+    #20 $display("time ", $time());  // force clock
     assert (dut.pc_out == 32);
     clic_dump();
 
     $display("pend vec 2");
     dut.gen_vec[2].csr_entry.data |= (1 << 0);  // pended
-    #20;  // force clock
+    #20 $display("time ", $time());  // force clock
     assert (dut.pc_out == 16);
     clic_dump();
-    assert (dut.pc_out == 16);
-    $display("no pend, no interrupt");
-    #20;  // force clock
 
+    $display("no pend, no interrupt");
+    #20 $display("time ", $time());  // force clock
+    assert (dut.pc_out == 16);
     clic_dump();
+
     $display("pend vec 7");
     dut.gen_vec[7].csr_entry.data |= (1 << 0);  // pended
-    #20;  // force clock
+    #20 $display("time ", $time());  // force clock
     assert (dut.pc_out == 56);
     clic_dump();
 
@@ -130,13 +132,18 @@ module tb_n_clic;
     pc_branch  = ~0;
     dut.gen_vec[7].csr_entry.data ^= (1 << 0);  // unpend
     $display("jal ff");
-    #20;  // force clock
+    #20 $display("time ", $time());  // force clock
+
     // assert (dut.pc_out == ~0);
     // assert (dut.m_int_thresh.data == 0);
     clic_dump();
 
-    #20;  // force clock
+
+    #20 $display("time ", $time());  // force clock
     clic_dump();
+
+
+
 
 
 

@@ -92,6 +92,7 @@ module n_clic
       ) csr_vec (
           // in
           .*,
+          .ext_write_enable,
           .ext_data(ext_vec_data),
           // out
           .out(temp_vec[k])
@@ -103,6 +104,7 @@ module n_clic
       ) csr_entry (
           // in
           .*,
+          .ext_write_enable,
           .ext_data(ext_entry_data),
           // out
           .out(temp_entry[k])
@@ -163,12 +165,12 @@ module n_clic
         m_int_thresh_write_enable = 1;
         $display("interrupt take pc_out %d", pc_out);
       end else if (pc_in == ~(IMemAddrWidth'(0))) begin
-        $display("pop");
         push = 0;
         pop = 1;
-        pc_out = 0;  // TODO
+        pc_out = stack_addr_out;
         m_int_thresh_data = 0;  // TODO
         m_int_thresh_write_enable = 1;
+        $display("pop");
       end else begin
         push = 0;
         pop = 0;
@@ -178,30 +180,31 @@ module n_clic
         $display("interrupt NOT take");
       end
     end
+    // epc stack
+    stack #(
+        .StackDepth(PrioLevels),
+        .DataWidth (IMemAddrWidth)
+    ) dut (
+        // in
+        .clk,
+        .reset,
+        .push,
+        .pop,
+        .data_in  (pc_in),
+        // out,
+        .data_out (stack_addr_out),
+        .index_out(level_out)
+    );
   endgenerate
 
   // to test epc stack
   logic push;
   logic pop;
   logic [IMemAddrWidth-1:0] data_in;
-  logic [IMemAddrWidth-1:0] data_out;
+  logic [IMemAddrWidth-1:0] stack_addr_out;
   logic [PrioWidth-1:0] level_out;  // stack depth
 
-  // epc stack
-  stack #(
-      .StackDepth(PrioLevels),
-      .DataWidth (IMemAddrWidth)
-  ) dut (
-      // in
-      .clk,
-      .reset,
-      .push,
-      .pop,
-      .data_in  (pc_in),
-      // out,
-      .data_out,
-      .index_out(level_out)
-  );
+
 endmodule
 
 
