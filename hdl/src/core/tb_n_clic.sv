@@ -101,9 +101,7 @@ module tb_n_clic;
     #1;
     clic_dump();
     assert (dut.is_int[7] == 1 && dut.max_prio[7] == 2 && dut.max_vec[7] == 2);
-    // dut.gen_csr[0].csr.data = ;  // initial prio, minthresh
-    // #1;
-    // clic_dump();
+
 
 
 
