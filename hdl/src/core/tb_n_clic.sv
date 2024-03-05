@@ -16,7 +16,7 @@ module tb_n_clic;
   word out;
 
   logic [IMemAddrWidth-1:0] pc_in;
-  logic [IMemAddrWidth-1:0] pc_out;
+  logic [IMemAddrWidth-1:0] n_clic_pc_out;
   n_clic dut (
       // in
       .clk,
@@ -27,15 +27,39 @@ module tb_n_clic;
       .rs1_data,
       .csr_op,
       //
-      .pc_in,
-      .pc_out,
+      .pc_in(pc_reg_out),
+      .pc_out(n_clic_pc_out),
       // out
       .out(out)
   );
 
+  logic [IMemAddrWidth-1:0] pc_reg_out;
+  reg_n #(
+      .DataWidth(IMemAddrWidth)
+  ) pc_reg (
+      // in
+      .clk,
+      .reset,
+      .in (pc_mux_out),
+      // out
+      .out(pc_reg_out)
+  );
+
+  pc_mux_t pc_mux_sel;
+  logic [IMemAddrWidth-1:0] pc_branch;
+  logic [IMemAddrWidth-1:0] pc_mux_out;
+  pc_mux #(
+      .AddrWidth(IMemAddrWidth)
+  ) pc_mux (
+      // in
+      .sel(pc_mux_sel),
+      .pc_next(n_clic_pc_out),
+      .pc_branch(pc_branch),
+      // out
+      .out(pc_mux_out)
+  );
+
   always #10 clk = ~clk;
-
-
 
   // logic [4:0] entry;
   function void clic_dump();
@@ -46,14 +70,7 @@ module tb_n_clic;
     end
   endfunction
 
-  reg_n #(
-      .DataWidth(IMemAddrWidth)
-  ) pc_reg (
-      .clk,
-      .reset,
-      .in (pc_out),
-      .out(pc_in)
-  );
+
 
   initial begin
     $dumpfile("n_clic.fst");
@@ -76,6 +93,7 @@ module tb_n_clic;
     dut.gen_vec[4].csr_vec.data = 8;  //
     dut.gen_vec[7].csr_vec.data = 14;  // 
 
+    pc_mux_sel = PC_NEXT;
 
     #20;  // force clocking
 
@@ -85,16 +103,36 @@ module tb_n_clic;
     $display("pend vec 4");
     dut.gen_vec[4].csr_entry.data |= (1 << 0);  // pended
     #20;  // force clock
+    assert (dut.pc_out == 32);
     clic_dump();
 
-    $display("pend vec 0");
+    $display("pend vec 0 no interrupt");
     dut.gen_vec[0].csr_entry.data |= (1 << 0);  // pended
     #20;  // force clock
+    assert (dut.pc_out == 32);
     clic_dump();
 
     $display("pend vec 2");
     dut.gen_vec[2].csr_entry.data |= (1 << 0);  // pended
     #20;  // force clock
+    assert (dut.pc_out == 16);
+    clic_dump();
+    assert (dut.pc_out == 16);
+    $display("no pend, no interrupt");
+    #20;  // force clock
+
+    clic_dump();
+    $display("pend vec 7");
+    dut.gen_vec[7].csr_entry.data |= (1 << 0);  // pended
+    #20;  // force clock
+    assert (dut.pc_out == 56);
+    clic_dump();
+
+    pc_mux_sel = PC_BRANCH;
+    pc_branch  = 'hFF;
+    $display("jal ff");
+    #20;  // force clock
+    assert (dut.pc_out == 'hFF);
     clic_dump();
 
 

@@ -2,11 +2,13 @@
 `timescale 1ns / 1ps
 
 import decoder_pkg::*;
-module pc_mux (
+module pc_mux #(
+    parameter integer unsigned AddrWidth = 32
+) (
     input pc_mux_t sel,
-    input word pc_next,
-    input word pc_branch,
-    output word out
+    input logic [AddrWidth-1:0] pc_next,
+    input logic [AddrWidth-1:0] pc_branch,
+    output logic [AddrWidth-1:0] out
 );
 
   always_comb begin
