@@ -33,9 +33,11 @@ top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
 
 top_mem = $(top_dep) $(root)/top.sv $(root)/tb_top_mem.sv
 
-n_clic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/n_clic.sv $(core)/csr.sv $(core)/tb_n_clic.sv
+n_clic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/reg_n.sv $(core)/n_clic.sv $(core)/csr.sv $(core)/tb_n_clic.sv
 
 csr = $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/tb_csr.sv
+
+stack = $(core)/decoder_pkg.sv $(core)/stack.sv $(core)/tb_stack.sv
 
 mem = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
 
@@ -100,6 +102,13 @@ tb_csr: $(csr)
 
 tb_csr_g: 
 	gtkwave -a csr.gtkw csr.fst
+
+tb_stack: $(stack)
+	verilator --binary $(stack) --top-module tb_stack --trace-fst --assert
+	obj_dir/Vtb_stack
+
+tb_stack_g: 
+	gtkwave -a stack.gtkw stack.fst
 
 tb_n_clic: $(n_clic)
 	verilator --binary $(n_clic) --top-module tb_n_clic --trace-fst --assert
