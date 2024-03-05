@@ -48,14 +48,17 @@ module tb_stack;
     assert (index_out == 3 && data_out == 0);
 
     // push
-    data_in = 1;
     push = 1;
+    data_in = 1;
+    $display("push %d", data_in);
     #20;
     $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 2 && data_out == 1);
 
     // no push
     push = 0;
+    $display("no pop/push");
+
     #20;
     $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 2 && data_out == 1);
@@ -63,6 +66,7 @@ module tb_stack;
     // push
     push = 1;
     data_in = 2;
+    $display("push %d", data_in);
     #20;
     $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 1 && data_out == 2);
@@ -70,6 +74,7 @@ module tb_stack;
     // push
     push = 1;
     data_in = 3;
+    $display("push %d", data_in);
     #20;
     $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 0 && data_out == 3);
@@ -77,6 +82,7 @@ module tb_stack;
     // push
     push = 1;
     data_in = 4;
+    $display("push %d", data_in);
     #20;
     $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 3 && data_out == 4);
@@ -84,24 +90,28 @@ module tb_stack;
     // nothing
     push = 0;
     data_in = 4;
+    $display("no pop/push");
     #20;
     $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 3 && data_out == 4);
 
     // pop
     pop = 1;
+    $display("pop");
     #20;
     $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 0 && data_out == 3);
 
     // pop
     pop = 1;
+    $display("pop");
     #20;
     $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 1 && data_out == 2);
 
     // pop
     pop = 1;
+    $display("pop");
     #20;
     $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 2 && data_out == 1);
