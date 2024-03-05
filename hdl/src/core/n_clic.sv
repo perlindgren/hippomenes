@@ -22,13 +22,36 @@ module n_clic
 ) (
     input logic clk,
     input logic reset,
+
+    // csr registers
     input logic csr_enable,
     input csr_addr_t csr_addr,
     input r rs1_zimm,
     input word rs1_data,
     input csr_op_t csr_op,
+
+    // epc
+    input logic [IMemAddrWidth-1:0] pc_in,
+
+    //
     output word out
 );
+  logic m_int_thresh_write_enable;
+  logic [PrioWidth-1:0] m_int_thresh_data;
+
+  csr #(
+      .CsrWidth(PrioWidth),
+      .Addr(MIntThreshAddr)
+  ) m_int_thresh (
+      // in
+      .*,
+      .ext_data(m_int_thresh_data),
+      .ext_write_enable(m_int_thresh_write_enable),
+      // out
+      .out
+  );
+
+
   typedef struct packed {
     integer width;
     csr_addr_t addr;
@@ -36,35 +59,6 @@ module n_clic
     logic read;
     logic write;
   } csr_struct_t;
-
-  // TODO: move to config
-  localparam csr_struct_t CsrVec[3] = {
-    '{PrioWidth, MIntThreshAddr, 20, 1, 1},
-    '{32, MStatusAddr, 10, 1, 1},
-    '{VecWidth, StackDepthAddr, 8, 1, 0}
-  };
-  // generate generic csr registers
-  generate
-    word temp[3];
-    for (genvar k = 0; k < 3; k++) begin : gen_csr
-      csr #(
-          .CsrWidth(CsrVec[k].width),
-          .Addr(CsrVec[k].addr),
-          .ResetValue(CsrVec[k].reset_val[CsrVec[k].width-1:0]),
-          .Read(CsrVec[k].read),
-          .Write(CsrVec[k].write)
-      ) csr (
-          // in
-          .*,
-          // out
-          .out(temp[k])
-      );
-
-      // one hot encoding, only one match allowed
-      assign out = (csr_addr == CsrVec[k].addr) ? temp[k] : 'z;
-    end
-
-  endgenerate
 
   // smart packed struct allowng for 5 bit immediates in CSR
   typedef struct packed {
@@ -85,6 +79,12 @@ module n_clic
     logic [PrioWidth-1:0] prio;
     entry_t entry;
 
+    // automatically connected
+    logic ext_write_enable;
+    logic [(IMemAddrWidth - 2)-1:0] ext_vec_data;
+    logic [$bits(entry_t)-1:0] ext_entry_data;
+
+
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
           .Addr(12'(VecCsrBase + k)),
@@ -92,6 +92,7 @@ module n_clic
       ) csr_vec (
           // in
           .*,
+          .ext_data(ext_vec_data),
           // out
           .out(temp_vec[k])
       );
@@ -102,6 +103,7 @@ module n_clic
       ) csr_entry (
           // in
           .*,
+          .ext_data(ext_entry_data),
           // out
           .out(temp_entry[k])
       );
@@ -109,6 +111,10 @@ module n_clic
       // one hot encoding, only one match allowed
       assign out = (csr_addr == 12'(VecCsrBase + k)) ? temp_vec[k] : 'z;
       assign out = (csr_addr == 12'(EntryCsrBase + k)) ? temp_entry[k] : 'z;
+      assign ext_write_enable = 0;  // these should not be written as of now
+      assign ext_vec_data = 0;  // these should not be written as of now
+      assign ext_entry_data = 0;  // these should not be written as of now
+
 
       // stupid implementation to find max priority
       always_comb begin
@@ -116,13 +122,13 @@ module n_clic
         prio  = entry.prio;  // a bit of a hack to please Verilator
 
         if (k == 0) begin
-          if (entry.enabled && entry.pended && (prio > gen_csr[0].csr.data)) begin
+          if (entry.enabled && entry.pended && (prio > m_int_thresh.data)) begin
             is_int[0]   = 1;
             max_prio[0] = prio;
             max_vec[0]  = 0;
           end else begin
             is_int[0]   = 0;
-            max_prio[0] = gen_csr[0].csr.data;
+            max_prio[0] = m_int_thresh.data;
             max_vec[0]  = 0;
           end
         end else begin
@@ -136,7 +142,21 @@ module n_clic
             max_vec[k]  = max_vec[k-1];
           end
         end
+
+        // interrupt to take
+        if (k == VecSize - 1 && is_int[k]) begin
+          $display("interrupt take");
+          m_int_thresh_data = max_prio[k];
+          m_int_thresh_write_enable = 1;
+          push = 1;
+        end else begin
+          $display("interrupt NOT take");
+          push = 0;
+          m_int_thresh_data = 0;
+          m_int_thresh_write_enable = 0;
+        end
       end
+
     end
 
   endgenerate
@@ -158,7 +178,7 @@ module n_clic
       .reset,
       .push,
       .pop,
-      .data_in,
+      .data_in(pc_in),
       // out,
       .data_out,
       .index_out
@@ -170,3 +190,31 @@ endmodule
 
 
 
+// // TODO: move to config
+// localparam csr_struct_t CsrVec[3] = {
+//   '{PrioWidth, MIntThreshAddr, 20, 1, 1},
+//   '{32, MStatusAddr, 10, 1, 1},
+//   '{VecWidth, StackDepthAddr, 8, 1, 0}
+// };
+// generate generic csr registers
+// generate
+//   word temp[3];
+//   for (genvar k = 0; k < 3; k++) begin : gen_csr
+//     csr #(
+//         .CsrWidth(CsrVec[k].width),
+//         .Addr(CsrVec[k].addr),
+//         .ResetValue(CsrVec[k].reset_val[CsrVec[k].width-1:0]),
+//         .Read(CsrVec[k].read),
+//         .Write(CsrVec[k].write)
+//     ) csr (
+//         // in
+//         .*,
+//         // out
+//         .out(temp[k])
+//     );
+
+//     // one hot encoding, only one match allowed
+//     assign out = (csr_addr == CsrVec[k].addr) ? temp[k] : 'z;
+//   end
+
+// endgenerate

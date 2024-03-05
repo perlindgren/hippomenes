@@ -22,6 +22,10 @@ module csr #(
     input csr_op_t csr_op,
     input r rs1_zimm,
     input word rs1_data,
+
+    // external access for side effects
+    input CsrDataT ext_data,
+    input logic ext_write_enable,
     output word out  // should prehaps be [CsrWidth-1:0]?
 );
   CsrDataT data;
@@ -29,37 +33,38 @@ module csr #(
   // asynchronous read, side effect (if any) later
   assign out = Read && (csr_addr == Addr) ? 32'($unsigned(data)) : 0;
 
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (reset) begin
       data <= ResetValue;
-    end else begin
-      // here we can do side effect on both read and write
-      if (csr_enable && (csr_addr == Addr) && Write) begin
-        case (csr_op)
-          CSRRW: begin
-            data <= CsrDataT'(rs1_data);
-          end
-          CSRRS: begin
-            data <= data | CsrDataT'(rs1_data);
-          end
-          CSRRC: begin
-            data <= data & ~(CsrDataT'(rs1_data));
-          end
-          CSRRWI: begin
-            // use rs1_zimm as immediate
-            data <= CsrDataT'($unsigned(rs1_zimm));
-          end
-          CSRRSI: begin
-            // use rs1_zimm as immediate
-            data <= data | CsrDataT'($unsigned(rs1_zimm));
-          end
-          CSRRCI: begin
-            // use rs1_zimm as immediate
-            data <= data & (~CsrDataT'($unsigned(rs1_zimm)));
-          end
-          default: ;
-        endcase
-      end
+    end else if (ext_write_enable) begin
+      // here we do side effect on both read and write
+      $display("--- ext data ---");
+      data <= ext_data;
+    end else if (csr_enable && (csr_addr == Addr) && Write) begin
+      case (csr_op)
+        CSRRW: begin
+          data <= CsrDataT'(rs1_data);
+        end
+        CSRRS: begin
+          data <= data | CsrDataT'(rs1_data);
+        end
+        CSRRC: begin
+          data <= data & ~(CsrDataT'(rs1_data));
+        end
+        CSRRWI: begin
+          // use rs1_zimm as immediate
+          data <= CsrDataT'($unsigned(rs1_zimm));
+        end
+        CSRRSI: begin
+          // use rs1_zimm as immediate
+          data <= data | CsrDataT'($unsigned(rs1_zimm));
+        end
+        CSRRCI: begin
+          // use rs1_zimm as immediate
+          data <= data & (~CsrDataT'($unsigned(rs1_zimm)));
+        end
+        default: ;
+      endcase
     end
   end
 

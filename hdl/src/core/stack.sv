@@ -28,6 +28,7 @@ module stack
       index = StackDepthWidth'(StackDepth - 1);  // growing towards lower index
       data[index] = 0;
     end else if (push) begin
+      $display("--- push ---");
       index -= 1;  // yes we allow wrapping
       data[index] = data_in;
     end else if (pop) begin
