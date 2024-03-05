@@ -16,6 +16,7 @@ module tb_n_clic;
   word out;
 
   logic [IMemAddrWidth-1:0] pc_in;
+  logic [IMemAddrWidth-1:0] pc_out;
   n_clic dut (
       // in
       .clk,
@@ -27,6 +28,7 @@ module tb_n_clic;
       .csr_op,
       //
       .pc_in,
+      .pc_out,
       // out
       .out(out)
   );
@@ -37,13 +39,21 @@ module tb_n_clic;
 
   // logic [4:0] entry;
   function void clic_dump();
-    $display("mintresh %d", dut.m_int_thresh.data);
+    $display("mintresh %d, level %d", dut.m_int_thresh.data, dut.index_out);
     for (integer i = 0; i < 8; i++) begin
-      $display("%d, is_int %b max_prio %d, max_vec %d", i, dut.is_int[i], dut.max_prio[i],
-               dut.max_vec[i]);
+      $display("%d, is_int %b max_prio %d, max_vec %d, pc_in %d, pc_out %d", i, dut.is_int[i],
+               dut.max_prio[i], dut.max_vec[i], dut.pc_in, dut.pc_out);
     end
   endfunction
 
+  reg_n #(
+      .DataWidth(IMemAddrWidth)
+  ) pc_reg (
+      .clk,
+      .reset,
+      .in (pc_out),
+      .out(pc_in)
+  );
 
   initial begin
     $dumpfile("n_clic.fst");
@@ -61,7 +71,14 @@ module tb_n_clic;
     dut.gen_vec[4].csr_entry.data = (1 << 2) | (1 << 1);  // 4, prio 1, enabled
     dut.gen_vec[7].csr_entry.data = (7 << 2) | (1 << 1);  // 7, prio 7, enabled
 
+    dut.gen_vec[0].csr_vec.data = 2;  // in words
+    dut.gen_vec[2].csr_vec.data = 4;  //
+    dut.gen_vec[4].csr_vec.data = 8;  //
+    dut.gen_vec[7].csr_vec.data = 14;  // 
+
+
     #20;  // force clocking
+
     clic_dump();
     assert (dut.is_int[7] == 0 && dut.max_prio[7] == 0 && dut.max_vec[7] == 0);
 
@@ -69,6 +86,18 @@ module tb_n_clic;
     dut.gen_vec[4].csr_entry.data |= (1 << 0);  // pended
     #20;  // force clock
     clic_dump();
+
+    $display("pend vec 0");
+    dut.gen_vec[0].csr_entry.data |= (1 << 0);  // pended
+    #20;  // force clock
+    clic_dump();
+
+    $display("pend vec 2");
+    dut.gen_vec[2].csr_entry.data |= (1 << 0);  // pended
+    #20;  // force clock
+    clic_dump();
+
+
     // assert (dut.is_int[7] == 1 && dut.max_prio[7] == 1 && dut.max_vec[7] == 4);
 
     // $display("pend vec 0");

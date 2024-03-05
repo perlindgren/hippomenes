@@ -34,7 +34,8 @@ module n_clic
     input logic [IMemAddrWidth-1:0] pc_in,
 
     //
-    output word out
+    output word out,
+    output logic [IMemAddrWidth-1:0] pc_out
 );
   logic m_int_thresh_write_enable;
   logic [PrioWidth-1:0] m_int_thresh_data;
@@ -69,9 +70,9 @@ module n_clic
 
   // generate vector table
   /* verilator lint_off UNOPTFLAT */
-  logic [PrioWidth-1:0] max_prio[VecSize];
-  logic [ VecWidth-1:0] max_vec [VecSize];
-  logic                 is_int  [VecSize];
+  logic [         PrioWidth-1:0] max_prio[VecSize];
+  logic [(IMemAddrWidth -2)-1:0] max_vec [VecSize];
+  logic                          is_int  [VecSize];
 
   generate
     word temp_vec[VecSize];
@@ -125,7 +126,7 @@ module n_clic
           if (entry.enabled && entry.pended && (prio > m_int_thresh.data)) begin
             is_int[0]   = 1;
             max_prio[0] = prio;
-            max_vec[0]  = 0;
+            max_vec[0]  = csr_vec.data;
           end else begin
             is_int[0]   = 0;
             max_prio[0] = m_int_thresh.data;
@@ -135,7 +136,7 @@ module n_clic
           if (entry.enabled && entry.pended && (prio > max_prio[k-1])) begin
             is_int[k]   = 1;
             max_prio[k] = prio;
-            max_vec[k]  = k;
+            max_vec[k]  = csr_vec.data;
           end else begin
             is_int[k]   = is_int[k-1];
             max_prio[k] = max_prio[k-1];
@@ -145,15 +146,18 @@ module n_clic
 
         // interrupt to take
         if (k == VecSize - 1 && is_int[k]) begin
-          $display("interrupt take");
+          //  $display("interrupt take");
           m_int_thresh_data = max_prio[k];
           m_int_thresh_write_enable = 1;
           push = 1;
+          pc_out = {max_vec[k], 2'b00};  // convert to byte address inestruction memory
+          $display("interrupt take pc_out %d", pc_out);
         end else begin
           $display("interrupt NOT take");
           push = 0;
           m_int_thresh_data = 0;
           m_int_thresh_write_enable = 0;
+          pc_out = pc_in;
         end
       end
 
