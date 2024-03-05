@@ -23,18 +23,19 @@ module stack
   logic [StackDepthWidth-1:0] index;
 
   // not sure if <= should be used instead...
+  // both push and pop in same cycle 
   always_ff @(posedge clk) begin
     if (reset) begin
       index = StackDepthWidth'(StackDepth - 1);  // growing towards lower index
       data[index] = 0;
-    end else if (push) begin
-      $display("--- push ---");
-      index -= 1;  // yes we allow wrapping
-      data[index] = data_in;
-    end else if (pop) begin
+    end else if (pop && ~push) begin
+      $display("--- pop ---");
       index += 1;
+    end else if (push && ~pop) begin
+      $display("--- push ---");
+      index -= 1;
+      data[index] = data_in;
     end
-
   end
 
   assign data_out  = data[index];

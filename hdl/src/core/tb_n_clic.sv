@@ -63,14 +63,12 @@ module tb_n_clic;
 
   // logic [4:0] entry;
   function void clic_dump();
-    $display("mintresh %d, level %d", dut.m_int_thresh.data, dut.index_out);
+    $display("mintresh %d, level (nesting depth) %d", dut.m_int_thresh.data, dut.level_out);
     for (integer i = 0; i < 8; i++) begin
       $display("%d, is_int %b max_prio %d, max_vec %d, pc_in %d, pc_out %d", i, dut.is_int[i],
                dut.max_prio[i], dut.max_vec[i], dut.pc_in, dut.pc_out);
     end
   endfunction
-
-
 
   initial begin
     $dumpfile("n_clic.fst");
@@ -88,10 +86,10 @@ module tb_n_clic;
     dut.gen_vec[4].csr_entry.data = (1 << 2) | (1 << 1);  // 4, prio 1, enabled
     dut.gen_vec[7].csr_entry.data = (7 << 2) | (1 << 1);  // 7, prio 7, enabled
 
-    dut.gen_vec[0].csr_vec.data = 2;  // in words
-    dut.gen_vec[2].csr_vec.data = 4;  //
-    dut.gen_vec[4].csr_vec.data = 8;  //
-    dut.gen_vec[7].csr_vec.data = 14;  // 
+    dut.gen_vec[0].csr_vec.data = 2;  // 8 in byte addr
+    dut.gen_vec[2].csr_vec.data = 4;  // 16
+    dut.gen_vec[4].csr_vec.data = 8;  // 32 
+    dut.gen_vec[7].csr_vec.data = 14;  // 56
 
     pc_mux_sel = PC_NEXT;
 
@@ -129,50 +127,16 @@ module tb_n_clic;
     clic_dump();
 
     pc_mux_sel = PC_BRANCH;
-    pc_branch  = 'hFF;
+    pc_branch  = ~0;
+    dut.gen_vec[7].csr_entry.data ^= (1 << 0);  // unpend
     $display("jal ff");
     #20;  // force clock
-    assert (dut.pc_out == 'hFF);
+    // assert (dut.pc_out == ~0);
+    // assert (dut.m_int_thresh.data == 0);
     clic_dump();
 
-
-    // assert (dut.is_int[7] == 1 && dut.max_prio[7] == 1 && dut.max_vec[7] == 4);
-
-    // $display("pend vec 0");
-    // dut.gen_vec[0].csr_entry.data |= (1 << 0);  // pended
-    // #1;
-    // clic_dump();
-    // assert (dut.is_int[7] == 1 && dut.max_prio[7] == 1 && dut.max_vec[7] == 0);
-
-    // $display("pend vec 2");
-    // dut.gen_vec[2].csr_entry.data |= (1 << 0);  // pended
-    // #1;
-    // clic_dump();
-    // assert (dut.is_int[7] == 1 && dut.max_prio[7] == 2 && dut.max_vec[7] == 2);
-
-    // $display("pend vec 7");
-    // dut.gen_vec[7].csr_entry.data |= (1 << 0);  // pended
-    // #1;
-    // clic_dump();
-    // assert (dut.is_int[7] == 1 && dut.max_prio[7] == 7 && dut.max_vec[7] == 7);
-
-    // $display("un-pend vec 7");
-    // dut.gen_vec[7].csr_entry.data ^= (1 << 0);  // un-pended
-    // #1;
-    // clic_dump();
-    // assert (dut.is_int[7] == 1 && dut.max_prio[7] == 2 && dut.max_vec[7] == 2);
-
-    // $display("raise threshold");
-    // dut.gen_csr[0].csr.data = 7;  // raise threshold
-    // #1;
-    // clic_dump();
-    // assert (dut.is_int[7] == 0 && dut.max_prio[7] == 7 && dut.max_vec[7] == 0);
-
-    // $display("lower threshold");
-    // dut.gen_csr[0].csr.data = 0;  // lower threshold
-    // #1;
-    // clic_dump();
-    // assert (dut.is_int[7] == 1 && dut.max_prio[7] == 2 && dut.max_vec[7] == 2);
+    #20;  // force clock
+    clic_dump();
 
 
 

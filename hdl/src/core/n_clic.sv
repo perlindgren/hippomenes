@@ -85,7 +85,6 @@ module n_clic
     logic [(IMemAddrWidth - 2)-1:0] ext_vec_data;
     logic [$bits(entry_t)-1:0] ext_entry_data;
 
-
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
           .Addr(12'(VecCsrBase + k)),
@@ -116,12 +115,12 @@ module n_clic
       assign ext_vec_data = 0;  // these should not be written as of now
       assign ext_entry_data = 0;  // these should not be written as of now
 
-
       // stupid implementation to find max priority
       always_comb begin
         entry = csr_entry.data;
         prio  = entry.prio;  // a bit of a hack to please Verilator
 
+        // find highest priority interrupt
         if (k == 0) begin
           if (entry.enabled && entry.pended && (prio > m_int_thresh.data)) begin
             is_int[0]   = 1;
@@ -143,26 +142,42 @@ module n_clic
             max_vec[k]  = max_vec[k-1];
           end
         end
-
-        // interrupt to take
-        if (k == VecSize - 1 && is_int[k]) begin
-          //  $display("interrupt take");
-          m_int_thresh_data = max_prio[k];
-          m_int_thresh_write_enable = 1;
-          push = 1;
-          pc_out = {max_vec[k], 2'b00};  // convert to byte address inestruction memory
-          $display("interrupt take pc_out %d", pc_out);
-        end else begin
-          $display("interrupt NOT take");
-          push = 0;
-          m_int_thresh_data = 0;
-          m_int_thresh_write_enable = 0;
-          pc_out = pc_in;
-        end
       end
-
     end
 
+    always_comb begin
+      // check return from interrupt condition
+      if (pc_in == ~(IMemAddrWidth'(0)) && is_int[VecSize-1]) begin
+        // tail chaining, not sure this is correct
+        push = 0;
+        pop = 0;
+        pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
+        m_int_thresh_data = 0;  // no update of threshold
+        m_int_thresh_write_enable = 0;  // no update of threshold
+        $display("tail chaining level_out %d, pop %d", level_out, pop);
+      end else if (is_int[VecSize-1]) begin
+        push = 1;
+        pop = 0;
+        pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
+        m_int_thresh_data = max_prio[VecSize-1];
+        m_int_thresh_write_enable = 1;
+        $display("interrupt take pc_out %d", pc_out);
+      end else if (pc_in == ~(IMemAddrWidth'(0))) begin
+        $display("pop");
+        push = 0;
+        pop = 1;
+        pc_out = 0;  // TODO
+        m_int_thresh_data = 0;  // TODO
+        m_int_thresh_write_enable = 1;
+      end else begin
+        push = 0;
+        pop = 0;
+        m_int_thresh_data = 0;
+        m_int_thresh_write_enable = 0;
+        pc_out = pc_in;
+        $display("interrupt NOT take");
+      end
+    end
   endgenerate
 
   // to test epc stack
@@ -170,7 +185,7 @@ module n_clic
   logic pop;
   logic [IMemAddrWidth-1:0] data_in;
   logic [IMemAddrWidth-1:0] data_out;
-  logic [PrioWidth-1:0] index_out;
+  logic [PrioWidth-1:0] level_out;  // stack depth
 
   // epc stack
   stack #(
@@ -182,13 +197,11 @@ module n_clic
       .reset,
       .push,
       .pop,
-      .data_in(pc_in),
+      .data_in  (pc_in),
       // out,
       .data_out,
-      .index_out
+      .index_out(level_out)
   );
-
-
 endmodule
 
 
