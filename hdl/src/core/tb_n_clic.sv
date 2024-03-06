@@ -149,24 +149,18 @@ module tb_n_clic;
     assert (dut.pc_out == 56);
     clic_dump();
 
-
     pc_mux_sel = PC_BRANCH;
     pc_branch  = ~0;
     dut.gen_vec[7].csr_entry.data ^= (1 << 0);  // unpend
 
     #20 $display("time ", $time());  // force clock
     $display("jal ff");
-    // assert (dut.pc_out == ~0);
-    // assert (dut.m_int_thresh.data == 0);
     clic_dump();
-
 
     #20 $display("time ", $time());  // force clock
     clic_dump();
 
     // test csr:s
-
-
     csr_addr = VecCsrBase;
     csr_enable = 1;
     rs1_zimm = 0;
@@ -202,14 +196,6 @@ module tb_n_clic;
     $display("VecCsrBase + 2 old_csr %h", old_csr);
     assert (out == 'h3f);
     assert (old_csr == 'h3f);
-
-
-
-
-
-
-
-    // // assert (dut.regs[1][3] == 'h00001111);
 
     $finish;
 
