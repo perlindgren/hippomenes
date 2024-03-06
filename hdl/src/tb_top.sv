@@ -70,10 +70,11 @@ module tb_top;
     $dumpvars;
     $display("vals: %h, %h, ", top.imem.mem[0], top.imem.mem[1]);
     #30;  // auipc   sp,0x50000
-
     $warning("auipc   sp,0x50000");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("wb_data_reg.in %h", top.wb_data_reg.in);
+    $display("instr_mem_out %h", top.imem.data_out);
+    $display("imem_addr %h", top.imem.address);
     assert (top.pc_reg.out == 0) $display("ok"); else $warning("fail");
     assert (top.wb_data_reg.in == 'h5000_0000) $display("ok"); else $warning("fail %d", top.wb_data_reg.in);
     assert (top.wb_rd_reg.in == 2) $display("ok"); else $warning("fail");  // sp

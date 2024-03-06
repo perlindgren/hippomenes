@@ -26,9 +26,9 @@ module rom
   //    8:  ff9ff06f            j 0 <l>
   always_comb begin
 
-    mem[0] = 'hb000d073;
-    mem[1] = 'hb0005073;
-    mem[2] = 'hff9ff06f;
+    //mem[0] = 'hb000d073;
+    //mem[1] = 'hb0005073;
+    //mem[2] = 'hff9ff06f;
 
   end
 
