@@ -152,69 +152,68 @@ module n_clic
       assign ext_entry_data   = 0;  // these should not be written as of now
     end
 
-    // stupid implementation to find max priority
-    always_comb begin
-      for (integer k = 0; k < VecSize; k++) begin
-        if (k == 0) begin
-          if (entry[k].enabled && entry[k].pended && (prio[k] > m_int_thresh.data)) begin
-            is_int[0]   = 1;
-            max_prio[0] = prio[k];
-            max_vec[0]  = csr_vec_data[k];
-          end else begin
-            is_int[0]   = 0;
-            max_prio[0] = m_int_thresh.data;
-            max_vec[0]  = 0;
-          end
+  endgenerate
+
+  // stupid implementation to find max priority
+  always_comb begin
+    for (integer k = 0; k < VecSize; k++) begin
+      if (k == 0) begin
+        if (entry[k].enabled && entry[k].pended && (prio[k] > m_int_thresh.data)) begin
+          is_int[0]   = 1;
+          max_prio[0] = prio[k];
+          max_vec[0]  = csr_vec_data[k];
         end else begin
-          if (entry[k].enabled && entry[k].pended && (prio[k] > max_prio[k-1])) begin
-            is_int[k]   = 1;
-            max_prio[k] = prio[k];
-            max_vec[k]  = csr_vec_data[k];
-          end else begin
-            is_int[k]   = is_int[k-1];
-            max_prio[k] = max_prio[k-1];
-            max_vec[k]  = max_vec[k-1];
-          end
+          is_int[0]   = 0;
+          max_prio[0] = m_int_thresh.data;
+          max_vec[0]  = 0;
+        end
+      end else begin
+        if (entry[k].enabled && entry[k].pended && (prio[k] > max_prio[k-1])) begin
+          is_int[k]   = 1;
+          max_prio[k] = prio[k];
+          max_vec[k]  = csr_vec_data[k];
+        end else begin
+          is_int[k]   = is_int[k-1];
+          max_prio[k] = max_prio[k-1];
+          max_vec[k]  = max_vec[k-1];
         end
       end
     end
+  end
 
-    always_comb begin
-      // check return from interrupt condition
-      if (pc_in == ~(IMemAddrWidth'(0)) && is_int[VecSize-1]) begin
-        // tail chaining, not sure this is correct
-        push = 0;
-        pop = 0;
-        pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
-        m_int_thresh_data = 0;  // no update of threshold
-        m_int_thresh_write_enable = 0;  // no update of threshold
-        $display("tail chaining level_out %d, pop %d", level_out, pop);
-      end else if (is_int[VecSize-1]) begin
-        push = 1;
-        pop = 0;
-        pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
-        m_int_thresh_data = max_prio[VecSize-1];
-        m_int_thresh_write_enable = 1;
-        $display("interrupt take pc_out %d", pc_out);
-      end else if (pc_in == ~(IMemAddrWidth'(0))) begin
-        push = 0;
-        pop = 1;
-        pc_out = stack_out.addr;
-        m_int_thresh_data = stack_out.prio;
-        m_int_thresh_write_enable = 1;
-        $display("pop");
-      end else begin
-        push = 0;
-        pop = 0;
-        m_int_thresh_data = 0;
-        m_int_thresh_write_enable = 0;
-        pc_out = pc_in;
-        $display("interrupt NOT take");
-      end
+  always_comb begin
+    // check return from interrupt condition
+    if (pc_in == ~(IMemAddrWidth'(0)) && is_int[VecSize-1]) begin
+      // tail chaining, not sure this is correct
+      push = 0;
+      pop = 0;
+      pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
+      m_int_thresh_data = 0;  // no update of threshold
+      m_int_thresh_write_enable = 0;  // no update of threshold
+      $display("tail chaining level_out %d, pop %d", level_out, pop);
+    end else if (is_int[VecSize-1]) begin
+      push = 1;
+      pop = 0;
+      pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
+      m_int_thresh_data = max_prio[VecSize-1];
+      m_int_thresh_write_enable = 1;
+      $display("interrupt take pc_out %d", pc_out);
+    end else if (pc_in == ~(IMemAddrWidth'(0))) begin
+      push = 0;
+      pop = 1;
+      pc_out = stack_out.addr;
+      m_int_thresh_data = stack_out.prio;
+      m_int_thresh_write_enable = 1;
+      $display("pop");
+    end else begin
+      push = 0;
+      pop = 0;
+      m_int_thresh_data = 0;
+      m_int_thresh_write_enable = 0;
+      pc_out = pc_in;
+      $display("interrupt NOT take");
     end
-  endgenerate
-
-
+  end
 
 endmodule
 
