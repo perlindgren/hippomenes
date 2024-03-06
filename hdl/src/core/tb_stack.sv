@@ -2,9 +2,9 @@
 `timescale 1ns / 1ps
 
 module tb_stack;
-  parameter integer unsigned StackDepth = 4;
+  localparam integer unsigned StackDepth = 4;
   localparam integer StackDepthWidth = $clog2(StackDepth);  // derived
-  parameter integer unsigned DataWidth = 8;
+  localparam integer unsigned DataWidth = 8;
 
   logic                       clk;
   logic                       reset;
