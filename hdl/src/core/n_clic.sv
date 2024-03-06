@@ -40,6 +40,7 @@ module n_clic
 
   // CSR m_int_thresh
   logic m_int_thresh_write_enable;
+  word m_int_thresh_out;
   logic [PrioWidth-1:0] m_int_thresh_data;
   csr #(
       .CsrWidth(PrioWidth),
@@ -56,7 +57,7 @@ module n_clic
       .ext_data(m_int_thresh_data),
       .ext_write_enable(m_int_thresh_write_enable),
       // out
-      .out
+      .out(m_int_thresh_out)
   );
 
   // typedef struct packed {
@@ -196,31 +197,49 @@ module n_clic
       pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
       m_int_thresh_data = 0;  // no update of threshold
       m_int_thresh_write_enable = 0;  // no update of threshold
-      $display("tail chaining level_out %d, pop %d", level_out, pop);
+      // $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (is_int[VecSize-1]) begin
       push = 1;
       pop = 0;
       pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
       m_int_thresh_data = max_prio[VecSize-1];
       m_int_thresh_write_enable = 1;
-      $display("interrupt take pc_out %d", pc_out);
+      // $display("interrupt take pc_out %d", pc_out);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
       push = 0;
       pop = 1;
       pc_out = stack_out.addr;
       m_int_thresh_data = stack_out.prio;
       m_int_thresh_write_enable = 1;
-      $display("pop");
+      // $display("pop");
     end else begin
       push = 0;
       pop = 0;
       m_int_thresh_data = 0;
       m_int_thresh_write_enable = 0;
       pc_out = pc_in;
-      $display("interrupt NOT take");
+      // $display("interrupt NOT take");
     end
   end
 
+  always_latch begin
+    if (csr_addr == 12'(MIntThreshAddr)) begin
+      out = m_int_thresh_out;
+    end else begin
+      for (int k = 0; k < VecSize; k++) begin
+        if (csr_addr == 12'(VecCsrBase + k)) begin
+          out = temp_vec[k];
+          break;
+        end
+      end
+      for (int k = 0; k < VecSize; k++) begin
+        if (csr_addr == 12'(EntryCsrBase + k)) begin
+          out = temp_vec[k];
+          break;
+        end
+      end
+    end
+  end
 endmodule
 
 

@@ -30,38 +30,53 @@ module csr #(
 );
   CsrDataT data;
 
-  // asynchronous read, side effect (if any) later
+  // asynchronous read
+  // we don't currently implement side effect, besides the ext_data
   assign out = Read && (csr_addr == Addr) ? 32'($unsigned(data)) : 0;
 
   always_ff @(posedge clk) begin
     if (reset) begin
       data <= ResetValue;
     end else if (ext_write_enable) begin
-      // here we do side effect on both read and write
+      // here we do side effect write
       $display("--- ext data ---");
       data <= ext_data;
     end else if (csr_enable && (csr_addr == Addr) && Write) begin
       case (csr_op)
         CSRRW: begin
+          // side effect on read/write here
           data <= CsrDataT'(rs1_data);
         end
-        CSRRS: begin
-          data <= data | CsrDataT'(rs1_data);
+        CSRRS: begin  // set only if rs1 != x0
+          if (rs1_zimm != 0) begin
+            // side effect here
+            data <= data | CsrDataT'(rs1_data);
+          end
         end
-        CSRRC: begin
-          data <= data & ~(CsrDataT'(rs1_data));
+        CSRRC: begin  // clear only if rs1 != x0
+          if (rs1_zimm != 0) begin
+            // write side effect here
+            data <= data & ~(CsrDataT'(rs1_data));
+          end
         end
         CSRRWI: begin
           // use rs1_zimm as immediate
+          // write side effect here
           data <= CsrDataT'($unsigned(rs1_zimm));
         end
         CSRRSI: begin
           // use rs1_zimm as immediate
-          data <= data | CsrDataT'($unsigned(rs1_zimm));
+          if (rs1_zimm != 0) begin
+            // write side effect here
+            data <= data | CsrDataT'($unsigned(rs1_zimm));
+          end
         end
         CSRRCI: begin
           // use rs1_zimm as immediate
-          data <= data & (~CsrDataT'($unsigned(rs1_zimm)));
+          if (rs1_zimm != 0) begin
+            // write side effect here
+            data <= data & (~CsrDataT'($unsigned(rs1_zimm)));
+          end
         end
         default: ;
       endcase
