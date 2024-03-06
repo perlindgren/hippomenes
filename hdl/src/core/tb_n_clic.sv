@@ -79,6 +79,7 @@ module tb_n_clic;
     rs1_zimm = 0;
     rs1_data = 0;
     csr_op = CSRRW;
+    pc_in = 0;
 
     clk = 0;
     reset = 1;
@@ -99,6 +100,7 @@ module tb_n_clic;
     dut.gen_vec[7].csr_vec.data = 14;  // 56
 
     pc_mux_sel = PC_NEXT;
+    pc_branch = 0;
 
     #20 $display("time ", $time());  // force clocking
 
