@@ -16,8 +16,8 @@ module tb_stack;
   logic [StackDepthWidth-1:0] index_out;
 
   stack #(
-      .StackDepth,
-      .DataWidth
+      .StackDepth(StackDepth),
+      .DataWidth(DataWidth)
   ) dut (
       // in
       .clk,
