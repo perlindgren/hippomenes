@@ -68,16 +68,16 @@ module tb_top;
   initial begin
     $dumpfile("top.fst");
     $dumpvars;
-
+    $display("vals: %h, %h, ", top.imem.mem[0], top.imem.mem[1]);
     #30;  // auipc   sp,0x50000
 
     $warning("auipc   sp,0x50000");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("wb_data_reg.in %h", top.wb_data_reg.in);
-    assert (top.pc_reg.out == 0);
-    assert (top.wb_data_reg.in == 'h5000_0000);
-    assert (top.wb_rd_reg.in == 2);  // sp
-    assert (top.wb_write_enable_reg.in == 1);  // should write to rf
+    assert (top.pc_reg.out == 0) $display("ok"); else $warning("fail");
+    assert (top.wb_data_reg.in == 'h5000_0000) $display("ok"); else $warning("fail %d", top.wb_data_reg.in);
+    assert (top.wb_rd_reg.in == 2) $display("ok"); else $warning("fail");  // sp
+    assert (top.wb_write_enable_reg.in == 1) $display("ok"); else $warning("fail");  // should write to rf
 
     #20;  // addi sp,sp,1280 # 50000500 // sign ext
     $warning("addi sp,sp,1280 # 50000500");

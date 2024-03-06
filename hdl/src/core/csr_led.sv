@@ -26,7 +26,7 @@ module csr_led #(
 
   csr #(
       // .ResetValue(1),  // sanity testing of ResetValue
-      .CsrWidth,
+      .CsrWidth(CsrWidth),
       .Addr(0)
   ) csr_led (
       .clk,
