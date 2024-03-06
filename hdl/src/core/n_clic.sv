@@ -46,7 +46,13 @@ module n_clic
       .Addr(MIntThreshAddr)
   ) m_int_thresh (
       // in
-      .*,
+      .clk,
+      .reset,
+      .csr_enable,
+      .csr_addr,
+      .rs1_zimm,
+      .rs1_data,
+      .csr_op,
       .ext_data(m_int_thresh_data),
       .ext_write_enable(m_int_thresh_write_enable),
       // out
