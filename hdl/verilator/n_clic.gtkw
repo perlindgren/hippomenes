@@ -1,0 +1,46 @@
+[*]
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Tue Mar  5 16:16:06 2024
+[*]
+[dumpfile] "/data/riscv/hippomenes/hdl/verilator/n_clic.fst"
+[dumpfile_mtime] "Tue Mar  5 16:08:22 2024"
+[dumpfile_size] 2571
+[savefile] "/data/riscv/hippomenes/hdl/verilator/n_clic.gtkw"
+[timestart] 0
+[size] 1433 1032
+[pos] -39 -307
+*-14.892836 134100 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_n_clic.
+[treeopen] TOP.tb_n_clic.dut.
+[sst_width] 322
+[signals_width] 251
+[sst_expanded] 1
+[sst_vpaned_height] 307
+@28
+TOP.tb_n_clic.reset
+TOP.tb_n_clic.clk
+@22
+TOP.tb_n_clic.csr_addr[11:0]
+@28
+TOP.tb_n_clic.csr_enable
+@100000028
+TOP.tb_n_clic.csr_op[2:0]
+@22
+TOP.tb_n_clic.n_clic_pc_out[7:0]
+TOP.tb_n_clic.out[31:0]
+TOP.tb_n_clic.pc_branch[7:0]
+TOP.tb_n_clic.pc_in[7:0]
+TOP.tb_n_clic.pc_mux_out[7:0]
+@100000028
+TOP.tb_n_clic.pc_mux_sel
+@22
+TOP.tb_n_clic.pc_reg_out[7:0]
+TOP.tb_n_clic.rs1_data[31:0]
+TOP.tb_n_clic.rs1_zimm[4:0]
+@28
+TOP.tb_n_clic.dut.dut.pop
+@29
+TOP.tb_n_clic.dut.dut.push
+[pattern_trace] 1
+[pattern_trace] 0
