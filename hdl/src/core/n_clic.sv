@@ -37,9 +37,10 @@ module n_clic
     output word out,
     output logic [IMemAddrWidth-1:0] pc_out
 );
+
+  // CSR m_int_thresh
   logic m_int_thresh_write_enable;
   logic [PrioWidth-1:0] m_int_thresh_data;
-
   csr #(
       .CsrWidth(PrioWidth),
       .Addr(MIntThreshAddr)
@@ -52,30 +53,59 @@ module n_clic
       .out
   );
 
+  // typedef struct packed {
+  //   integer width;
+  //   csr_addr_t addr;
+  //   word reset_val;
+  //   logic read;
+  //   logic write;
+  // } csr_struct_t;
 
-  typedef struct packed {
-    integer width;
-    csr_addr_t addr;
-    word reset_val;
-    logic read;
-    logic write;
-  } csr_struct_t;
-
-  // smart packed struct allowng for 5 bit immediates in CSR
+  // packed struct allowng for 5 bit immediates in CSR
   typedef struct packed {
     logic [PrioWidth-1:0] prio;
     logic enabled;
     logic pended;  // LSB
   } entry_t;
 
+  // stack_t data_in;
+
+  // stack
+  logic push;
+  logic pop;
+  typedef struct packed {
+    logic [IMemAddrWidth-1:0] addr;
+    logic [PrioWidth-1:0]     prio;
+  } stack_t;
+
+  stack_t stack_out;
+  logic [PrioWidth-1:0] level_out;  // stack depth
+  // epc address stack
+  stack #(
+      .StackDepth(PrioLevels),
+      .DataWidth ($bits(stack_t))
+  ) epc_stack (
+      // in
+      .clk,
+      .reset,
+      .push,
+      .pop,
+      .data_in  ({pc_in, m_int_thresh.data}),
+      // out,
+      .data_out (stack_out),
+      .index_out(level_out)
+  );
+
   // generate vector table
   /* verilator lint_off UNOPTFLAT */
-  logic   [         PrioWidth-1:0] max_prio[VecSize];
-  logic   [(IMemAddrWidth -2)-1:0] max_vec [VecSize];
-  logic                            is_int  [VecSize];
+  logic   [         PrioWidth-1:0] max_prio    [VecSize];
+  logic   [(IMemAddrWidth -2)-1:0] max_vec     [VecSize];
+  logic                            is_int      [VecSize];
 
-  entry_t                          entry   [VecSize];
-  logic   [         PrioWidth-1:0] prio    [VecSize];
+  entry_t                          entry       [VecSize];
+  logic   [         PrioWidth-1:0] prio        [VecSize];
+  logic   [(IMemAddrWidth -2)-1:0] csr_vec_data[VecSize];
+
   generate
     word temp_vec[VecSize];
     word temp_entry[VecSize];
@@ -110,24 +140,26 @@ module n_clic
           .out(temp_entry[k])
       );
 
+      assign entry[k]         = gen_vec[k].csr_entry.data;
+      assign prio[k]          = entry[k].prio;  // a bit of a hack to please Verilator
+      assign csr_vec_data[k]  = gen_vec[k].csr_vec.data;
+
       // one hot encoding, only one match allowed
-      assign out = (csr_addr == 12'(VecCsrBase + k)) ? temp_vec[k] : 'z;
-      assign out = (csr_addr == 12'(EntryCsrBase + k)) ? temp_entry[k] : 'z;
+      // assign out = (csr_addr == 12'(VecCsrBase + k)) ? temp_vec[k] : 'z;
+      // assign out = (csr_addr == 12'(EntryCsrBase + k)) ? temp_entry[k] : 'z;
       assign ext_write_enable = 0;  // these should not be written as of now
-      assign ext_vec_data = 0;  // these should not be written as of now
-      assign ext_entry_data = 0;  // these should not be written as of now
+      assign ext_vec_data     = 0;  // these should not be written as of now
+      assign ext_entry_data   = 0;  // these should not be written as of now
+    end
 
-      // stupid implementation to find max priority
-      always_comb begin
-        entry[k] = gen_vec[k].csr_entry.data;
-        prio[k]  = entry[k].prio;  // a bit of a hack to please Verilator
-
-        // find highest priority interrupt
+    // stupid implementation to find max priority
+    always_comb begin
+      for (integer k = 0; k < VecSize; k++) begin
         if (k == 0) begin
           if (entry[k].enabled && entry[k].pended && (prio[k] > m_int_thresh.data)) begin
             is_int[0]   = 1;
             max_prio[0] = prio[k];
-            max_vec[0]  = gen_vec[k].csr_vec.data;
+            max_vec[0]  = csr_vec_data[k];
           end else begin
             is_int[0]   = 0;
             max_prio[0] = m_int_thresh.data;
@@ -137,7 +169,7 @@ module n_clic
           if (entry[k].enabled && entry[k].pended && (prio[k] > max_prio[k-1])) begin
             is_int[k]   = 1;
             max_prio[k] = prio[k];
-            max_vec[k]  = gen_vec[k].csr_vec.data;
+            max_vec[k]  = csr_vec_data[k];
           end else begin
             is_int[k]   = is_int[k-1];
             max_prio[k] = max_prio[k-1];
@@ -182,33 +214,7 @@ module n_clic
     end
   endgenerate
 
-  // stack
-  logic push;
-  logic pop;
-  typedef struct packed {
-    logic [IMemAddrWidth-1:0] addr;
-    logic [PrioWidth-1:0]     prio;
-  } stack_t;
 
-  // stack_t data_in;
-  stack_t stack_out;
-  logic [PrioWidth-1:0] level_out;  // stack depth
-
-  // epc address stack
-  stack #(
-      .StackDepth(PrioLevels),
-      .DataWidth ($bits(stack_t))
-  ) epc_stack (
-      // in
-      .clk,
-      .reset,
-      .push,
-      .pop,
-      .data_in  ({pc_in, m_int_thresh.data}),
-      // out,
-      .data_out (stack_out),
-      .index_out(level_out)
-  );
 
 endmodule
 
