@@ -68,7 +68,7 @@ module tb_top_clic;
   always #10 clk = ~clk;
 
   initial begin
-    $dumpfile("top.fst");
+    $dumpfile("top_clic.fst");
     $dumpvars;
 
     #30;  // auipc   sp,0x50000

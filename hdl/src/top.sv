@@ -100,7 +100,7 @@ module top (
 
   // decoder
   logic decoder_csr_enable;
-  csr_t decoder_csr_op;
+  csr_op_t decoder_csr_op;
   csr_addr_t decoder_csr_addr;
   mem_width_t decoder_dmem_width;
 
@@ -217,15 +217,18 @@ module top (
 
   word  csr_led_out;
   logic csr_led_match;
+
   csr_led csr_led (
       // in
-      .clk(clk),
-      .reset(reset),
-      .en(decoder_csr_enable),
-      .addr(decoder_csr_addr),
+      .clk,
+      .reset,
+      .csr_enable(decoder_csr_enable),
+      .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
       .rs1_data(rf_rs1),
-      .op(decoder_csr_op),
+      .csr_op(decoder_csr_op),
+      .ext_data(0),
+      .ext_write_enable(0),
       // out
       // .match(csr_led_match),
       .out(csr_led_out),

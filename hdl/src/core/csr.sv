@@ -7,7 +7,7 @@ import decoder_pkg::*;
 // Notice, we assume csrwidth to be at lest 5 bits
 // in order to simplify the code
 module csr #(
-    parameter integer CsrWidth = 32,  // default to word
+    parameter integer unsigned CsrWidth = 32,  // default to word
     localparam type CsrDataT = logic [CsrWidth-1:0],  // derived
 
     parameter logic [CsrWidth-1:0] ResetValue = 0,

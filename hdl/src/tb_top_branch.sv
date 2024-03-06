@@ -48,7 +48,7 @@ module tb_top_branch;
   always #10 clk = ~clk;
 
   initial begin
-    $dumpfile("test_branch.fst");
+    $dumpfile("top_branch.fst");
     $dumpvars;
 
     #10;  // auipc   sp,0x50000

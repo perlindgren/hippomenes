@@ -64,7 +64,7 @@ module tb_top_mem;
   always #10 clk = ~clk;
 
   initial begin
-    $dumpfile("test_mem.fst");
+    $dumpfile("top_mem.fst");
     $dumpvars;
 
     #10;  // auipc   sp,0x50000

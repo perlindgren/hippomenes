@@ -5,30 +5,39 @@
 
 import decoder_pkg::*;
 
-module csr_led (
+module csr_led #(
+    localparam integer unsigned CsrWidth = 1,  // default to word
+    localparam type CsrDataT = logic [CsrWidth-1:0]  // derived
+) (
+
     input logic clk,
     input logic reset,
-    input logic en,
-    input csr_addr_t addr,
+    input logic csr_enable,
+    input csr_addr_t csr_addr,
     input r rs1_zimm,
     input word rs1_data,
-    input csr_t op,
+    input csr_op_t csr_op,
     // output logic match,
+    input CsrDataT ext_data,
+    input logic ext_write_enable,
     output word out,
     output logic led
 );
 
   csr #(
       // .ResetValue(1),  // sanity testing of ResetValue
+      .CsrWidth,
       .Addr(0)
   ) csr_led (
-      .clk(clk),
-      .reset(reset),
-      .en(en),
-      .addr(addr),
-      .rs1_zimm(rs1_zimm),
-      .rs1_data(rs1_data),
-      .op(op),
+      .clk,
+      .reset,
+      .csr_enable,
+      .csr_addr,
+      .rs1_zimm,
+      .rs1_data,
+      .csr_op,
+      .ext_data,
+      .ext_write_enable,
       // .match(match),
       .out(out)
   );

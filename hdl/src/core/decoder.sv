@@ -27,7 +27,7 @@ module decoder (
     output mem_width_t dmem_width,
     // csr
     output logic csr_enable,
-    output csr_t csr_op,
+    output csr_op_t csr_op,
     // write back
     output wb_mux_t wb_mux_sel,
     output r rd,
@@ -210,7 +210,7 @@ module decoder (
         wb_write_enable = 1;
         wb_mux_sel = WB_CSR;
         csr_enable = 1;
-        csr_op = csr_t'(funct3);
+        csr_op = csr_op_t'(funct3);
 
       end
 

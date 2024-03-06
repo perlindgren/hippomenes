@@ -87,14 +87,14 @@ tb_top_branch: $(test_branch)
 	obj_dir/Vtb_top_branch
 
 tb_top_branch_g: 
-	gtkwave -a test_branch.gtkw test_branch.fst
+	gtkwave -a top_branch.gtkw top_branch.fst
 
 tb_top_mem: $(test_mem) 
 	verilator --binary $(top_mem) --top-module tb_top_mem --trace-fst --assert --timing
-	obj_dir/Vtb_test_mem
+	obj_dir/Vtb_top_mem
 
 tb_top_mem_g: 
-	gtkwave -a test_mem.gtkw test_mem.fst
+	gtkwave -a top_mem.gtkw top_mem.fst
 
 tb_csr: $(csr)
 	verilator --binary $(csr) --top-module tb_csr --trace-fst --assert
