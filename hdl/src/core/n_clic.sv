@@ -77,7 +77,7 @@ module n_clic
   entry_t                          entry   [VecSize];
   logic   [         PrioWidth-1:0] prio    [VecSize];
   generate
-    logic [31:0] temp_vec[VecSize];
+    word temp_vec[VecSize];
     word temp_entry[VecSize];
 
     // automatically connected
@@ -110,7 +110,7 @@ module n_clic
           .out(temp_entry[k])
       );
 
-      // one hot encoding, only one match allowedallowed
+      // one hot encoding, only one match allowed
       assign out = (csr_addr == 12'(VecCsrBase + k)) ? temp_vec[k] : 'z;
       assign out = (csr_addr == 12'(EntryCsrBase + k)) ? temp_entry[k] : 'z;
       assign ext_write_enable = 0;  // these should not be written as of now
