@@ -70,10 +70,12 @@ module n_clic
 
   // generate vector table
   /* verilator lint_off UNOPTFLAT */
-  logic [         PrioWidth-1:0] max_prio[VecSize];
-  logic [(IMemAddrWidth -2)-1:0] max_vec [VecSize];
-  logic                          is_int  [VecSize];
+  logic   [         PrioWidth-1:0] max_prio[VecSize];
+  logic   [(IMemAddrWidth -2)-1:0] max_vec [VecSize];
+  logic                            is_int  [VecSize];
 
+  entry_t                          entry   [VecSize];
+  logic   [         PrioWidth-1:0] prio    [VecSize];
   generate
     word temp_vec[VecSize];
     word temp_entry[VecSize];
@@ -84,8 +86,6 @@ module n_clic
     logic [$bits(entry_t)-1:0] ext_entry_data;
 
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
-      entry_t entry[k];
-      logic [PrioWidth-1:0] prio[k];
       csr #(
           .Addr(12'(VecCsrBase + k)),
           .CsrWidth(IMemAddrWidth - 2)
@@ -134,7 +134,7 @@ module n_clic
             max_vec[0]  = 0;
           end
         end else begin
-          if (entry[k].enabled && entry[k].pended && (prio > max_prio[k-1])) begin
+          if (entry[k].enabled && entry[k].pended && (prio[k] > max_prio[k-1])) begin
             is_int[k]   = 1;
             max_prio[k] = prio[k];
             max_vec[k]  = gen_vec[k].csr_vec.data;
