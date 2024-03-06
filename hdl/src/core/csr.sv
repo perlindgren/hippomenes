@@ -31,7 +31,7 @@ module csr #(
   CsrDataT data;
 
   // asynchronous read, side effect (if any) later
-  assign out = Read && (csr_addr == Addr) ? 32'($unsigned(data)) : 'z;
+  assign out = Read && (csr_addr == Addr) ? 32'($unsigned(data)) : 0;
 
   always_ff @(posedge clk) begin
     if (reset) begin

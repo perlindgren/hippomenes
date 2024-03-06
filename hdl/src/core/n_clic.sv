@@ -77,7 +77,7 @@ module n_clic
   entry_t                          entry   [VecSize];
   logic   [         PrioWidth-1:0] prio    [VecSize];
   generate
-    word temp_vec[VecSize];
+    logic [31:0] temp_vec[VecSize];
     word temp_entry[VecSize];
 
     // automatically connected
