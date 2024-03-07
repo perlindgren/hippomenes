@@ -11,11 +11,13 @@ module top_clic (
   import mem_pkg::*;
 
   // registers
-  word pc_reg_out;
-  reg_n pc_reg (
+  IMemAddrT pc_reg_out;
+  reg_n #(
+      .DataWidth(IMemAddrWidth)
+  ) pc_reg (
       .clk(clk),
       .reset(reset),
-      .in(pc_mux_out),
+      .in(n_clic_pc_out),
       .out(pc_reg_out)
   );
 
@@ -49,17 +51,21 @@ module top_clic (
   );
 
   // pc related
-  word pc_mux_out;
-  pc_mux pc_mux (
+  IMemAddrT pc_mux_out;
+  pc_mux #(
+      .AddrWidth(IMemAddrWidth)
+  ) pc_mux (
       .sel(branch_logic_out),
       .pc_next(pc_adder_out),
-      .pc_branch(alu_res),
+      .pc_branch(IMemAddrWidth'(alu_res)),
       .out(pc_mux_out)
   );
 
   // adder
-  word pc_adder_out;
-  pc_adder pc_adder (
+  IMemAddrT pc_adder_out;
+  pc_adder #(
+      .AddrWidth(IMemAddrWidth)
+  ) pc_adder (
       .in (pc_reg_out),
       .out(pc_adder_out)
   );
@@ -101,7 +107,7 @@ module top_clic (
 
   // csr
   logic decoder_csr_enable;
-  csr_t decoder_csr_op;
+  csr_op_t decoder_csr_op;
   csr_addr_t decoder_csr_addr;
   mem_width_t decoder_dmem_width;
 
@@ -181,13 +187,13 @@ module top_clic (
   word alu_b_mux_out;
   alu_b_mux alu_b_mux (
       // in
-      .sel(decoder_alu_b_mux_sel),
+      .sel      (decoder_alu_b_mux_sel),
       // out
-      .rs2(rf_rs2),
-      .imm(decoder_imm),
-      .pc_plus_4(pc_adder_out),
-      .pc(pc_reg_out),
-      .out(alu_b_mux_out)
+      .rs2      (rf_rs2),
+      .imm      (decoder_imm),
+      .pc_plus_4(32'($signed(pc_adder_out))),  // Should we sign extend?
+      .pc       (32'($signed(pc_reg_out))),    //
+      .out      (alu_b_mux_out)
   );
 
   word alu_res;
@@ -214,34 +220,37 @@ module top_clic (
       .alignment_error(dmem_alignment_error)
   );
 
-  word  csr_led_out;
-  logic csr_led_match;
+  word csr_led_out;
   csr_led csr_led (
       // in
-      .clk(clk),
-      .reset(reset),
-      .en(decoder_csr_enable),
-      .addr(decoder_csr_addr),
-      .rs1(decoder_rs1),
-      .rd(decoder_rd),
-      .op(decoder_csr_op),
-      .in(rf_rs1),
+      .clk,
+      .reset,
+      .csr_enable(decoder_csr_enable),
+      .csr_addr(decoder_csr_addr),
+      .rs1_zimm(decoder_rs1),
+      .rs1_data(rf_rs1),
+      .csr_op(decoder_csr_op),
+      .ext_data(0),
+      .ext_write_enable(0),
+      //.rd(decoder_rd),
       // out
-      .match(csr_led_match),
       .out(csr_led_out),
-      .led(led)
+      .led
   );
 
   word n_clic_out;
+  IMemAddrT n_clic_pc_out;
   n_clic n_clic (
-      .clk(clk),
-      .reset(reset),
+      .clk,
+      .reset,
       .csr_enable(decoder_csr_enable),
       .csr_addr(decoder_csr_addr),
-      .rs1(decoder_rs1),
-      .rd(decoder_rd),
-      .op(decoder_csr_op),
-      .in(rf_rs1),
+      .rs1_zimm(decoder_rs1),
+      .rs1_data(rf_rs1),
+      //.rd(decoder_rd),
+      .csr_op(decoder_csr_op),
+      .pc_in(pc_mux_out),
+      .pc_out(n_clic_pc_out),
       .out(n_clic_out)
   );
 
@@ -251,7 +260,7 @@ module top_clic (
       .dm(dmem_data_out),
       .alu(alu_res),
       .csr(csr_led_out),
-      .pc_plus_4(pc_adder_out),
+      .pc_plus_4(32'($signed(pc_adder_out))),  // should we sign extend?
       .out(wb_mux_out)
   );
 endmodule

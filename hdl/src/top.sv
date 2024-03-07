@@ -217,7 +217,6 @@ module top (
 
   word  csr_led_out;
   logic csr_led_match;
-
   csr_led csr_led (
       // in
       .clk,
@@ -230,7 +229,6 @@ module top (
       .ext_data(0),
       .ext_write_enable(0),
       // out
-      // .match(csr_led_match),
       .out(csr_led_out),
       .led(led)
   );

@@ -75,10 +75,14 @@ module tb_top;
     $display("wb_data_reg.in %h", top.wb_data_reg.in);
     $display("instr_mem_out %h", top.imem.data_out);
     $display("imem_addr %h", top.imem.address);
-    assert (top.pc_reg.out == 0) $display("ok"); else $warning("fail");
-    assert (top.wb_data_reg.in == 'h5000_0000) $display("ok"); else $warning("fail %d", top.wb_data_reg.in);
-    assert (top.wb_rd_reg.in == 2) $display("ok"); else $warning("fail");  // sp
-    assert (top.wb_write_enable_reg.in == 1) $display("ok"); else $warning("fail");  // should write to rf
+    assert (top.pc_reg.out == 0) $display("ok");
+    else $warning("fail");
+    assert (top.wb_data_reg.in == 'h5000_0000) $display("ok");
+    else $warning("fail %d", top.wb_data_reg.in);
+    assert (top.wb_rd_reg.in == 2) $display("ok");
+    else $warning("fail");  // sp
+    assert (top.wb_write_enable_reg.in == 1) $display("ok");
+    else $warning("fail");  // should write to rf
 
     #20;  // addi sp,sp,1280 # 50000500 // sign ext
     $warning("addi sp,sp,1280 # 50000500");

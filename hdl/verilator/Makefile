@@ -27,13 +27,13 @@ top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
 fgpa_top = $(top_dep) $(root)/top.sv $(root)/tb_fpga_top.sv
 
-top_clic = $(top_dep) $(core)/n_clic.sv $(root)/top_clic.sv $(root)/tb_top_clic.sv
+top_clic = $(top_dep) $(root)/top_clic.sv $(core)/n_clic.sv $(core)/stack.sv $(root)/tb_top_clic.sv
 
 top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
 
 top_mem = $(top_dep) $(root)/top.sv $(root)/tb_top_mem.sv
 
-n_clic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv  $(core)/pc_mux.sv $(core)/reg_n.sv $(core)/stack.sv $(core)/n_clic.sv $(core)/csr.sv $(core)/tb_n_clic.sv
+n_clic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/pc_mux.sv $(core)/reg_n.sv $(core)/stack.sv $(core)/n_clic.sv $(core)/csr.sv $(core)/tb_n_clic.sv
 
 csr = $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/tb_csr.sv
 

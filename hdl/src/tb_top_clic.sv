@@ -18,8 +18,6 @@ module tb_top_clic;
   // clock and reset
   initial begin
     $display($time, " << Starting the Simulation >>");
-    $dumpfile("tb_top_clic.fst");
-    $dumpvars;
 
     // notice raw access to memory is in words
     top.imem.mem[0] = 'h50000117;  // auipc   sp,0x50000

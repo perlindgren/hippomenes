@@ -14,4 +14,7 @@ package config_pkg;
   localparam integer unsigned IMemAddrWidth = $clog2(IMemSize);  // derived
   localparam integer unsigned DMemAddrWidth = $clog2(DMemSize);  // derived
 
+  localparam type IMemAddrT = logic [IMemAddrWidth-1:0];
+  localparam type DMemAddrT = logic [DMemAddrWidth-1:0];
+
 endpackage

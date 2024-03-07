@@ -1,6 +1,5 @@
-// mem
+// n_clic
 `timescale 1ns / 1ps
-
 
 module n_clic
   import decoder_pkg::*;
@@ -31,11 +30,11 @@ module n_clic
     input csr_op_t csr_op,
 
     // epc
-    input logic [IMemAddrWidth-1:0] pc_in,
+    input IMemAddrT pc_in,
 
     //
     output word out,
-    output logic [IMemAddrWidth-1:0] pc_out
+    output IMemAddrT pc_out
 );
 
   // CSR m_int_thresh

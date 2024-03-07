@@ -3,12 +3,13 @@
 
 import decoder_pkg::*;
 module pc_mux #(
-    parameter integer unsigned AddrWidth = 32
+    parameter integer unsigned AddrWidth = 32,
+    localparam type AddrT = logic [AddrWidth-1:0]
 ) (
     input pc_mux_t sel,
-    input logic [AddrWidth-1:0] pc_next,
-    input logic [AddrWidth-1:0] pc_branch,
-    output logic [AddrWidth-1:0] out
+    input AddrT pc_next,
+    input AddrT pc_branch,
+    output AddrT out
 );
 
   always_comb begin
