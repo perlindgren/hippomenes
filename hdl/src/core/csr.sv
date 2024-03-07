@@ -8,12 +8,9 @@ import decoder_pkg::*;
 // in order to simplify the code
 (* DONT_TOUCH = "TRUE" *)
 module csr #(
-
     parameter integer unsigned CsrWidth = 32,  // default to word
     localparam type CsrDataT = logic [CsrWidth-1:0],  // derived
-
     parameter logic [CsrWidth-1:0] ResetValue = 0,
-
 
     parameter csr_addr_t Addr = 0,
     parameter logic Read = 1,

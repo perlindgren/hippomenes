@@ -5,19 +5,18 @@ module n_clic
   import decoder_pkg::*;
   import config_pkg::*;
 #(
-    parameter  integer VecSize  = 8,
-    localparam integer VecWidth = $clog2(VecSize), // derived
-
-    parameter  integer PrioLevels = 8,
-    localparam integer PrioWidth  = $clog2(PrioLevels), // derived
-
-    parameter integer VecCsrBase   = 'hb00,
-    parameter integer EntryCsrBase = 'hb20,  // up to 32 vectors
+    parameter integer unsigned VecSize      = 8,
+    parameter integer unsigned PrioLevels   = 8,
+    parameter integer unsigned VecCsrBase   = 'hb00,
+    parameter integer unsigned EntryCsrBase = 'hb20,  // up to 32 vectors
 
     // csr registers
     localparam csr_addr_t MStatusAddr    = 'h305,
     localparam csr_addr_t MIntThreshAddr = 'h347,
-    localparam csr_addr_t StackDepthAddr = 'h350
+    localparam csr_addr_t StackDepthAddr = 'h350,
+
+    localparam integer VecWidth  = $clog2(VecSize),    // derived
+    localparam integer PrioWidth = $clog2(PrioLevels)  // derived
 ) (
     input logic clk,
     input logic reset,
