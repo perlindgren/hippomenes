@@ -7,31 +7,33 @@ module tb_csr;
   localparam integer unsigned CsrWidth = 32;  // default to word
   localparam type CsrDataT = logic [CsrWidth-1:0];  // derived
 
- (* DONT_TOUCH = "TRUE" *)
-  logic clk;
-   (* DONT_TOUCH = "TRUE" *)
-  logic reset;
-   (* DONT_TOUCH = "TRUE" *)
-  logic csr_enable;
-   (* DONT_TOUCH = "TRUE" *)
-  csr_addr_t csr_addr;
-   (* DONT_TOUCH = "TRUE" *)
-  r rs1_zimm;
-   (* DONT_TOUCH = "TRUE" *)
-  word rs1_data;
-   (* DONT_TOUCH = "TRUE" *)
-  csr_op_t csr_op;
-   (* DONT_TOUCH = "TRUE" *)
-  CsrDataT ext_data;
-   (* DONT_TOUCH = "TRUE" *)
-  logic ext_write_enable;
-  
- (* DONT_TOUCH = "TRUE" *)
-  word out; 
-  // logic match;
-  
   (* DONT_TOUCH = "TRUE" *)
-  csr #(.CsrWidth(CsrWidth)) dut (
+  logic clk;
+  (* DONT_TOUCH = "TRUE" *)
+  logic reset;
+  (* DONT_TOUCH = "TRUE" *)
+  logic csr_enable;
+  (* DONT_TOUCH = "TRUE" *)
+  csr_addr_t csr_addr;
+  (* DONT_TOUCH = "TRUE" *)
+  r rs1_zimm;
+  (* DONT_TOUCH = "TRUE" *)
+  word rs1_data;
+  (* DONT_TOUCH = "TRUE" *)
+  csr_op_t csr_op;
+  (* DONT_TOUCH = "TRUE" *)
+  CsrDataT ext_data;
+  (* DONT_TOUCH = "TRUE" *)
+  logic ext_write_enable;
+
+  (* DONT_TOUCH = "TRUE" *)
+  word out;
+  // logic match;
+
+  (* DONT_TOUCH = "TRUE" *)
+  csr #(
+      .CsrWidth(CsrWidth)
+  ) dut (
       // in
       .clk,
       .reset,
@@ -47,32 +49,49 @@ module tb_csr;
       .out(out)
   );
 
+  // our clocking process
+  always #10 clk = ~clk;
+
   initial begin
-//    $dumpfile("csr.fst");
-//    $dumpvars;
+    //    $dumpfile("csr.fst");
+    //    $dumpvars;
 
-    csr_addr = 0;  // should match
+    clk = 0;
     reset = 1;
-    #15;
-    reset = 0;
-    #5;
-
+    csr_enable = 0;
+    csr_addr = 0;
+    rs1_zimm = 0;
+    rs1_data = 0;
+    csr_op = ECALL;
     ext_data = 0;
     ext_write_enable = 0;
 
-    clk = 0;
+    // wait until global reset is released
+    // #100;
+
+    #10;  // clk = 1;
+    #5;
+    // reset is over let's go
+    reset = 0;
+    csr_enable = 1;
+
     csr_enable = 1;
 
     rs1_data = 'b1011;
     csr_op = CSRRW;
+
     // notice out will be delayed
     $display("CSRRW 'b1011 out %h", out);
     assert (out == 0);
+    #5;  // clk = 0;
 
-    #20;
-    $display("wait out %h", out);
+    // just wait, till raise
+    #10  // clk = 1;
+    $display(
+        "CSRRW 'b1011 out %h", out
+    );
     assert (out == 'b1011);
-    // assert (match == 1);
+
     rs1_data = 'b1100;
     csr_op   = CSRRS;
     $display("CSRRS 'b1100 out %h", out);
@@ -123,6 +142,6 @@ module tb_csr;
 
     #20 $finish;
   end
-  
-  always #10 clk = ~clk;
+
+  // always #10 clk = ~clk;
 endmodule
