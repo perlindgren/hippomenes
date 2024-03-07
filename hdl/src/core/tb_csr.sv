@@ -4,22 +4,34 @@
 import decoder_pkg::*;
 module tb_csr;
 
-  localparam integer CsrWidth = 32;  // default to word
+  localparam integer unsigned CsrWidth = 32;  // default to word
   localparam type CsrDataT = logic [CsrWidth-1:0];  // derived
 
+ (* DONT_TOUCH = "TRUE" *)
   logic clk;
+   (* DONT_TOUCH = "TRUE" *)
   logic reset;
+   (* DONT_TOUCH = "TRUE" *)
   logic csr_enable;
+   (* DONT_TOUCH = "TRUE" *)
   csr_addr_t csr_addr;
+   (* DONT_TOUCH = "TRUE" *)
   r rs1_zimm;
+   (* DONT_TOUCH = "TRUE" *)
   word rs1_data;
+   (* DONT_TOUCH = "TRUE" *)
   csr_op_t csr_op;
+   (* DONT_TOUCH = "TRUE" *)
   CsrDataT ext_data;
+   (* DONT_TOUCH = "TRUE" *)
   logic ext_write_enable;
-  word out;
+  
+ (* DONT_TOUCH = "TRUE" *)
+  word out; 
   // logic match;
-
-  csr dut (
+  
+  (* DONT_TOUCH = "TRUE" *)
+  csr #(.CsrWidth(CsrWidth)) dut (
       // in
       .clk,
       .reset,
@@ -35,11 +47,9 @@ module tb_csr;
       .out(out)
   );
 
-  always #10 clk = ~clk;
-
   initial begin
-    $dumpfile("csr.fst");
-    $dumpvars;
+//    $dumpfile("csr.fst");
+//    $dumpvars;
 
     csr_addr = 0;  // should match
     reset = 1;
@@ -113,4 +123,6 @@ module tb_csr;
 
     #20 $finish;
   end
+  
+  always #10 clk = ~clk;
 endmodule

@@ -26,6 +26,7 @@ module csr #(
     // external access for side effects
     input CsrDataT ext_data,
     input logic ext_write_enable,
+    (* dont_touch = "true" *)
     output word out  // should prehaps be [CsrWidth-1:0]?
 );
   CsrDataT data;
