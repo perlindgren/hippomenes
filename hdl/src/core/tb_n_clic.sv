@@ -95,7 +95,7 @@ module tb_n_clic;
   always #10 clk = ~clk;
 
   // logic [4:0] entry;
-  function void clic_dump();
+  function static void clic_dump();
     $display("mintresh %d, level (nesting depth) %d", dut.m_int_thresh.data, dut.level_out);
     for (integer i = 0; i < 8; i++) begin
       $display("%d, is_int %b max_prio %d, max_vec %d, pc_in %d, pc_out %d", i, dut.is_int[i],
@@ -129,7 +129,7 @@ module tb_n_clic;
 
     dut.gen_vec[0].csr_vec.data = 2;  // 8 in byte addr
     dut.gen_vec[2].csr_vec.data = 4;  // 16
-    dut.gen_vec[4].csr_vec.data = 8;  // 32 
+    dut.gen_vec[4].csr_vec.data = 8;  // 32
     dut.gen_vec[7].csr_vec.data = 14;  // 56
 
     pc_mux_sel = PC_NEXT;
