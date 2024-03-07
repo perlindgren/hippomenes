@@ -6,11 +6,15 @@ import decoder_pkg::*;
 
 // Notice, we assume csrwidth to be at lest 5 bits
 // in order to simplify the code
+(* DONT_TOUCH = "TRUE" *)
 module csr #(
+
     parameter integer unsigned CsrWidth = 32,  // default to word
     localparam type CsrDataT = logic [CsrWidth-1:0],  // derived
 
     parameter logic [CsrWidth-1:0] ResetValue = 0,
+
+
     parameter csr_addr_t Addr = 0,
     parameter logic Read = 1,
     parameter logic Write = 1
@@ -25,10 +29,10 @@ module csr #(
 
     // external access for side effects
     input CsrDataT ext_data,
-    input logic ext_write_enable,
-    (* dont_touch = "true" *)
+    input logic ext_write_enable, (* dont_touch = "true" *)
     output word out  // should prehaps be [CsrWidth-1:0]?
 );
+  (* DONT_TOUCH = "TRUE" *)
   CsrDataT data;
 
   // asynchronous read

@@ -7,18 +7,28 @@ module tb_n_clic_synth;
 
   localparam csr_addr_t VecCsrBase = 'hb00;
 
+  (* DONT_TOUCH = "TRUE" *)
   logic clk;
+  (* DONT_TOUCH = "TRUE" *)
   logic reset;
-
+  (* DONT_TOUCH = "TRUE" *)
   logic csr_enable;
+  (* DONT_TOUCH = "TRUE" *)
   csr_addr_t csr_addr;
+  (* DONT_TOUCH = "TRUE" *)
   r rs1_zimm;
+  (* DONT_TOUCH = "TRUE" *)
   word rs1_data;
+  (* DONT_TOUCH = "TRUE" *)
   csr_op_t csr_op;
+  (* DONT_TOUCH = "TRUE" *)
   word out;
 
+  (* DONT_TOUCH = "TRUE" *)
   logic [IMemAddrWidth-1:0] pc_in;
+  (* DONT_TOUCH = "TRUE" *)
   logic [IMemAddrWidth-1:0] n_clic_pc_out;
+  (* DONT_TOUCH = "TRUE" *)
   n_clic dut (
       // in
       .clk,
@@ -34,8 +44,9 @@ module tb_n_clic_synth;
       // out
       .out(out)
   );
-
+  (* DONT_TOUCH = "TRUE" *)
   logic [IMemAddrWidth-1:0] pc_reg_out;
+  (* DONT_TOUCH = "TRUE" *)
   reg_n #(
       .DataWidth(IMemAddrWidth)
   ) pc_reg (
@@ -47,9 +58,13 @@ module tb_n_clic_synth;
       .out(pc_reg_out)
   );
 
+  (* DONT_TOUCH = "TRUE" *)
   pc_mux_t pc_mux_sel;
+  (* DONT_TOUCH = "TRUE" *)
   logic [IMemAddrWidth-1:0] pc_branch;
+  (* DONT_TOUCH = "TRUE" *)
   logic [IMemAddrWidth-1:0] pc_mux_out;
+  (* DONT_TOUCH = "TRUE" *)
   pc_mux #(
       .AddrWidth(IMemAddrWidth)
   ) pc_mux (
@@ -62,7 +77,9 @@ module tb_n_clic_synth;
   );
 
   // emulate the register file, for observing old_csr
+  (* DONT_TOUCH = "TRUE" *)
   word old_csr;
+  (* DONT_TOUCH = "TRUE" *)
   reg_n rf_reg (
       // in
       .clk,
@@ -90,6 +107,8 @@ module tb_n_clic_synth;
     #15 $display("time ", $time());  // force clock
 
     reset = 0;
+
+    #100;
 
     pc_mux_sel = PC_NEXT;
     pc_branch = 0;

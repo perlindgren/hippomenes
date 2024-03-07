@@ -39,9 +39,13 @@ module n_clic
 );
 
   // CSR m_int_thresh
+  (* DONT_TOUCH = "TRUE" *)
   logic m_int_thresh_write_enable;
+  (* DONT_TOUCH = "TRUE" *)
   word m_int_thresh_out;
+  (* DONT_TOUCH = "TRUE" *)
   logic [PrioWidth-1:0] m_int_thresh_data;
+  (* DONT_TOUCH = "TRUE" *)
   csr #(
       .CsrWidth(PrioWidth),
       .Addr(MIntThreshAddr)
