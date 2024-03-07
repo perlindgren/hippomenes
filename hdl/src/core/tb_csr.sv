@@ -4,7 +4,7 @@
 import decoder_pkg::*;
 module tb_csr;
 
-  localparam integer unsigned CsrWidth = 32;  // default to word
+  localparam integer unsigned CsrWidth = 5;  // default to word
   localparam type CsrDataT = logic [CsrWidth-1:0];  // derived
 
   (* DONT_TOUCH = "TRUE" *)
@@ -53,8 +53,8 @@ module tb_csr;
   always #10 clk = ~clk;
 
   initial begin
-    //    $dumpfile("csr.fst");
-    //    $dumpvars;
+    $dumpfile("csr.fst");
+    $dumpvars;
 
     clk = 0;
     reset = 1;
@@ -74,22 +74,18 @@ module tb_csr;
     // reset is over let's go
     reset = 0;
     csr_enable = 1;
-
-    csr_enable = 1;
-
-    rs1_data = 'b1011;
+    rs1_zimm = 1;  // emulate that source register rs1 is x1
+    rs1_data = 'b1011;  // content of x1 is 'b1011
     csr_op = CSRRW;
 
     // notice out will be delayed
     $display("CSRRW 'b1011 out %h", out);
     assert (out == 0);
-    #5;  // clk = 0;
+    #5;
 
     // just wait, till raise
-    #10  // clk = 1;
-    $display(
-        "CSRRW 'b1011 out %h", out
-    );
+    #20;
+    $display("wait out %b", 5'(out), $time);
     assert (out == 'b1011);
 
     rs1_data = 'b1100;
@@ -97,51 +93,61 @@ module tb_csr;
     $display("CSRRS 'b1100 out %h", out);
 
     #20;
-    $display("wait out %h", out);
+    $display("wait out %b", 5'(out), $time);
     assert (out == 'b1111);
     rs1_data = 'b1100;
     csr_op   = CSRRC;
     $display("CSRRC 'b1100 %h", out);
 
     #20;
-    $display("wait out %h", out);
+    $display("wait out %b", 5'(out), $time);
     assert (out == 'b0011);
 
     rs1_zimm = 1;
     csr_op   = CSRRWI;
-    $display("CSRRWI rs1 =1 out %h", out);
+    $display("CSRRWI rs1 = %b out %b", rs1_zimm, 5'(out));
 
     #20;
-    $display("wait out %h", out);
+    $display("wait out %b", 5'(out), $time);
     assert (out == 'b0001);
 
     rs1_zimm = 2;
     csr_op   = CSRRSI;
-    $display("CSRRSI rs1 =2 out %h", out);
+    $display("CSRRSI rs1 = %b out %b", rs1_zimm, 5'(out));
 
     #20;
-    $display("wait out %h", out);
+    $display("wait out %b", 5'(out), $time);
     assert (out == 'b0011);
 
     rs1_zimm = 1;
     csr_op   = CSRRCI;
-    $display("CSRRCI rs1 =1 out %h", out);
+    $display("CSRRCI rs1 = %b out %b", rs1_zimm, 5'(out));
 
     #20;
-    $display("wait out %h", out);
+    $display("wait out %b", 5'(out));
     assert (out == 'b0010);
 
-    rs1_zimm = 1;
+    rs1_zimm = 2;
     csr_op   = CSRRCI;
-    $display("CSRRCI rs1 =1 out %h --- dummy just to get out", out);
+    $display("CSRRCI rs1 = %b out %b", rs1_zimm, 5'(out));
+    #20;
+    $display("wait out %b", 5'(out), $time);
+    assert (out == 'b0000);
 
+    rs1_data = 'hffff_ffff;
+    csr_op   = CSRRW;
+    $display("CSRRW rs1 = %b, data %h out %b", rs1_zimm, rs1_data, 5'(out));
+
+    #20;
+    $display("wait out %b %h", 5'(out), out, $time);
+    assert (out == 'b11111);
+
+    $display("csr_addr = 1", out);
     csr_addr = 1;  // should cause address miss match
     #1;
     assert (out == 0);
-
+    $display("csr_addr = 1", out);
 
     #20 $finish;
   end
-
-  // always #10 clk = ~clk;
 endmodule
