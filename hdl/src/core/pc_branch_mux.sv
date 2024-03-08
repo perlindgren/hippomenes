@@ -1,15 +1,15 @@
-// pc_mux
+// pc_branch_mux
 `timescale 1ns / 1ps
 
 import decoder_pkg::*;
-module pc_mux #(
+module pc_branch_mux #(
     parameter integer unsigned AddrWidth = 32,
     localparam type AddrT = logic [AddrWidth-1:0]
 ) (
-    input pc_mux_t sel,
-    input AddrT pc_next,
-    input AddrT pc_branch,
-    output AddrT out
+    input  pc_branch_mux_t sel,
+    input  AddrT           pc_next,
+    input  AddrT           pc_branch,
+    output AddrT           out
 );
 
   always_comb begin
