@@ -24,4 +24,10 @@ package config_pkg;
   localparam integer unsigned VecWidth = $clog2(VecSize);
   localparam integer unsigned PrioWidth = $clog2(PrioLevels);
 
+  localparam type VecT = logic [VecWidth-1:0];
+  localparam type PrioT = logic [PrioWidth-1:0];
+
+  typedef logic [11:0] CsrAddrT;
+  localparam CsrAddrT VecCsrBase = 'hb00;
+
 endpackage
