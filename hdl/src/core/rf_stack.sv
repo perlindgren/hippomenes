@@ -47,7 +47,7 @@ module rf_stack #(
         else regs[level][writeAddr] <= writeData;
       end
       // update ra with marker
-      if (writeRaEn) regs[level_minus_1][1] <= ~0;
+      if (writeRaEn) regs[level][1] <= ~0;
     end
   end
 
