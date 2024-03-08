@@ -32,8 +32,8 @@ module csr #(
   CsrDataT tmp;
 
   always_comb begin
+    tmp = data;
     if (csr_enable && (csr_addr == Addr) && Write) begin
-      tmp = data;
       case (csr_op)
         CSRRW: begin
           // side effect on read/write here
@@ -73,7 +73,7 @@ module csr #(
         end
         default: ;
       endcase
-    end else tmp = Read && (csr_addr == Addr) ? data : 0;
+    end
   end
 
   always out = 32'($unsigned(tmp));

@@ -30,22 +30,21 @@ module n_clic
 
     // epc
     input IMemAddrT pc_in,
+    // input IMemAddrT ra_in,
 
     //
     output word csr_out,
-    output IMemAddrT pc_out,
-    output logic [PrioWidth-1:0] level_out,  // stack depth
-    output reg interrupt_out
+    output IMemAddrT int_addr,
+    pc_interrupt_mux_t pc_interrupt_sel,
+    output PrioT level_out,  // stack depth
+    output logic interrupt_out
 );
 
   // CSR m_int_thresh
-  (* DONT_TOUCH = "TRUE" *)
   logic m_int_thresh_write_enable;
-  (* DONT_TOUCH = "TRUE" *)
   word m_int_thresh_out;
-  (* DONT_TOUCH = "TRUE" *)
   logic [PrioWidth-1:0] m_int_thresh_data;
-  (* DONT_TOUCH = "TRUE" *)
+
   csr #(
       .CsrWidth(PrioWidth),
       .Addr(MIntThreshAddr)
@@ -64,14 +63,6 @@ module n_clic
       .out(m_int_thresh_out)
   );
 
-  // typedef struct packed {
-  //   integer width;
-  //   csr_addr_t addr;
-  //   word reset_val;
-  //   logic read;
-  //   logic write;
-  // } csr_struct_t;
-
   // packed struct allowng for 5 bit immediates in CSR
   typedef struct packed {
     logic [PrioWidth-1:0] prio;
@@ -85,8 +76,8 @@ module n_clic
   logic push;
   logic pop;
   typedef struct packed {
-    logic [IMemAddrWidth-1:0] addr;
-    logic [PrioWidth-1:0]     prio;
+    IMemAddrT addr;
+    PrioT     prio;
   } stack_t;
 
   stack_t stack_out;
@@ -108,12 +99,12 @@ module n_clic
 
   // generate vector table
   /* verilator lint_off UNOPTFLAT */
-  logic   [         PrioWidth-1:0] max_prio    [VecSize];
+  PrioT                            max_prio    [VecSize];
   logic   [(IMemAddrWidth -2)-1:0] max_vec     [VecSize];
   logic                            is_int      [VecSize];
 
   entry_t                          entry       [VecSize];
-  logic   [         PrioWidth-1:0] prio        [VecSize];
+  PrioT                            prio        [VecSize];
   logic   [(IMemAddrWidth -2)-1:0] csr_vec_data[VecSize];
 
   generate
@@ -166,9 +157,6 @@ module n_clic
       assign prio[k]          = entry[k].prio;  // a bit of a hack to please Verilator
       assign csr_vec_data[k]  = gen_vec[k].csr_vec.data;
 
-      // one hot encoding, only one match allowed
-      // assign out = (csr_addr == 12'(VecCsrBase + k)) ? temp_vec[k] : 'z;
-      // assign out = (csr_addr == 12'(EntryCsrBase + k)) ? temp_entry[k] : 'z;
       assign ext_write_enable = 0;  // these should not be written as of now
       assign ext_vec_data     = 0;  // these should not be written as of now
       assign ext_entry_data   = 0;  // these should not be written as of now
@@ -209,38 +197,43 @@ module n_clic
       // tail chaining, not sure this is correct
       push = 0;
       pop = 0;
-      pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
+      int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
       m_int_thresh_data = 0;  // no update of threshold
       m_int_thresh_write_enable = 0;  // no update of threshold
       interrupt_out = 1;
+      pc_interrupt_sel = PC_INTERRUPT;
       // $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (is_int[VecSize-1]) begin
       push = 1;
       pop = 0;
-      pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
+      int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
       m_int_thresh_data = max_prio[VecSize-1];
       m_int_thresh_write_enable = 1;
       interrupt_out = 1;
-      $display("interrupt take pc_out %d", pc_out);
+      pc_interrupt_sel = PC_INTERRUPT;
+      $display("interrupt take int_addr %d", int_addr);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
       push = 0;
       pop = 1;
-      pc_out = stack_out.addr;
+      int_addr = stack_out.addr;
       m_int_thresh_data = stack_out.prio;
       m_int_thresh_write_enable = 1;
       interrupt_out = 0;
+      pc_interrupt_sel = PC_INTERRUPT;
       // $display("pop");
     end else begin
       push = 0;
       pop = 0;
       m_int_thresh_data = 0;
       m_int_thresh_write_enable = 0;
-      pc_out = pc_in;
+      int_addr = pc_in;
       interrupt_out = 0;
+      pc_interrupt_sel = PC_NORMAL;
       // $display("interrupt NOT take");
     end
   end
 
+  // set csr_out
   always_latch begin
     if (csr_addr == 12'(MIntThreshAddr)) begin
       csr_out = m_int_thresh_out;
@@ -250,8 +243,6 @@ module n_clic
           csr_out = temp_vec[k];
           break;
         end
-      end
-      for (int k = 0; k < VecSize; k++) begin
         if (csr_addr == 12'(EntryCsrBase + k)) begin
           csr_out = temp_vec[k];
           break;
@@ -261,34 +252,3 @@ module n_clic
   end
 endmodule
 
-
-
-
-// // TODO: move to config
-// localparam csr_struct_t CsrVec[3] = {
-//   '{PrioWidth, MIntThreshAddr, 20, 1, 1},
-//   '{32, MStatusAddr, 10, 1, 1},
-//   '{VecWidth, StackDepthAddr, 8, 1, 0}
-// };
-// generate generic csr registers
-// generate
-//   word temp[3];
-//   for (genvar k = 0; k < 3; k++) begin : gen_csr
-//     csr #(
-//         .CsrWidth(CsrVec[k].width),
-//         .Addr(CsrVec[k].addr),
-//         .ResetValue(CsrVec[k].reset_val[CsrVec[k].width-1:0]),
-//         .Read(CsrVec[k].read),
-//         .Write(CsrVec[k].write)
-//     ) csr (
-//         // in
-//         .*,
-//         // out
-//         .out(temp[k])
-//     );
-
-//     // one hot encoding, only one match allowed
-//     assign out = (csr_addr == CsrVec[k].addr) ? temp[k] : 'z;
-//   end
-
-// endgenerate
