@@ -10,7 +10,7 @@ module tb_branch_logic;
   logic branch_instr;
   branch_op_t op;
 
-  pc_mux_t out;
+  pc_branch_mux_t out;
 
   branch_logic dut (
       .a(a),
