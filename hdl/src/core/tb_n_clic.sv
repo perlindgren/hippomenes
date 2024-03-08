@@ -6,6 +6,8 @@ module tb_n_clic;
   import config_pkg::*;
 
   localparam csr_addr_t VecCsrBase = 'hb00;
+  localparam integer unsigned PrioLevels = 8;
+  localparam integer unsigned PrioWidth = $clog2(PrioLevels);
 
   (* DONT_TOUCH = "TRUE" *)
   logic clk;
@@ -23,12 +25,16 @@ module tb_n_clic;
   (* DONT_TOUCH = "TRUE" *)
   csr_op_t csr_op;
   (* DONT_TOUCH = "TRUE" *)
-  word out;
+  logic [IMemAddrWidth-1:0] pc_in;
 
   (* DONT_TOUCH = "TRUE" *)
-  logic [IMemAddrWidth-1:0] pc_in;
+  word csr_out;
   (* DONT_TOUCH = "TRUE" *)
   logic [IMemAddrWidth-1:0] n_clic_pc_out;
+  (* DONT_TOUCH = "TRUE" *)
+  logic [PrioWidth-1:0] level_out;
+
+
   (* DONT_TOUCH = "TRUE" *)
   n_clic dut (
       // in
@@ -41,9 +47,10 @@ module tb_n_clic;
       .csr_op,
       //
       .pc_in(pc_reg_out),
-      .pc_out(n_clic_pc_out),
       // out
-      .out(out)
+      .csr_out(csr_out),
+      .pc_out(n_clic_pc_out),
+      .level_out(level_out)
   );
 
   (* DONT_TOUCH = "TRUE" *)
@@ -86,7 +93,7 @@ module tb_n_clic;
       // in
       .clk,
       .reset,
-      .in (out),
+      .in (csr_out),
       // out
       .out(old_csr)
   );
@@ -188,33 +195,33 @@ module tb_n_clic;
     csr_op = CSRRSI;
 
     #20;
-    $display("VecCsrBase out %h", out);
-    assert (out == 2);
+    $display("VecCsrBase %h, out %h", csr_addr, csr_out);
+    assert (csr_out == 2);
 
     csr_addr = VecCsrBase + 1;
     #20;
-    $display("VecCsrBase + 1 out %h", out);
-    assert (out == 0);
+    $display("VecCsrBase + 1, %h out %h", csr_addr, csr_out);
+    assert (csr_out == 0);
 
     csr_addr = VecCsrBase + 2;
     #20;
-    $display("VecCsrBase + 2 out %h", out);
-    assert (out == 4);
+    $display("VecCsrBase + 2, %h out %h", csr_addr, csr_out);
+    assert (csr_out == 4);
 
     rs1_data = 'hfff_ffff;
     csr_op   = CSRRW;
     #20;
-    $display("VecCsrBase + 2 out %h", out);
+    $display("VecCsrBase + 2 out %h", csr_out);
     $display("VecCsrBase + 2 old_csr %h", old_csr);
     assert (old_csr == 4);
-    assert (out == 'h3f);
+    assert (csr_out == 'h3f);
     csr_enable = 0;  // don't write to csr
     rs1_data   = '0;
 
     #20;
-    $display("VecCsrBase + 2 out %h", out);
+    $display("VecCsrBase + 2 out %h", csr_out);
     $display("VecCsrBase + 2 old_csr %h", old_csr);
-    assert (out == 'h3f);
+    assert (csr_out == 'h3f);
     assert (old_csr == 'h3f);
 
     $finish;

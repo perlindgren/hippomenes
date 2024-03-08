@@ -15,8 +15,8 @@ module n_clic
     localparam csr_addr_t MIntThreshAddr = 'h347,
     localparam csr_addr_t StackDepthAddr = 'h350,
 
-    localparam integer VecWidth  = $clog2(VecSize),    // derived
-    localparam integer PrioWidth = $clog2(PrioLevels)  // derived
+    localparam integer unsigned VecWidth  = $clog2(VecSize),
+    localparam integer unsigned PrioWidth = $clog2(PrioLevels)
 ) (
     input logic clk,
     input logic reset,
@@ -32,8 +32,9 @@ module n_clic
     input IMemAddrT pc_in,
 
     //
-    output word out,
-    output IMemAddrT pc_out
+    output word csr_out,
+    output IMemAddrT pc_out,
+    output logic [PrioWidth-1:0] level_out  // stack depth
 );
 
   // CSR m_int_thresh
@@ -88,7 +89,6 @@ module n_clic
   } stack_t;
 
   stack_t stack_out;
-  logic [PrioWidth-1:0] level_out;  // stack depth
   // epc address stack
   stack #(
       .StackDepth(PrioLevels),
@@ -226,17 +226,17 @@ module n_clic
 
   always_latch begin
     if (csr_addr == 12'(MIntThreshAddr)) begin
-      out = m_int_thresh_out;
+      csr_out = m_int_thresh_out;
     end else begin
       for (int k = 0; k < VecSize; k++) begin
         if (csr_addr == 12'(VecCsrBase + k)) begin
-          out = temp_vec[k];
+          csr_out = temp_vec[k];
           break;
         end
       end
       for (int k = 0; k < VecSize; k++) begin
         if (csr_addr == 12'(EntryCsrBase + k)) begin
-          out = temp_vec[k];
+          csr_out = temp_vec[k];
           break;
         end
       end
