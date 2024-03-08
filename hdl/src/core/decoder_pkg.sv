@@ -19,7 +19,12 @@ package decoder_pkg;
   typedef enum logic {
     PC_NEXT   = 'b0,
     PC_BRANCH = 'b1
-  } pc_mux_t;
+  } pc_branch_mux_t;
+
+  typedef enum logic {
+    PC_NORMAL    = 'b0,
+    PC_INTERRUPT = 'b1
+  } pc_interrupt_mux_t;
 
   typedef enum logic [2:0] {
     ALU_ADD  = 3'b000,  // ADDI
