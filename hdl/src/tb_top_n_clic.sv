@@ -1,7 +1,7 @@
-// tb_top
+// tb_top_n_clic
 `timescale 1ns / 1ps
 
-module tb_top_clic;
+module tb_top_n_clic;
   import config_pkg::*;
   import decoder_pkg::*;
 
@@ -9,11 +9,13 @@ module tb_top_clic;
   logic reset;
   logic led;
 
-  top_clic top (
+  top_n_clic top (
       .clk  (clk),
       .reset(reset),
       .led  (led)
   );
+
+  logic [PrioWidth-1:0] level;
 
   // clock and reset
   initial begin
@@ -66,9 +68,11 @@ module tb_top_clic;
   always #10 clk = ~clk;
 
   initial begin
-    $dumpfile("top_clic.fst");
+    $dumpfile("top_n_clic.fst");
     $dumpvars;
 
+    // used for debugging only
+    level = 0;
     #30;  // auipc   sp,0x50000
 
     $warning("auipc   sp,0x50000");
@@ -256,7 +260,7 @@ module tb_top_clic;
     $display("alu %h", top.alu.res);
     assert (top.pc_reg.out == 29 * 4);
 
-    $display("---   rf[t1 6] %h", top.rf.regs[6]);
+    $display("---   rf[t1 6] %h", top.rf.regs[level][6]);
 
     #20;  //  lui     t1,0x5
     $warning("lui     t1,0x5");
@@ -286,15 +290,15 @@ module tb_top_clic;
 
     assert (top.pc_reg.out == 34 * 4);
     // dump registers
-    $display("rf[t1 6] %h", top.rf.regs[6]);
-    $display("rf[t2 7] %h", top.rf.regs[7]);
-    $display("rf[t3 28] %h", top.rf.regs[28]);
-    $display("rf[t4 29] %h", top.rf.regs[29]);
-    $display("rf[t5 30] %h", top.rf.regs[30]);
-    $display("rf[t6 31] %h", top.rf.regs[31]);
-    $display("rf[a1 11] %h", top.rf.regs[11]);
-    $display("rf[a2 12] %h", top.rf.regs[12]);
-    $display("rf[a3 13] %h", top.rf.regs[13]);
+    $display("rf[t1 6] %h", top.rf.regs[level][6]);
+    $display("rf[t2 7] %h", top.rf.regs[level][7]);
+    $display("rf[t3 28] %h", top.rf.regs[level][28]);
+    $display("rf[t4 29] %h", top.rf.regs[level][29]);
+    $display("rf[t5 30] %h", top.rf.regs[level][30]);
+    $display("rf[t6 31] %h", top.rf.regs[level][31]);
+    $display("rf[a1 11] %h", top.rf.regs[level][11]);
+    $display("rf[a2 12] %h", top.rf.regs[level][12]);
+    $display("rf[a3 13] %h", top.rf.regs[level][13]);
 
     // dump csr
     $display("csr_led %h", top.csr_led.csr_led.data);

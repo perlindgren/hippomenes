@@ -27,7 +27,7 @@ top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
 fgpa_top = $(top_dep) $(root)/top.sv $(root)/tb_fpga_top.sv
 
-top_clic = $(top_dep) $(root)/top_clic.sv $(core)/n_clic.sv $(core)/stack.sv $(root)/tb_top_clic.sv
+top_n_clic = $(top_dep) $(root)/top_n_clic.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_n_clic.sv
 
 top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
 
@@ -59,14 +59,14 @@ all: \
 	tb_top_branch \
 	tb_top_mem \
 	tb_top \
-	tb_top_clic
+	tb_top_n_clic
 	
-tb_top_clic: $(top_clic) 
-	verilator --binary $(top_clic) --top-module tb_top_clic --trace-fst --assert 
-	obj_dir/Vtb_top_clic
+tb_top_n_clic: $(top_n_clic) 
+	verilator --binary $(top_n_clic) --top-module tb_top_n_clic --trace-fst --assert 
+	obj_dir/Vtb_top_n_clic
 
-tb_top_clic_g: 
-	gtkwave -a top_clic.gtkw top_clic.fst
+tb_top_n_clic_g: 
+	gtkwave -a top_n_clic.gtkw top_n_clic.fst
 
 tb_top: $(top) 
 	verilator --binary $(top) --top-module tb_top --trace-fst --assert 

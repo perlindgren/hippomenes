@@ -1,7 +1,7 @@
-// top_clic
+// top_n_clic
 `timescale 1ns / 1ps
 
-module top_clic (
+module top_n_clic (
     input  logic clk,
     input  logic reset,
     output logic led
@@ -145,18 +145,24 @@ module top_clic (
   // register file
   word rf_rs1;
   word rf_rs2;
-  register_file rf (
+  word rf_ra;
+
+  word rf_stack_ra;
+  rf_stack rf (
       // in
-      .clk(clk),
-      .reset(reset),
+      .clk,
+      .reset,
       .writeEn(wb_enable_reg_out),
+      .writeRaEn(0),
+      .level(0),
       .writeAddr(wb_rd_reg_out),
       .writeData(wb_data_reg_out),
       .readAddr1(decoder_rs1),
       .readAddr2(decoder_rs2),
       // out
       .readData1(rf_rs1),
-      .readData2(rf_rs2)
+      .readData2(rf_rs2),
+      .readRa(rf_stack_ra)
   );
 
   // branch logic
@@ -238,9 +244,11 @@ module top_clic (
       .led
   );
 
-  word n_clic_out;
+  word n_clic_csr_out;  //
   IMemAddrT n_clic_pc_out;
+  logic [PrioWidth-1:0] n_clic_level_out;
   n_clic n_clic (
+      // in
       .clk,
       .reset,
       .csr_enable(decoder_csr_enable),
@@ -250,8 +258,10 @@ module top_clic (
       //.rd(decoder_rd),
       .csr_op(decoder_csr_op),
       .pc_in(pc_mux_out),
+      // out
       .pc_out(n_clic_pc_out),
-      .out(n_clic_out)
+      .csr_out(n_clic_csr_out),
+      .level_out(n_clic_level_out)
   );
 
   word wb_mux_out;
