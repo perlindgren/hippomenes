@@ -49,6 +49,24 @@ module top_n_clic (
       .in(decoder_wb_write_enable),
       .out(wb_enable_reg_out)
   );
+  reg interrupt_reg_out;
+  reg_n #(
+      .DataWidth(1)
+  ) interrupt_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(n_clic_interrupt_out),
+      .out(interrupt_reg_out)
+  );
+  reg [PrioWidth-1:0] stack_depth_reg_out;
+  reg_n #(
+      .DataWidth(PrioWidth)
+  ) stack_depth_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(n_clic_level_out),
+      .out(stack_depth_reg_out)
+  );
 
   // pc related
   IMemAddrT pc_mux_out;
@@ -153,8 +171,8 @@ module top_n_clic (
       .clk,
       .reset,
       .writeEn(wb_enable_reg_out),
-      .writeRaEn(0),
-      .level(0),
+      .writeRaEn(interrupt_reg_out),
+      .level(stack_depth_reg_out),
       .writeAddr(wb_rd_reg_out),
       .writeData(wb_data_reg_out),
       .readAddr1(decoder_rs1),
@@ -247,6 +265,7 @@ module top_n_clic (
   word n_clic_csr_out;  //
   IMemAddrT n_clic_pc_out;
   logic [PrioWidth-1:0] n_clic_level_out;
+  reg n_clic_interrupt_out;
   n_clic n_clic (
       // in
       .clk,
@@ -261,7 +280,8 @@ module top_n_clic (
       // out
       .pc_out(n_clic_pc_out),
       .csr_out(n_clic_csr_out),
-      .level_out(n_clic_level_out)
+      .level_out(n_clic_level_out),
+      .interrupt_out(n_clic_interrupt_out)
   );
 
   word wb_mux_out;

@@ -8,7 +8,7 @@ module tb_top_n_clic;
   logic clk;
   logic reset;
   logic led;
-
+  (* DONT_TOUCH = "TRUE" *)
   top_n_clic top (
       .clk  (clk),
       .reset(reset),
@@ -24,12 +24,18 @@ module tb_top_n_clic;
     // notice raw access to memory is in words
     top.imem.mem[0] = 'h50000117;  // auipc   sp,0x50000
     top.imem.mem[1] = 'h50010113;  // addi    sp,sp,1280 # 50000500
-    top.imem.mem[2] = 'h35015073;  // CSR
-    top.imem.mem[3] = 'h01000337;  // lui     t1,0x1000
-    top.imem.mem[4] = 'h10030313;  // addi    t1,t1,256 # 1000100
-    top.imem.mem[5] = 'h020003b7;  // lui     t2,0x2000
-    top.imem.mem[6] = 'h10038393;  // addi    t2,t2,256 # 2000100
-    top.imem.mem[7] = 'h03000e37;  // lui     t3,0x3000
+    top.imem.mem[2] = 'h35015073;  // CSR this does nothing
+    top.imem.mem[3] = 'h02300393;  // addi t2, zero, 140>>2 # ISR address
+    top.imem.mem[4] = 'h00f00313;  // addi t1, zero, 0b1111 # prio 3, enabled, pended
+    top.imem.mem[5] = 'hb0139073;  // csrrw zero, 0xB01, t2 # write ISR address to vector 1
+    top.imem.mem[6] = 'hb2131073;  //csrrw zero, 0xB21, t1 # write to config to entry 1
+    top.imem.mem[7] = 'h33700313; // addi t1, zero, 0x1337 # write something to t1, ensure this isnt executed
+    // top.imem.mem[5] = 'h ;
+    // top.imem.mem[3] = 'h01000337;  // lui     t1,0x1000
+    // top.imem.mem[4] = 'h10030313;  // addi    t1,t1,256 # 1000100
+    //top.imem.mem[5] = 'h020003b7;  // lui     t2,0x2000
+    //top.imem.mem[6] = 'h10038393;  // addi    t2,t2,256 # 2000100
+    //top.imem.mem[7] = 'h03000e37;  // lui     t3,0x3000
     top.imem.mem[8] = 'h100e0e13;  // addi    t3,t3,256 # 3000100
     top.imem.mem[9] = 'h04000eb7;  // lui     t4,0x4000
     top.imem.mem[10] = 'h100e8e93;  // addi    t4,t4,256 # 4000100
@@ -59,6 +65,12 @@ module tb_top_n_clic;
 
     // just to force update mem
     top.imem.mem[34] = 'hb0969073;  // csrrw   b09, a3, zero
+
+    //ISR
+    top.imem.mem[35] = 'h00000033;  // NOP
+    top.imem.mem[36] = 'h00000033;  // NOP
+    top.imem.mem[37] = 'h00008067;  // jalr zero ra, i.e. ret
+    //top.imem.mem[37] = 'h0000006f;  // jal zero, zero, i.e. loop forever here
 
     reset = 1;
     clk = 0;
@@ -98,42 +110,64 @@ module tb_top_n_clic;
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     assert (top.pc_reg.out == 8);
 
+
     #20;  // lui     t1,0x1000
-    $warning("lui t1,0x1000");
+    //$warning("lui t1,0x1000");
+    $warning("addi t2, zero, 140>>2");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
     assert (top.pc_reg.out == 12);
+    assert (top.wb_data_reg.in == 35);
+    //assert (top.n_clic.level_out == 2);
 
     #20;  //  addi    t1,t1,256 # 1000100
-    $warning("addi t1,t1,256 # 1000100");
+    //$warning("addi t1,t1,256 # 1000100");
+    $warning("addi t1, zero, 0b1111");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
+    $display("clic rs1_data %h, csr_addr %h, csr_op %h, vec data %h",
+             top.n_clic.gen_vec[1].csr_entry.rs1_data, top.n_clic.gen_vec[1].csr_entry.csr_addr,
+             top.n_clic.gen_vec[1].csr_entry.csr_op, top.n_clic.gen_vec[1].csr_vec.data);
     assert (top.pc_reg.out == 16);
-
     #20;  //  lui     t2,0x2000
-    $warning("lui t2,0x2000");
+    $warning("csrrw zero, 0xB01, t2");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
     assert (top.pc_reg.out == 20);
 
     #20;  //  addi    t2,t2,256 # 2000100
-    $warning("addi  t2,t2,256 # 2000100");
+    $warning("csrrw zero, 0xB21, t1");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
     assert (top.pc_reg.out == 24);
-
     #20;  //  lui     t3,0x3000
-    $warning("lui     t3,0x3000");
+    $warning("interrupt delayed by 1 instruction");
+    $display("level_out %h", top.n_clic.level_out);
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
-    assert (top.pc_reg.out == 28);
+    //assert (top.pc_reg.out == 140);
 
     #20;  //  addi    t3,t3,256 # 3000100
-    $warning("addi    t3,t3,256 # 3000100");
+    $warning("nop (inside ISR)");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
-    assert (top.pc_reg.out == 32);
+    assert (top.pc_reg.out == 140);
 
+    #20;
+    $warning("nop (inside ISR)");
+    assert (top.pc_reg.out == 144);
+
+    #20;
+    $warning("jal zero, zero, loop forever");
+    assert (top.pc_reg.out == 148);
+
+    #20;
+    $warning("jal zero, zero, loop forever");
+    assert (top.pc_reg.out == 148);
+    #20;
+    $warning("jal zero, zero, loop forever");
+    assert (top.pc_reg.out == 148);
+    /*
     #20;  //  lui     t4,0x4000
     $warning("lui     t4,0x4000");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
@@ -288,9 +322,13 @@ module tb_top_n_clic;
 
     #20;  // --- nop ---
 
-    assert (top.pc_reg.out == 34 * 4);
+    assert (top.pc_reg.out == 34 * 4);*/
     // dump registers
-    $display("rf[t1 6] %h", top.rf.regs[level][6]);
+    $display("rf[5][ra] %h", top.rf.regs[5][1]);
+    $display("rf[6][ra] %h", top.rf.regs[6][1]);
+    $display("rf[7][ra] %h", top.rf.regs[7][1]);
+    $display("rf[7][t1 6] %h", top.rf.regs[7][6]);
+    $display("rf[level][t1 6] %h", top.rf.regs[level][6]);
     $display("rf[t2 7] %h", top.rf.regs[level][7]);
     $display("rf[t3 28] %h", top.rf.regs[level][28]);
     $display("rf[t4 29] %h", top.rf.regs[level][29]);

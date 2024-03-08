@@ -38,6 +38,7 @@ module rf_stack #(
 
   always_ff @(posedge clk) begin
     // do not write to register 0
+    $display("INTERRUPT_REG_FILE = %d", writeRaEn);
     if (reset) begin
       regs <= 0;
     end else begin

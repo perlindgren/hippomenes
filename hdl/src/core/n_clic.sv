@@ -34,7 +34,8 @@ module n_clic
     //
     output word csr_out,
     output IMemAddrT pc_out,
-    output logic [PrioWidth-1:0] level_out  // stack depth
+    output logic [PrioWidth-1:0] level_out,  // stack depth
+    output reg interrupt_out
 );
 
   // CSR m_int_thresh
@@ -118,7 +119,7 @@ module n_clic
   generate
     word temp_vec[VecSize];
     word temp_entry[VecSize];
-
+    //r interrupt;
     // automatically connected
     logic ext_write_enable;
     logic [(IMemAddrWidth - 2)-1:0] ext_vec_data;
@@ -130,7 +131,13 @@ module n_clic
           .CsrWidth(IMemAddrWidth - 2)
       ) csr_vec (
           // in
-          .*,
+          .clk(clk),
+          .reset(reset),
+          .csr_enable(csr_enable),
+          .csr_addr(csr_addr),
+          .csr_op(csr_op),
+          .rs1_zimm(rs1_zimm),
+          .rs1_data(rs1_data),
           .ext_write_enable,
           .ext_data(ext_vec_data),
           // out
@@ -142,7 +149,13 @@ module n_clic
           .CsrWidth($bits(entry_t))
       ) csr_entry (
           // in
-          .*,
+          .clk(clk),
+          .reset(reset),
+          .csr_enable(csr_enable),
+          .csr_addr(csr_addr),
+          .csr_op(csr_op),
+          .rs1_zimm(rs1_zimm),
+          .rs1_data(rs1_data),
           .ext_write_enable,
           .ext_data(ext_entry_data),
           // out
@@ -199,6 +212,7 @@ module n_clic
       pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
       m_int_thresh_data = 0;  // no update of threshold
       m_int_thresh_write_enable = 0;  // no update of threshold
+      interrupt_out = 1;
       // $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (is_int[VecSize-1]) begin
       push = 1;
@@ -206,13 +220,15 @@ module n_clic
       pc_out = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
       m_int_thresh_data = max_prio[VecSize-1];
       m_int_thresh_write_enable = 1;
-      // $display("interrupt take pc_out %d", pc_out);
+      interrupt_out = 1;
+      $display("interrupt take pc_out %d", pc_out);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
       push = 0;
       pop = 1;
       pc_out = stack_out.addr;
       m_int_thresh_data = stack_out.prio;
       m_int_thresh_write_enable = 1;
+      interrupt_out = 0;
       // $display("pop");
     end else begin
       push = 0;
@@ -220,6 +236,7 @@ module n_clic
       m_int_thresh_data = 0;
       m_int_thresh_write_enable = 0;
       pc_out = pc_in;
+      interrupt_out = 0;
       // $display("interrupt NOT take");
     end
   end

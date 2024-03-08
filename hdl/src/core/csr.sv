@@ -47,6 +47,7 @@ module csr #(
       case (csr_op)
         CSRRW: begin
           // side effect on read/write here
+          $display("CSR WRITE %h", rs1_data);
           data <= CsrDataT'(rs1_data);
         end
         CSRRS: begin  // set only if rs1 != x0
