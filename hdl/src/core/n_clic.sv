@@ -14,12 +14,9 @@ module n_clic
     input r rs1_zimm,
     input word rs1_data,
     input csr_op_t csr_op,
-
     // epc
     input IMemAddrT pc_in,
-    // input IMemAddrT ra_in,
 
-    //
     output word csr_out,
     output IMemAddrT int_addr,
     pc_interrupt_mux_t pc_interrupt_sel,
@@ -52,12 +49,10 @@ module n_clic
 
   // packed struct allowng for 5 bit immediates in CSR
   typedef struct packed {
-    logic [PrioWidth-1:0] prio;
+    PrioT prio;
     logic enabled;
-    logic pended;  // LSB
+    logic pended;   // LSB
   } entry_t;
-
-  // stack_t data_in;
 
   // stack
   logic push;
@@ -103,13 +98,13 @@ module n_clic
           .CsrWidth(IMemAddrWidth - 2)
       ) csr_vec (
           // in
-          .clk(clk),
-          .reset(reset),
-          .csr_enable(csr_enable),
-          .csr_addr(csr_addr),
-          .csr_op(csr_op),
-          .rs1_zimm(rs1_zimm),
-          .rs1_data(rs1_data),
+          .clk,
+          .reset,
+          .csr_enable,
+          .csr_addr,
+          .csr_op,
+          .rs1_zimm,
+          .rs1_data,
           .ext_write_enable(0),
           .ext_data(0),
           // out
@@ -121,26 +116,26 @@ module n_clic
           .CsrWidth($bits(entry_t))
       ) csr_entry (
           // in
-          .clk(clk),
-          .reset(reset),
-          .csr_enable(csr_enable),
-          .csr_addr(csr_addr),
-          .csr_op(csr_op),
-          .rs1_zimm(rs1_zimm),
-          .rs1_data(rs1_data),
+          .clk,
+          .reset,
+          .csr_enable,
+          .csr_addr,
+          .csr_op,
+          .rs1_zimm,
+          .rs1_data,
           .ext_write_enable(ext_write_enable[k]),
           .ext_data(ext_entry_data),
           // out
           .out(temp_entry[k])
       );
 
-      assign entry[k]        = entry_t'(temp_entry[k]);  // gen_vec[k].csr_entry.data;
+      assign entry[k]        = entry_t'(temp_entry[k]);
       assign prio[k]         = entry[k].prio;  // a bit of a hack to please Verilator
-      assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);  // gen_vec[k].csr_vec.data;
+      assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
     end
   endgenerate
 
-  // stupid implementation to find max priority
+  // simple implementation to find max priority
   PrioT         max_prio [VecSize];
   IMemAddrStore max_vec  [VecSize];
   VecT          max_index[VecSize];
@@ -169,24 +164,13 @@ module n_clic
     end
   end
 
-  // handle interrupts: tail-chain-, take-, exit- and no-interrupt
+  // handle interrupts: take-, tail-chain-, exit- and no-interrupt
   always_comb begin
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
-    ext_entry_data   = entry[max_index[VecSize-1]] & ~1;  // clear pend bit
-    // check return from interrupt condition
-    if ((pc_in == ~(IMemAddrWidth'(0))) &&
-        entry[max_index[VecSize-1]].enabled && entry[max_index[VecSize-1]].pended &&
-        (max_prio[VecSize-1] >= m_int_thresh.data)) begin
-      push = 0;
-      pop = 0;
-      int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
-      m_int_thresh_data = 0;  // no update of threshold
-      m_int_thresh_write_enable = 0;  // no update of threshold
-      interrupt_out = 1;
-      pc_interrupt_sel = PC_INTERRUPT;
-      ext_write_enable[max_index[VecSize-1]] = 1;  // write to pended interrupt
-      $display("tail chaining level_out %d, pop %d", level_out, pop);
-    end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
+    ext_entry_data   = entry[max_index[VecSize-1]] & ~1;  // compute clear pend
+
+    if (max_prio[VecSize-1] > m_int_thresh.data) begin
+      // take higher priority interrupt
       push = 1;
       pop = 0;
       int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
@@ -194,9 +178,23 @@ module n_clic
       m_int_thresh_write_enable = 1;
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
-      ext_write_enable[max_index[VecSize-1]] = 1;  // write to pended interrupt
+      ext_write_enable[max_index[VecSize-1]] = 1;  // clear pended interrupt
       $display("interrupt take int_addr %d", int_addr);
+    end else if ((pc_in == ~(IMemAddrWidth'(0))) &&
+        entry[max_index[VecSize-1]].enabled && entry[max_index[VecSize-1]].pended &&
+        (max_prio[VecSize-1] >= m_int_thresh.data)) begin
+      // tail chain only in case the vector is actually enabled and pended
+      push = 0;
+      pop = 0;
+      int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte addressed instruction memory
+      m_int_thresh_data = 0;  // no update of threshold
+      m_int_thresh_write_enable = 0;  // no update of threshold
+      interrupt_out = 1;
+      pc_interrupt_sel = PC_INTERRUPT;
+      ext_write_enable[max_index[VecSize-1]] = 1;  // clear pended interrupt
+      $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
+      // interrupt return
       push = 0;
       pop = 1;
       int_addr = stack_out.addr;
@@ -206,6 +204,7 @@ module n_clic
       pc_interrupt_sel = PC_INTERRUPT;
       $display("interrupt return");
     end else begin
+      // no interrupt
       push = 0;
       pop = 0;
       m_int_thresh_data = 0;
