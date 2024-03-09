@@ -180,6 +180,7 @@ module tb_top_n_clic;
 
     #20;
     $warning("jalr zero, zero, i.e. loop forever here");
+    $display("rf level %d, ", top.rf.level, top.rf.regs[top.rf.level][1]);
     // assert (top.pc_reg.out == 28);
 
     /*
