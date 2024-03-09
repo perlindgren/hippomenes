@@ -141,7 +141,6 @@ module n_clic
   endgenerate
 
   // stupid implementation to find max priority
-  /* verilator lint_off UNOPTFLAT */
   PrioT         max_prio [VecSize];
   IMemAddrStore max_vec  [VecSize];
   VecT          max_index[VecSize];
