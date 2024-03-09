@@ -169,6 +169,7 @@ module n_clic
     end
   end
 
+  // handle interrupts: tail-chain-, take-, exit- and no-interrupt
   always_comb begin
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = entry[max_index[VecSize-1]] & ~1;  // clear pend bit
