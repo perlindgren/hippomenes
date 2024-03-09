@@ -1,0 +1,63 @@
+[*]
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Sat Mar  9 12:47:20 2024
+[*]
+[dumpfile] "/data/riscv/hippomenes/hdl/verilator/top_n_clic.fst"
+[dumpfile_mtime] "Sat Mar  9 12:21:54 2024"
+[dumpfile_size] 5627
+[savefile] "/data/riscv/hippomenes/hdl/verilator/top_n_clic.gtkw"
+[timestart] 0
+[size] 2165 1726
+[pos] -1 -1
+*-15.170023 204900 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_top_n_clic.
+[treeopen] TOP.tb_top_n_clic.top.
+[sst_width] 414
+[signals_width] 418
+[sst_expanded] 1
+[sst_vpaned_height] 549
+@28
+TOP.tb_top_n_clic.top.reset
+TOP.tb_top_n_clic.top.clk
+@22
+TOP.tb_top_n_clic.top.pc_reg_out[7:0]
+TOP.tb_top_n_clic.top.imem_data_out[31:0]
+@28
+TOP.tb_top_n_clic.top.n_clic_interrupt_out
+@22
+TOP.tb_top_n_clic.top.n_clic_interrupt_addr[7:0]
+@28
+TOP.tb_top_n_clic.top.n_clic_csr_out[31:0]
+@100000028
+TOP.tb_top_n_clic.top.n_clic_pc_interrupt_sel
+@28
+TOP.tb_top_n_clic.top.n_clic_level_out[2:0]
+@22
+TOP.tb_top_n_clic.top.pc_branch_mux_out[7:0]
+@28
+TOP.tb_top_n_clic.top.decoder_branch_instr
+@100000028
+TOP.tb_top_n_clic.top.decoder_branch_op[2:0]
+@28
+TOP.tb_top_n_clic.top.decoder_branch_always
+@100000028
+TOP.tb_top_n_clic.top.branch_logic_out
+@22
+TOP.tb_top_n_clic.top.alu_res[31:0]
+TOP.tb_top_n_clic.top.alu_a_mux_out[31:0]
+TOP.tb_top_n_clic.top.alu_b_mux_out[31:0]
+@100000028
+TOP.tb_top_n_clic.top.decoder_alu_b_mux_sel
+@22
+TOP.tb_top_n_clic.top.decoder_rs1[4:0]
+@100000028
+TOP.tb_top_n_clic.top.decoder_alu_a_mux_sel[1:0]
+@22
+TOP.tb_top_n_clic.top.decoder_rd[4:0]
+TOP.tb_top_n_clic.top.decoder_rs1[4:0]
+TOP.tb_top_n_clic.top.decoder_rs2[4:0]
+TOP.tb_top_n_clic.top.rf_rs1[31:0]
+TOP.tb_top_n_clic.top.rf_rs2[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
