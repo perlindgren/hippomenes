@@ -21,61 +21,25 @@ module tb_top_n_clic;
   initial begin
     $display($time, " << Starting the Simulation >>");
 
-    // notice raw access to memory is in words
-    top.imem.mem[0] = 'h50000117;  // auipc   sp,0x50000
-    top.imem.mem[1] = 'h50010113;  // addi    sp,sp,1280 # 50000500
-    top.imem.mem[2] = 'h35015073;  // CSR this does nothing
-    top.imem.mem[3] = 'h02300393;  // addi t2, zero, 140>>2 # ISR address
-    top.imem.mem[4] = 'h00f00313;  // addi t1, zero, 0b1111 # prio 3, enabled, pended
-    top.imem.mem[5] = 'hb0139073;  // csrrw zero, 0xB01, t2 # write ISR address to vector 1
-    top.imem.mem[6] = 'hb2131073;  // csrrw zero, 0xB21, t1 # write to config to entry 1, pend
-    top.imem.mem[7] = 'h0000006f;  // jal zero, zero, i.e. loop forever here
+    // Rom for instruction mem content
 
-    // top.imem.mem[7] = 'h33700313;  // addi t1, zero, 0x1337 # write something to t1, ensure this isnt executed
-    // top.imem.mem[5] = 'h ;
-    // top.imem.mem[3] = 'h01000337;  // lui     t1,0x1000
-    // top.imem.mem[4] = 'h10030313;  // addi    t1,t1,256 # 1000100
-    //top.imem.mem[5] = 'h020003b7;  // lui     t2,0x2000
-    //top.imem.mem[6] = 'h10038393;  // addi    t2,t2,256 # 2000100
-    //top.imem.mem[7] = 'h03000e37;  // lui     t3,0x3000
-    top.imem.mem[8] = 'h100e0e13;  // addi    t3,t3,256 # 3000100
-    top.imem.mem[9] = 'h04000eb7;  // lui     t4,0x4000
-    top.imem.mem[10] = 'h100e8e93;  // addi    t4,t4,256 # 4000100
-    top.imem.mem[11] = 'h05000f37;  // lui     t5,0x5000
-    top.imem.mem[12] = 'h100f0f13;  // addi    t5,t5,256 # 5000100
-    top.imem.mem[13] = 'h06000fb7;  // lui     t6,0x6000
-    top.imem.mem[14] = 'h100f8f93;  // addi    t6,t6,256 # 6000100
-    top.imem.mem[15] = 'h070005b7;  // lui     a1,0x7000
-    top.imem.mem[16] = 'h10058593;  // addi    a1,a1,256 # 7000100
-    top.imem.mem[17] = 'h08000637;  // lui     a2,0x8000
-    top.imem.mem[18] = 'h10060613;  // addi    a2,a2,256 # 8000100
-    top.imem.mem[19] = 'h090006b7;  // lui     a3,0x9000
-    top.imem.mem[20] = 'h10068693;  // addi    a3,a3,256 # 9000100
-    top.imem.mem[21] = 'hb0131073;  // csrrw   b01, t1, zero
-    top.imem.mem[22] = 'hb0239073;  // csrrw   b02, t2, zero
-    top.imem.mem[23] = 'hb03e1073;  // csrrw   b03, t3, zero
-    top.imem.mem[24] = 'hb04e9073;  // csrrw   b04, t4, zero
-    top.imem.mem[25] = 'hb05f1073;  // csrrw   b05, t5, zero
-    top.imem.mem[26] = 'hb06f9073;  // csrrw   b06, t6, zero
-    top.imem.mem[27] = 'hb0759073;  // csrrw   b07, a1, zero
-    top.imem.mem[28] = 'hb0861073;  // csrrw   b08, a2, zero
-    top.imem.mem[29] = 'hb0969073;  // csrrw   b09, a3, zero
-    top.imem.mem[30] = 'h00005337;  // lui     t1,0x5
-    top.imem.mem[31] = 'h00830313;  // addi    t1,t1,8 # 5008
-    top.imem.mem[32] = 'h03200393;  // li      t2,50
-    top.imem.mem[33] = 'h00732023;  // sw      t2,0(t1)
+    // // notice raw access to memory is in words
+    // top.imem.mem[0] = 'h50000117;  // auipc   sp,0x50000
+    // top.imem.mem[1] = 'h50010113;  // addi    sp,sp,1280 # 50000500
+    // top.imem.mem[2] = 'h35015073;  // CSR this does nothing
+    // top.imem.mem[3] = 'h02300393;  // addi t2, zero, 140>>2 # ISR address
+    // top.imem.mem[4] = 'h00f00313;  // addi t1, zero, 0b1111 # prio 3, enabled, pended
+    // top.imem.mem[5] = 'hb0139073;  // csrrw zero, 0xB01, t2 # write ISR address to vector 1
+    // top.imem.mem[6] = 'hb2131073;  // csrrw zero, 0xB21, t1 # write to config to entry 1, pend
+    // top.imem.mem[7] = 'h0000006f;  // jal zero, zero, i.e. loop forever here
 
-    // just to force update mem
-    top.imem.mem[34] = 'hb0969073;  // csrrw   b09, a3, zero
-
-    //ISR
-    top.imem.mem[35] = 'h00000033;  // NOP
-    top.imem.mem[36] = 'h00000033;  // NOP
-    top.imem.mem[37] = 'h00008067;  // jalr zero ra, i.e. ret
-    //top.imem.mem[37] = 'h0000006f;  // jal zero, zero, i.e. loop forever here
+    // //ISR
+    // top.imem.mem[35] = 'h00000033;  // NOP
+    // top.imem.mem[36] = 'h00000033;  // NOP
+    // top.imem.mem[37] = 'h00008067;  // jalr zero ra, i.e. ret
 
     reset = 1;
-    clk = 0;
+    clk   = 0;
     #15 reset = 0;
   end
 
@@ -181,6 +145,17 @@ module tb_top_n_clic;
     #20;
     $warning("jalr zero, zero, i.e. loop forever here");
     $display("rf level %d, ", top.rf.level, top.rf.regs[top.rf.level][1]);
+
+    #20;
+
+    #20;
+
+    #20;
+
+    #20;
+
+    #20;
+
     // assert (top.pc_reg.out == 28);
 
     /*

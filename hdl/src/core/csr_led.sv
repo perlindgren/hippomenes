@@ -38,7 +38,6 @@ module csr_led #(
       .csr_op,
       .ext_data,
       .ext_write_enable,
-      // .match(match),
       .out(out)
   );
 

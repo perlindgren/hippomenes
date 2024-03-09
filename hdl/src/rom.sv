@@ -26,9 +26,28 @@ module rom
   //    8:  ff9ff06f            j 0 <l>
   always_comb begin
 
-    //mem[0] = 'hb000d073;
-    //mem[1] = 'hb0005073;
-    //mem[2] = 'hff9ff06f;
+    // mem[0] = 'h0000d073;
+    // mem[1] = 'h00005073;
+    // mem[2] = 'hff9ff06f;
+
+    // notice raw access to memory is in words
+    mem[0]  = 'h50000117;  // auipc   sp,0x50000
+    mem[1]  = 'h50010113;  // addi    sp,sp,1280 # 50000500
+    mem[2]  = 'h35015073;  // CSR this does nothing
+    mem[3]  = 'h02300393;  // addi t2, zero, 140>>2 # ISR address
+    mem[4]  = 'h00f00313;  // addi t1, zero, 0b1111 # prio 3, enabled, pended
+    mem[5]  = 'hb0139073;  // csrrw zero, 0xB01, t2 # write ISR address to vector 1
+    mem[6]  = 'hb2131073;  // csrrw zero, 0xB21, t1 # write to config to entry 1, pend
+    mem[7]  = 'hffdff06f;  // jal zero, zero, i.e. loop forever here
+
+    //ISR
+    mem[35] = 'h0000d073;  // on
+    mem[36] = 'h0000d073;  // on
+    mem[37] = 'h0000d073;  // on
+    mem[38] = 'h0000d073;  // on
+    mem[39] = 'h00005073;  // off
+
+    mem[40] = 'h00008067;  // jalr zero ra, i.e. ret
 
   end
 
