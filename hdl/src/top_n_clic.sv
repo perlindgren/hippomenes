@@ -50,15 +50,15 @@ module top_n_clic (
       .out(wb_enable_reg_out)
   );
 
-  logic interrupt_reg_out;
-  reg_n #(
-      .DataWidth(1)
-  ) interrupt_reg (
-      .clk(clk),
-      .reset(reset),
-      .in(n_clic_interrupt_out),
-      .out(interrupt_reg_out)
-  );
+  //   logic interrupt_reg_out;
+  //   reg_n #(
+  //       .DataWidth(1)
+  //   ) interrupt_reg (
+  //       .clk(clk),
+  //       .reset(reset),
+  //       .in(n_clic_interrupt_out),
+  //       .out(interrupt_reg_out)
+  //   );
 
   PrioT stack_depth_reg_out;
   reg_n #(
