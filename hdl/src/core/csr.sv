@@ -3,22 +3,23 @@
 `timescale 1ns / 1ps
 
 import decoder_pkg::*;
-
+import config_pkg::*;
 // Notice, we assume csrwidth to be at lest 5 bits
 // in order to simplify the code
 module csr #(
     parameter integer unsigned CsrWidth = 32,  // default to word
     localparam type CsrDataT = logic [CsrWidth-1:0],  // derived
-    parameter logic [CsrWidth-1:0] ResetValue = 0,
+    parameter CsrDataT ResetValue = 0,
 
-    parameter csr_addr_t Addr = 0,
+    /* verilator lint_off WIDTHTRUNC */
+    parameter CsrAddrT Addr = 0,
     parameter logic Read = 1,
     parameter logic Write = 1
 ) (
     input logic clk,
     input logic reset,
     input logic csr_enable,
-    input csr_addr_t csr_addr,
+    input CsrAddrT csr_addr,
     input csr_op_t csr_op,
     input r rs1_zimm,
     input word rs1_data,

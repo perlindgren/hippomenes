@@ -4,20 +4,7 @@
 module n_clic
   import decoder_pkg::*;
   import config_pkg::*;
-#(
-    parameter integer unsigned VecSize      = 8,
-    parameter integer unsigned PrioLevels   = 8,
-    parameter integer unsigned VecCsrBase   = 'hb00,
-    parameter integer unsigned EntryCsrBase = 'hb20,  // up to 32 vectors
-
-    // csr registers
-    localparam csr_addr_t MStatusAddr    = 'h305,
-    localparam csr_addr_t MIntThreshAddr = 'h347,
-    localparam csr_addr_t StackDepthAddr = 'h350,
-
-    localparam integer unsigned VecWidth  = $clog2(VecSize),
-    localparam integer unsigned PrioWidth = $clog2(PrioLevels)
-) (
+(
     input logic clk,
     input logic reset,
 
@@ -118,7 +105,7 @@ module n_clic
 
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
-          .Addr(12'(VecCsrBase + k)),
+          .Addr(VecCsrBase + k),
           .CsrWidth(IMemAddrWidth - 2)
       ) csr_vec (
           // in
@@ -136,7 +123,7 @@ module n_clic
       );
 
       csr #(
-          .Addr(12'(EntryCsrBase + k)),
+          .Addr(EntryCsrBase + k),
           .CsrWidth($bits(entry_t))
       ) csr_entry (
           // in
@@ -239,11 +226,12 @@ module n_clic
       csr_out = m_int_thresh_out;
     end else begin
       for (int k = 0; k < VecSize; k++) begin
-        if (csr_addr == 12'(VecCsrBase + k)) begin
+        /* verilator lint_off WIDTHEXPAND */
+        if (csr_addr == VecCsrBase + k) begin
           csr_out = temp_vec[k];
           break;
         end
-        if (csr_addr == 12'(EntryCsrBase + k)) begin
+        if (csr_addr == EntryCsrBase + k) begin
           csr_out = temp_vec[k];
           break;
         end

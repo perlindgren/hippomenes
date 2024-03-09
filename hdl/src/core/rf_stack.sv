@@ -26,8 +26,7 @@ module rf_stack #(
     input  AddrT  readAddr1,
     input  AddrT  readAddr2,
     output DataT  readData1,
-    output DataT  readData2,
-    output DataT  readRa
+    output DataT  readData2
 );
 
   logic [NumLevels-1:0][NumRegs-1:0][DataWidth-1:0] regs;
@@ -43,11 +42,11 @@ module rf_stack #(
       regs <= 0;
     end else begin
       if (writeEn && (writeAddr != Zero)) begin
-        if (writeAddr == 2) regs[0][writeAddr] <= writeData;
+        if (writeAddr == Sp) regs[0][writeAddr] <= writeData;
         else regs[level][writeAddr] <= writeData;
       end
       // update ra with marker
-      if (writeRaEn) regs[level][1] <= ~0;
+      if (writeRaEn) regs[level_minus_1][Ra] <= ~0;
     end
   end
 
@@ -67,7 +66,5 @@ module rf_stack #(
     end else if (readAddr2 == Sp) begin
       readData2 = regs[0][readAddr2];  // sp on level 0
     end else readData2 = regs[level][readAddr2];
-
-    readRa = regs[level][Ra];  // always output current ra
   end
 endmodule

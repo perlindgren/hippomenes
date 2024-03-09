@@ -27,7 +27,12 @@ package config_pkg;
   localparam type VecT = logic [VecWidth-1:0];
   localparam type PrioT = logic [PrioWidth-1:0];
 
-  typedef logic [11:0] CsrAddrT;
+  localparam type CsrAddrT = logic [11:0];
   localparam CsrAddrT VecCsrBase = 'hb00;
+  localparam CsrAddrT EntryCsrBase = 'hb20;  // up to 32 vectors
 
+  // csr registers
+  localparam CsrAddrT MStatusAddr = 'h305;
+  localparam CsrAddrT MIntThreshAddr = 'h347;
+  localparam CsrAddrT StackDepthAddr = 'h350;
 endpackage

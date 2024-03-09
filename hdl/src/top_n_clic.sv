@@ -17,7 +17,7 @@ module top_n_clic (
   ) pc_reg (
       .clk(clk),
       .reset(reset),
-      .in(n_clic_pc_out),
+      .in(pc_interrupt_mux_out),
       .out(pc_reg_out)
   );
 
@@ -49,6 +49,7 @@ module top_n_clic (
       .in(decoder_wb_write_enable),
       .out(wb_enable_reg_out)
   );
+
   reg interrupt_reg_out;
   reg_n #(
       .DataWidth(1)
@@ -58,6 +59,7 @@ module top_n_clic (
       .in(n_clic_interrupt_out),
       .out(interrupt_reg_out)
   );
+
   reg [PrioWidth-1:0] stack_depth_reg_out;
   reg_n #(
       .DataWidth(PrioWidth)
@@ -69,14 +71,24 @@ module top_n_clic (
   );
 
   // pc related
-  IMemAddrT pc_mux_out;
-  pc_mux #(
+  IMemAddrT pc_branch_mux_out;
+  pc_branch_mux #(
       .AddrWidth(IMemAddrWidth)
-  ) pc_mux (
+  ) pc_branch_mux (
       .sel(branch_logic_out),
       .pc_next(pc_adder_out),
       .pc_branch(IMemAddrWidth'(alu_res)),
-      .out(pc_mux_out)
+      .out(pc_branch_mux_out)
+  );
+
+  IMemAddrT pc_interrupt_mux_out;
+  pc_interrupt_mux #(
+      .AddrWidth(IMemAddrWidth)
+  ) pc_interrupt_mux (
+      .sel(n_clic_pc_interrupt_sel),
+      .pc_normal(pc_branch_mux_out),
+      .pc_interrupt(n_clic_interrupt_addr),
+      .out(pc_interrupt_mux_out)
   );
 
   // adder
@@ -179,12 +191,12 @@ module top_n_clic (
       .readAddr2(decoder_rs2),
       // out
       .readData1(rf_rs1),
-      .readData2(rf_rs2),
-      .readRa(rf_stack_ra)
+      .readData2(rf_rs2)
+      // .readRa(rf_stack_ra)
   );
 
   // branch logic
-  pc_mux_t branch_logic_out;
+  pc_branch_mux_t branch_logic_out;
   branch_logic branch_logic (
       // in
       .a(rf_rs1),
@@ -263,9 +275,11 @@ module top_n_clic (
   );
 
   word n_clic_csr_out;  //
-  IMemAddrT n_clic_pc_out;
-  logic [PrioWidth-1:0] n_clic_level_out;
-  reg n_clic_interrupt_out;
+
+  PrioT n_clic_level_out;
+  pc_interrupt_mux_t n_clic_pc_interrupt_sel;
+  IMemAddrT n_clic_interrupt_addr;
+  logic n_clic_interrupt_out;
   n_clic n_clic (
       // in
       .clk,
@@ -276,10 +290,11 @@ module top_n_clic (
       .rs1_data(rf_rs1),
       //.rd(decoder_rd),
       .csr_op(decoder_csr_op),
-      .pc_in(pc_mux_out),
+      .pc_in(pc_branch_mux_out),
       // out
-      .pc_out(n_clic_pc_out),
       .csr_out(n_clic_csr_out),
+      .int_addr(n_clic_interrupt_addr),
+      .pc_interrupt_sel(n_clic_pc_interrupt_sel),
       .level_out(n_clic_level_out),
       .interrupt_out(n_clic_interrupt_out)
   );
