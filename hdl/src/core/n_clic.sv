@@ -91,7 +91,7 @@ module n_clic
   /* verilator lint_off UNOPTFLAT */
   PrioT         max_prio    [VecSize];
   IMemAddrStore max_vec     [VecSize];
-  logic         is_int      [VecSize];
+  // logic         is_int      [VecSize];
   entry_t       entry       [VecSize];
   PrioT         prio        [VecSize];
   IMemAddrStore csr_vec_data[VecSize];
@@ -157,22 +157,22 @@ module n_clic
   always_comb begin
     for (integer k = 0; k < VecSize; k++) begin
       if (k == 0) begin
-        if (entry[k].enabled && entry[k].pended && (prio[k] > m_int_thresh.data)) begin
-          is_int[0]   = 1;
+        if (entry[k].enabled && entry[k].pended && (prio[k] >= m_int_thresh.data)) begin
+          // is_int[0]   = 1;
           max_prio[0] = prio[k];
           max_vec[0]  = csr_vec_data[k];
         end else begin
-          is_int[0]   = 0;
+          // is_int[0]   = 0;
           max_prio[0] = m_int_thresh.data;
           max_vec[0]  = 0;
         end
       end else begin
-        if (entry[k].enabled && entry[k].pended && (prio[k] > max_prio[k-1])) begin
-          is_int[k]   = 1;
+        if (entry[k].enabled && entry[k].pended && (prio[k] >= max_prio[k-1])) begin
+          // is_int[k]   = 1;
           max_prio[k] = prio[k];
           max_vec[k]  = csr_vec_data[k];
         end else begin
-          is_int[k]   = is_int[k-1];
+          // is_int[k]   = is_int[k-1];
           max_prio[k] = max_prio[k-1];
           max_vec[k]  = max_vec[k-1];
         end
@@ -182,7 +182,7 @@ module n_clic
 
   always_comb begin
     // check return from interrupt condition
-    if (pc_in == ~(IMemAddrWidth'(0)) && is_int[VecSize-1]) begin
+    if (pc_in == ~(IMemAddrWidth'(0)) && (max_prio[VecSize-1] >= m_int_thresh.data)) begin
       // tail chaining, not sure this is correct
       push = 0;
       pop = 0;
@@ -191,8 +191,8 @@ module n_clic
       m_int_thresh_write_enable = 0;  // no update of threshold
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
-      // $display("tail chaining level_out %d, pop %d", level_out, pop);
-    end else if (is_int[VecSize-1]) begin
+      $display("tail chaining level_out %d, pop %d", level_out, pop);
+    end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
       push = 1;
       pop = 0;
       int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory

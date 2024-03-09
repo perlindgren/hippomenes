@@ -48,9 +48,11 @@ module tb_top_n_clic;
   function static void clic_dump();
     // $display("mintresh %d, level (nesting depth) %d", top.m_int_thresh.data, top.level_out);
     for (integer i = 0; i < 8; i++) begin
-      $display("%d, is_int %b max_prio %d, max_vec %d, pc_in %d, int_addr %d", i,
-               top.n_clic.is_int[i], top.n_clic.max_prio[i], top.n_clic.max_vec[i],
-               top.n_clic.pc_in, top.n_clic.int_addr);
+      // $display("%d, is_int %b max_prio %d, max_vec %d, pc_in %d, int_addr %d", i,
+      //          top.n_clic.is_int[i], top.n_clic.max_prio[i], top.n_clic.max_vec[i],
+      //          top.n_clic.pc_in, top.n_clic.int_addr);
+      $display("%d, max_prio %d, max_vec %d, pc_in %d, int_addr %d", i, top.n_clic.max_prio[i],
+               top.n_clic.max_vec[i], top.n_clic.pc_in, top.n_clic.int_addr);
     end
 
     for (integer i = 0; i < 8; i++) begin
