@@ -150,7 +150,7 @@ module tb_top_n_clic;
 
     #20;
     $warning("csrrw zero, 0xB21, t1");
-    $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
+    $display("rf_rs1 %h rf_rs2 %h level %d", top.rf_rs1, top.rf_rs2, top.rf.level);
     $display("alu %h", top.alu.res);
 
     $display("top.n_clic_interrupt_out %d", top.n_clic_interrupt_out);
@@ -162,9 +162,10 @@ module tb_top_n_clic;
 
     #20;  //  addi    t3,t3,256 # 3000100
     $warning("nop (inside ISR)");
-    $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
+    $display("rf_rs1 %h rf_rs2 %h level %d", top.rf_rs1, top.rf_rs2, top.rf.level);
     $display("alu %h", top.alu.res);
     assert (top.pc_reg.out == 140);
+
 
     #20;
     $warning("nop (inside ISR)");
@@ -173,6 +174,9 @@ module tb_top_n_clic;
     #20;
     $warning("jalr zero ra, i.e. ret");
     assert (top.pc_reg.out == 148);
+
+    $display("rf level %d, ", top.rf.level, top.rf.regs[top.rf.level][1]);
+
 
     #20;
     $warning("jalr zero, zero, i.e. loop forever here");

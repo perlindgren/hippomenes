@@ -175,7 +175,6 @@ module top_n_clic (
   // register file
   word rf_rs1;
   word rf_rs2;
-  word rf_ra;
 
   word rf_stack_ra;
   rf_stack rf (
@@ -183,7 +182,7 @@ module top_n_clic (
       .clk,
       .reset,
       .writeEn(wb_enable_reg_out),
-      .writeRaEn(interrupt_reg_out),
+      .writeRaEn(n_clic_interrupt_out),  // not sure this is correct interrupt_reg_out
       .level(stack_depth_reg_out),
       .writeAddr(wb_rd_reg_out),
       .writeData(wb_data_reg_out),
@@ -192,7 +191,6 @@ module top_n_clic (
       // out
       .readData1(rf_rs1),
       .readData2(rf_rs2)
-      // .readRa(rf_stack_ra)
   );
 
   // branch logic

@@ -36,17 +36,18 @@ module rf_stack #(
   always_comb level_minus_1 = level - 1;
 
   always_ff @(posedge clk) begin
-    // do not write to register 0
-    $display("INTERRUPT_REG_FILE = %d", writeRaEn);
     if (reset) begin
       regs <= 0;
-    end else begin
+    end else begin  // do not write to register 0
       if (writeEn && (writeAddr != Zero)) begin
         if (writeAddr == Sp) regs[0][writeAddr] <= writeData;
         else regs[level][writeAddr] <= writeData;
       end
       // update ra with marker
-      if (writeRaEn) regs[level_minus_1][Ra] <= ~0;
+      if (writeRaEn) begin
+        $display("INTERRUPT_REG_FILE = %d, level-1 %d", writeRaEn, level_minus_1);
+        regs[level_minus_1][Ra] <= ~0;
+      end
     end
   end
 
