@@ -85,14 +85,16 @@ module n_clic
   );
 
   // generate vector table
-  /* verilator lint_off UNOPTFLAT */
-  PrioT                            max_prio    [VecSize];
-  logic   [(IMemAddrWidth -2)-1:0] max_vec     [VecSize];
-  logic                            is_int      [VecSize];
 
-  entry_t                          entry       [VecSize];
-  PrioT                            prio        [VecSize];
-  logic   [(IMemAddrWidth -2)-1:0] csr_vec_data[VecSize];
+  typedef logic [(IMemAddrWidth - 2)-1:0] IMemAddrStore;
+
+  /* verilator lint_off UNOPTFLAT */
+  PrioT         max_prio    [VecSize];
+  IMemAddrStore max_vec     [VecSize];
+  logic         is_int      [VecSize];
+  entry_t       entry       [VecSize];
+  PrioT         prio        [VecSize];
+  IMemAddrStore csr_vec_data[VecSize];
 
   generate
     word temp_vec[VecSize];
@@ -140,9 +142,9 @@ module n_clic
           .out(temp_entry[k])
       );
 
-      assign entry[k]         = gen_vec[k].csr_entry.data;
+      assign entry[k]         = entry_t'(temp_entry[k]);  // gen_vec[k].csr_entry.data;
       assign prio[k]          = entry[k].prio;  // a bit of a hack to please Verilator
-      assign csr_vec_data[k]  = gen_vec[k].csr_vec.data;
+      assign csr_vec_data[k]  = IMemAddrStore'(temp_vec[k]);  // gen_vec[k].csr_vec.data;
 
       assign ext_write_enable = 0;  // these should not be written as of now
       assign ext_vec_data     = 0;  // these should not be written as of now
@@ -222,7 +224,7 @@ module n_clic
 
   // set csr_out
   always_latch begin
-    if (csr_addr == 12'(MIntThreshAddr)) begin
+    if (csr_addr == MIntThreshAddr) begin
       csr_out = m_int_thresh_out;
     end else begin
       for (int k = 0; k < VecSize; k++) begin

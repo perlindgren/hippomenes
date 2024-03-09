@@ -28,8 +28,10 @@ module tb_top_n_clic;
     top.imem.mem[3] = 'h02300393;  // addi t2, zero, 140>>2 # ISR address
     top.imem.mem[4] = 'h00f00313;  // addi t1, zero, 0b1111 # prio 3, enabled, pended
     top.imem.mem[5] = 'hb0139073;  // csrrw zero, 0xB01, t2 # write ISR address to vector 1
-    top.imem.mem[6] = 'hb2131073;  // csrrw zero, 0xB21, t1 # write to config to entry 1
-    top.imem.mem[7] = 'h33700313;  // addi t1, zero, 0x1337 # write something to t1, ensure this isnt executed
+    top.imem.mem[6] = 'hb2131073;  // csrrw zero, 0xB21, t1 # write to config to entry 1, pend
+    top.imem.mem[7] = 'h0000006f;  // jal zero, zero, i.e. loop forever here
+
+    // top.imem.mem[7] = 'h33700313;  // addi t1, zero, 0x1337 # write something to t1, ensure this isnt executed
     // top.imem.mem[5] = 'h ;
     // top.imem.mem[3] = 'h01000337;  // lui     t1,0x1000
     // top.imem.mem[4] = 'h10030313;  // addi    t1,t1,256 # 1000100
@@ -78,6 +80,19 @@ module tb_top_n_clic;
   end
 
   always #10 clk = ~clk;
+
+  function static void clic_dump();
+    // $display("mintresh %d, level (nesting depth) %d", top.m_int_thresh.data, top.level_out);
+    for (integer i = 0; i < 8; i++) begin
+      $display("%d, is_int %b max_prio %d, max_vec %d, pc_in %d, int_addr %d", i,
+               top.n_clic.is_int[i], top.n_clic.max_prio[i], top.n_clic.max_vec[i],
+               top.n_clic.pc_in, top.n_clic.int_addr);
+    end
+
+    for (integer i = 0; i < 8; i++) begin
+      $display("%d addr %d, entry %d", i, top.n_clic.temp_vec[i], top.n_clic.temp_entry[i]);
+    end
+  endfunction
 
   initial begin
     $dumpfile("top_n_clic.fst");
@@ -139,21 +154,10 @@ module tb_top_n_clic;
     $display("alu %h", top.alu.res);
 
     $display("top.n_clic_interrupt_out %d", top.n_clic_interrupt_out);
-    #1;
-    $display("top.n_clic_interrupt_out %d", top.n_clic_interrupt_out);
+    $display("top.pc_reg.out %d", top.pc_reg.out);
+    clic_dump();
 
-    // assert (top.pc_reg.out == 24);
-
-
-    $finish;
-
-    #20;
-    $warning("interrupt delayed by 1 instruction");
-    $display("level_out %h", top.n_clic.level_out);
-    $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
-    $display("alu %h", top.alu.res);
-    //assert (top.pc_reg.out == 140);
-
+    assert (top.pc_reg.out == 24);
 
 
     #20;  //  addi    t3,t3,256 # 3000100
@@ -167,15 +171,13 @@ module tb_top_n_clic;
     assert (top.pc_reg.out == 144);
 
     #20;
-    $warning("jal zero, zero, loop forever");
+    $warning("jalr zero ra, i.e. ret");
     assert (top.pc_reg.out == 148);
 
     #20;
-    $warning("jal zero, zero, loop forever");
-    assert (top.pc_reg.out == 148);
-    #20;
-    $warning("jal zero, zero, loop forever");
-    assert (top.pc_reg.out == 148);
+    $warning("jalr zero, zero, i.e. loop forever here");
+    // assert (top.pc_reg.out == 28);
+
     /*
     #20;  //  lui     t4,0x4000
     $warning("lui     t4,0x4000");

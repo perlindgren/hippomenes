@@ -40,7 +40,7 @@ module top_n_clic (
       .out(wb_rd_reg_out)
   );
 
-  reg wb_enable_reg_out;
+  logic wb_enable_reg_out;
   reg_n #(
       .DataWidth(1)
   ) wb_write_enable_reg (
@@ -50,7 +50,7 @@ module top_n_clic (
       .out(wb_enable_reg_out)
   );
 
-  reg interrupt_reg_out;
+  logic interrupt_reg_out;
   reg_n #(
       .DataWidth(1)
   ) interrupt_reg (
@@ -60,7 +60,7 @@ module top_n_clic (
       .out(interrupt_reg_out)
   );
 
-  reg [PrioWidth-1:0] stack_depth_reg_out;
+  PrioT stack_depth_reg_out;
   reg_n #(
       .DataWidth(PrioWidth)
   ) stack_depth_reg (
