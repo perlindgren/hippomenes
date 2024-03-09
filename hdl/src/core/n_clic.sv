@@ -145,27 +145,26 @@ module n_clic
   IMemAddrStore max_vec  [VecSize];
   VecT          max_index[VecSize];
   always_comb begin
-    for (integer k = 0; k < VecSize; k++) begin
-      if (k == 0) begin
-        if (entry[k].enabled && entry[k].pended && (prio[k] >= m_int_thresh.data)) begin
-          max_prio[0]  = prio[k];
-          max_vec[0]   = csr_vec_data[k];
-          max_index[0] = 0;
-        end else begin
-          max_prio[0]  = m_int_thresh.data;
-          max_vec[0]   = 0;
-          max_index[k] = 0;
-        end
+    // check first index in vector table
+    if (entry[0].enabled && entry[0].pended && (prio[0] >= m_int_thresh.data)) begin
+      max_prio[0]  = prio[0];
+      max_vec[0]   = csr_vec_data[0];
+      max_index[0] = 0;
+    end else begin
+      max_prio[0]  = m_int_thresh.data;
+      max_vec[0]   = 0;
+      max_index[0] = 0;
+    end
+    // check rest of vector table
+    for (integer k = 1; k < VecSize; k++) begin
+      if (entry[k].enabled && entry[k].pended && (prio[k] >= max_prio[k-1])) begin
+        max_prio[k]  = prio[k];
+        max_vec[k]   = csr_vec_data[k];
+        max_index[k] = VecT'(k);
       end else begin
-        if (entry[k].enabled && entry[k].pended && (prio[k] >= max_prio[k-1])) begin
-          max_prio[k]  = prio[k];
-          max_vec[k]   = csr_vec_data[k];
-          max_index[k] = VecT'(k);
-        end else begin
-          max_prio[k]  = max_prio[k-1];
-          max_vec[k]   = max_vec[k-1];
-          max_index[k] = max_index[k-1];
-        end
+        max_prio[k]  = max_prio[k-1];
+        max_vec[k]   = max_vec[k-1];
+        max_index[k] = max_index[k-1];
       end
     end
   end
@@ -177,7 +176,6 @@ module n_clic
     if ((pc_in == ~(IMemAddrWidth'(0))) &&
         entry[max_index[VecSize-1]].enabled && entry[max_index[VecSize-1]].pended &&
         (max_prio[VecSize-1] >= m_int_thresh.data)) begin
-      // tail chaining, not sure this is correct
       push = 0;
       pop = 0;
       int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
