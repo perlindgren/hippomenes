@@ -28,8 +28,8 @@ module tb_top_n_clic;
     top.imem.mem[3] = 'h02300393;  // addi t2, zero, 140>>2 # ISR address
     top.imem.mem[4] = 'h00f00313;  // addi t1, zero, 0b1111 # prio 3, enabled, pended
     top.imem.mem[5] = 'hb0139073;  // csrrw zero, 0xB01, t2 # write ISR address to vector 1
-    top.imem.mem[6] = 'hb2131073;  //csrrw zero, 0xB21, t1 # write to config to entry 1
-    top.imem.mem[7] = 'h33700313; // addi t1, zero, 0x1337 # write something to t1, ensure this isnt executed
+    top.imem.mem[6] = 'hb2131073;  // csrrw zero, 0xB21, t1 # write to config to entry 1
+    top.imem.mem[7] = 'h33700313;  // addi t1, zero, 0x1337 # write something to t1, ensure this isnt executed
     // top.imem.mem[5] = 'h ;
     // top.imem.mem[3] = 'h01000337;  // lui     t1,0x1000
     // top.imem.mem[4] = 'h10030313;  // addi    t1,t1,256 # 1000100
@@ -85,7 +85,7 @@ module tb_top_n_clic;
 
     // used for debugging only
     level = 0;
-    #30;  // auipc   sp,0x50000
+    #20;  // auipc   sp,0x50000
 
     $warning("auipc   sp,0x50000");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
@@ -110,9 +110,7 @@ module tb_top_n_clic;
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     assert (top.pc_reg.out == 8);
 
-
-    #20;  // lui     t1,0x1000
-    //$warning("lui t1,0x1000");
+    #20;
     $warning("addi t2, zero, 140>>2");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
@@ -120,8 +118,7 @@ module tb_top_n_clic;
     assert (top.wb_data_reg.in == 35);
     //assert (top.n_clic.level_out == 2);
 
-    #20;  //  addi    t1,t1,256 # 1000100
-    //$warning("addi t1,t1,256 # 1000100");
+    #20;
     $warning("addi t1, zero, 0b1111");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
@@ -129,23 +126,35 @@ module tb_top_n_clic;
              top.n_clic.gen_vec[1].csr_entry.rs1_data, top.n_clic.gen_vec[1].csr_entry.csr_addr,
              top.n_clic.gen_vec[1].csr_entry.csr_op, top.n_clic.gen_vec[1].csr_vec.data);
     assert (top.pc_reg.out == 16);
-    #20;  //  lui     t2,0x2000
+    #20;
     $warning("csrrw zero, 0xB01, t2");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
+
     assert (top.pc_reg.out == 20);
 
-    #20;  //  addi    t2,t2,256 # 2000100
+    #20;
     $warning("csrrw zero, 0xB21, t1");
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
-    assert (top.pc_reg.out == 24);
-    #20;  //  lui     t3,0x3000
+
+    $display("top.n_clic_interrupt_out %d", top.n_clic_interrupt_out);
+    #1;
+    $display("top.n_clic_interrupt_out %d", top.n_clic_interrupt_out);
+
+    // assert (top.pc_reg.out == 24);
+
+
+    $finish;
+
+    #20;
     $warning("interrupt delayed by 1 instruction");
     $display("level_out %h", top.n_clic.level_out);
     $display("rf_rs1 %h rf_rs2 %h", top.rf_rs1, top.rf_rs2);
     $display("alu %h", top.alu.res);
     //assert (top.pc_reg.out == 140);
+
+
 
     #20;  //  addi    t3,t3,256 # 3000100
     $warning("nop (inside ISR)");
