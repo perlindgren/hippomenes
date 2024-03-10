@@ -28,20 +28,22 @@ package config_pkg;
   localparam type PrioT = logic [PrioWidth-1:0];
 
   localparam type CsrAddrT = logic [11:0];
-  localparam CsrAddrT VecCsrBase = 'hb00;
-  localparam CsrAddrT EntryCsrBase = 'hb20;  // up to 32 vectors
+  localparam CsrAddrT VecCsrBase = 'hb00;  // up to 32 vectors
+  localparam CsrAddrT EntryCsrBase = 'hb20;
+  localparam CsrAddrT TimeStampCsrBase = 'hb40;
 
   // CSR registers
   localparam CsrAddrT MStatusAddr = 'h305;
   localparam CsrAddrT MIntThreshAddr = 'h347;
   localparam CsrAddrT StackDepthAddr = 'h350;
 
-  // Time-stamp configuration
-  localparam integer unsigned TimerWidth = 32;
-  localparam type TimerT = logic [TimerWidth-1:0];
+  // Monotonic timer
+  localparam integer unsigned MonoTimerWidth = 32;
+  localparam type MonoTimerT = logic [MonoTimerWidth-1:0];
 
+  // Time-stamp configuration
   localparam integer unsigned TimeStampWidth = 8;
-  localparam integer unsigned TimeStampPreScaler = 1;
+  localparam integer unsigned TimeStampPreScaler = 0;
   localparam type TimeStampT = logic [TimeStampWidth-1:0];
 
 endpackage

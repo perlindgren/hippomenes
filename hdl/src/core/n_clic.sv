@@ -26,8 +26,8 @@ module n_clic
 
   // CSR m_int_thresh
   logic m_int_thresh_write_enable;
-  word m_int_thresh_out;
-  logic [PrioWidth-1:0] m_int_thresh_data;
+  word  m_int_thresh_out;
+  PrioT m_int_thresh_data;
 
   csr #(
       .CsrWidth(PrioWidth),

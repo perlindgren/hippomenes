@@ -45,7 +45,7 @@ di_mem = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_di_m
 
 alu = $(core)/decoder_pkg.sv $(core)/alu.sv $(core)/tb_alu.sv
 
-time_stamp = $(root)/config_pkg.sv $(core)/time_stamp.sv $(core)/tb_time_stamp.sv
+time_stamp = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/mono_timer.sv $(core)/time_stamp.sv $(core)/tb_time_stamp.sv
 
 branch_logic = $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch_logic.sv
 

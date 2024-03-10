@@ -88,8 +88,8 @@ module tb_n_clic;
   function static void clic_dump();
     $display("mintresh %d, level (nesting depth) %d", dut.m_int_thresh.data, dut.level_out);
     for (integer i = 0; i < 8; i++) begin
-      $display("%d, is_int %b max_prio %d, max_vec %d, pc_in %d, int_addr %d", i, dut.is_int[i],
-               dut.max_prio[i], dut.max_vec[i], dut.pc_in, dut.int_addr);
+      $display("%d,  max_prio %d, max_vec %d, pc_in %d, int_addr %d", i, dut.max_prio[i],
+               dut.max_vec[i], dut.pc_in, dut.int_addr);
     end
   endfunction
 
@@ -128,7 +128,7 @@ module tb_n_clic;
     #20 $display("time ", $time());  // force clocking
 
     clic_dump();
-    assert (dut.is_int[7] == 0 && dut.max_prio[7] == 0 && dut.max_vec[7] == 0);
+    assert (dut.max_prio[7] == 0 && dut.max_vec[7] == 0);
 
     $display("pend vec 4");
     dut.gen_vec[4].csr_entry.data |= (1 << 0);  // pended
