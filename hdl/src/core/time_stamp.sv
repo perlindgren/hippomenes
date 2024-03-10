@@ -12,7 +12,6 @@ module time_stamp
     input CsrAddrT csr_addr,
     output word csr_out
 );
-  /* verilator lint_off UNOPTFLAT */
   logic old_pend[VecSize];
 
   TimeStampT ext_data;
