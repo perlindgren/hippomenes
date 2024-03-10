@@ -1,7 +1,6 @@
 // stack
 `timescale 1ns / 1ps
 
-
 module stack
   import decoder_pkg::*;
 #(
@@ -23,7 +22,7 @@ module stack
   logic [StackDepthWidth-1:0] index;
 
   // not sure if <= should be used instead...
-  // both push and pop in same cycle 
+  // both push and pop in same cycle
   always_ff @(posedge clk) begin
     if (reset) begin
       index = StackDepthWidth'(StackDepth - 1);  // growing towards lower index
@@ -40,7 +39,6 @@ module stack
 
   assign data_out  = data[index];
   assign index_out = index;
-
 
 endmodule
 

@@ -31,8 +31,17 @@ package config_pkg;
   localparam CsrAddrT VecCsrBase = 'hb00;
   localparam CsrAddrT EntryCsrBase = 'hb20;  // up to 32 vectors
 
-  // csr registers
+  // CSR registers
   localparam CsrAddrT MStatusAddr = 'h305;
   localparam CsrAddrT MIntThreshAddr = 'h347;
   localparam CsrAddrT StackDepthAddr = 'h350;
+
+  // Time-stamp configuration
+  localparam integer unsigned TimerWidth = 32;
+  localparam type TimerT = logic [TimerWidth-1:0];
+
+  localparam integer unsigned TimeStampWidth = 8;
+  localparam integer unsigned TimeStampPreScaler = 1;
+  localparam type TimeStampT = logic [TimeStampWidth-1:0];
+
 endpackage

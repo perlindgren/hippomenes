@@ -45,6 +45,8 @@ di_mem = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_di_m
 
 alu = $(core)/decoder_pkg.sv $(core)/alu.sv $(core)/tb_alu.sv
 
+time_stamp = $(root)/config_pkg.sv $(core)/time_stamp.sv $(core)/tb_time_stamp.sv
+
 branch_logic = $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch_logic.sv
 
 all: \
@@ -95,6 +97,13 @@ tb_top_mem: $(test_mem)
 
 tb_top_mem_g: 
 	gtkwave -a top_mem.gtkw top_mem.fst
+
+tb_time_stamp: $(time_stamp)
+	verilator --binary $(time_stamp) --top-module tb_time_stamp --trace-fst --assert
+	obj_dir/Vtb_time_stamp
+
+tb_time_stamp_g: 
+	gtkwave -a time_stamp.gtkw time_stamp.fst
 
 tb_csr: $(csr)
 	verilator --binary $(csr) --top-module tb_csr --trace-fst --assert
