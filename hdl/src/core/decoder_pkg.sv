@@ -1,9 +1,8 @@
 // decoder_pkg
 `timescale 1ns / 1ps
 
+import config_pkg::*;
 package decoder_pkg;
-
-  typedef logic [11:0] csr_addr_t;
 
   typedef enum logic [2:0] {
     ECALL  = 3'b000,

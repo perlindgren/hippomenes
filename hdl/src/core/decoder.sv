@@ -8,7 +8,7 @@ module decoder (
     input word instr,
     // immediates
     output word imm,
-    output csr_addr_t csr_addr,
+    output CsrAddrT csr_addr,
     // register file
     output r rs1,
     output r rs2,

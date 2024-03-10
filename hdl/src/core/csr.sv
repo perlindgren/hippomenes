@@ -27,7 +27,8 @@ module csr #(
     // external access for side effects
     input CsrDataT ext_data,
     input logic ext_write_enable,
-    output word out  // should prehaps be [CsrWidth-1:0]?
+    output word direct_out,  // to use for pend and other immediate side effects
+    output word out  // to use for read/write operations, returns old value
 );
   CsrDataT data;
   CsrDataT tmp;
@@ -77,7 +78,8 @@ module csr #(
     end
   end
 
-  assign out = 32'($unsigned(tmp));
+  assign direct_out = 32'($unsigned(tmp));
+  assign out = 32'($unsigned(data));
 
   always_ff @(posedge clk) begin
     if (reset) begin

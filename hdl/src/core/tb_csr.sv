@@ -14,7 +14,7 @@ module tb_csr;
   (* DONT_TOUCH = "TRUE" *)
   logic csr_enable;
   (* DONT_TOUCH = "TRUE" *)
-  csr_addr_t csr_addr;
+  CsrAddrT csr_addr;
   (* DONT_TOUCH = "TRUE" *)
   r rs1_zimm;
   (* DONT_TOUCH = "TRUE" *)

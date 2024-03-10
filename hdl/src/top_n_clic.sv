@@ -138,7 +138,7 @@ module top_n_clic (
   // csr
   logic decoder_csr_enable;
   csr_op_t decoder_csr_op;
-  csr_addr_t decoder_csr_addr;
+  CsrAddrT decoder_csr_addr;
   mem_width_t decoder_dmem_width;
 
   decoder decoder (
@@ -272,8 +272,7 @@ module top_n_clic (
       .led
   );
 
-  word n_clic_csr_out;  //
-
+  word n_clic_csr_out;
   PrioT n_clic_level_out;
   pc_interrupt_mux_t n_clic_pc_interrupt_sel;
   IMemAddrT n_clic_interrupt_addr;
@@ -302,7 +301,7 @@ module top_n_clic (
       .sel(decoder_wb_mux_sel),
       .dm(dmem_data_out),
       .alu(alu_res),
-      .csr(csr_led_out),
+      .csr(n_clic_csr_out),
       .pc_plus_4(32'($signed(pc_adder_out))),  // should we sign extend?
       .out(wb_mux_out)
   );

@@ -101,7 +101,7 @@ module top (
   // decoder
   logic decoder_csr_enable;
   csr_op_t decoder_csr_op;
-  csr_addr_t decoder_csr_addr;
+  CsrAddrT decoder_csr_addr;
   mem_width_t decoder_dmem_width;
 
   decoder decoder (

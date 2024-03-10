@@ -10,7 +10,7 @@ module n_clic
 
     // csr registers
     input logic csr_enable,
-    input csr_addr_t csr_addr,
+    input CsrAddrT csr_addr,
     input r rs1_zimm,
     input word rs1_data,
     input csr_op_t csr_op,
@@ -26,6 +26,7 @@ module n_clic
 
   // CSR m_int_thresh
   logic m_int_thresh_write_enable;
+  word  m_int_thresh_direct_out;  // not used
   word  m_int_thresh_out;
   PrioT m_int_thresh_data;
 
@@ -44,6 +45,7 @@ module n_clic
       .ext_data(m_int_thresh_data),
       .ext_write_enable(m_int_thresh_write_enable),
       // out
+      .direct_out(m_int_thresh_direct_out),
       .out(m_int_thresh_out)
   );
 
@@ -91,6 +93,8 @@ module n_clic
   generate
     word temp_vec  [VecSize];
     word temp_entry[VecSize];
+    word vec_out   [VecSize];
+    word entry_out [VecSize];
 
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
@@ -108,7 +112,8 @@ module n_clic
           .ext_write_enable(0),
           .ext_data(0),
           // out
-          .out(temp_vec[k])
+          .direct_out(temp_vec[k]),
+          .out(vec_out[k])
       );
 
       csr #(
@@ -126,7 +131,8 @@ module n_clic
           .ext_write_enable(ext_write_enable[k]),
           .ext_data(ext_entry_data),
           // out
-          .out(temp_entry[k])
+          .direct_out(temp_entry[k]),
+          .out(entry_out[k])
       );
 
       assign entry[k]        = entry_t'(temp_entry[k]);
@@ -220,15 +226,19 @@ module n_clic
   always_latch begin
     if (csr_addr == MIntThreshAddr) begin
       csr_out = m_int_thresh_out;
+      $display("!!! m_thresh_ !!!");
+    end else if (csr_addr == StackDepthAddr) begin
+      csr_out = 32'($unsigned(level_out));
+      $display("!!! CSR StackDepth !!!");
     end else begin
       for (int k = 0; k < VecSize; k++) begin
-        /* verilator lint_off WIDTHEXPAND */
-        if (csr_addr == VecCsrBase + k) begin
-          csr_out = temp_vec[k];
+
+        if (csr_addr == VecCsrBase + CsrAddrT'(k)) begin
+          csr_out = vec_out[k];
           break;
         end
-        if (csr_addr == EntryCsrBase + k) begin
-          csr_out = temp_vec[k];
+        if (csr_addr == EntryCsrBase + CsrAddrT'(k)) begin
+          csr_out = entry_out[k];
           break;
         end
       end

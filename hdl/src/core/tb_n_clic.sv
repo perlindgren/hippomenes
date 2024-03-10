@@ -8,7 +8,7 @@ module tb_n_clic;
   logic clk;
   logic reset;
   logic csr_enable;
-  csr_addr_t csr_addr;
+  CsrAddrT csr_addr;
   r rs1_zimm;
   word rs1_data;
   csr_op_t csr_op;
