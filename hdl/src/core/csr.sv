@@ -77,7 +77,7 @@ module csr #(
     end
   end
 
-  always out = 32'($unsigned(tmp));
+  assign out = 32'($unsigned(tmp));
 
   always_ff @(posedge clk) begin
     if (reset) begin

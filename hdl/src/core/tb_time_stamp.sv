@@ -1,8 +1,9 @@
-// tb_stack
+// tb_time_stamp
 `timescale 1ns / 1ps
 
 module tb_time_stamp;
   import config_pkg::*;
+  import decoder_pkg::*;
 
   logic clk;
   logic reset;
@@ -80,11 +81,16 @@ module tb_time_stamp;
     csr_addr = TimeStampCsrBase + 2;
     #1;
     $display("csr_out %d = %d", csr_addr, csr_out);
+    $display("pend[1] = 1");
+    $display("pend[2] = 1");
+
     pend[1] = 1;  // glitch on pend1 will be ignored as sampled on rising edge
     pend[2] = 1;
     $display("csr_out %d = %d", csr_addr, csr_out);
 
     #19;
+    $display("--- here ---");
+
     $display("csr_out %d = %d", csr_addr, csr_out);
     csr_addr = TimeStampCsrBase + 1;
     #1;

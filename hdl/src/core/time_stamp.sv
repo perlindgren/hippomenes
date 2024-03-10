@@ -4,19 +4,24 @@
 
 module time_stamp
   import config_pkg::*;
+  import decoder_pkg::*;
 (
     input logic clk,
     input logic reset,
     input MonoTimerT mono_timer,
+
+    /* verilator lint_off MULTIDRIVEN */
     input logic pend[VecSize],
     input CsrAddrT csr_addr,
     output word csr_out
 );
-  logic old_pend[VecSize];
+  logic      old_pend          [VecSize];
 
   TimeStampT ext_data;
-  logic ext_write_enable[VecSize];
-  word temp_out[VecSize];
+  logic      ext_write_enable  [VecSize];
+  logic      ext_stretch_enable[VecSize];
+  word       temp_out          [VecSize];
+
   generate
     for (genvar k = 0; k < VecSize; k++) begin : gen_stamp
       csr #(
@@ -36,21 +41,17 @@ module time_stamp
           .out(temp_out[k])
       );
 
-      always_ff @(posedge clk) begin : gen_trig
-        if (~old_pend[k] && pend[k]) begin
-          ext_write_enable[k] <= 1;
-        end else ext_write_enable[k] <= 0;
-        old_pend[k] <= pend[k];
+      always_ff @(posedge pend[k]) begin : gen_trig
+        ext_write_enable[k]   <= 1;
+        ext_stretch_enable[k] <= 1;
       end
-      // Latch variant, to reduce latency, currently broken
-      //   always_latch begin : gen_trig
-      //     if (~old_pend[k] && pend[k]) begin
-      //       ext_write_enable[k] = 1;
-      //     end else begin
-      //       old_pend[k] = pend[k];
-      //       ext_write_enable[k] = 0;
-      //     end
-      //   end
+
+      // ensure that we have at least a full period to reliably capture the timer
+      always_ff @(posedge clk) begin : gen_un_trig
+        if (ext_stretch_enable[k]) ext_stretch_enable[k] <= 0;
+        else ext_write_enable[k] <= 0;
+      end
+
     end
   endgenerate
 
@@ -67,3 +68,11 @@ module time_stamp
   end
 
 endmodule
+
+// emutated edge trigger
+// always_ff @(posedge clk) begin : gen_trig
+//   if (~old_pend[k] && pend[k]) begin
+//     ext_write_enable[k] <= 1;
+//   end else ext_write_enable[k] <= 0;
+//   old_pend[k] <= pend[k];
+// end
