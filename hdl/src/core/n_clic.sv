@@ -44,9 +44,9 @@ module n_clic
       .ext_write_enable(0),
       .interrupt_clear(timer_interrupt_clear),
       // out
-      .direct_out(timer_direct_out),
-      .out(timer_out),
-      .interrupt_set(timer_interrupt_set)
+      .interrupt_set(timer_interrupt_set),
+      .csr_direct_out(timer_direct_out),
+      .csr_out(timer_out)
   );
 
   // CSR m_int_thresh

@@ -21,19 +21,17 @@ module stack
   logic [      DataWidth-1:0] data  [StackDepth];
   logic [StackDepthWidth-1:0] index;
 
-  // not sure if <= should be used instead...
-  // both push and pop in same cycle
+  // push and pop cannot occur during same cycle
   always_ff @(posedge clk) begin
     if (reset) begin
-      index = StackDepthWidth'(StackDepth - 1);  // growing towards lower index
-      data[index] = 0;
-    end else if (pop && ~push) begin
+      index <= StackDepthWidth'(StackDepth - 1);  // growing towards lower index
+    end else if (pop) begin
       $display("--- pop ---");
-      index += 1;
-    end else if (push && ~pop) begin
+      index <= index + 1;
+    end else if (push) begin
       $display("--- push ---");
-      index -= 1;
-      data[index] = data_in;
+      data[index-1] <= data_in;
+      index <= index - 1;
     end
   end
 

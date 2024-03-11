@@ -20,6 +20,7 @@ module time_stamp
   TimeStampT ext_data;
   logic      ext_write_enable  [VecSize];
   logic      ext_stretch_enable[VecSize];
+  word       temp_direct_out   [VecSize];  // not used
   word       temp_out          [VecSize];
 
   generate
@@ -38,6 +39,7 @@ module time_stamp
           // external access for side effects
           .ext_data,
           .ext_write_enable(ext_write_enable[k]),
+          .direct_out(temp_direct_out[k]),
           .out(temp_out[k])
       );
 
