@@ -16,12 +16,16 @@ module tb_timer;
   // external access for side effects
   TimerT ext_data;
   logic ext_write_enable;
-  word direct_out;
-  word out;
+
+  word csr_direct_out;
+  word csr_out;
+  logic interrupt_clear;
+  logic interrupt_set;
 
   TimerT timer;
 
   timer dut (
+      // in
       .clk,
       .reset,
       .csr_enable,
@@ -29,12 +33,12 @@ module tb_timer;
       .csr_op,
       .rs1_zimm,
       .rs1_data,
-
-      // external access for side effects
       .ext_data,
       .ext_write_enable,
-      .direct_out,
-      .out
+      .interrupt_set,
+      .interrupt_clear,
+      .csr_direct_out,
+      .csr_out
   );
 
   always #10 begin
@@ -58,9 +62,30 @@ module tb_timer;
     timer.counter_top = 4;
     dut.csr_timer.data = timer;
 
-    #30;
+    #120;
+    $display("<< interrupt_set %d", interrupt_set);
+    assert (interrupt_set == 1);
 
-    #200;
+    #20;
+    $display("<< interrupt_set %d", interrupt_set);
+    assert (interrupt_set == 1);
+
+    $display(">> interrupt_clear");
+    interrupt_clear = 1;
+    $display("<< interrupt_set %d (not yet clocked)", interrupt_set);
+    assert (interrupt_set == 1);
+
+    #20;
+    $display("<< interrupt_set %d (cleared after clock)", interrupt_set);
+    assert (interrupt_set == 0);
+
+    #40;
+    $display("<< interrupt_set %d", interrupt_set);
+    assert (interrupt_set == 1);
+
+    #20;
+    $display("<< interrupt_set %d (auto clear since interrupt_clear still 1)", interrupt_set);
+    assert (interrupt_set == 0);
 
     $finish;
   end

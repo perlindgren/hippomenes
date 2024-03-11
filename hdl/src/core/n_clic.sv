@@ -9,27 +9,30 @@ module n_clic
     input logic reset,
 
     // csr registers
-    input logic csr_enable,
-    input CsrAddrT csr_addr,
-    input r rs1_zimm,
-    input word rs1_data,
-    input csr_op_t csr_op,
+    input logic     csr_enable,
+    input CsrAddrT  csr_addr,
+    input r         rs1_zimm,
+    input word      rs1_data,
+    input csr_op_t  csr_op,
     // epc
     input IMemAddrT pc_in,
 
-    output word csr_out,
-    output IMemAddrT int_addr,
-    pc_interrupt_mux_t pc_interrupt_sel,
-    output PrioT level_out,  // stack depth
-    output logic interrupt_out
+    output word               csr_out,
+    output IMemAddrT          int_addr,
+    output pc_interrupt_mux_t pc_interrupt_sel,
+    output PrioT              level_out,         // stack depth
+    output logic              interrupt_out
 );
 
 
   // CSR timer
+  word  timer_direct_out;  // not used
   word  timer_out;
-  logic timer_interrupt;
+  logic timer_interrupt_set;
+  logic timer_interrupt_clear;
 
-  timer dut (
+  timer timer (
+      // in
       .clk,
       .reset,
       .csr_enable,
@@ -37,13 +40,13 @@ module n_clic
       .csr_op,
       .rs1_zimm,
       .rs1_data,
-
-      // external access for side effects
       .ext_data(0),
       .ext_write_enable(0),
-      .direct_out,
+      .interrupt_clear(timer_interrupt_clear),
+      // out
+      .direct_out(timer_direct_out),
       .out(timer_out),
-      .interrupt(timer_interrupt)
+      .interrupt_set(timer_interrupt_set)
   );
 
   // CSR m_int_thresh
@@ -169,8 +172,7 @@ module n_clic
   VecT          max_index[VecSize];
   always_comb begin
     // check first index in vector table
-    // timer peripheral tied to vector 0
-    if (entry[0].enabled && (entry[0].pended || timer_interrupt) && (prio[0] >= m_int_thresh.data)) begin
+    if (entry[0].enabled && entry[0].pended && (prio[0] >= m_int_thresh.data)) begin
       max_prio[0]  = prio[0];
       max_vec[0]   = csr_vec_data[0];
       max_index[0] = 0;
@@ -195,13 +197,14 @@ module n_clic
 
   // handle interrupts: take-, tail-chain-, exit- and no-interrupt
   always_comb begin
+    VecT max_i = max_index[VecSize-1];
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
-    ext_entry_data   = entry[max_index[VecSize-1]] & ~1;  // compute clear pend
+    ext_entry_data   = '{default: '0};
 
-    // pend 0 if timer interrupt
-    if (timer_interrupt) begin
+    if (timer_interrupt_set) begin
+      // pend 0 if timer interrupt
       ext_write_enable[0] = 1;
-      ext_entry_data[0]   = ext_entry_data[0] | 1;  // set pend bit
+      ext_entry_data[0]   = entry[0] | 1;  // set pend bit
     end
 
     if (max_prio[VecSize-1] > m_int_thresh.data) begin
@@ -213,12 +216,15 @@ module n_clic
       m_int_thresh_write_enable = 1;
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
-      ext_write_enable[max_index[VecSize-1]] = 1;  // write to entry 
-      ext_entry_data[max_index[VecSize-1]] = ext_entry_data[max_index[VecSize-1]] & ~1;  // clear pend bit
-      timer.int
+      ext_write_enable[max_i] = 1;  // write to entry
+      ext_entry_data[max_i] = entry[max_i] & ~1;  // clear pend bit
+      if (max_i == 0) begin
+        $display("take timer");
+        timer_interrupt_clear = 1;
+      end else timer_interrupt_clear = 0;
       $display("interrupt take int_addr %d", int_addr);
     end else if ((pc_in == ~(IMemAddrWidth'(0))) &&
-        entry[max_index[VecSize-1]].enabled && entry[max_index[VecSize-1]].pended &&
+        entry[max_i].enabled && entry[max_i].pended &&
         (max_prio[VecSize-1] >= m_int_thresh.data)) begin
       // tail chain only in case the vector is actually enabled and pended
       push = 0;
@@ -228,8 +234,12 @@ module n_clic
       m_int_thresh_write_enable = 0;  // no update of threshold
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
-      ext_write_enable[max_index[VecSize-1]] = 1;  // write to entry 
-      ext_entry_data[max_index[VecSize-1]] = ext_entry_data[max_index[VecSize-1]] & ~1;  // clear pend bit
+      ext_write_enable[max_i] = 1;  // write to entry
+      ext_entry_data[max_i] = entry[max_i] & ~1;  // clear pend bit
+      if (max_i == 0) begin
+        $display("take timer");
+        timer_interrupt_clear = 1;
+      end else timer_interrupt_clear = 0;
       $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
       // interrupt return
@@ -240,6 +250,7 @@ module n_clic
       m_int_thresh_write_enable = 1;
       interrupt_out = 0;
       pc_interrupt_sel = PC_INTERRUPT;
+      timer_interrupt_clear = 0;
       $display("interrupt return");
     end else begin
       // no interrupt
@@ -250,6 +261,7 @@ module n_clic
       int_addr = pc_in;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
+      timer_interrupt_clear = 0;
       // $display("interrupt NOT take");
     end
   end
