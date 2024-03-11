@@ -36,10 +36,29 @@ package config_pkg;
   localparam CsrAddrT MStatusAddr = 'h305;
   localparam CsrAddrT MIntThreshAddr = 'h347;
   localparam CsrAddrT StackDepthAddr = 'h350;
+  localparam CsrAddrT Timer = 'h400;
+
+  // Perpheral timer
+  localparam TimerWidth = 16;
+  localparam TimerPreWith = 4;
+
+  localparam type TimerWidthT = logic [TimerWidth-1:0];
+  localparam type TimerPresWidthT = logic [TimerPreWith-1:0];
+
+  // localparam type TimerT = struct packed {
+  //   TimerWidthT counter_top;
+  //   TimerPresWidthT prescaler;
+  // } TimerT;
+
+  typedef struct packed {
+    TimerWidthT counter_top;
+    TimerPresWidthT prescaler;
+  } TimerT;
 
   // Monotonic timer
   localparam integer unsigned MonoTimerWidth = 32;
   localparam type MonoTimerT = logic [MonoTimerWidth-1:0];
+  localparam integer unsigned TimerTWidth = $bits(TimerT);
 
   // Time-stamp configuration
   localparam integer unsigned TimeStampWidth = 8;

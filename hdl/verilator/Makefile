@@ -47,6 +47,8 @@ alu = $(core)/decoder_pkg.sv $(core)/alu.sv $(core)/tb_alu.sv
 
 time_stamp = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/mono_timer.sv $(core)/time_stamp.sv $(core)/tb_time_stamp.sv
 
+timer = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/timer.sv $(core)/tb_timer.sv 
+
 branch_logic = $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch_logic.sv
 
 all: \
@@ -104,6 +106,13 @@ tb_time_stamp: $(time_stamp)
 
 tb_time_stamp_g: 
 	gtkwave -a time_stamp.gtkw time_stamp.fst
+
+tb_timer: $(timer)
+	verilator --binary $(timer) --top-module tb_timer --trace-fst --assert
+	obj_dir/Vtb_timer
+
+tb_timer_g: 
+	gtkwave -a timer.gtkw timer.fst
 
 tb_csr: $(csr)
 	verilator --binary $(csr) --top-module tb_csr --trace-fst --assert
