@@ -15,14 +15,18 @@ module timer
     input csr_op_t csr_op,
     input r rs1_zimm,
     input word rs1_data,
+    input logic interrupt_clear,
 
     // external access for side effects
     input  TimerT ext_data,
     input  logic  ext_write_enable,
     output word   direct_out,
-    output word   out
+    output word   out,
+    output logic  interrupt_out
 );
   TimerWidthT counter;
+
+  logic interrupt;
 
   TimerT timer;
 
@@ -51,7 +55,7 @@ module timer
 
   always_ff @(posedge clk) begin
     if (reset) counter <= 0;
-    else if (timer.counter_top == counter) begin
+    else begin if (timer.counter_top == counter) begin
       $display("counter top: counter = %d", counter);
       counter <= 0;
     end else counter <= counter + 1;

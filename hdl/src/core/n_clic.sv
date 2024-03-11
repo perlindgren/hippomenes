@@ -24,6 +24,28 @@ module n_clic
     output logic interrupt_out
 );
 
+
+  // CSR timer
+  word  timer_out;
+  logic timer_interrupt;
+
+  timer dut (
+      .clk,
+      .reset,
+      .csr_enable,
+      .csr_addr,
+      .csr_op,
+      .rs1_zimm,
+      .rs1_data,
+
+      // external access for side effects
+      .ext_data(0),
+      .ext_write_enable(0),
+      .direct_out,
+      .out(timer_out),
+      .interrupt(timer_interrupt)
+  );
+
   // CSR m_int_thresh
   logic m_int_thresh_write_enable;
   word  m_int_thresh_direct_out;  // not used
@@ -89,7 +111,7 @@ module n_clic
   PrioT                              prio            [VecSize];
   IMemAddrStore                      csr_vec_data    [VecSize];
   logic                              ext_write_enable[VecSize];
-  logic         [$bits(entry_t)-1:0] ext_entry_data;
+  logic         [$bits(entry_t)-1:0] ext_entry_data  [VecSize];
   generate
     word temp_vec  [VecSize];
     word temp_entry[VecSize];
@@ -129,7 +151,7 @@ module n_clic
           .rs1_zimm,
           .rs1_data,
           .ext_write_enable(ext_write_enable[k]),
-          .ext_data(ext_entry_data),
+          .ext_data(ext_entry_data[k]),
           // out
           .direct_out(temp_entry[k]),
           .out(entry_out[k])
@@ -147,7 +169,8 @@ module n_clic
   VecT          max_index[VecSize];
   always_comb begin
     // check first index in vector table
-    if (entry[0].enabled && entry[0].pended && (prio[0] >= m_int_thresh.data)) begin
+    // timer peripheral tied to vector 0
+    if (entry[0].enabled && (entry[0].pended || timer_interrupt) && (prio[0] >= m_int_thresh.data)) begin
       max_prio[0]  = prio[0];
       max_vec[0]   = csr_vec_data[0];
       max_index[0] = 0;
@@ -175,6 +198,12 @@ module n_clic
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = entry[max_index[VecSize-1]] & ~1;  // compute clear pend
 
+    // pend 0 if timer interrupt
+    if (timer_interrupt) begin
+      ext_write_enable[0] = 1;
+      ext_entry_data[0]   = ext_entry_data[0] | 1;  // set pend bit
+    end
+
     if (max_prio[VecSize-1] > m_int_thresh.data) begin
       // take higher priority interrupt
       push = 1;
@@ -184,7 +213,9 @@ module n_clic
       m_int_thresh_write_enable = 1;
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
-      ext_write_enable[max_index[VecSize-1]] = 1;  // clear pended interrupt
+      ext_write_enable[max_index[VecSize-1]] = 1;  // write to entry 
+      ext_entry_data[max_index[VecSize-1]] = ext_entry_data[max_index[VecSize-1]] & ~1;  // clear pend bit
+      timer.int
       $display("interrupt take int_addr %d", int_addr);
     end else if ((pc_in == ~(IMemAddrWidth'(0))) &&
         entry[max_index[VecSize-1]].enabled && entry[max_index[VecSize-1]].pended &&
@@ -197,7 +228,8 @@ module n_clic
       m_int_thresh_write_enable = 0;  // no update of threshold
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
-      ext_write_enable[max_index[VecSize-1]] = 1;  // clear pended interrupt
+      ext_write_enable[max_index[VecSize-1]] = 1;  // write to entry 
+      ext_entry_data[max_index[VecSize-1]] = ext_entry_data[max_index[VecSize-1]] & ~1;  // clear pend bit
       $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
       // interrupt return
@@ -224,9 +256,12 @@ module n_clic
 
   // set csr_out
   always_latch begin
-    if (csr_addr == MIntThreshAddr) begin
+    if (csr_addr == TimerAddr) begin
+      csr_out = timer_out;
+      $display("!!! CSR timer_out !!!");
+    end else if (csr_addr == MIntThreshAddr) begin
       csr_out = m_int_thresh_out;
-      $display("!!! m_thresh_ !!!");
+      $display("!!! CSR m_thresh_out !!!");
     end else if (csr_addr == StackDepthAddr) begin
       csr_out = 32'($unsigned(level_out));
       $display("!!! CSR StackDepth !!!");
