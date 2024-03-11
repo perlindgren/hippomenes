@@ -36,7 +36,7 @@ package config_pkg;
   localparam CsrAddrT MStatusAddr = 'h305;
   localparam CsrAddrT MIntThreshAddr = 'h347;
   localparam CsrAddrT StackDepthAddr = 'h350;
-  localparam CsrAddrT Timer = 'h400;
+  localparam CsrAddrT TimerAddr = 'h400;
 
   // Perpheral timer
   localparam TimerWidth = 16;
@@ -45,14 +45,9 @@ package config_pkg;
   localparam type TimerWidthT = logic [TimerWidth-1:0];
   localparam type TimerPresWidthT = logic [TimerPreWith-1:0];
 
-  // localparam type TimerT = struct packed {
-  //   TimerWidthT counter_top;
-  //   TimerPresWidthT prescaler;
-  // } TimerT;
-
   typedef struct packed {
     TimerWidthT counter_top;
-    TimerPresWidthT prescaler;
+    TimerPresWidthT prescaler;  // LSB
   } TimerT;
 
   // Monotonic timer

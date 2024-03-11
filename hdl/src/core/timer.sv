@@ -22,6 +22,9 @@ module timer
     output word   direct_out,
     output word   out
 );
+  TimerWidthT counter;
+
+  TimerT timer;
 
   csr #(
       .CsrWidth(TimerTWidth)
@@ -44,8 +47,14 @@ module timer
       .out
   );
 
+  assign timer = csr_timer.data;
+
   always_ff @(posedge clk) begin
-    // if (reset) mono_timer <= 0;
-    // else mono_timer <= mono_timer + 1;
+    if (reset) counter <= 0;
+    else if (timer.counter_top == counter) begin
+      $display("counter top: counter = %d", counter);
+      counter <= 0;
+    end else counter <= counter + 1;
   end
+
 endmodule

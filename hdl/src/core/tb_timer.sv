@@ -19,7 +19,9 @@ module tb_timer;
   word direct_out;
   word out;
 
-  timer mono_timer_inst (
+  TimerT timer;
+
+  timer dut (
       .clk,
       .reset,
       .csr_enable,
@@ -35,125 +37,30 @@ module tb_timer;
       .out
   );
 
-  // time_stamp dut (
-  //     // in
-  //     .clk,
-  //     .reset,
-  //     .mono_timer,
-  //     .pend,
-  //     .csr_addr,
-  //     // out
-  //     .csr_out
-  // );
-
   always #10 begin
-    $display($time);
     clk = ~clk;
+    if (clk) $display(">>> ", $time);
   end
-
-  // function static void dump();
-  //   for (integer k = 0; k < VecSize; k++) begin
-  //     $display("stamp[%d] %d", k, vec_stamp[k]);
-  //   end
-  // endfunction
 
   initial begin
     $dumpfile("timer.fst");
     $dumpvars;
 
-    // pend = '{default: 0};
-    // csr_addr = TimeStampCsrBase;  // first time stamp register
+    csr_addr = TimerAddr;
 
-    // clk = 0;
-    // reset = 1;
-    // #15;
-    // reset = 0;
+    clk = 0;
+    reset = 1;
+    #15;
+    reset = 0;
 
-    // $display("mono_timer %d", mono_timer);
+    // setup timer configuration
+    timer.prescaler = 0;
+    timer.counter_top = 4;
+    dut.csr_timer.data = timer;
 
-    // #20;
+    #30;
 
-    // $display("mono_timer %d", mono_timer);
-
-    // #200;
-    // $display("mono_timer %d", mono_timer);
-
-    // pend[1]  = 1;
-    // csr_addr = TimeStampCsrBase + 1;
-    // $display("pend 1 time %d", mono_timer);
-    // $display("csr_out %d = %d", csr_addr, csr_out);
-    // #1;
-    // $display("#1");
-    // $display("csr_out %d = %d", csr_addr, csr_out);
-    // #19;
-    // $display("#19 (clock)");
-    // $display("csr_out %d = %d", csr_addr, csr_out);
-
-    // #20;
-
-    // $display("csr_out %d = %d", csr_addr, csr_out);
-    // pend[1]  = 0;
-    // csr_addr = TimeStampCsrBase + 2;
-    // #1;
-    // $display("csr_out %d = %d", csr_addr, csr_out);
-    // $display("pend[1] = 1");
-    // $display("pend[2] = 1");
-
-    // pend[1] = 1;  // glitch on pend1 will be ignored as sampled on rising edge
-    // pend[2] = 1;
-    // $display("csr_out %d = %d", csr_addr, csr_out);
-
-    // #19;
-    // $display("--- here ---");
-
-    // $display("csr_out %d = %d", csr_addr, csr_out);
-    // csr_addr = TimeStampCsrBase + 1;
-    // #1;
-    // $display("csr_out %d = %d", csr_addr, csr_out);
-
-
-
-    // #20;
-    // $display("csr_out %d", csr_out);
-    // csr_addr = TimeStampCsrBase + 2;
-    // #1;
-    // $display("csr_out %d = %d", csr_addr, csr_out);
-
-
-
-
-    // // dump();
-    // // assert (vec_stamp[1] == 5);
-    // // pend[1] = 0;
-
-    // // #19;
-
-    // // pend[1] = 1;
-    // // pend[2] = 1;
-    // // #1;
-    // // dump();
-    // // assert (vec_stamp[1] == 5);
-    // // assert (vec_stamp[2] == 5);
-
-    // // pend[1] = 0;
-    // // pend[2] = 0;
-
-    // // #19;
-
-    // // #200;
-    // // pend[1] = 1;
-    // // #1;
-    // // dump();
-    // // assert (vec_stamp[1] == 11);
-    // // assert (vec_stamp[2] == 5);
-
-    // // #19;
-    // // pend[2] = 1;
-    // // #1;
-    // // dump();
-
-    // // assert (vec_stamp[1] == 11);
-    // // assert (vec_stamp[2] == 11);
+    #200;
 
     $finish;
   end
