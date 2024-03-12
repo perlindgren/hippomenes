@@ -5,6 +5,9 @@
     "verilog.formatting.veribleVerilogFormatter.path": "/home/pln/downloads/verible-v0.0-3545-ge4028f19/bin/verible-verilog-format",
     "editor.formatOnSave": true,
     "cSpell.ignoreWords": [
+        "CLIC",
+        "GPIO",
+        "MMIO",
         "Verilator"
     ],
 }
