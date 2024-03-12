@@ -37,12 +37,13 @@ As the RISC-V RT (and its reference implementation) is not yet considered featur
 
 - $0$, major version is zero
 - $y$, indicates breaking API changes (requires update of run-time system and in cases applications)
-- $z$,  indicates backwards compatible feature additions. Run-time system/application updates required only for leveraging added features as well as patch level.
+- $z$, indicates backwards compatible feature additions. Run-time system/application updates required only for leveraging added features as well as patch level.
 
 See [CHANGELOG.md](/CHANGELOG.md) for current status.
 
 ## Structure
 
+The repository is structured as follows:
 
 - `fpga`, backend workflow (currently targeting Vivado/Xinix Pynq-Z1, more targets will follow)
 - `hdl`
@@ -61,9 +62,7 @@ The design can be synthesized to the entry level Pynq-Z1 platform using the Viva
 
 The RISC-RT and its implementation has been modelled using the [SyncRim](https://github.com/perlindgren/syncrim/tree/hippomenes) tool. The high-level SyncRim model and its implementation is in 1-1 functional correspondence, thus providing an interactive, cycle accurate, high-level simulation model of the proposed RISC-V RT specification.
 
-
 ![RISC-V RT](SyncRim.png)
-
 
 ## License
 
