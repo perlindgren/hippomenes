@@ -1,4 +1,4 @@
-# Hippomenes, the only one to be Atalanta
+# Hippomenes, in love with Atalanta
 
 Exprimiental RISCV implementation.
 
