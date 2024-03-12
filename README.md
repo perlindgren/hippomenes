@@ -39,6 +39,8 @@ As the RISC-V RT (and its reference implementation) is not yet considered featur
 - $y$, indicates breaking API changes (requires update of run-time system and in cases applications)
 - $z$,  indicates backwards compatible feature additions. Run-time system/application updates required only for leveraging added features as well as patch level.
 
+See [CHANGELOG.md](/CHANGELOG.md) for current status.
+
 ## Structure
 
 
