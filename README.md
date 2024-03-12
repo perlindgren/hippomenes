@@ -3,7 +3,7 @@
 Experimental RISC-V RT extension implementation.
 
 Architectural design follows the submitted proposal (contact per.lindgren@ltu.se for pre-print).
-The design goal of RISC-V RT is to enable light weight implementations enabling the implementation of (hard) real-time systems. RISC-V RT currently features:
+The design goal of RISC-V RT is to provide a specification for light-weight MCU implementations enabling the implementation of (hard) real-time systems. RISC-V RT currently features:
 
 - N-CLIC 
     - zero-latency interrupt selection and dispatch
