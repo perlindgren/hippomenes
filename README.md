@@ -27,7 +27,7 @@ The design acts a reference implementation for the RISC-V RT extension, and shou
 
 ## Versioning
 
-The design follows semantic versioning (regarding expected behavior) along the triple, $x$.$y$.$z$:
+The design follows semantic versioning (regarding expected behavior) along the triple, $x.y.z$:
 
 - $x$, major version, indicates breaking API changes (requires update of run-time system and in cases applications)
 - $y$, minor version, indicates backwards compatible feature additions. Run-time system/application updates required only for leveraging added features.
