@@ -39,7 +39,7 @@ module tb_top_n_clic;
     $dumpfile("top_n_clic.fst");
     $dumpvars;
 
-    #600
+    #1000
 
     // $display("imem.mem[0] %h", top.imem.mem[0]);
     // $display("imem.mem[1] %h", top.imem.mem[1]);

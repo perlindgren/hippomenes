@@ -13,7 +13,7 @@ package config_pkg;
 
   // N-CLIC configuration
   localparam integer unsigned VecSize = 8;
-  localparam integer unsigned PrioLevels = 8;
+  localparam integer unsigned PrioLevels = 4;
 
   localparam integer unsigned IMemAddrWidth = $clog2(IMemSize);  // derived
   localparam integer unsigned DMemAddrWidth = $clog2(DMemSize);  // derived
