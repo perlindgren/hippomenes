@@ -27,7 +27,8 @@ module timer
   TimerT timer;
 
   csr #(
-      .CsrWidth(TimerTWidth)
+      .CsrWidth(TimerTWidth),
+      .Addr(TimerAddr)
   ) csr_timer (
       // in
       .clk,

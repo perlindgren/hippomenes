@@ -1,18 +1,19 @@
 [*]
 [*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Sat Mar  9 12:47:20 2024
+[*] Tue Mar 12 09:56:37 2024
 [*]
 [dumpfile] "/data/riscv/hippomenes/hdl/verilator/top_n_clic.fst"
-[dumpfile_mtime] "Sat Mar  9 12:21:54 2024"
-[dumpfile_size] 5627
+[dumpfile_mtime] "Tue Mar 12 08:35:04 2024"
+[dumpfile_size] 8020
 [savefile] "/data/riscv/hippomenes/hdl/verilator/top_n_clic.gtkw"
 [timestart] 0
-[size] 2165 1726
+[size] 2619 1726
 [pos] -1 -1
-*-15.170023 204900 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-16.278130 170000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.tb_top_n_clic.
 [treeopen] TOP.tb_top_n_clic.top.
+[treeopen] TOP.tb_top_n_clic.top.n_clic.
 [sst_width] 414
 [signals_width] 418
 [sst_expanded] 1
@@ -59,5 +60,18 @@ TOP.tb_top_n_clic.top.decoder_rs1[4:0]
 TOP.tb_top_n_clic.top.decoder_rs2[4:0]
 TOP.tb_top_n_clic.top.rf_rs1[31:0]
 TOP.tb_top_n_clic.top.rf_rs2[31:0]
+TOP.tb_top_n_clic.top.n_clic.csr_vec_data[0][5:0]
+TOP.tb_top_n_clic.top.n_clic.entry[0][4:0]
+TOP.tb_top_n_clic.top.n_clic.ext_entry_data[0][4:0]
+@28
+TOP.tb_top_n_clic.top.n_clic.timer.interrupt_clear
+TOP.tb_top_n_clic.top.n_clic.timer.interrupt_set
+@22
+TOP.tb_top_n_clic.top.n_clic.timer.timer[19:0]
+TOP.tb_top_n_clic.top.n_clic.timer.counter[15:0]
+@28
+TOP.tb_top_n_clic.top.n_clic.timer.csr_enable
+@29
+TOP.tb_top_n_clic.top.n_clic.timer.ext_write_enable
 [pattern_trace] 1
 [pattern_trace] 0
