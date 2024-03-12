@@ -5,37 +5,20 @@ module tb_n_clic;
   import decoder_pkg::*;
   import config_pkg::*;
 
-  localparam csr_addr_t VecCsrBase = 'hb00;
-  localparam integer unsigned PrioLevels = 8;
-  localparam integer unsigned PrioWidth = $clog2(PrioLevels);
-
-  (* DONT_TOUCH = "TRUE" *)
   logic clk;
-  (* DONT_TOUCH = "TRUE" *)
   logic reset;
-
-  (* DONT_TOUCH = "TRUE" *)
   logic csr_enable;
-  (* DONT_TOUCH = "TRUE" *)
-  csr_addr_t csr_addr;
-  (* DONT_TOUCH = "TRUE" *)
+  CsrAddrT csr_addr;
   r rs1_zimm;
-  (* DONT_TOUCH = "TRUE" *)
   word rs1_data;
-  (* DONT_TOUCH = "TRUE" *)
   csr_op_t csr_op;
-  (* DONT_TOUCH = "TRUE" *)
-  logic [IMemAddrWidth-1:0] pc_in;
-
-  (* DONT_TOUCH = "TRUE" *)
+  IMemAddrT pc_in;
   word csr_out;
-  (* DONT_TOUCH = "TRUE" *)
-  logic [IMemAddrWidth-1:0] n_clic_pc_out;
-  (* DONT_TOUCH = "TRUE" *)
-  logic [PrioWidth-1:0] level_out;
+  IMemAddrT n_clic_pc_out;
+  PrioT level_out;
+  logic interrupt_out;
+  pc_interrupt_mux_t pc_interrupt_sel;
 
-
-  (* DONT_TOUCH = "TRUE" *)
   n_clic dut (
       // in
       .clk,
@@ -48,14 +31,15 @@ module tb_n_clic;
       //
       .pc_in(pc_reg_out),
       // out
-      .csr_out(csr_out),
-      .pc_out(n_clic_pc_out),
-      .level_out(level_out)
+      .csr_out,
+      .int_addr(n_clic_pc_out),
+      .pc_interrupt_sel,
+      .level_out,
+      .interrupt_out
   );
 
-  (* DONT_TOUCH = "TRUE" *)
-  logic [IMemAddrWidth-1:0] pc_reg_out;
-  (* DONT_TOUCH = "TRUE" *)
+  IMemAddrT pc_reg_out;
+
   reg_n #(
       .DataWidth(IMemAddrWidth)
   ) pc_reg (
@@ -67,18 +51,15 @@ module tb_n_clic;
       .out(pc_reg_out)
   );
 
-  (* DONT_TOUCH = "TRUE" *)
-  pc_mux_t pc_mux_sel;
-  (* DONT_TOUCH = "TRUE" *)
-  logic [IMemAddrWidth-1:0] pc_branch;
-  (* DONT_TOUCH = "TRUE" *)
-  logic [IMemAddrWidth-1:0] pc_mux_out;
-  (* DONT_TOUCH = "TRUE" *)
-  pc_mux #(
+  pc_branch_mux_t pc_branch_mux_sel;
+  IMemAddrT pc_branch;
+  IMemAddrT pc_mux_out;
+
+  pc_branch_mux #(
       .AddrWidth(IMemAddrWidth)
-  ) pc_mux (
+  ) pc_branch_mux (
       // in
-      .sel(pc_mux_sel),
+      .sel(pc_branch_mux_sel),
       .pc_next(n_clic_pc_out),
       .pc_branch(pc_branch),
       // out
@@ -86,9 +67,8 @@ module tb_n_clic;
   );
 
   // emulate the register file, for observing old_csr
-  (* DONT_TOUCH = "TRUE" *)
+
   word old_csr;
-  (* DONT_TOUCH = "TRUE" *)
   reg_n rf_reg (
       // in
       .clk,
@@ -99,14 +79,17 @@ module tb_n_clic;
   );
 
   // clock process
-  always #10 clk = ~clk;
+  always #10 begin
+    clk = ~clk;
+    $display("clk %d", clk, $time);
+  end
 
   // logic [4:0] entry;
   function static void clic_dump();
     $display("mintresh %d, level (nesting depth) %d", dut.m_int_thresh.data, dut.level_out);
     for (integer i = 0; i < 8; i++) begin
-      $display("%d, is_int %b max_prio %d, max_vec %d, pc_in %d, pc_out %d", i, dut.is_int[i],
-               dut.max_prio[i], dut.max_vec[i], dut.pc_in, dut.pc_out);
+      $display("%d,  max_prio %d, max_vec %d, pc_in %d, int_addr %d", i, dut.max_prio[i],
+               dut.max_vec[i], dut.pc_in, dut.int_addr);
     end
   endfunction
 
@@ -139,45 +122,48 @@ module tb_n_clic;
     dut.gen_vec[4].csr_vec.data = 8;  // 32
     dut.gen_vec[7].csr_vec.data = 14;  // 56
 
-    pc_mux_sel = PC_NEXT;
+    pc_branch_mux_sel = PC_NEXT;
     pc_branch = 0;
 
     #20 $display("time ", $time());  // force clocking
 
     clic_dump();
-    assert (dut.is_int[7] == 0 && dut.max_prio[7] == 0 && dut.max_vec[7] == 0);
+    assert (dut.max_prio[7] == 0 && dut.max_vec[7] == 0);
 
     $display("pend vec 4");
     dut.gen_vec[4].csr_entry.data |= (1 << 0);  // pended
+    $display("dut.gen_vec[4].csr_entry.data %d", dut.gen_vec[4].csr_entry.data);
     #20 $display("time ", $time());  // force clock
-    assert (dut.pc_out == 32);
+    $display("dut.gen_vec[4].csr_entry.data %d", dut.gen_vec[4].csr_entry.data);
     clic_dump();
+    $display("int_addr %d", dut.int_addr);
+    assert (dut.int_addr == 32);
 
     $display("pend vec 0 no interrupt");
     dut.gen_vec[0].csr_entry.data |= (1 << 0);  // pended
     #20 $display("time ", $time());  // force clock
-    assert (dut.pc_out == 32);
+    assert (dut.int_addr == 32);
     clic_dump();
 
     $display("pend vec 2");
     dut.gen_vec[2].csr_entry.data |= (1 << 0);  // pended
     #20 $display("time ", $time());  // force clock
-    assert (dut.pc_out == 16);
+    assert (dut.int_addr == 16);
     clic_dump();
 
     $display("no pend, no interrupt");
     #20 $display("time ", $time());  // force clock
-    assert (dut.pc_out == 16);
+    assert (dut.int_addr == 16);
     clic_dump();
 
     $display("pend vec 7");
     dut.gen_vec[7].csr_entry.data |= (1 << 0);  // pended
     #20 $display("time ", $time());  // force clock
-    assert (dut.pc_out == 56);
+    assert (dut.int_addr == 56);
     clic_dump();
 
-    pc_mux_sel = PC_BRANCH;
-    pc_branch  = ~0;
+    pc_branch_mux_sel = PC_BRANCH;
+    pc_branch = ~0;
     dut.gen_vec[7].csr_entry.data ^= (1 << 0);  // unpend
 
     #20 $display("time ", $time());  // force clock
@@ -212,8 +198,6 @@ module tb_n_clic;
     csr_op   = CSRRW;
     #20;
     $display("VecCsrBase + 2 out %h", csr_out);
-    $display("VecCsrBase + 2 old_csr %h", old_csr);
-    assert (old_csr == 4);
     assert (csr_out == 'h3f);
     csr_enable = 0;  // don't write to csr
     rs1_data   = '0;

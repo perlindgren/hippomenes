@@ -49,8 +49,8 @@ module top (
   );
 
   // pc related
-  word pc_mux_out;
-  pc_mux pc_mux (
+  word pc_branch_mux_out;
+  pc_mux pc_branch_mux (
       .sel(branch_logic_out),
       .pc_next(pc_adder_out),
       .pc_branch(alu_res),
@@ -101,7 +101,7 @@ module top (
   // decoder
   logic decoder_csr_enable;
   csr_op_t decoder_csr_op;
-  csr_addr_t decoder_csr_addr;
+  CsrAddrT decoder_csr_addr;
   mem_width_t decoder_dmem_width;
 
   decoder decoder (
@@ -153,7 +153,7 @@ module top (
   );
 
   // branch logic
-  pc_mux_t branch_logic_out;
+  pc_branch_mux_t branch_logic_out;
   branch_logic branch_logic (
       // in
       .a(rf_rs1),

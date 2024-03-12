@@ -13,7 +13,7 @@ module csr_led #(
     input logic clk,
     input logic reset,
     input logic csr_enable,
-    input csr_addr_t csr_addr,
+    input CsrAddrT csr_addr,
     input r rs1_zimm,
     input word rs1_data,
     input csr_op_t csr_op,
@@ -24,11 +24,13 @@ module csr_led #(
     output logic led
 );
 
+  word direct_out;  // currently not used
   csr #(
       // .ResetValue(1),  // sanity testing of ResetValue
       .CsrWidth(CsrWidth),
       .Addr(0)
   ) csr_led (
+      // in
       .clk,
       .reset,
       .csr_enable,
@@ -38,8 +40,9 @@ module csr_led #(
       .csr_op,
       .ext_data,
       .ext_write_enable,
-      // .match(match),
-      .out(out)
+      // out
+      .direct_out,
+      .out
   );
 
   assign led = csr_led.data[0];

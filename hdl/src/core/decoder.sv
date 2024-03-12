@@ -8,7 +8,7 @@ module decoder (
     input word instr,
     // immediates
     output word imm,
-    output csr_addr_t csr_addr,
+    output CsrAddrT csr_addr,
     // register file
     output r rs1,
     output r rs2,
@@ -125,8 +125,8 @@ module decoder (
       OP_JALR: begin
         $display("jalr");
         wb_write_enable = 1;
-        alu_a_mux_sel = A_IMM;
-        alu_b_mux_sel = B_PC;
+        alu_a_mux_sel = A_RS1;
+        alu_b_mux_sel = B_RS2;
         wb_mux_sel = WB_PC_PLUS_4;
         branch_always = 1;
       end

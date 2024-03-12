@@ -5,7 +5,7 @@ module tb_n_clic_synth;
   import decoder_pkg::*;
   import config_pkg::*;
 
-  localparam csr_addr_t VecCsrBase = 'hb00;
+  localparam CsrAddrT VecCsrBase = 'hb00;
 
   (* DONT_TOUCH = "TRUE" *)
   logic clk;
@@ -14,7 +14,7 @@ module tb_n_clic_synth;
   (* DONT_TOUCH = "TRUE" *)
   logic csr_enable;
   (* DONT_TOUCH = "TRUE" *)
-  csr_addr_t csr_addr;
+  CsrAddrT csr_addr;
   (* DONT_TOUCH = "TRUE" *)
   r rs1_zimm;
   (* DONT_TOUCH = "TRUE" *)

@@ -9,7 +9,7 @@ module branch_logic (
     input logic branch_instr,
     input branch_op_t op,
 
-    output pc_mux_t out
+    output pc_branch_mux_t out
 );
   logic take;
 
@@ -24,7 +24,7 @@ module branch_logic (
       default: take = 0;
     endcase
 
-    out = pc_mux_t'(branch_always || (branch_instr && take));
+    out = pc_branch_mux_t'(branch_always || (branch_instr && take));
   end
 
 endmodule

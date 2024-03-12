@@ -17,7 +17,7 @@ module top_n_clic (
   ) pc_reg (
       .clk(clk),
       .reset(reset),
-      .in(n_clic_pc_out),
+      .in(pc_interrupt_mux_out),
       .out(pc_reg_out)
   );
 
@@ -40,7 +40,7 @@ module top_n_clic (
       .out(wb_rd_reg_out)
   );
 
-  reg wb_enable_reg_out;
+  logic wb_enable_reg_out;
   reg_n #(
       .DataWidth(1)
   ) wb_write_enable_reg (
@@ -50,15 +50,45 @@ module top_n_clic (
       .out(wb_enable_reg_out)
   );
 
+  //   logic interrupt_reg_out;
+  //   reg_n #(
+  //       .DataWidth(1)
+  //   ) interrupt_reg (
+  //       .clk(clk),
+  //       .reset(reset),
+  //       .in(n_clic_interrupt_out),
+  //       .out(interrupt_reg_out)
+  //   );
+
+  PrioT stack_depth_reg_out;
+  reg_n #(
+      .DataWidth(PrioWidth)
+  ) stack_depth_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(n_clic_level_out),
+      .out(stack_depth_reg_out)
+  );
+
   // pc related
-  IMemAddrT pc_mux_out;
-  pc_mux #(
+  IMemAddrT pc_branch_mux_out;
+  pc_branch_mux #(
       .AddrWidth(IMemAddrWidth)
-  ) pc_mux (
+  ) pc_branch_mux (
       .sel(branch_logic_out),
       .pc_next(pc_adder_out),
       .pc_branch(IMemAddrWidth'(alu_res)),
-      .out(pc_mux_out)
+      .out(pc_branch_mux_out)
+  );
+
+  IMemAddrT pc_interrupt_mux_out;
+  pc_interrupt_mux #(
+      .AddrWidth(IMemAddrWidth)
+  ) pc_interrupt_mux (
+      .sel(n_clic_pc_interrupt_sel),
+      .pc_normal(pc_branch_mux_out),
+      .pc_interrupt(n_clic_interrupt_addr),
+      .out(pc_interrupt_mux_out)
   );
 
   // adder
@@ -108,7 +138,7 @@ module top_n_clic (
   // csr
   logic decoder_csr_enable;
   csr_op_t decoder_csr_op;
-  csr_addr_t decoder_csr_addr;
+  CsrAddrT decoder_csr_addr;
   mem_width_t decoder_dmem_width;
 
   decoder decoder (
@@ -145,7 +175,6 @@ module top_n_clic (
   // register file
   word rf_rs1;
   word rf_rs2;
-  word rf_ra;
 
   word rf_stack_ra;
   rf_stack rf (
@@ -153,20 +182,19 @@ module top_n_clic (
       .clk,
       .reset,
       .writeEn(wb_enable_reg_out),
-      .writeRaEn(0),
-      .level(0),
+      .writeRaEn(n_clic_interrupt_out),  // not sure this is correct interrupt_reg_out
+      .level(stack_depth_reg_out),
       .writeAddr(wb_rd_reg_out),
       .writeData(wb_data_reg_out),
       .readAddr1(decoder_rs1),
       .readAddr2(decoder_rs2),
       // out
       .readData1(rf_rs1),
-      .readData2(rf_rs2),
-      .readRa(rf_stack_ra)
+      .readData2(rf_rs2)
   );
 
   // branch logic
-  pc_mux_t branch_logic_out;
+  pc_branch_mux_t branch_logic_out;
   branch_logic branch_logic (
       // in
       .a(rf_rs1),
@@ -244,9 +272,11 @@ module top_n_clic (
       .led
   );
 
-  word n_clic_csr_out;  //
-  IMemAddrT n_clic_pc_out;
-  logic [PrioWidth-1:0] n_clic_level_out;
+  word n_clic_csr_out;
+  PrioT n_clic_level_out;
+  pc_interrupt_mux_t n_clic_pc_interrupt_sel;
+  IMemAddrT n_clic_interrupt_addr;
+  logic n_clic_interrupt_out;
   n_clic n_clic (
       // in
       .clk,
@@ -257,11 +287,13 @@ module top_n_clic (
       .rs1_data(rf_rs1),
       //.rd(decoder_rd),
       .csr_op(decoder_csr_op),
-      .pc_in(pc_mux_out),
+      .pc_in(pc_branch_mux_out),
       // out
-      .pc_out(n_clic_pc_out),
       .csr_out(n_clic_csr_out),
-      .level_out(n_clic_level_out)
+      .int_addr(n_clic_interrupt_addr),
+      .pc_interrupt_sel(n_clic_pc_interrupt_sel),
+      .level_out(n_clic_level_out),
+      .interrupt_out(n_clic_interrupt_out)
   );
 
   word wb_mux_out;
@@ -269,7 +301,7 @@ module top_n_clic (
       .sel(decoder_wb_mux_sel),
       .dm(dmem_data_out),
       .alu(alu_res),
-      .csr(csr_led_out),
+      .csr(n_clic_csr_out),
       .pc_plus_4(32'($signed(pc_adder_out))),  // should we sign extend?
       .out(wb_mux_out)
   );

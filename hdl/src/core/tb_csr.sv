@@ -14,7 +14,7 @@ module tb_csr;
   (* DONT_TOUCH = "TRUE" *)
   logic csr_enable;
   (* DONT_TOUCH = "TRUE" *)
-  csr_addr_t csr_addr;
+  CsrAddrT csr_addr;
   (* DONT_TOUCH = "TRUE" *)
   r rs1_zimm;
   (* DONT_TOUCH = "TRUE" *)
@@ -25,10 +25,10 @@ module tb_csr;
   CsrDataT ext_data;
   (* DONT_TOUCH = "TRUE" *)
   logic ext_write_enable;
-
+  (* DONT_TOUCH = "TRUE" *)
+  word direct_out;
   (* DONT_TOUCH = "TRUE" *)
   word out;
-  // logic match;
 
   (* DONT_TOUCH = "TRUE" *)
   csr #(
@@ -44,9 +44,8 @@ module tb_csr;
       .rs1_zimm,
       .ext_data,
       .ext_write_enable,
-      // out
-      //.match(match),
-      .out(out)
+      .direct_out,
+      .out
   );
 
   // our clocking process
@@ -143,9 +142,9 @@ module tb_csr;
     assert (out == 'b11111);
 
     $display("csr_addr = 1", out);
-    csr_addr = 1;  // should cause address miss match
+    csr_addr = 1;  // we care about address only in case of write
     #1;
-    assert (out == 0);
+    assert (out == 'b11111);
     $display("csr_addr = 1", out);
 
     #20 $finish;

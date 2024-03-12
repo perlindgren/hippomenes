@@ -14,7 +14,7 @@ $(core)/branch_logic.sv \
 $(core)/alu.sv \
 $(core)/reg_n.sv \
 $(core)/pc_adder.sv \
-$(core)/pc_mux.sv \
+$(core)/pc_branch_mux.sv \
 $(core)/alu_a_mux.sv \
 $(core)/alu_b_mux.sv \
 $(root)/mem.sv \
@@ -27,25 +27,29 @@ top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
 fgpa_top = $(top_dep) $(root)/top.sv $(root)/tb_fpga_top.sv
 
-top_n_clic = $(top_dep) $(root)/top_n_clic.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_n_clic.sv
+top_n_clic = $(top_dep) $(root)/top_n_clic.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_n_clic.sv
 
 top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
 
 top_mem = $(top_dep) $(root)/top.sv $(root)/tb_top_mem.sv
 
-n_clic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/pc_mux.sv $(core)/reg_n.sv $(core)/stack.sv $(core)/n_clic.sv $(core)/csr.sv $(core)/tb_n_clic.sv
+n_clic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/pc_branch_mux.sv $(core)/reg_n.sv $(core)/stack.sv $(core)/n_clic.sv $(core)/csr.sv $(core)/timer.sv $(core)/tb_n_clic.sv
 
-csr = $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/tb_csr.sv
+csr = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/tb_csr.sv
 
-stack = $(core)/decoder_pkg.sv $(core)/stack.sv $(core)/tb_stack.sv
+stack = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/stack.sv $(core)/tb_stack.sv
 
 mem = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
 
 di_mem = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_di_mem.sv
 
-alu = $(core)/decoder_pkg.sv $(core)/alu.sv $(core)/tb_alu.sv
+alu = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/alu.sv $(core)/tb_alu.sv
 
-branch_logic = $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch_logic.sv
+time_stamp = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/mono_timer.sv $(core)/time_stamp.sv $(core)/tb_time_stamp.sv
+
+timer = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/timer.sv $(core)/tb_timer.sv 
+
+branch_logic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch_logic.sv
 
 all: \
 	tb_alu \
@@ -54,12 +58,17 @@ all: \
 	tb_register_file \
 	tb_rf_stack \
 	tb_di_mem \
-	tb_fpga_top \
 	tb_mem \
-	tb_top_branch \
-	tb_top_mem \
-	tb_top \
+	tb_stack \
+	tb_n_clic \
+	tb_timer \
+	tb_time_stamp \
+	tb_stack \
 	tb_top_n_clic
+	# tb_top_branch \
+	# tb_top_mem \
+	# tb_top \
+	# tb_fpga_top \
 	
 tb_top_n_clic: $(top_n_clic) 
 	verilator --binary $(top_n_clic) --top-module tb_top_n_clic --trace-fst --assert 
@@ -95,6 +104,20 @@ tb_top_mem: $(test_mem)
 
 tb_top_mem_g: 
 	gtkwave -a top_mem.gtkw top_mem.fst
+
+tb_time_stamp: $(time_stamp)
+	verilator --binary $(time_stamp) --top-module tb_time_stamp --trace-fst --assert
+	obj_dir/Vtb_time_stamp
+
+tb_time_stamp_g: 
+	gtkwave -a time_stamp.gtkw time_stamp.fst
+
+tb_timer: $(timer)
+	verilator --binary $(timer) --top-module tb_timer --trace-fst --assert
+	obj_dir/Vtb_timer
+
+tb_timer_g: 
+	gtkwave -a timer.gtkw timer.fst
 
 tb_csr: $(csr)
 	verilator --binary $(csr) --top-module tb_csr --trace-fst --assert
