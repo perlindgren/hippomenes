@@ -1,35 +1,32 @@
 `timescale 1ns / 1ps
 
-module register_file #(
-    parameter integer unsigned DataWidth         = 32,
-    parameter bit              DummyInstructions = 0,
-    parameter bit              WrenCheck         = 0,
-    parameter bit              RdataMuxCheck     = 0,
+module register_file
+  import config_pkg::*;
+#(
+    parameter bit DummyInstructions = 0,
+    parameter bit WrenCheck         = 0,
+    parameter bit RdataMuxCheck     = 0,
 
-    localparam int unsigned AddrWidth   = 5,
-    localparam int          NumWords    = 2 ** AddrWidth,
-    localparam type         AddrT       = logic          [AddrWidth-1:0],
-    localparam type         DataT       = logic          [DataWidth-1:0],
-    localparam DataT        WordZeroVal = '0
+    localparam RegT RegZeroVal = '0
 ) (
     // Clock and Reset
     input logic clk_i,
     input logic rst_ni,
 
     //Read port R1
-    input  AddrT raddr_a_i,
-    output DataT rdata_a_o,
+    input RegAddrT raddr_a_i,
+    output RegT rdata_a_o,
     //Read port R2
-    input  AddrT raddr_b_i,
-    output DataT rdata_b_o,
+    input RegAddrT raddr_b_i,
+    output RegT rdata_b_o,
     // Write port W1
-    input  AddrT waddr_a_i,
-    input  DataT wdata_a_i,
-    input  logic we_a_i
+    input RegAddrT waddr_a_i,
+    input RegT wdata_a_i,
+    input logic we_a_i
 );
 
-  DataT mem[NumWords];
-  DataT mem_o_a, mem_o_b;
+  RegT  mem[RegNum];
+  // DataT mem_o_a, mem_o_b;
   logic we;
 
   assign we = we_a_i;
@@ -49,8 +46,8 @@ module register_file #(
 
   // Make sure we initialize the BRAM with the correct register reset value.
   initial begin
-    for (int k = 0; k < NumWords; k++) begin
-      mem[k] = WordZeroVal;
+    for (int k = 0; k < RegNum; k++) begin
+      mem[k] = RegZeroVal;
     end
   end
 

@@ -3,68 +3,68 @@
 
 module rf_stack
   import config_pkg::*;
-#(
-    parameter  integer unsigned DataWidth   = 32,
-    parameter  integer unsigned NumRegs     = 32,
-    parameter  integer unsigned NumLevels   = 8,
-    localparam integer unsigned RegsWidth   = $clog2(NumRegs),
-    localparam integer unsigned LevelsWidth = $clog2(NumLevels),
-
-    localparam type DataT  = logic [  DataWidth-1:0],
-    localparam type LevelT = logic [LevelsWidth-1:0],
-    localparam type AddrT  = logic [  RegsWidth-1:0],
-
-    localparam AddrT Zero = 0,  // x0
-    localparam AddrT Ra   = 1,  // x1
-    localparam AddrT Sp   = 2   // x2
-) (
-    input  logic  clk,
-    input  logic  reset,
-    input  logic  writeEn,
-    input  logic  writeRaEn,
-    input  LevelT level,
-    input  AddrT  writeAddr,
-    input  DataT  writeData,
-    input  AddrT  readAddr1,
-    input  AddrT  readAddr2,
-    output DataT  readData1,
-    output DataT  readData2
+(
+    input logic clk,
+    input logic reset,
+    input logic writeEn,
+    input logic writeRaEn,
+    input PrioT level,
+    input RegAddrT writeAddr,
+    input RegT writeData,
+    input RegAddrT readAddr1,
+    input RegAddrT readAddr2,
+    output RegT readData1,
+    output RegT readData2
 );
+  localparam RegAddrT Zero = 0;  // x0
+  localparam RegAddrT Ra = 1;  // x1
+  localparam RegAddrT Sp = 2;  // x2
 
-  DataT a [NumLevels];
-  DataT b [NumLevels];
-  logic we[NumLevels];
+  RegT a_o[PrioNum];
+  RegT b_o[PrioNum];
+  RegAddrT wa_i[PrioNum];
+  RegT wd_i[PrioNum];
+  logic we[PrioNum];
 
   generate
-    for (genvar k = 0; k < NumLevels; k++) begin : gen_rf
+    for (genvar k = 0; k < PrioNum; k++) begin : gen_rf
       register_file rf (
           .clk_i(clk),
           .rst_ni(reset),
           //Read port R1
           .raddr_a_i(readAddr1),
-          .rdata_a_o(a[k]),
+          .rdata_a_o(a_o[k]),
           //Read port R2
           .raddr_b_i(readAddr2),
-          .rdata_b_o(b[k]),
+          .rdata_b_o(b_o[k]),
           // Write port W1
-          .waddr_a_i(writeAddr),
-          .wdata_a_i(writeData),
+          .waddr_a_i(wa_i[k]),
+          .wdata_a_i(wd_i[k]),
           .we_a_i(we[k])
       );
 
     end
   endgenerate
 
-  always_comb begin
+  always_latch begin
+    for (integer k = 0; k < PrioNum; k++) begin
+      we[k]   = 0;
+      wa_i[k] = writeAddr;
+      wd_i[k] = writeData;
 
-    for (int k = 0; k < NumLevels; k++) begin
-      // we know that this happens only for one case
-      we[k] = 0;
-      if (level == k) begin
-        readData1 = a[k];
-        readData2 = b[k];
-        we[k] = writeEn;
+      // only one will match
+      if (level == PrioT'(k)) begin
+        readData1 = (writeEn && (writeAddr == readAddr1)) ? writeData : a_o[k];
+        readData2 = (writeEn && (writeAddr == readAddr2)) ? writeData : b_o[k];
       end
+      // Sp goes to all levels
+      we[k] = writeEn & ((level == PrioT'(k)) | (writeAddr == Sp));
+    end
+
+    if (writeRaEn) begin
+      we[level-1]   = 1;
+      wa_i[level-1] = Ra;
+      wd_i[level-1] = ~0;
     end
   end
 

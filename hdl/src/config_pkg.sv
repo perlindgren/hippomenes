@@ -2,6 +2,13 @@
 `timescale 1ns / 1ps
 
 package config_pkg;
+  // General
+  localparam integer unsigned RegWidth = 32;
+  localparam type RegT = logic [RegWidth-1:0];
+
+  localparam integer unsigned RegNum = 32;
+  localparam integer unsigned RegAddrWidth = $clog2(RegNum);
+  localparam type RegAddrT = logic [RegAddrWidth-1:0];
 
   // Instruction memory configuration
   localparam integer unsigned IMemStart = 'h0000_0000;
@@ -11,22 +18,23 @@ package config_pkg;
   localparam integer unsigned DMemStart = 'h0001_0000;
   localparam integer unsigned DMemSize = 'h0000_1000;  // in bytes
 
-  // N-CLIC configuration
-  localparam integer unsigned VecSize = 8;
-  localparam integer unsigned PrioLevels = 4;
-
-  localparam integer unsigned IMemAddrWidth = $clog2(IMemSize);  // derived
-  localparam integer unsigned DMemAddrWidth = $clog2(DMemSize);  // derived
-
+  // Memory relatted
+  localparam integer unsigned IMemAddrWidth = $clog2(IMemSize);
+  localparam integer unsigned DMemAddrWidth = $clog2(DMemSize);
   localparam type IMemAddrT = logic [IMemAddrWidth-1:0];
   localparam type DMemAddrT = logic [DMemAddrWidth-1:0];
 
-  localparam integer unsigned VecWidth = $clog2(VecSize);
-  localparam integer unsigned PrioWidth = $clog2(PrioLevels);
-
-  localparam type VecT = logic [VecWidth-1:0];
+  // Interrupt priorities
+  localparam integer unsigned PrioNum = 4;
+  localparam integer unsigned PrioWidth = $clog2(PrioNum);
   localparam type PrioT = logic [PrioWidth-1:0];
 
+  // N-CLIC configuration
+  localparam integer unsigned VecSize = 8;
+  localparam integer unsigned VecWidth = $clog2(VecSize);
+  localparam type VecT = logic [VecWidth-1:0];
+
+  // CSR Related
   localparam type CsrAddrT = logic [11:0];
   localparam CsrAddrT VecCsrBase = 'hb00;  // up to 32 vectors
   localparam CsrAddrT EntryCsrBase = 'hb20;

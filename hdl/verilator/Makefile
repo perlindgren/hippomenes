@@ -1,7 +1,7 @@
 core = ../src/core
 root = ../src
 
-register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
+register_file = $(root)/config_pkg.sv $(core)/register_file.sv $(core)/tb_register_file.sv
 rf_stack = $(root)/config_pkg.sv $(core)/rf_stack.sv $(core)/register_file.sv $(core)/tb_rf_stack.sv
 
 top_dep = \
