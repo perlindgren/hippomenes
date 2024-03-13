@@ -5,66 +5,78 @@ module tb_register_file;
   parameter integer unsigned DataWidth = 32;
   parameter integer unsigned NumRegs = 32;
   parameter integer unsigned IndexWidth = $clog2(NumRegs);
+  localparam type DataT = logic [DataWidth-1:0];
+  localparam int unsigned AddrWidth = 5;
+  localparam type AddrT = logic [AddrWidth-1:0];
 
-  logic                  clk;
-  logic                  reset;
-  logic                  writeEn;
-  logic [IndexWidth-1:0] writeAddr;
-  logic [ DataWidth-1:0] writeData;
-  logic [IndexWidth-1:0] readAddr1;
-  logic [IndexWidth-1:0] readAddr2;
-  logic [ DataWidth-1:0] readData1;
-  logic [ DataWidth-1:0] readData2;
+
+  logic clk_i;
+  logic rst_ni;
+  logic we_a_i;
+  AddrT waddr_a_i;
+  DataT wdata_a_i;
+  AddrT raddr_a_i;
+  AddrT raddr_b_i;
+  DataT rdata_a_o;
+  DataT rdata_b_o;
 
   register_file dut (
-      .clk(clk),
-      .reset(reset),
-      .writeEn(writeEn),
-      .writeAddr(writeAddr),
-      .writeData(writeData),
-      .readAddr1(readAddr1),
-      .readAddr2(readAddr2),
-      .readData1(readData1),
-      .readData2(readData2)
+      // Clock and Reset
+      .clk_i,
+      .rst_ni,
+
+      //Read port R1
+      .raddr_a_i,
+      .rdata_a_o,
+      //Read port R2
+      .raddr_b_i,
+      .rdata_b_o,
+      // Write port W1
+      .waddr_a_i,
+      .wdata_a_i,
+      .we_a_i
   );
 
-  always #10 clk = ~clk;
+  always #10 clk_i = ~clk_i;
 
   initial begin
     $dumpfile("register_file.fst");
     $dumpvars;
 
-    clk   = 0;
-    reset = 0;
+    clk_i  = 0;
+    rst_ni = 0;
     #5;
-    reset = 1;
+    rst_ni = 1;
     #10;
-    reset = 0;
-    #10;
-
-    readAddr1 = 0;
-    readAddr2 = 1;
-    writeEn   = 1;
-    writeAddr = 1;
-    writeData = 'h12345678;
-
-    #10;
-    assert ((readData1 == 0) && (readData2 == 'h12345678)) $display("ok");
-    else $error("rs1 %h, rs2 %h", readData1, readData2);
-
-    writeAddr = 0;
+    rst_ni = 0;
     #10;
 
-    assert ((readData1 == 0) && (readData2 == 'h12345678)) $display("ok");
-    else $error("rs1 %h, rs2 %h", readData1, readData2);
-    #10;
+    raddr_a_i = 0;
+    raddr_b_i = 1;
+    we_a_i = 1;
+    waddr_a_i = 1;
+    wdata_a_i = 'h12345678;
 
-    writeAddr = 31;
-    writeData = 'hdead_beef;
-    readAddr1 = 31;
-    #10;
-    assert ((readData1 == 'hdead_beef) && (readData2 == 'h12345678)) $display("ok");
-    else $error("rs1 %h, rs2 %h", readData1, readData2);
+    #20;
+    assert ((rdata_a_o == 0) && (rdata_b_o == 'h12345678)) $display("ok");
+    else $error("rs1 %h, rs2 %h", rdata_a_o, rdata_b_o);
+
+    assert ((rdata_a_o == 0) && (rdata_b_o == 'h12345678)) $display("ok");
+    else $error("rs1 %h, rs2 %h", rdata_a_o, rdata_b_o);
+
+    $display("we_a_i %b waddr_a_i %d wdata_a_i %h", we_a_i, waddr_a_i, wdata_a_i);
+    $display("rs1 %h, rs2 %h", rdata_a_o, rdata_b_o);
+    #20;
+
+    assert ((rdata_a_o == 0) && (rdata_b_o == 'h12345678)) $display("ok");
+    else $error("rs1 %h, rs2 %h", rdata_a_o, rdata_b_o);
+
+    waddr_a_i = 31;
+    wdata_a_i = 'hdead_beef;
+    raddr_a_i = 31;
+    #20;
+    assert ((rdata_a_o == 'hdead_beef) && (rdata_b_o == 'h12345678)) $display("ok");
+    else $error("rs1 %h, rs2 %h", rdata_a_o, rdata_b_o);
 
     #10 $finish;
 

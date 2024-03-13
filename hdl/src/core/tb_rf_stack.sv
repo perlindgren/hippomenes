@@ -68,8 +68,8 @@ module tb_rf_stack;
 
     $warning();
     $display("-- level %d, writeAddr %d, writeData %h", level, writeAddr, writeData);
-    $display("regs[0][Sp] %h", dut.regs[0][Sp]);
-    $display("regs[1][Sp] %h", dut.regs[1][Sp]);
+    $display("regs[0][Sp] %h", dut.gen_rf.rf[0].mem[Sp]);
+    $display("regs[1][Sp] %h", dut.gen_rf.rf[1].mem[Sp]);
     assert (dut.regs[0][2] == 'h00000000);
     assert (dut.regs[1][2] == 'h00000000);
     $display("-- level %d, writeAddr %d, writeData %h", level, writeAddr, writeData);
