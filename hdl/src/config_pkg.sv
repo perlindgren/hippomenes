@@ -10,6 +10,10 @@ package config_pkg;
   localparam integer unsigned RegAddrWidth = $clog2(RegNum);
   localparam type RegAddrT = logic [RegAddrWidth-1:0];
 
+  localparam RegAddrT Zero = 0;  // x0
+  localparam RegAddrT Ra = 1;  // x1
+  localparam RegAddrT Sp = 2;  // x2
+
   // Instruction memory configuration
   localparam integer unsigned IMemStart = 'h0000_0000;
   localparam integer unsigned IMemSize = 'h0000_0100;  // in bytes
