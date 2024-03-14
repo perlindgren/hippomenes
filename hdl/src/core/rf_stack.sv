@@ -18,8 +18,6 @@ module rf_stack
 );
   RegT a_o[PrioNum];
   RegT b_o[PrioNum];
-  // RegAddrT wa_i[PrioNum];
-  // RegT wd_i[PrioNum];
   logic we[PrioNum];
   logic ra_set[PrioNum];
 
@@ -35,12 +33,10 @@ module rf_stack
           .raddr_b_i(readAddr2),
           .rdata_b_o(b_o[k]),
           // Write port W1
-          // .waddr_a_i(wa_i[k]),
-          // .wdata_a_i(wd_i[k]),
           .waddr_a_i(writeAddr),
           .wdata_a_i(writeData),
           .we_a_i(we[k]),
-          // magic
+          // on interrupt
           .ra_set(ra_set[k])
       );
     end
@@ -49,7 +45,6 @@ module rf_stack
   RegT  sp_a_o;
   RegT  sp_b_o;
   logic sp_we;
-  // RegT  sp_wdata;
 
   rf #(
       .RegNum(1)  // A single instance for Ra
@@ -65,7 +60,6 @@ module rf_stack
       .rdata_b_o(sp_b_o),
       // Write port W1
       .waddr_a_i(0),
-      //.wdata_a_i(sp_wdata),
       .wdata_a_i(writeData),
       .we_a_i(sp_we)
   );
@@ -87,21 +81,21 @@ module rf_stack
 
     // Register Ra and > Sp
     for (integer k = 0; k < PrioNum; k++) begin
-      we[k] = (level_reg_out == PrioT'(k)) && writeEn && (writeAddr == Ra || (writeAddr > Sp));
+      we[k] = (level == PrioT'(k)) && writeEn && (writeAddr == Ra || (writeAddr > Sp));
       ra_set[k] = 0;
     end
 
     // Ra (on interrupt)
     if (writeRaEn) ra_set[level-1] = 1;
 
-    // Reads to rs1
+    // Reads to rs1, based on buffered level
     if (readAddr1 == Zero) readData1 = 0;
     else if (readAddr1 == Sp) readData1 = sp_a_o;
-    else readData1 = a_o[level_reg_out];
-    // Reads to rs2
+    else readData1 = a_o[level];
+    // Reads to rs2, based on buffered level
     if (readAddr2 == Zero) readData2 = 0;
     else if (readAddr2 == Sp) readData2 = sp_b_o;
-    else readData2 = b_o[level_reg_out];
+    else readData2 = b_o[level];
   end
 
 endmodule

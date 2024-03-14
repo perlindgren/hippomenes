@@ -43,7 +43,6 @@ module tb_rf_stack;
 
     level = 1;
     writeRaEn = 0;
-
     readAddr1 = Zero;
     readAddr2 = Sp;
     writeEn = 1;
@@ -55,8 +54,12 @@ module tb_rf_stack;
     assert (readData1 == 0);
     assert (readData2 == 'h12345678);
 
-    writeAddr = 31;
+    level = 1;
+    writeRaEn = 0;
     readAddr1 = 31;
+    readAddr2 = Sp;
+    writeEn = 1;
+    writeAddr = 31;
     writeData = 'hAAAA_0000;
 
     #20;
@@ -64,32 +67,48 @@ module tb_rf_stack;
     assert (readData1 == 'hAAAA_0000);
     assert (readData2 == 'h12345678);
 
-    level   = 2;
+    level = 2;
+    writeRaEn = 0;
+    readAddr1 = 31;
+    readAddr2 = Sp;
     writeEn = 0;
+    writeAddr = 31;
+    writeData = 'hAAAA_0000;
 
     #20;
 
     assert (readData1 == 0);
-    assert (readData2 == 'h12345678);
+    assert (readData2 == 'h12345678);  // Sp is global
 
+    level = 2;
+    readAddr1 = Ra;
+    readAddr2 = Sp;
     writeRaEn = 1;
-    writeEn   = 1;
+    writeEn = 1;
     writeAddr = Ra;
     writeData = 'h0000_FFFF;
-    readAddr1 = Ra;
 
     #20;
 
     $display("r1 %h", readData1);
     assert (readData1 == 'h0000_FFFF);
     $display("r2 %h", readData2);
+    assert (readData2 == 'h12345678);  // Sp is global
 
     level = 1;
+    readAddr1 = Ra;
+    readAddr2 = 31;
+    writeRaEn = 0;
+    writeEn = 0;
+    writeAddr = Ra;
+    writeData = 'h0000_FFFF;
 
     #20;
 
     $display("r1 %h", readData1);
+    $display("r2 %h", readData2);
     assert (readData1 == 'hFFFF_FFFF);
+    assert (readData2 == 'hAAAA_0000);
 
     $finish;
 

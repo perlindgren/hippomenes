@@ -79,8 +79,9 @@ module register_file
 
     x3_31_we = we_a_i && (waddr_a_i > Sp);
     ra_we = (we_a_i && (waddr_a_i == Ra)) || ra_set;
+
     if (ra_set) begin
-      $display("ra_wdata = ~0");
+      // $display("ra_wdata = ~0");
       ra_wdata = ~0;
     end else begin
       ra_wdata = wdata_a_i;
