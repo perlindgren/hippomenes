@@ -26,7 +26,7 @@ module register_file
   logic x3_31_we;
 
   rf #(
-      .RegNum(RegNum - 3)
+      .RegNum(RegNum - 3)  // exlude Zero, Ra, Sp
   ) x3_x31 (
       // Clock and Reset
       .clk_i,
@@ -49,7 +49,7 @@ module register_file
   RegT  ra_wdata;
 
   rf #(
-      .RegNum(1)
+      .RegNum(1)  // A single instance for Ra
   ) ra (
       // Clock and Reset
       .clk_i,
