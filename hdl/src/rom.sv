@@ -5,7 +5,7 @@ module rom
   import config_pkg::*;
   import mem_pkg::*;
 #(
-    parameter integer MemSize = 'h0000_1000,
+    parameter integer unsigned MemSize = 'h0000_1000,
     localparam integer MemAddrWidth = $clog2(MemSize)  // derived
 ) (
     input logic clk,
@@ -14,13 +14,15 @@ module rom
     output logic [31:0] data_out
 );
 
-  logic [31:0] mem[MemSize >> 2];
+  word mem[MemSize >> 2];
 
-  always_comb begin
-    data_out = mem[address[MemAddrWidth-1:2]];
-  end
+  assign data_out = mem[address[MemAddrWidth-1:2]];
 
-  always_comb begin
+  initial begin
+    for (integer k = 0; k < MemSize >> 2; k++) begin
+      mem[k] = 0;
+    end
+
 
     // test csr
     //  0: 73 23 00 35   csrr    t1, miselect
@@ -115,6 +117,7 @@ module rom
     mem[15] = 'h0002a303;  //
     mem[16] = 'h00134313;  //
     mem[17] = 'h00031073;  //
+    // mem[17] = 'hb4002e73;  // read csr
     mem[18] = 'h0062a023;  //
     mem[19] = 'hb4002e73;  //
     mem[20] = 'h00008067;  //

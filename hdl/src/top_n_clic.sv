@@ -10,6 +10,8 @@ module top_n_clic (
   import decoder_pkg::*;
   import mem_pkg::*;
 
+  IMemAddrT pc_interrupt_mux_out;
+
   // registers
   IMemAddrT pc_reg_out;
   reg_n #(
@@ -21,6 +23,7 @@ module top_n_clic (
       .out(pc_reg_out)
   );
 
+  word wb_mux_out;
   word wb_data_reg_out;
   reg_n wb_data_reg (
       .clk(clk),
@@ -30,6 +33,7 @@ module top_n_clic (
   );
 
   // 5 bit register
+  r decoder_rd;
   r wb_rd_reg_out;
   reg_n #(
       .DataWidth(5)
@@ -40,6 +44,7 @@ module top_n_clic (
       .out(wb_rd_reg_out)
   );
 
+  logic decoder_wb_write_enable;
   logic wb_enable_reg_out;
   reg_n #(
       .DataWidth(1)
@@ -50,16 +55,7 @@ module top_n_clic (
       .out(wb_enable_reg_out)
   );
 
-  //   logic interrupt_reg_out;
-  //   reg_n #(
-  //       .DataWidth(1)
-  //   ) interrupt_reg (
-  //       .clk(clk),
-  //       .reset(reset),
-  //       .in(n_clic_interrupt_out),
-  //       .out(interrupt_reg_out)
-  //   );
-
+  PrioT n_clic_level_out;
   PrioT stack_depth_reg_out;
   reg_n #(
       .DataWidth(PrioWidth)
@@ -71,6 +67,9 @@ module top_n_clic (
   );
 
   // pc related
+  word alu_res;
+  pc_branch_mux_t branch_logic_out;
+  IMemAddrT pc_adder_out;
   IMemAddrT pc_branch_mux_out;
   pc_branch_mux #(
       .AddrWidth(IMemAddrWidth)
@@ -81,7 +80,8 @@ module top_n_clic (
       .out(pc_branch_mux_out)
   );
 
-  IMemAddrT pc_interrupt_mux_out;
+  IMemAddrT n_clic_interrupt_addr;
+  pc_interrupt_mux_t n_clic_pc_interrupt_sel;
   pc_interrupt_mux #(
       .AddrWidth(IMemAddrWidth)
   ) pc_interrupt_mux (
@@ -92,7 +92,6 @@ module top_n_clic (
   );
 
   // adder
-  IMemAddrT pc_adder_out;
   pc_adder #(
       .AddrWidth(IMemAddrWidth)
   ) pc_adder (
@@ -115,7 +114,6 @@ module top_n_clic (
 
   // decoder
   wb_mux_t decoder_wb_mux_sel;
-  logic decoder_wb_write_enable;
   alu_a_mux_t decoder_alu_a_mux_sel;
   alu_b_mux_t decoder_alu_b_mux_sel;
   alu_op_t decoder_alu_op;
@@ -123,7 +121,6 @@ module top_n_clic (
   word decoder_imm;
   r decoder_rs1;
   r decoder_rs2;
-  r decoder_rd;
 
   // mem
   logic decoder_dmem_write_enable;
@@ -173,10 +170,10 @@ module top_n_clic (
   );
 
   // register file
-  word rf_rs1;
-  word rf_rs2;
-
-  word rf_stack_ra;
+  word  rf_rs1;
+  word  rf_rs2;
+  logic n_clic_interrupt_out;
+  word  rf_stack_ra;
   rf_stack rf (
       // in
       .clk,
@@ -194,7 +191,6 @@ module top_n_clic (
   );
 
   // branch logic
-  pc_branch_mux_t branch_logic_out;
   branch_logic branch_logic (
       // in
       .a(rf_rs1),
@@ -230,7 +226,7 @@ module top_n_clic (
       .out      (alu_b_mux_out)
   );
 
-  word alu_res;
+
   alu alu (
       .a(alu_a_mux_out),
       .b(alu_b_mux_out),
@@ -273,10 +269,6 @@ module top_n_clic (
   );
 
   word n_clic_csr_out;
-  PrioT n_clic_level_out;
-  pc_interrupt_mux_t n_clic_pc_interrupt_sel;
-  IMemAddrT n_clic_interrupt_addr;
-  logic n_clic_interrupt_out;
   n_clic n_clic (
       // in
       .clk,
@@ -296,7 +288,6 @@ module top_n_clic (
       .interrupt_out(n_clic_interrupt_out)
   );
 
-  word wb_mux_out;
   wb_mux wb_mux (
       .sel(decoder_wb_mux_sel),
       .dm(dmem_data_out),
