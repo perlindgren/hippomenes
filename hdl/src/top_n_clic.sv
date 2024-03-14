@@ -23,49 +23,6 @@ module top_n_clic (
       .out(pc_reg_out)
   );
 
-  word wb_mux_out;
-  word wb_data_reg_out;
-  reg_n wb_data_reg (
-      .clk(clk),
-      .reset(reset),
-      .in(wb_mux_out),
-      .out(wb_data_reg_out)
-  );
-
-  // 5 bit register
-  r decoder_rd;
-  r wb_rd_reg_out;
-  reg_n #(
-      .DataWidth(5)
-  ) wb_rd_reg (
-      .clk(clk),
-      .reset(reset),
-      .in(decoder_rd),
-      .out(wb_rd_reg_out)
-  );
-
-  logic decoder_wb_write_enable;
-  logic wb_enable_reg_out;
-  reg_n #(
-      .DataWidth(1)
-  ) wb_write_enable_reg (
-      .clk(clk),
-      .reset(reset),
-      .in(decoder_wb_write_enable),
-      .out(wb_enable_reg_out)
-  );
-
-  PrioT n_clic_level_out;
-  PrioT stack_depth_reg_out;
-  reg_n #(
-      .DataWidth(PrioWidth)
-  ) stack_depth_reg (
-      .clk(clk),
-      .reset(reset),
-      .in(n_clic_level_out),
-      .out(stack_depth_reg_out)
-  );
-
   // pc related
   word alu_res;
   pc_branch_mux_t branch_logic_out;
@@ -137,6 +94,10 @@ module top_n_clic (
   csr_op_t decoder_csr_op;
   CsrAddrT decoder_csr_addr;
   mem_width_t decoder_dmem_width;
+  r decoder_rd;
+
+  // write back
+  logic decoder_wb_write_enable;
 
   decoder decoder (
       // in
@@ -170,19 +131,22 @@ module top_n_clic (
   );
 
   // register file
+  word  wb_mux_out;
   word  rf_rs1;
   word  rf_rs2;
   logic n_clic_interrupt_out;
   word  rf_stack_ra;
+
+  PrioT n_clic_level_out;
   rf_stack rf (
       // in
       .clk,
       .reset,
-      .writeEn(wb_enable_reg_out),
-      .writeRaEn(n_clic_interrupt_out),  // not sure this is correct interrupt_reg_out
-      .level(stack_depth_reg_out),
-      .writeAddr(wb_rd_reg_out),
-      .writeData(wb_data_reg_out),
+      .writeEn(decoder_wb_write_enable),
+      .writeRaEn(n_clic_interrupt_out),
+      .level(n_clic_level_out),
+      .writeAddr(decoder_rd),
+      .writeData(wb_mux_out),
       .readAddr1(decoder_rs1),
       .readAddr2(decoder_rs2),
       // out

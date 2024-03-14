@@ -19,6 +19,7 @@ module rf_stack
   RegT a_o[PrioNum];
   RegT b_o[PrioNum];
   logic we[PrioNum];
+  /* verilator lint_off UNOPTFLAT */
   logic ra_set[PrioNum];
 
   generate
