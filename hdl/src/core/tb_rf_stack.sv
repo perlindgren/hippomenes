@@ -86,7 +86,7 @@ module tb_rf_stack;
 
     level = 1;
 
-    #1;
+    #20;
 
     $display("r1 %h", readData1);
     assert (readData1 == 'hFFFF_FFFF);

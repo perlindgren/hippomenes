@@ -70,6 +70,15 @@ module rf_stack
       .we_a_i(sp_we)
   );
 
+  PrioT level_reg_out;
+  reg_n #(
+      .DataWidth(PrioWidth)
+  ) level_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(level),
+      .out(level_reg_out)
+  );
 
   always_comb begin
     // Writes
@@ -78,7 +87,7 @@ module rf_stack
 
     // Register Ra and > Sp
     for (integer k = 0; k < PrioNum; k++) begin
-      we[k] = (level == PrioT'(k)) && writeEn && (writeAddr == Ra || (writeAddr > Sp));
+      we[k] = (level_reg_out == PrioT'(k)) && writeEn && (writeAddr == Ra || (writeAddr > Sp));
       ra_set[k] = 0;
     end
 
@@ -88,11 +97,11 @@ module rf_stack
     // Reads to rs1
     if (readAddr1 == Zero) readData1 = 0;
     else if (readAddr1 == Sp) readData1 = sp_a_o;
-    else readData1 = a_o[level];
+    else readData1 = a_o[level_reg_out];
     // Reads to rs2
     if (readAddr2 == Zero) readData2 = 0;
     else if (readAddr2 == Sp) readData2 = sp_b_o;
-    else readData2 = b_o[level];
+    else readData2 = b_o[level_reg_out];
   end
 
 endmodule
