@@ -8,7 +8,7 @@ module tb_top_n_clic;
   logic clk;
   logic reset;
   logic led;
-  (* DONT_TOU CH = "TRUE" *)
+
   top_n_clic top (
       .clk  (clk),
       .reset(reset),

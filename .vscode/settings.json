@@ -18,6 +18,7 @@
         "endmodule",
         "localparam",
         "norvc",
+        "posedge",
         "prescaler",
         "riscv",
         "struct",
