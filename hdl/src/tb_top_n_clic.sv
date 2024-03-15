@@ -22,8 +22,8 @@ module tb_top_n_clic;
     $display($time, " << Starting the Simulation >>");
     $display("memsize %h", IMemSize >> 2);
     // Rom for instruction mem content
-    $display("Loading memory file binary.mem");
-    $readmemh("binary.mem", top.imem.mem);
+    //$display("Loading memory file binary.mem");
+    //$readmemh("binary.mem", top.imem.mem);
     //top.imem.mem = mem;
 
     reset = 1;
@@ -41,34 +41,35 @@ module tb_top_n_clic;
     $dumpvars;
     $display("mem : %h, %h, %h, %h", top.imem.mem[0], top.imem.mem[1], top.imem.mem[2],
              top.imem.mem['hB00>>2]);
-    #20 assert (top.imem.address == 'h0);
-    #20 assert (top.imem.address == 'h4);
-    #20 assert (top.imem.address == 'h8);
-    #20 assert (top.imem.address == 'hc);
-    #20 assert (top.imem.address == 'h10);
-    #20 assert (top.imem.address == 'h14);
-    #20 assert (top.imem.address == 'h18);
-    #20 assert (top.imem.address == 'h1c);
-    #20 assert (top.imem.address == 'h20);
-    #20 assert (top.imem.address == 'h24);
-    #20 assert (top.imem.address == 'h28);
-    #20 assert (top.imem.address == 'h2c);
-    #20 assert (top.imem.address == 'h30);  // interrupt triggered
-    #20 assert (top.imem.address == 'h34);
-    #20 assert (top.imem.address == 'h38);
-    #20 assert (top.imem.address == 'h3c);
-    #20 assert (top.imem.address == 'h40);
-    #20 assert (top.imem.address == 'h44);
-    #20 assert (top.imem.address == 'h48);
-    #20 assert (top.imem.address == 'h4c);
-    #20 assert (top.imem.address == 'h50);
-    #20 assert (top.imem.address == 'h2c);
-    #20 assert (top.imem.address == 'h2c);
-    #20 assert (top.imem.address == 'h2c);
-    #20 assert (top.imem.address == 'h2c);
-    #20 assert (top.imem.address == 'h2c);
-    #20 assert (top.imem.address == 'h2c);
-    #20 assert (top.imem.address == 'h30);  // 2nd timer interrupt here
+    #20 assert (top.pc_reg_out == 'h0);
+    #20 assert (top.pc_reg_out == 'h4);
+    #20 assert (top.pc_reg_out == 'h8);
+    #20 assert (top.pc_reg_out == 'hc);
+    #20 assert (top.pc_reg_out == 'h10);
+    #20 assert (top.pc_reg_out == 'h14);
+    #20 assert (top.pc_reg_out == 'h18);
+    #20 assert (top.pc_reg_out == 'h1c);
+    #20 assert (top.pc_reg_out == 'h20);
+    #20 assert (top.pc_reg_out == 'h24);
+    #20 assert (top.pc_reg_out == 'h28);
+    #20 assert (top.pc_reg_out == 'h2c);
+    #20 assert (top.pc_reg_out == 'h30);  // interrupt triggered
+    #20 assert (top.pc_reg_out == 'h34);
+    #20 assert (top.pc_reg_out == 'h38);
+    #20 assert (top.pc_reg_out == 'h3c);
+    #20 assert (top.pc_reg_out == 'h40);
+    #20 assert (top.pc_reg_out == 'h44);
+    #20 assert (top.pc_reg_out == 'h48);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h50);
+    #20 assert (top.pc_reg_out == 'h54);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h34);  // 2nd timer interrupt here
     $finish;
   end
 

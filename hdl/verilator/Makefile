@@ -73,10 +73,9 @@ all: \
 asm: $(top_n_clic)
 	cp ./asm.s ./riscv_asm/; cp ./memory.x ./riscv_asm/; cd ./riscv_asm; cargo clean; cargo build --release; rm ./asm.s ./memory.x
 	elf2mem -f ./riscv_asm/target/riscv32i-unknown-none-elf/release/riscv_asm -t ./binary.mem -p
-	verilator --binary $(top_n_clic) --top-module tb_top_n_clic --trace-fst --assert
-	obj_dir/Vtb_top_n_clic
 
-tb_top_n_clic: $(top_n_clic) 
+tb_top_n_clic: $(top_n_clic)
+	make asm
 	verilator --binary $(top_n_clic) --top-module tb_top_n_clic --trace-fst --assert 
 	obj_dir/Vtb_top_n_clic
 

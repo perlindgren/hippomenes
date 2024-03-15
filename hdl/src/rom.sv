@@ -22,6 +22,9 @@ module rom
     for (integer k = 0; k < MemSize >> 2; k++) begin
       mem[k] = 0;
     end
+    $display("Loading memory file binary.mem");
+    $readmemh("binary.mem", top.imem.mem);
+
 
 
     // test csr
