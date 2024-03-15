@@ -54,7 +54,7 @@ The repository is structured as follows:
 
 The design can be simulated using the Verilator tool, see [Simulation](/hdl/verilator/README.md).
 
-See below [Example](#Example)
+See below [Example](#example)
 
 ## Synthesis
 
