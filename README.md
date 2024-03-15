@@ -229,7 +229,7 @@ As seen there is currently just a `counter_top` and `prescaler` (we kept it simp
 
 ## Contribution
 
-RISC-V RT draws on the success of the Rust project in allowing both progress and stability at the same time through semantic versioning.
+RISC-V RT draws on the success of the Rust project in allowing both progression and stability at the same time through semantic versioning.
 
 The RISC-V RT specification is open for You and everybody else. Fork the project, make changes and open an issue/PR. If/when your PR is eventually merged, it IS the specification of RISC-V RT associated to its semantic version. 
 
