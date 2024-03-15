@@ -8,7 +8,7 @@ module tb_top_n_clic;
   logic clk;
   logic reset;
   logic led;
-  (* DONT_TOUCH = "TRUE" *)
+  (* DONT_TOU CH = "TRUE" *)
   top_n_clic top (
       .clk  (clk),
       .reset(reset),
@@ -22,8 +22,6 @@ module tb_top_n_clic;
     $display($time, " << Starting the Simulation >>");
 
     // Rom for instruction mem content
-
-
 
     reset = 1;
     clk   = 0;

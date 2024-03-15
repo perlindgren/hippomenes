@@ -2,17 +2,15 @@
 
 `timescale 1ns / 1ps
 
-import decoder_pkg::*;
 import config_pkg::*;
+import decoder_pkg::*;
 // Notice, we assume csrwidth to be at lest 5 bits
 // in order to simplify the code
 module csr #(
     parameter integer unsigned CsrWidth = 32,  // default to word
     localparam type CsrDataT = logic [CsrWidth-1:0],  // derived
-    parameter CsrDataT ResetValue = 0,
-
-    /* verilator lint_off WIDTHTRUNC */
-    parameter CsrAddrT Addr = 0,
+    parameter CsrDataT ResetValue = CsrDataT'(0),
+    parameter CsrAddrT Addr = CsrAddrT'(0),
     parameter logic Read = 1,
     parameter logic Write = 1
 ) (
@@ -36,7 +34,7 @@ module csr #(
   always_comb begin
     tmp = data;
     if (csr_enable && (csr_addr == Addr) && Write) begin
-      $write("@ %h", csr_addr);
+      $display("@ %h", csr_addr);
       case (csr_op)
         CSRRW: begin
           // side effect on read/write here

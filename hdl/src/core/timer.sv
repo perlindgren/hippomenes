@@ -23,7 +23,6 @@ module timer
     output word  csr_out
 );
   TimerWidthT counter;
-
   TimerT timer;
 
   csr #(
@@ -53,7 +52,7 @@ module timer
   always_ff @(posedge clk) begin
     if (reset) counter <= 0;
     else begin
-      if (timer.counter_top == counter) begin
+      if (timer.counter_top << timer.prescaler == counter) begin
         $display("counter top: counter = %d", counter);
         counter <= 0;
         interrupt_set <= 1;

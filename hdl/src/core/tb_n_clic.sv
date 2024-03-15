@@ -125,6 +125,8 @@ module tb_n_clic;
     pc_branch_mux_sel = PC_NEXT;
     pc_branch = 0;
 
+    $display("dut.gen_vec[0].csr_vec.data %h", dut.gen_vec[0].csr_vec.data);
+
     #20 $display("time ", $time());  // force clocking
 
     clic_dump();
@@ -182,6 +184,11 @@ module tb_n_clic;
 
     #20;
     $display("VecCsrBase %h, out %h", csr_addr, csr_out);
+    $display("dut.gen_vec[0].csr_vec.data %h", dut.gen_vec[0].csr_vec.data);
+
+    #20;
+    $display("VecCsrBase %h, out %h", csr_addr, csr_out);
+
     assert (csr_out == 2);
 
     csr_addr = VecCsrBase + 1;

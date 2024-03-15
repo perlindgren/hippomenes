@@ -1,15 +1,15 @@
 core = ../src/core
 root = ../src
 
-register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
-rf_stack = $(core)/rf_stack.sv $(core)/tb_rf_stack.sv
+register_file = $(root)/config_pkg.sv $(core)/register_file.sv $(core)/tb_register_file.sv
+rf_stack = $(root)/config_pkg.sv $(core)/reg_n.sv $(core)/rf_stack.sv $(core)/register_file.sv $(core)/tb_rf_stack.sv
 
 top_dep = \
 $(root)/config_pkg.sv \
 $(core)/decoder_pkg.sv \
 $(root)/mem_pkg.sv \
 $(core)/decoder.sv \
-$(register_file) \
+$(core)/register_file.sv \
 $(core)/branch_logic.sv \
 $(core)/alu.sv \
 $(core)/reg_n.sv \
