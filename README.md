@@ -229,17 +229,17 @@ As seen there is currently just a `counter_top` and `prescaler` (we kept it simp
 
 ## Contribution
 
-RISC-V RT drawing on the success of the Rust project in allowing both progress and stability at the same time through semantic versioning.
+RISC-V RT draws on the success of the Rust project in allowing both progress and stability at the same time through semantic versioning.
 
 The RISC-V RT specification is open for You and everybody else. Fork the project, make changes and open an issue/PR. If/when your PR is eventually merged, it IS the specification of RISC-V RT associated to its semantic version. 
 
 This is very different from the [riscv.org](https://riscv.org/), where the specification lacks a reference implementation and might or might not make sense in practice. RISC-V RT on the other hand requires you to implement it, and come up with examples and tests that showcase its use and correctness. It allows for an agile development process, the [CLIC spec](https://github.com/riscv/riscv-fast-interrupt/) specification has been in flux since 2018 (more than 6 years) without ratification. 
 
-The exact form of Contributions is not yet defined, please raise an issue to suggest the form you would prefer [Issue 3](https://github.com/perlindgren/hippomenes/issues/3)
+The exact form of Contributions is not yet defined, please suggest the form you would prefer in [Issue 3](https://github.com/perlindgren/hippomenes/issues/3).
 
 ## License
 
-To be determined, contact per.lindgren@ltu.se for licensing questions. Please suggest in issue what You think is the best license for the project [Issue 2](https://github.com/perlindgren/hippomenes/issues/2).
+To be determined, contact per.lindgren@ltu.se for licensing questions. Please suggest in [Issue 2](https://github.com/perlindgren/hippomenes/issues/2) what You think is the best license for the project. 
 
 
 
