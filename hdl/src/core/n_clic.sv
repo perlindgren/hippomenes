@@ -24,7 +24,6 @@ module n_clic
     output logic              interrupt_out
 );
 
-
   // CSR timer
   word  timer_direct_out;  // not used
   word  timer_out;
@@ -40,8 +39,8 @@ module n_clic
       .csr_op,
       .rs1_zimm,
       .rs1_data,
-      .ext_data(0),
-      .ext_write_enable(0),
+      .ext_data(TimerT'(0)),
+      .ext_write_enable(1'b0),
       .interrupt_clear(timer_interrupt_clear),
       // out
       .interrupt_set(timer_interrupt_set),
@@ -92,7 +91,7 @@ module n_clic
   stack_t stack_out;
   // epc address stack
   stack #(
-      .StackDepth(PrioLevels),
+      .StackDepth(PrioNum),
       .DataWidth ($bits(stack_t))
   ) epc_stack (
       // in
@@ -107,7 +106,6 @@ module n_clic
   );
 
   // generate vector table
-
   typedef logic [(IMemAddrWidth - 2)-1:0] IMemAddrStore;
 
   entry_t                            entry           [VecSize];
@@ -123,7 +121,7 @@ module n_clic
 
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
-          .Addr(VecCsrBase + k),
+          .Addr(VecCsrBase + CsrAddrT'(k)),
           .CsrWidth(IMemAddrWidth - 2)
       ) csr_vec (
           // in
@@ -142,7 +140,7 @@ module n_clic
       );
 
       csr #(
-          .Addr(EntryCsrBase + k),
+          .Addr(EntryCsrBase + CsrAddrT'(k)),
           .CsrWidth($bits(entry_t))
       ) csr_entry (
           // in
@@ -197,7 +195,7 @@ module n_clic
 
   // handle interrupts: take-, tail-chain-, exit- and no-interrupt
   always_comb begin
-    VecT max_i = max_index[VecSize-1];
+    static VecT max_i = max_index[VecSize-1];
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = '{default: '0};
 
@@ -267,26 +265,27 @@ module n_clic
   end
 
   // set csr_out
-  always_latch begin
+  always_comb begin
+    csr_out = 0;
     if (csr_addr == TimerAddr) begin
       csr_out = timer_out;
+
       $display("!!! CSR timer_out !!!");
     end else if (csr_addr == MIntThreshAddr) begin
       csr_out = m_int_thresh_out;
+
       $display("!!! CSR m_thresh_out !!!");
     end else if (csr_addr == StackDepthAddr) begin
       csr_out = 32'($unsigned(level_out));
+
       $display("!!! CSR StackDepth !!!");
     end else begin
       for (int k = 0; k < VecSize; k++) begin
-
         if (csr_addr == VecCsrBase + CsrAddrT'(k)) begin
           csr_out = vec_out[k];
-          break;
         end
         if (csr_addr == EntryCsrBase + CsrAddrT'(k)) begin
           csr_out = entry_out[k];
-          break;
         end
       end
     end

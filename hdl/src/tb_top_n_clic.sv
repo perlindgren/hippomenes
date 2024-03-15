@@ -8,7 +8,7 @@ module tb_top_n_clic;
   logic clk;
   logic reset;
   logic led;
-  (* DONT_TOUCH = "TRUE" *)
+  (* DONT_TOU CH = "TRUE" *)
   top_n_clic top (
       .clk  (clk),
       .reset(reset),
@@ -23,9 +23,8 @@ module tb_top_n_clic;
     $display("memsize %h", IMemSize >> 2);
     // Rom for instruction mem content
     $display("Loading memory file binary.mem");
-    $readmemh("binary.mem", top.imem.mem, 0, 8);
+    $readmemh("binary.mem", top.imem.mem);
     //top.imem.mem = mem;
-
 
     reset = 1;
     clk   = 0;
@@ -42,63 +41,34 @@ module tb_top_n_clic;
     $dumpvars;
     $display("mem : %h, %h, %h, %h", top.imem.mem[0], top.imem.mem[1], top.imem.mem[2],
              top.imem.mem['hB00>>2]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
-    #20 $display("pc: %h", top.imem.address);
-    $display("sp: %h", top.rf.regs[0][2]);
-    $display("t0: %h", top.rf.regs[top.rf.level][5]);
+    #20 assert (top.imem.address == 'h0);
+    #20 assert (top.imem.address == 'h4);
+    #20 assert (top.imem.address == 'h8);
+    #20 assert (top.imem.address == 'hc);
+    #20 assert (top.imem.address == 'h10);
+    #20 assert (top.imem.address == 'h14);
+    #20 assert (top.imem.address == 'h18);
+    #20 assert (top.imem.address == 'h1c);
+    #20 assert (top.imem.address == 'h20);
+    #20 assert (top.imem.address == 'h24);
+    #20 assert (top.imem.address == 'h28);
+    #20 assert (top.imem.address == 'h2c);
+    #20 assert (top.imem.address == 'h30);  // interrupt triggered
+    #20 assert (top.imem.address == 'h34);
+    #20 assert (top.imem.address == 'h38);
+    #20 assert (top.imem.address == 'h3c);
+    #20 assert (top.imem.address == 'h40);
+    #20 assert (top.imem.address == 'h44);
+    #20 assert (top.imem.address == 'h48);
+    #20 assert (top.imem.address == 'h4c);
+    #20 assert (top.imem.address == 'h50);
+    #20 assert (top.imem.address == 'h2c);
+    #20 assert (top.imem.address == 'h2c);
+    #20 assert (top.imem.address == 'h2c);
+    #20 assert (top.imem.address == 'h2c);
+    #20 assert (top.imem.address == 'h2c);
+    #20 assert (top.imem.address == 'h2c);
+    #20 assert (top.imem.address == 'h30);  // 2nd timer interrupt here
     $finish;
   end
 

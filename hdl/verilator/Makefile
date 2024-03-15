@@ -1,15 +1,15 @@
 core = ../src/core
 root = ../src
 
-register_file = $(core)/register_file.sv $(core)/tb_register_file.sv
-rf_stack = $(core)/rf_stack.sv $(core)/tb_rf_stack.sv
+register_file = $(root)/config_pkg.sv $(core)/register_file.sv $(core)/tb_register_file.sv
+rf_stack = $(root)/config_pkg.sv $(core)/reg_n.sv $(core)/rf_stack.sv $(core)/register_file.sv $(core)/tb_rf_stack.sv
 
 top_dep = \
 $(root)/config_pkg.sv \
 $(core)/decoder_pkg.sv \
 $(root)/mem_pkg.sv \
 $(core)/decoder.sv \
-$(register_file) \
+$(core)/register_file.sv \
 $(core)/branch_logic.sv \
 $(core)/alu.sv \
 $(core)/reg_n.sv \
@@ -72,7 +72,7 @@ all: \
 
 asm: $(top_n_clic)
 	cp ./asm.s ./riscv_asm/; cp ./memory.x ./riscv_asm/; cd ./riscv_asm; cargo clean; cargo build --release; rm ./asm.s ./memory.x
-	elf2mem -f ./riscv_asm/target/riscv32i-unknown-none-elf/release/riscv_asm -o ./binary.mem -p
+	elf2mem -f ./riscv_asm/target/riscv32i-unknown-none-elf/release/riscv_asm -t ./binary.mem -p
 	verilator --binary $(top_n_clic) --top-module tb_top_n_clic --trace-fst --assert
 	obj_dir/Vtb_top_n_clic
 

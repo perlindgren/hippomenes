@@ -51,10 +51,9 @@ module mem
 
   always_comb begin
     read_word = mem[address[MemAddrWidth-1:2]];
-
+    alignment_error = 0;
     case (width)
       BYTE: begin
-        alignment_error = 0;
         data_out = {
           24'($signed(read_word[address[1:0]][7:7] && sign_extend)), read_word[address[1:0]]
         };
