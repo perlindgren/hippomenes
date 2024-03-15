@@ -73,6 +73,8 @@ And in comparison to resources available for the entry level Pynq-Z1:
 
 Interesting here is that the total design amounts to less than 4 percent of the logic resources, thus the design can be considered ultra light-weight.
 
+This is also reflected by the modest synthesis time, less than 2 minutes for a clean build flow (synthesis, implementation, bitmap generation and target deployment) on a standard desktop (Amd-7950x3d, 32 gig-ram, running arch linux 6.9 and Vivado 2023-2). (Iterative builds are typically faster.)
+
 ## Prototyping
 
 The RISC-RT and its implementation has been modelled using the [SyncRim](https://github.com/perlindgren/syncrim/tree/hippomenes) tool. The high-level SyncRim model and its implementation is in 1-1 functional correspondence, thus providing an interactive, cycle accurate, high-level simulation model of the proposed RISC-V RT specification.
