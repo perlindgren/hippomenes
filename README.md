@@ -60,11 +60,15 @@ See below [Example](#example)
 
 The design can be synthesized to the entry level Pynq-Z1 platform using the Vivado tool, see [Synthesis](/fpga/README.md).
 
+Hippomenes RTL at top level:
+
+![RISC-V RT TOP](fpga_top.png)
+
 Resource usage for a configuration with 4 priority levels (as the ARM Cortex M0) and 4K of SRAM is depicted below:
 
 The data memory (`dmem`) stands for the majority of the required resources, while the stacked register file (`rf`) and (`n-clic`) together amounts to a third of the resources used.
 
-![RISC-V RT](fpga_synth.png)
+![RISC-V RT SYNTH](fpga_synth.png)
 
 Looking closer at the resource utilization:
 ![FPGA-STATS](fpga_stats.png)
