@@ -58,6 +58,21 @@ The design can be simulated using the Verilator tool, see [Simulation](/hdl/veri
 
 The design can be synthesized to the entry level Pynq-Z1 platform using the Vivado tool, see [Synthesis](/fpga/README.md).
 
+Resource usage for a configuration with 4 priority levels (as the ARM Cortex M0) and 4K of SRAM is depicted below:
+
+The data memory (`dmem`) stands for the majority of the required resources, while the stacked register file (`rf`) and (`n-clic`) together amounts to a third of the resources used.
+
+![RISC-V RT](fpga_synth.png)
+
+Looking closer at the resource utilization:
+![FPGA-STATS](fpga_stats.png)
+
+And in comparison to resources available for the entry level Pynq-Z1:
+
+![FPGA-STATS-COMP](fpga_stats_comp.png)
+
+Interesting here is that the total design amounts to less than 4 percent of the logic resources, thus the design can be considered ultra light-weight.
+
 ## Prototyping
 
 The RISC-RT and its implementation has been modelled using the [SyncRim](https://github.com/perlindgren/syncrim/tree/hippomenes) tool. The high-level SyncRim model and its implementation is in 1-1 functional correspondence, thus providing an interactive, cycle accurate, high-level simulation model of the proposed RISC-V RT specification.

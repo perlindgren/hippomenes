@@ -10,6 +10,7 @@
         "MMIO",
         "Pynq",
         "Verilator",
-        "Vivado"
+        "Vivado",
+        "dmem"
     ],
 }
