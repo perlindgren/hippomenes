@@ -54,6 +54,8 @@ The repository is structured as follows:
 
 The design can be simulated using the Verilator tool, see [Simulation](/hdl/verilator/README.md).
 
+See below [Example](#Example)
+
 ## Synthesis
 
 The design can be synthesized to the entry level Pynq-Z1 platform using the Vivado tool, see [Synthesis](/fpga/README.md).
@@ -85,7 +87,7 @@ The RISC-RT and its implementation has been modelled using the [SyncRim](https:/
 
 The below example showcase prominent features of the RISC-V RT, and the Hippomenes reference implementation:
 
-```assembly
+```risc-v
             .option  norvc
             .text
 init:       la      sp, _stack_start        # set stack pointer
