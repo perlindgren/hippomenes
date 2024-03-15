@@ -17,6 +17,7 @@
         "dmem",
         "endmodule",
         "localparam",
+        "norvc",
         "prescaler",
         "riscv",
         "struct",
