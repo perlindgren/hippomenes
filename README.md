@@ -64,6 +64,54 @@ The RISC-RT and its implementation has been modelled using the [SyncRim](https:/
 
 ![RISC-V RT](SyncRim.png)
 
+## Example
+
+The below example showcase prominent features of the RISC-V RT, and the Hippomenes reference implementation:
+
+```assembly
+            .option  norvc
+            .text
+init:       la      sp, _stack_start        # set stack pointer
+main:       csrwi   0x300, 8                # enable global interrupts
+            la      t1, isr_0
+            srl     t1, t1, 2
+            csrw    0xB00, t1               # setup isr_0 address
+
+            li      t2, 0b11110000          # interrupt every 15 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
+            csrw    0x400, t2               # timer.counter_top CSR
+            la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
+            csrw    0xB20, t1               # write above to interrupt 0 (timer interrupt)
+stop:       j       stop                    # wait for interrupt
+
+isr_0:      la      t0, .toggled            # &static mut toggled state
+            lw      t1, 0(t0)               # deref toggled
+            xori    t1, t1, 1               # toggle bit 0
+            csrw    0x0, t1                 # set bit 0 (t1 = 1) in GPIO CSR (LED on/off)
+            sw      t1, 0(t0)               # store toggled value
+            csrr    t3, 0xB40               # read captured timestamp
+            sw      t3, 4(t0)               # store timestamp
+            jr      ra                      # return 
+
+            .data
+.toggled:   .word   0x0                     # state
+            .word   0x0                     # time-stamp
+```
+
+The run-time (`.init`) for this case is a single instruction to setup the (shared) stack pointer. The application (`.main`) starts by enabling global interrupts (`0x300`), setting up the interrupt vector address (`0xb00`) for `isr_0` (the vector table does not store the two least significant bits so we shift right by 2). We then configure the timer peripheral (`x400`) to generate an interrupt each 15 cycles. Finally we configure the interrupt control (`xb20`), setting priority to 3, and the enable bit to 1, and wait in a busy loop for interrupts to occur.
+
+The interrupt handler (`isr_0`) reads the local resource (`.toggled`), toggles bit 0, updates the gpio (`0x0`) and stores the toggled value back to the local resource. It then reads the timestamp the interrupt (`0xB40`) and stores that to the local resource.
+
+A SyncRim simulation is show below:
+![RISC-V RT](asm_timer_sim.png)
+
+
+At the end of the `isr_0`, the register `ra` has the value `0xFFFFFFFF` indicating to the `n-clic` to return to the preempted task (`.stop` in this case). The `.toggled.led_state` is `00000001` (as indicated by the LED bit 0 being lit red). The `.toggled.timestamp` value is `00000019`, indicate the *global* monotonic time when the interrupt was captured.
+
+State at next interrupt return is shown below:
+![RISC-V RT](asm_timer_sim2.png)
+At this point we see that the `.toggled.led_state` is `00000000` (as indicated by the LED bit 0 being grey). The `.toggled.timestamp` value is `0000002a`, indicate the *global* monotonic time when the interrupt was captured. The timer re-load has for this implementation a latency of 1.
+
+
 ## License
 
 To be determined, contact per.lindgren@ltu.se for licensing questions.

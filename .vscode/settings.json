@@ -8,6 +8,8 @@
         "CLIC",
         "GPIO",
         "MMIO",
-        "Verilator"
+        "Pynq",
+        "Verilator",
+        "Vivado"
     ],
 }
