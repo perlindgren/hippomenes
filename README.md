@@ -130,10 +130,119 @@ State at next interrupt return is shown below:
 ![RISC-V RT](asm_timer_sim2.png)
 At this point we see that the `.toggled.led_state` is `00000000` (as indicated by the LED bit 0 being grey). The `.toggled.timestamp` value is `0000002a`, indicate the *global* monotonic time when the interrupt was captured. The timer re-load has for this implementation a latency of 1.
 
+### HDL Simulation
+
+The same program as run using the Verilator test-bench shows:
+![TIMER](timer_gtkwave.png)
+
+To the left the set of signals to view is shown, for this example the `reset`, `clk`, `pc` `instruction` and `n_clic_interrupt`. The cursor is placed at the entry of the second timer interrupt. We can observe that there is exactly 16 clock cycles between interrupts. (The observant reader also observes that the first timer interrupt is taken directly after initialization, wether this is a desired behavior can be debated, but it is in our hands to specify and implement as we see fit!)
+
+CSRs underlies all peripheral implementations, the timer peripheral is implemented in [timer.sv](./hdl/src/core/timer.sv), inlined here in its entirety.
+
+```verilog
+// timer
+`timescale 1ns / 1ps
+
+//  Programmable timer peripheral
+module timer
+  import config_pkg::*;
+  import decoder_pkg::*;
+(
+    input logic clk,
+    input logic reset,
+
+    input logic    csr_enable,
+    input CsrAddrT csr_addr,
+    input csr_op_t csr_op,
+    input r        rs1_zimm,
+    input word     rs1_data,
+    input TimerT   ext_data,
+    input logic    ext_write_enable,
+    input logic    interrupt_clear,
+
+    output logic interrupt_set,
+    output word  csr_direct_out,
+    output word  csr_out
+);
+  TimerWidthT counter;
+  TimerT timer;
+
+  csr #(
+      .CsrWidth(TimerTWidth),
+      .Addr(TimerAddr)
+  ) csr_timer (
+      // in
+      .clk,
+      .reset,
+
+      .csr_enable,
+      .csr_addr,
+      .csr_op,
+      .rs1_zimm,
+      .rs1_data,
+
+      // external access for side effects
+      .ext_data,
+      .ext_write_enable,
+      // out
+      .direct_out(csr_direct_out),
+      .out(csr_out)
+  );
+
+  assign timer = csr_timer.data;
+
+  always_ff @(posedge clk) begin
+    if (reset) counter <= 0;
+    else begin
+      if (timer.counter_top << timer.prescaler == counter) begin
+        $display("counter top: counter = %d", counter);
+        counter <= 0;
+        interrupt_set <= 1;
+      end else begin
+        if (interrupt_clear) interrupt_set <= 0;
+        counter <= counter + 1;
+      end
+    end
+  end
+
+endmodule
+
+```
+As seen it instantiates a single CSR, which address (`TimerAddr`) and layout (`TimerT) is defined in the [config_pkg.sv](hdl/src/config_pkg.sv).
+
+```verilog
+  localparam CsrAddrT TimerAddr = 'h400;
+
+  // Peripheral timer
+  localparam TimerWidth = 16;
+  localparam TimerPreWith = 4;
+
+  localparam type TimerWidthT = logic [TimerWidth-1:0];
+  localparam type TimerPresWidthT = logic [TimerPreWith-1:0];
+
+  typedef struct packed {
+    TimerWidthT counter_top;
+    TimerPresWidthT prescaler;  // LSB
+  } TimerT;
+```
+As seen there is currently just a `counter_top` and `prescaler` (we kept it simple). As a side effect, the `timer` has in Verilator simulation the reset value 0, thus a match to the `counter` register will happen immediately after reset, the `interrupt_set` goes high, and and the interrupt is dispatched by the `n_clic` as soon as the corresponding enable bit in the vector table is set.
+
+## Contribution
+
+RISC-V RT drawing on the success of the Rust project in allowing both progress and stability at the same time through semantic versioning.
+
+The RISC-V RT specification is open for You and everybody else. Fork the project, make changes and open an issue/PR. If/when your PR is eventually merged, it IS the specification of RISC-V RT associated to its semantic version. 
+
+This is very different from the [riscv.org](https://riscv.org/), where the specification lacks a reference implementation and might or might not make sense in practice. RISC-V RT on the other hand requires you to implement it, and come up with examples and tests that showcase its use and correctness. It allows for an agile development process, the [CLIC spec](https://github.com/riscv/riscv-fast-interrupt/) specification has been in flux since 2018 (more than 6 years) without ratification. 
+
+The exact form of Contributions is not yet defined, please raise an issue to suggest the form you would prefer [Issue 3](https://github.com/perlindgren/hippomenes/issues/3)
 
 ## License
 
-To be determined, contact per.lindgren@ltu.se for licensing questions.
+To be determined, contact per.lindgren@ltu.se for licensing questions. Please suggest in issue what You think is the best license for the project [Issue 2](https://github.com/perlindgren/hippomenes/issues/2).
+
+
+
 
 
 

@@ -50,7 +50,7 @@ package config_pkg;
   localparam CsrAddrT StackDepthAddr = 'h350;
   localparam CsrAddrT TimerAddr = 'h400;
 
-  // Perpheral timer
+  // Peripheral timer
   localparam TimerWidth = 16;
   localparam TimerPreWith = 4;
 

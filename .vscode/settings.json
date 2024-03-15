@@ -11,6 +11,17 @@
         "Pynq",
         "Verilator",
         "Vivado",
-        "dmem"
+        "csrr",
+        "csrw",
+        "csrwi",
+        "dmem",
+        "endmodule",
+        "localparam",
+        "prescaler",
+        "riscv",
+        "struct",
+        "verilog",
+        "xori",
+        "zimm"
     ],
 }
