@@ -16,17 +16,17 @@ module rf_stack #(
     localparam AddrT Ra   = 1,  // x1
     localparam AddrT Sp   = 2   // x2
 ) (
-    input  logic  clk,
-    input  logic  reset,
-    input  logic  writeEn,
-    input  logic  writeRaEn,
-    input  LevelT level,
-    input  AddrT  writeAddr,
-    input  DataT  writeData,
-    input  AddrT  readAddr1,
-    input  AddrT  readAddr2,
-    output DataT  readData1,
-    output DataT  readData2
+    input  logic clk,
+    input  logic reset,
+    input  logic writeEn,
+    input  logic writeRaEn,
+    input  PrioT level,
+    input  AddrT writeAddr,
+    input  DataT writeData,
+    input  AddrT readAddr1,
+    input  AddrT readAddr2,
+    output DataT readData1,
+    output DataT readData2
 );
 
   logic [NumLevels-1:0][NumRegs-1:0][DataWidth-1:0] regs;

@@ -9,7 +9,6 @@ module top_n_clic (
   import config_pkg::*;
   import decoder_pkg::*;
   import mem_pkg::*;
-
   // registers
   IMemAddrT pc_reg_out;
   reg_n #(
