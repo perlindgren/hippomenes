@@ -1,6 +1,8 @@
 // stack
 `timescale 1ns / 1ps
 
+// `define STACK_DEBUG
+
 module stack
   import decoder_pkg::*;
 #(
@@ -26,10 +28,10 @@ module stack
     if (reset) begin
       index <= StackDepthWidth'(StackDepth - 1);  // growing towards lower index
     end else if (pop) begin
-      $display("--- pop ---");
+      `D(STACK_DEBUG, $display("--- pop ---"));
       index <= index + 1;
     end else if (push) begin
-      $display("--- push ---");
+      `D(STACK_DEBUG, $display("--- push ---"));
       data[index-1] <= data_in;
       index <= index - 1;
     end
@@ -39,7 +41,3 @@ module stack
   assign index_out = index;
 
 endmodule
-
-
-
-
