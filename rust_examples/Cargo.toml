@@ -1,0 +1,14 @@
+[package]
+name = "hippomenes_rust_examples"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# crate_type = ["staticlib"]
+
+[dependencies]
+hippomenes-core = {git="https://github.com/onsdagens/hippomenes-core"}
+hippomenes-rt = {git="https://github.com/onsdagens/hippomenes-core"}
+rtic = {git="https://github.com/onsdagens/rtic", branch="hippomenes", features=["riscv-clic-backend"]}
+[workspace]
