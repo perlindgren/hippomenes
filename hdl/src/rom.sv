@@ -23,7 +23,7 @@ module rom
       mem[k] = 0;
     end
     $display("Loading memory file binary.mem");
-    $readmemh("binary.mem", top.imem.mem);
+    $readmemh("../../rust_examples/binary.mem", top.imem.mem);
 
 
 

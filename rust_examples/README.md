@@ -24,6 +24,11 @@ To compile one of the examples use
 
 ```cargo build --example <EXAMPLE> --release```
 
+To dump the generated binary as a Verilog ``.mem`` file use
+
+```elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/<EXAMPLE> -t binary.mem -p```
+
+The generated ``binary.mem`` file is pointed to by the Hippomenes ``ROM`` component, and so it should be used to initialize the ``ROM`` automatically.
 # The examples
 
 ## ``asm``
