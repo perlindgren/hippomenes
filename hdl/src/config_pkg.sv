@@ -72,9 +72,4 @@ package config_pkg;
   localparam integer unsigned TimeStampPreScaler = 0;
   localparam type TimeStampT = logic [TimeStampWidth-1:0];
 
-  // Debug/Display macro
-  // `define DEBUG
-  // `define STACK_DEBUG
-  `define D(FLAG, STMT) `ifdef FLAG ``STMT; `endif 
-
 endpackage

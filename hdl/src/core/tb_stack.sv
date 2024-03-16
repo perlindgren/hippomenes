@@ -46,76 +46,76 @@ module tb_stack;
     pop   = 0;
 
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 3 && data_out == 0);
 
     // push
     push = 1;
     data_in = 1;
-    `D(DEBUG, $display("push %d", data_in));
+    $display("push %d", data_in);
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 2 && data_out == 1);
 
     // no push
     push = 0;
-    `D(DEBUG, $display("no pop/push"));
+    $display("no pop/push");
 
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 2 && data_out == 1);
 
     // push
     push = 1;
     data_in = 2;
-    `D(DEBUG, $display("push %d", data_in));
+    $display("push %d", data_in);
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 1 && data_out == 2);
 
     // push
     push = 1;
     data_in = 3;
-    `D(DEBUG, $display("push %d", data_in));
+    $display("push %d", data_in);
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 0 && data_out == 3);
 
     // push
     push = 1;
     data_in = 4;
-    `D(DEBUG, $display("push %d", data_in));
+    $display("push %d", data_in);
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 3 && data_out == 4);
 
     // nothing
     push = 0;
     data_in = 4;
-    `D(DEBUG, $display("no pop/push"));
+    $display("no pop/push");
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 3 && data_out == 4);
 
     // pop
     pop = 1;
-    `D(DEBUG, $display("pop"));
+    $display("pop");
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 0 && data_out == 3);
 
     // pop
     pop = 1;
-    `D(DEBUG, $display("pop"));
+    $display("pop");
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 1 && data_out == 2);
 
     // pop
     pop = 1;
-    `D(DEBUG, $display("pop"));
+    $display("pop");
     #20;
-    `D(DEBUG, $display("index_out %d, data_out %d", index_out, data_out));
+    $display("index_out %d, data_out %d", index_out, data_out);
     assert (index_out == 2 && data_out == 1);
 
     $finish;
