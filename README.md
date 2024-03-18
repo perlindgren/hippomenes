@@ -46,7 +46,8 @@ The repository is structured as follows:
 
 - `fpga`, backend workflow (currently targeting Vivado/Xilinx Pynq-Z1, more targets will follow)
 - `hdl`
-  - `src`, System Verilog design sources and test benches.
+  - `src`, general top level sources and test benches
+    - `core`, Hippomenes specific sources and test benches 
   - `verilator`, simulation setup.
 
 ## Simulation
@@ -99,9 +100,9 @@ main:       csrwi   0x300, 8                # enable global interrupts
             srl     t1, t1, 2
             csrw    0xB00, t1               # setup isr_0 address
 
-            li      t2, 0b11110000          # interrupt every 15 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
+            li      t2, 0b11110000          # interrupt every 16 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
             csrw    0x400, t2               # timer.counter_top CSR
-            la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
+            la t1,  0b1110                  # priority 0b11, enable, 0b1, pend 0b0
             csrw    0xB20, t1               # write above to interrupt 0 (timer interrupt)
 stop:       j       stop                    # wait for interrupt
 
@@ -139,7 +140,9 @@ The same program as run using the Verilator test-bench shows:
 
 To the left the set of signals to view is shown, for this example the `reset`, `clk`, `pc` `instruction` and `n_clic_interrupt`. The cursor is placed at the entry of the second timer interrupt. We can observe that there is exactly 16 clock cycles between interrupts. (The observant reader also observes that the first timer interrupt is taken directly after initialization, wether this is a desired behavior can be debated, but it is in our hands to specify and implement as we see fit!)
 
-CSRs underlies all peripheral implementations, the timer peripheral is implemented in [timer.sv](./hdl/src/core/timer.sv), inlined here in its entirety.
+## System Verilog implementation
+
+CSRs underlies all peripheral implementations (the internal `n_clic` and external `timer` and `gpio`). As an example of simplicity, the peripheral is implemented in [timer.sv](./hdl/src/core/timer.sv), inlined here in its entirety.
 
 ```verilog
 // timer
