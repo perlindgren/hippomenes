@@ -36,7 +36,7 @@ module rom
         $readmemh("binary.mem", mem);
         // ideally we would detect an error here and throw a fatal, but we can't :)
       /*if (errno == -1 | errno == 2) begin
-            $display("ERRNO = %d", vivado_errno);
+            $display("ERRNO = %d", errno);
             $fatal("Could not find binary.mem");
         end*/
     end
