@@ -8,7 +8,7 @@ module tb_top_n_clic;
   logic clk;
   logic reset;
   logic led;
-  (* DONT_TOUCH = "TRUE" *)
+
   top_n_clic top (
       .clk  (clk),
       .reset(reset),
@@ -69,7 +69,7 @@ module tb_top_n_clic;
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h30);
-    #20 assert (top.pc_reg_out == 'h34); */ // 2nd timer interrupt here
+    #20 assert (top.pc_reg_out == 'h34); */  // 2nd timer interrupt here
     $finish;
   end
 

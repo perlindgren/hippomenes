@@ -51,8 +51,8 @@ package config_pkg;
   localparam CsrAddrT TimerAddr = 'h400;
 
   // Peripheral timer
-  localparam TimerWidth = 16;
-  localparam TimerPreWith = 4;
+  localparam integer unsigned TimerWidth = 16;
+  localparam integer unsigned TimerPreWith = 4;
 
   localparam type TimerWidthT = logic [TimerWidth-1:0];
   localparam type TimerPresWidthT = logic [TimerPreWith-1:0];

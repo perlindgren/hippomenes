@@ -39,7 +39,3 @@ module stack
   assign index_out = index;
 
 endmodule
-
-
-
-

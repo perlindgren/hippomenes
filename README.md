@@ -2,28 +2,27 @@
 
 Experimental RISC-V RT extension implementation.
 
-Architectural design follows the submitted proposal (contact per.lindgren@ltu.se for pre-print).
+Architectural design follows the submitted proposal (contact <per.lindgren@ltu.se> for pre-print).
 The design goal of RISC-V RT is to provide a specification for light-weight MCU implementations enabling the implementation of (hard) real-time systems. RISC-V RT currently features:
 
-- N-CLIC 
-    - zero-latency interrupt selection and dispatch
-    - zero-overhead interrupt execution (handler run as normal function)
-    - zero-latency tail-chaining
+- N-CLIC
+  - zero-latency interrupt selection and dispatch
+  - zero-overhead interrupt execution (handler run as normal function)
+  - zero-latency tail-chaining
 - Hardware time stamping
-    - cycle accurate monotonic timer
-    - configurable pre-scaler
-    - configurable precision
+  - cycle accurate monotonic timer
+  - configurable pre-scaler
+  - configurable precision
 - CSR mapped registers (thus the overhead of MMIO accesses eliminated)
 - Timer peripheral
-    - cycle accurate
-    - configurable pre-scaler
+  - cycle accurate
+  - configurable pre-scaler
 - Example GPIO
-    - Led-array indicating set condition
-
+  - Led-array indicating set condition
 
 Design elements are scaled with the selected number of priority levels, thus allowing to trade scheduling flexibility against hardware implementation cost.
 
-The design acts a reference implementation for the RISC-V RT extension, and should be consider the specification. 
+The design acts a reference implementation for the RISC-V RT extension, and should be consider the specification.
 
 ## Versioning
 
@@ -45,9 +44,10 @@ See [CHANGELOG.md](/CHANGELOG.md) for current status.
 
 The repository is structured as follows:
 
-- `fpga`, backend workflow (currently targeting Vivado/Xinix Pynq-Z1, more targets will follow)
+- `fpga`, backend workflow (currently targeting Vivado/Xilinx Pynq-Z1, more targets will follow)
 - `hdl`
-  - `src`, System Verilog design sources and test benches. 
+  - `src`, general top level sources and test benches
+    - `core`, Hippomenes specific sources and test benches 
   - `verilator`, simulation setup.
 
 ## Simulation
@@ -100,9 +100,9 @@ main:       csrwi   0x300, 8                # enable global interrupts
             srl     t1, t1, 2
             csrw    0xB00, t1               # setup isr_0 address
 
-            li      t2, 0b11110000          # interrupt every 15 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
+            li      t2, 0b11110000          # interrupt every 16 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
             csrw    0x400, t2               # timer.counter_top CSR
-            la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
+            la t1,  0b1110                  # priority 0b11, enable, 0b1, pend 0b0
             csrw    0xB20, t1               # write above to interrupt 0 (timer interrupt)
 stop:       j       stop                    # wait for interrupt
 
@@ -127,7 +127,6 @@ The interrupt handler (`isr_0`) reads the local resource (`.toggled`), toggles b
 A SyncRim simulation is show below:
 ![RISC-V RT](asm_timer_sim.png)
 
-
 At the end of the `isr_0`, the register `ra` has the value `0xFFFFFFFF` indicating to the `n-clic` to return to the preempted task (`.stop` in this case). The `.toggled.led_state` is `00000001` (as indicated by the LED bit 0 being lit red). The `.toggled.timestamp` value is `00000019`, indicate the *global* monotonic time when the interrupt was captured.
 
 State at next interrupt return is shown below:
@@ -141,7 +140,9 @@ The same program as run using the Verilator test-bench shows:
 
 To the left the set of signals to view is shown, for this example the `reset`, `clk`, `pc` `instruction` and `n_clic_interrupt`. The cursor is placed at the entry of the second timer interrupt. We can observe that there is exactly 16 clock cycles between interrupts. (The observant reader also observes that the first timer interrupt is taken directly after initialization, wether this is a desired behavior can be debated, but it is in our hands to specify and implement as we see fit!)
 
-CSRs underlies all peripheral implementations, the timer peripheral is implemented in [timer.sv](./hdl/src/core/timer.sv), inlined here in its entirety.
+## System Verilog implementation
+
+CSRs underlies all peripheral implementations (the internal `n_clic` and external `timer` and `gpio`). As an example of simplicity, the peripheral is implemented in [timer.sv](./hdl/src/core/timer.sv), inlined here in its entirety.
 
 ```verilog
 // timer
@@ -196,8 +197,10 @@ module timer
   assign timer = csr_timer.data;
 
   always_ff @(posedge clk) begin
-    if (reset) counter <= 0;
-    else begin
+    if (reset) begin
+      counter <= 0;
+      interrupt_set <= 0;
+    end else begin
       if (timer.counter_top << timer.prescaler == counter) begin
         $display("counter top: counter = %d", counter);
         counter <= 0;
@@ -210,8 +213,8 @@ module timer
   end
 
 endmodule
-
 ```
+
 As seen it instantiates a single CSR, which address (`TimerAddr`) and layout (`TimerT) is defined in the [config_pkg.sv](hdl/src/config_pkg.sv).
 
 ```verilog
@@ -229,31 +232,19 @@ As seen it instantiates a single CSR, which address (`TimerAddr`) and layout (`T
     TimerPresWidthT prescaler;  // LSB
   } TimerT;
 ```
+
 As seen there is currently just a `counter_top` and `prescaler` (we kept it simple). As a side effect, the `timer` has in Verilator simulation the reset value 0, thus a match to the `counter` register will happen immediately after reset, the `interrupt_set` goes high, and and the interrupt is dispatched by the `n_clic` as soon as the corresponding enable bit in the vector table is set.
 
 ## Contribution
 
 RISC-V RT draws on the success of the Rust project in allowing both progression and stability at the same time through semantic versioning.
 
-The RISC-V RT specification is open for You and everybody else. Fork the project, make changes and open an issue/PR. If/when your PR is eventually merged, it IS the specification of RISC-V RT associated to its semantic version. 
+The RISC-V RT specification is open for You and everybody else. Fork the project, make changes and open an issue/PR. If/when your PR is eventually merged, it IS the specification of RISC-V RT associated to its semantic version.
 
-This is very different from the [riscv.org](https://riscv.org/), where the specification lacks a reference implementation and might or might not make sense in practice. RISC-V RT on the other hand requires you to implement it, and come up with examples and tests that showcase its use and correctness. It allows for an agile development process, the [CLIC spec](https://github.com/riscv/riscv-fast-interrupt/) specification has been in flux since 2018 (more than 6 years) without ratification. 
+This is very different from the [riscv.org](https://riscv.org/), where the specification lacks a reference implementation and might or might not make sense in practice. RISC-V RT on the other hand requires you to implement it, and come up with examples and tests that showcase its use and correctness. It allows for an agile development process, the [CLIC spec](https://github.com/riscv/riscv-fast-interrupt/) specification has been in flux since 2018 (more than 6 years) without ratification.
 
 The exact form of Contributions is not yet defined, please suggest the form you would prefer in [Issue 3](https://github.com/perlindgren/hippomenes/issues/3).
 
 ## License
 
-To be determined, contact per.lindgren@ltu.se for licensing questions. Please suggest in [Issue 2](https://github.com/perlindgren/hippomenes/issues/2) what You think is the best license for the project. 
-
-
-
-
-
-
-
-
-
-
-
-
-
+To be determined, contact <per.lindgren@ltu.se> for licensing questions. Please suggest in [Issue 2](https://github.com/perlindgren/hippomenes/issues/2) what You think is the best license for the project.

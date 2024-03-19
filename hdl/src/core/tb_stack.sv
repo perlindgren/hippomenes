@@ -2,6 +2,8 @@
 `timescale 1ns / 1ps
 
 module tb_stack;
+  import config_pkg::*;
+
   localparam integer unsigned StackDepth = 4;
   localparam integer StackDepthWidth = $clog2(StackDepth);  // derived
   localparam integer unsigned DataWidth = 8;
