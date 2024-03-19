@@ -7,13 +7,13 @@ main:       csrwi   0x300, 8                # enable global interrupts
             csrw    0xB00, t1               # setup isr_0 address
             la      t2, isr_1
             srl     t2, t2, 2
-            csrw    0xB00, t2
+            csrw    0xB01, t2               # setup isr_1 address
             #li      t2, 0b11110000         # interrupt every 15 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
             #csrw    0x400, t2              # timer.counter_top CSR
             la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
             csrw    0xB21, t1
             la t1,  0b1                     # pended 
-            csrw    0xB21, t1
+            csrs    0xB21, t1
             #csrw    0xB20, t1              # write above to interrupt 0 (timer interrupt)
 stop:       j       stop                    # wait for interrupt
 

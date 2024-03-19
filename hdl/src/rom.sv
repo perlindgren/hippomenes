@@ -15,7 +15,9 @@ module rom
 );
 
   word mem[MemSize >> 2];
-
+  integer errno;
+  integer fd;
+  string error_msg;
   assign data_out = mem[address[MemAddrWidth-1:2]];
 
   initial begin
@@ -23,8 +25,21 @@ module rom
       mem[k] = 0;
     end
     $display("Loading memory file binary.mem");
-    $readmemh("../../rust_examples/binary2.mem", mem);
-
+    // use binary.mem from rust_examples dir (works with verilator)
+    $readmemh("../../rust_examples/binary.mem", mem);
+    errno = $ferror(fd, error_msg);
+    // vivado does not support IO errors for whatever reason, always returning an error code.
+    // we can use this to detect we are running vivado at least...
+    if (errno == -1 | errno == 2) begin
+        // if reading ../../rust_examples/binary.mem returns error, we are (probably) running vivado
+        // try reading the imported binary.mem source and pray to God that doesn't fail
+        $readmemh("binary.mem", mem);
+        // ideally we would detect an error here and throw a fatal, but we can't :)
+      /*if (errno == -1 | errno == 2) begin
+            $display("ERRNO = %d", vivado_errno);
+            $fatal("Could not find binary.mem");
+        end*/
+    end
 
 
     // test csr
@@ -99,7 +114,7 @@ module rom
     //   54:	00008067          	ret
 
 
-/*
+    /*
     mem[0]  = 'h50000117;  //          	auipc	sp,0x50000
     mem[1]  = 'h50010113;  //          	addi	sp,sp,1280 # 50000500 <_stack_start>
     mem[2]  = 'h35015073;  //          	.4byte	0x35015073

@@ -195,6 +195,7 @@ module n_clic
 
   // handle interrupts: take-, tail-chain-, exit- and no-interrupt
   always_comb begin
+  // this assignment is broken under vivado, always yields max_i = x
     static VecT max_i = max_index[VecSize-1];
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = '{default: '0};
@@ -214,15 +215,17 @@ module n_clic
       m_int_thresh_write_enable = 1;
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
-      ext_write_enable[max_i] = 1;  // write to entry
-      ext_entry_data[max_i] = entry[max_i] & ~1;  // clear pend bit
-      if (max_i == 0) begin
+      ext_write_enable[ max_index[VecSize-1]] = 1;  // write to entry
+      ext_entry_data[ max_index[VecSize-1]] = entry[ max_index[VecSize-1]] & ~1;  // clear pend bit
+      if ( max_index[VecSize-1] == 0) begin
         $display("take timer");
         timer_interrupt_clear = 1;
       end else timer_interrupt_clear = 0;
+      $display("max_i: %d", max_i);
+      $display("max_index[VecSize-1] %d", max_index[VecSize-1]);
       $display("interrupt take int_addr %d", int_addr);
     end else if ((pc_in == ~(IMemAddrWidth'(0))) &&
-        entry[max_i].enabled && entry[max_i].pended &&
+        entry[ max_index[VecSize-1]].enabled && entry[ max_index[VecSize-1]].pended &&
         (max_prio[VecSize-1] >= m_int_thresh.data)) begin
       // tail chain only in case the vector is actually enabled and pended
       push = 0;
@@ -232,9 +235,9 @@ module n_clic
       m_int_thresh_write_enable = 0;  // no update of threshold
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
-      ext_write_enable[max_i] = 1;  // write to entry
-      ext_entry_data[max_i] = entry[max_i] & ~1;  // clear pend bit
-      if (max_i == 0) begin
+      ext_write_enable[ max_index[VecSize-1]] = 1;  // write to entry
+      ext_entry_data[ max_index[VecSize-1]] = entry[ max_index[VecSize-1]] & ~1;  // clear pend bit
+      if ( max_index[VecSize-1] == 0) begin
         $display("take timer");
         timer_interrupt_clear = 1;
       end else timer_interrupt_clear = 0;

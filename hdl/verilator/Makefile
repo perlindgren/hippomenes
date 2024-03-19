@@ -75,7 +75,7 @@ all: \
 #	elf2mem -f ./riscv_asm/target/riscv32i-unknown-none-elf/release/riscv_asm -t ./binary.mem -p
 
 asm: 
-	cd ../../rust_examples/; cargo build --example asm --release; elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/asm -t ../hdl/verilator/binary.mem -p;
+#	cd ../../rust_examples/; cargo build --example asm --release; elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/asm -t ../hdl/verilator/binary.mem -p;
 
 tb_top_n_clic: $(top_n_clic)
 	make asm
