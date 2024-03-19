@@ -11,7 +11,6 @@ module top_n_clic (
   import mem_pkg::*;
 
   IMemAddrT pc_interrupt_mux_out;
-
   // registers
   IMemAddrT pc_reg_out;
   reg_n #(

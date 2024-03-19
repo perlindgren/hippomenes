@@ -1,6 +1,6 @@
 core = ../src/core
 root = ../src
-
+rust = ../../rust_examples/
 register_file = $(root)/config_pkg.sv $(core)/register_file.sv $(core)/tb_register_file.sv
 rf_stack = $(root)/config_pkg.sv $(core)/reg_n.sv $(core)/rf_stack.sv $(core)/register_file.sv $(core)/tb_rf_stack.sv
 
@@ -69,9 +69,17 @@ all: \
 	# tb_top_mem \
 	# tb_top \
 	# tb_fpga_top \
-	
-tb_top_n_clic: $(top_n_clic) 
-	verilator --binary $(top_n_clic) --top-module tb_top_n_clic --trace-fst --assert 
+
+#asm: $(top_n_clic)
+#	cp ./asm.s ./riscv_asm/; cp ./memory.x ./riscv_asm/; cd ./riscv_asm; cargo clean; cargo build --release; rm ./asm.s ./memory.x
+#	elf2mem -f ./riscv_asm/target/riscv32i-unknown-none-elf/release/riscv_asm -t ./binary.mem -p
+
+asm: 
+#	cd ../../rust_examples/; cargo build --example asm --release; elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/asm -t ../hdl/verilator/binary.mem -p;
+
+tb_top_n_clic: $(top_n_clic)
+	make asm
+	verilator --binary $(top_n_clic) --top-module tb_top_n_clic --trace-fst --assert -y $(rust) 
 	obj_dir/Vtb_top_n_clic
 
 tb_top_n_clic_g: 
@@ -176,7 +184,7 @@ tb_register_file_g:
 	gtkwave -a register_file.gtkw register_file.fst 
 
 tb_rf_stack: $(rf_stack)
-	verilator --binary $(rf_stack) --top-module tb_rf_stack --trace-fst --assert 
+	 verilator --binary $(rf_stack) --top-module tb_rf_stack --trace-fst --assert 
 	obj_dir/Vtb_rf_stack
 
 tb_rf_stack_g:	

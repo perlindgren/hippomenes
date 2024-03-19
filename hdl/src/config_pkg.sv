@@ -16,7 +16,7 @@ package config_pkg;
 
   // Instruction memory configuration
   localparam integer unsigned IMemStart = 'h0000_0000;
-  localparam integer unsigned IMemSize = 'h0000_0100;  // in bytes
+  localparam integer unsigned IMemSize = 'h0000_4000;  // in bytes
 
   // Data memory configuration
   localparam integer unsigned DMemStart = 'h0001_0000;

@@ -8,7 +8,6 @@ module tb_top;
   logic clk;
   logic reset;
   logic led;
-
   top top (
       .clk  (clk),
       .reset(reset),

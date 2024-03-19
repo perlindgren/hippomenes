@@ -14,14 +14,17 @@ module tb_top_n_clic;
       .reset(reset),
       .led  (led)
   );
-
+  logic [31:0] mem[IMemSize >> 2];
   logic [PrioWidth-1:0] level;
 
   // clock and reset
   initial begin
     $display($time, " << Starting the Simulation >>");
-
+    $display("memsize %h", IMemSize >> 2);
     // Rom for instruction mem content
+    //$display("Loading memory file binary.mem");
+    //$readmemh("binary.mem", top.imem.mem);
+    //top.imem.mem = mem;
 
     reset = 1;
     clk   = 0;
@@ -36,38 +39,46 @@ module tb_top_n_clic;
   initial begin
     $dumpfile("top_n_clic.fst");
     $dumpvars;
-
-    #1000
-
-    // $display("imem.mem[0] %h", top.imem.mem[0]);
-    // $display("imem.mem[1] %h", top.imem.mem[1]);
-    // $display("imem.mem[2] %h", top.imem.mem[2]);
-    // $display("imem.mem[3] %h", top.imem.mem[3]);
-    // #16;  // wait until reset passed
-    // $display("csrr    t1, stack_level");
-    // $display("top.n_clic.level_out %d", top.n_clic.level_out);
-    // $display("top.n_clic.csr_out %d", top.n_clic.csr_out);
-
-    // #24;  // debug at falling edge
-    // $display("csrrwi  t2, b00, 4");
-    // $display("rf[7][t1] %h", top.rf.regs[7][6]);
-    // $display("top.n_clic.m_int_thresh.data %d", top.n_clic.m_int_thresh.data);
-
-    // #20;
-    // $display("csrr    t3, b00");
-    // $display("rf[7][t1] %h", top.rf.regs[7][6]);
-    // $display("top.n_clic.m_int_thresh.data %d", top.n_clic.m_int_thresh.data);
-
-    // #20;
-    // $display("j l");
-
-    // #20;
-    // $display("j l");
-    // $display("rf[7][t1] %h", top.rf.regs[7][6]);
-    // $display("rf[7][t2] %h", top.rf.regs[7][7]);
-    // $display("rf[7][t3] %h", top.rf.regs[7][28]);
-
-
+    $display("mem : %h, %h, %h, %h", top.imem.mem[0], top.imem.mem[1], top.imem.mem[2],
+             top.imem.mem['hB00>>2]);
+    #20 assert (top.pc_reg_out == 'h0);
+    #20 assert (top.pc_reg_out == 'h4);
+    #20 assert (top.pc_reg_out == 'h8);
+    #20 assert (top.pc_reg_out == 'hc);
+    #20 assert (top.pc_reg_out == 'h10);
+    #20 assert (top.pc_reg_out == 'h14);
+    #20 assert (top.pc_reg_out == 'h18);
+    #20 assert (top.pc_reg_out == 'h1c);
+    #20 assert (top.pc_reg_out == 'h20);
+    #20 assert (top.pc_reg_out == 'h24);
+    #20 assert (top.pc_reg_out == 'h28);
+    #20 assert (top.pc_reg_out == 'h2c); // interrupt triggered
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h34);
+    #20 assert (top.pc_reg_out == 'h38);
+    #20 assert (top.pc_reg_out == 'h3c);
+    #20 assert (top.pc_reg_out == 'h40);
+    #20 assert (top.pc_reg_out == 'h44);
+    #20 assert (top.pc_reg_out == 'h48);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h50);
+    #20 assert (top.pc_reg_out == 'h2c);
+    #20 assert (top.pc_reg_out == 'h2c);
+    #20 assert (top.pc_reg_out == 'h2c);
+    #20 assert (top.pc_reg_out == 'h2c);
+    #20 assert (top.pc_reg_out == 'h2c);
+    #20 assert (top.pc_reg_out == 'h2c); // interrupt triggered
+    #20 assert (top.pc_reg_out == 'h30);
+    
+    
+    /*#20 assert (top.pc_reg_out == 'h54);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h30);
+    #20 assert (top.pc_reg_out == 'h34); */  // 2nd timer interrupt here
     $finish;
   end
 

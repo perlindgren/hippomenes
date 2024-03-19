@@ -195,7 +195,8 @@ module n_clic
 
   // handle interrupts: take-, tail-chain-, exit- and no-interrupt
   always_comb begin
-    static VecT max_i = max_index[VecSize-1];
+  // this assignment is broken under vivado, always yields max_i = x
+    automatic VecT max_i = max_index[VecSize-1];
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = '{default: '0};
 
@@ -220,6 +221,8 @@ module n_clic
         $display("take timer");
         timer_interrupt_clear = 1;
       end else timer_interrupt_clear = 0;
+      $display("max_i: %d", max_i);
+      $display("max_index[VecSize-1] %d", max_index[VecSize-1]);
       $display("interrupt take int_addr %d", int_addr);
     end else if ((pc_in == ~(IMemAddrWidth'(0))) &&
         entry[max_i].enabled && entry[max_i].pended &&
