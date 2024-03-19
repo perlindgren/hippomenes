@@ -8,7 +8,7 @@ module tb_top_n_clic;
   logic clk;
   logic reset;
   logic led;
-  (* DONT_TOU CH = "TRUE" *)
+  (* DONT_TOUCH = "TRUE" *)
   top_n_clic top (
       .clk  (clk),
       .reset(reset),
@@ -53,11 +53,11 @@ module tb_top_n_clic;
     #20 assert (top.pc_reg_out == 'h24);
     #20 assert (top.pc_reg_out == 'h28);
     #20 assert (top.pc_reg_out == 'h2c);
-    #20 assert (top.pc_reg_out == 'h30);  // interrupt triggered
+    #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h34);
-    #20 assert (top.pc_reg_out == 'h38);
-    #20 assert (top.pc_reg_out == 'h3c);
-    #20 assert (top.pc_reg_out == 'h40);
+    #20 assert (top.pc_reg_out == 'h38);  // interrupt triggered
+    #20 assert (top.pc_reg_out == 'h64);
+    /*#20 assert (top.pc_reg_out == 'h40);
     #20 assert (top.pc_reg_out == 'h44);
     #20 assert (top.pc_reg_out == 'h48);
     #20 assert (top.pc_reg_out == 'h4c);
@@ -69,7 +69,7 @@ module tb_top_n_clic;
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h30);
-    #20 assert (top.pc_reg_out == 'h34);  // 2nd timer interrupt here
+    #20 assert (top.pc_reg_out == 'h34); */ // 2nd timer interrupt here
     $finish;
   end
 

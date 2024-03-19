@@ -23,7 +23,7 @@ module rom
       mem[k] = 0;
     end
     $display("Loading memory file binary.mem");
-    $readmemh("../../rust_examples/binary.mem", top.imem.mem);
+    $readmemh("../../rust_examples/binary2.mem", mem);
 
 
 
@@ -99,7 +99,7 @@ module rom
     //   54:	00008067          	ret
 
 
-
+/*
     mem[0]  = 'h50000117;  //          	auipc	sp,0x50000
     mem[1]  = 'h50010113;  //          	addi	sp,sp,1280 # 50000500 <_stack_start>
     mem[2]  = 'h35015073;  //          	.4byte	0x35015073
@@ -123,7 +123,7 @@ module rom
     mem[18] = 'h0062a023;  //
     mem[19] = 'hb4002e73;  //
     mem[20] = 'h01c2a223;
-    mem[21] = 'h00008067;  //
+    mem[21] = 'h00008067;  //*/
   end
 
 endmodule

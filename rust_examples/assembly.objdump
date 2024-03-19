@@ -1,0 +1,42 @@
+
+asm:	file format elf32-littleriscv
+
+Disassembly of section .text:
+
+00000000 <init>:
+       0: 17 01 00 50  	auipc	sp, 327680
+       4: 13 01 01 50  	addi	sp, sp, 1280
+
+00000008 <main>:
+       8: 73 50 04 30  	csrwi	mstatus, 8
+       c: 17 03 00 00  	auipc	t1, 0
+      10: 13 03 43 03  	addi	t1, t1, 52
+      14: 13 53 23 00  	srli	t1, t1, 2
+      18: 73 10 03 b0  	csrw	mcycle, t1
+      1c: 97 03 00 00  	auipc	t2, 0
+      20: 93 83 83 04  	addi	t2, t2, 72
+      24: 93 d3 23 00  	srli	t2, t2, 2
+      28: 73 90 03 b0  	csrw	mcycle, t2
+      2c: 13 03 e0 00  	li	t1, 14
+      30: 73 10 13 b2  	csrw	2849, t1
+      34: 13 03 10 00  	li	t1, 1
+      38: 73 10 13 b2  	csrw	2849, t1
+
+0000003c <stop>:
+      3c: 6f 00 00 00  	j	0x3c <stop>
+
+00000040 <isr_0>:
+      40: 97 02 00 50  	auipc	t0, 327680
+      44: 93 82 02 fc  	addi	t0, t0, -64
+      48: 03 a3 02 00  	lw	t1, 0(t0)
+      4c: 13 43 13 00  	xori	t1, t1, 1
+      50: 73 10 03 00  	csrw	0, t1
+      54: 23 a0 62 00  	sw	t1, 0(t0)
+      58: 73 2e 00 b4  	csrr	t3, 2880
+      5c: 23 a2 c2 01  	sw	t3, 4(t0)
+      60: 67 80 00 00  	ret
+
+00000064 <isr_1>:
+      64: b7 15 00 00  	lui	a1, 1
+      68: 93 85 75 33  	addi	a1, a1, 823
+      6c: 67 80 00 00  	ret
