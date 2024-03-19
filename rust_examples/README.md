@@ -29,6 +29,8 @@ To dump the generated binary as a Verilog ``.mem`` file use
 ```elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/<EXAMPLE> -t binary.mem -p```
 
 The generated ``binary.mem`` file is pointed to by the Hippomenes ``ROM`` component, and so it should be used to initialize the ``ROM`` automatically.
+
+For Vivado, you *may* need to add the ``binary.mem`` file to the simulation sources once (the included project should already contain this).
 # The examples
 
 ## ``asm``
