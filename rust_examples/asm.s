@@ -5,14 +5,17 @@ main:       csrwi   0x300, 8                # enable global interrupts
             la      t1, isr_0
             srl     t1, t1, 2
             csrw    0xB00, t1               # setup isr_0 address
-            #la      t2, isr_1 
-            #srl     t2, t2, 2
-            #csrw    0xB01, t2               # setup isr_1 address
-            li      t2, 0b11110000         # interrupt every 15 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
-            csrw    0x400, t2              # timer.counter_top CSR
+            la      t2, isr_1 
+            srl     t2, t2, 2
+            csrw    0xB01, t2               # setup isr_1 address
+            li      t2, 0b11110000          # interrupt every 15 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
+            csrw    0x400, t2               # timer.counter_top[0] CSR
+            li      t2, 0b11110010
+            csrw    0x401, t2               # interrupt every 15 cycles << 2 prescaler = interrupt every 60 cycles
+            la t1,  0b1010                  # prio 0b10, enable, 0b1, pend 0b0
+            csrw    0xB20, t1               # write to interrupt 0 (timer interrupt 0)
             la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
-            csrw    0xB20, t1
-            #la t1,  0b1                     # pended 
+            csrw    0xB21, t1               # write to interrupt 1 (timer interrupt 1)
             #csrs    0xB21, t1
             #csrw    0xB20, t1              # write above to interrupt 0 (timer interrupt)
 stop:       j       stop                    # wait for interrupt

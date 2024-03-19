@@ -38,34 +38,34 @@ module csr #(
       case (csr_op)
         CSRRW: begin
           // side effect on read/write here
-          $display("CSR CSRRW %h", rs1_data);
+         // $display("CSR CSRRW %h", rs1_data);
           tmp = CsrDataT'(rs1_data);
         end
         CSRRS: begin  // set only if rs1 != x0
           if (rs1_zimm != 0) begin
             // side effect here
-            $display("CSR CSRRS %h", rs1_data);
+           // $display("CSR CSRRS %h", rs1_data);
             tmp = data | CsrDataT'(rs1_data);
           end
         end
         CSRRC: begin  // clear only if rs1 != x0
           if (rs1_zimm != 0) begin
             // write side effect here
-            $display("CSR CSRRC %h", rs1_data);
+          //  $display("CSR CSRRC %h", rs1_data);
             tmp = data & ~(CsrDataT'(rs1_data));
           end
         end
         CSRRWI: begin
           // use rs1_zimm as immediate
           // write side effect here
-          $display("CSR CSRRWI %h", rs1_zimm);
+        //  $display("CSR CSRRWI %h", rs1_zimm);
           tmp = CsrDataT'($unsigned(rs1_zimm));
         end
         CSRRSI: begin
           // use rs1_zimm as immediate
           if (rs1_zimm != 0) begin
             // write side effect here
-            $display("CSR CSRRSI %h", rs1_zimm);
+          //  $display("CSR CSRRSI %h", rs1_zimm);
             tmp = data | CsrDataT'($unsigned(rs1_zimm));
           end
         end
@@ -73,7 +73,7 @@ module csr #(
           // use rs1_zimm as immediate
           if (rs1_zimm != 0) begin
             // write side effect here
-            $display("CSR CSRRCI %h", rs1_zimm);
+            //$display("CSR CSRRCI %h", rs1_zimm);
             tmp = data & (~CsrDataT'($unsigned(rs1_zimm)));
           end
         end
@@ -90,7 +90,7 @@ module csr #(
       data <= ResetValue;
     end else if (ext_write_enable) begin
       // here we do side effect write
-      $display("--- ext data ---");
+     // $display("--- ext data ---");
       data <= ext_data;
     end else data <= tmp;
   end

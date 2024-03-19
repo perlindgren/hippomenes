@@ -37,7 +37,8 @@ package config_pkg;
   localparam integer unsigned VecSize = 8;
   localparam integer unsigned VecWidth = $clog2(VecSize);
   localparam type VecT = logic [VecWidth-1:0];
-
+  localparam integer unsigned TimerAmount = 2;
+  localparam integer unsigned TimerVecWidth = $clog2(TimerAmount);
   // CSR Related
   localparam type CsrAddrT = logic [11:0];
   localparam CsrAddrT VecCsrBase = 'hb00;  // up to 32 vectors

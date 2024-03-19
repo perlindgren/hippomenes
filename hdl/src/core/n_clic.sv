@@ -25,29 +25,34 @@ module n_clic
 );
 
   // CSR timer
+
+  generate
   word  timer_direct_out;  // not used
-  word  timer_out;
-  logic timer_interrupt_set;
-  logic timer_interrupt_clear;
-
-  timer timer (
-      // in
-      .clk,
-      .reset,
-      .csr_enable,
-      .csr_addr,
-      .csr_op,
-      .rs1_zimm,
-      .rs1_data,
-      .ext_data(TimerT'(0)),
-      .ext_write_enable(1'b0),
-      .interrupt_clear(timer_interrupt_clear),
-      // out
-      .interrupt_set(timer_interrupt_set),
-      .csr_direct_out(timer_direct_out),
-      .csr_out(timer_out)
-  );
-
+  word  timer_out [TimerAmount];
+  logic timer_interrupt_set [TimerAmount];
+  logic timer_interrupt_clear [TimerAmount];
+    for (genvar k = 0; k < TimerAmount; k++) begin : timer_vec
+        timer#(
+            .Addr(CsrAddrT'(32'(TimerAddr) + k))
+        ) timer (
+        // in
+        .clk,
+        .reset,
+        .csr_enable,
+        .csr_addr,
+        .csr_op,
+        .rs1_zimm,
+        .rs1_data,
+        .ext_data(TimerT'(0)),
+        .ext_write_enable(1'b0),
+        .interrupt_clear(timer_interrupt_clear[k]),
+        // out
+        .interrupt_set(timer_interrupt_set[k]),
+        .csr_direct_out(timer_direct_out),
+        .csr_out(timer_out[k])
+        );
+    end
+  endgenerate
   // CSR m_int_thresh
   logic m_int_thresh_write_enable;
   word  m_int_thresh_direct_out;  // not used
@@ -199,11 +204,12 @@ module n_clic
     automatic VecT max_i = max_index[VecSize-1];
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = '{default: '0};
-
-    if (timer_interrupt_set) begin
-      // pend 0 if timer interrupt
-      ext_write_enable[0] = 1;
-      ext_entry_data[0]   = entry[0] | 1;  // set pend bit
+    for (integer idx = 0; idx<TimerAmount; idx++) begin
+        if (timer_interrupt_set[idx]) begin
+          // pend 0 if timer interrupt
+          ext_write_enable[idx] = 1;
+          ext_entry_data[idx]   = entry[idx] | 1;  // set pend bit
+        end
     end
 
     if (max_prio[VecSize-1] > m_int_thresh.data) begin
@@ -217,13 +223,19 @@ module n_clic
       pc_interrupt_sel = PC_INTERRUPT;
       ext_write_enable[max_i] = 1;  // write to entry
       ext_entry_data[max_i] = entry[max_i] & ~1;  // clear pend bit
-      if (max_i == 0) begin
-        $display("take timer");
-        timer_interrupt_clear = 1;
-      end else timer_interrupt_clear = 0;
-      $display("max_i: %d", max_i);
-      $display("max_index[VecSize-1] %d", max_index[VecSize-1]);
-      $display("interrupt take int_addr %d", int_addr);
+      for (integer idx = 0; idx<TimerAmount; idx++) begin
+          if (max_i == 3'(idx)) begin
+            $display("take timer");
+            timer_interrupt_clear[idx] = 1;
+            $display("CLEAR = 1 for %d", idx);
+          end else begin 
+            timer_interrupt_clear[idx] = 0;
+            $display("CLEAR = 0 for %d", idx);
+          end
+          $display("max_i: %d", max_i);
+          $display("max_index[VecSize-1] %d", max_index[VecSize-1]);
+          $display("interrupt take int_addr %d", int_addr);
+      end
     end else if ((pc_in == ~(IMemAddrWidth'(0))) &&
         entry[max_i].enabled && entry[max_i].pended &&
         (max_prio[VecSize-1] >= m_int_thresh.data)) begin
@@ -237,10 +249,12 @@ module n_clic
       pc_interrupt_sel = PC_INTERRUPT;
       ext_write_enable[max_i] = 1;  // write to entry
       ext_entry_data[max_i] = entry[max_i] & ~1;  // clear pend bit
-      if (max_i == 0) begin
-        $display("take timer");
-        timer_interrupt_clear = 1;
-      end else timer_interrupt_clear = 0;
+      for (integer idx = 0; idx<TimerAmount; idx++) begin
+          if (max_i == 3'(idx)) begin
+            $display("take timer %d", idx);
+            timer_interrupt_clear[idx] = 1;
+          end else timer_interrupt_clear[idx] = 0;
+      end
       $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
       // interrupt return
@@ -251,7 +265,10 @@ module n_clic
       m_int_thresh_write_enable = 1;
       interrupt_out = 0;
       pc_interrupt_sel = PC_INTERRUPT;
-      timer_interrupt_clear = 0;
+      for (integer idx = 0; idx<TimerAmount; idx++) begin
+        $display("TIMER CLEAR %d", idx);
+        timer_interrupt_clear[idx] = 0;
+      end
       $display("interrupt return");
     end else begin
       // no interrupt
@@ -262,16 +279,19 @@ module n_clic
       int_addr = pc_in;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
-      timer_interrupt_clear = 0;
-      // $display("interrupt NOT take");
+      for (integer idx = 0; idx<TimerAmount; idx++) begin
+        $display("TIMER CLEAR %d", idx);
+        timer_interrupt_clear[idx] = 0;
+      end
+      $display("interrupt NOT take");
     end
   end
 
   // set csr_out
   always_comb begin
     csr_out = 0;
-    if (csr_addr == TimerAddr) begin
-      csr_out = timer_out;
+    if (csr_addr >= TimerAddr && csr_addr < (TimerAddr + 12'(TimerAmount)) ) begin
+      csr_out = timer_out[TimerVecWidth'(csr_addr - TimerAddr)];
 
       $display("!!! CSR timer_out !!!");
     end else if (csr_addr == MIntThreshAddr) begin

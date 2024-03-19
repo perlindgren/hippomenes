@@ -68,12 +68,12 @@ module register_file
 
   always_comb begin
     if (raddr_a_i == Ra) begin
-      $display("raddr_a_i == Ra");
+     // $display("raddr_a_i == Ra");
       rdata_a_o = ra_a_o;
     end else rdata_a_o = x3_31_a_o;
 
     if (raddr_b_i == Ra) begin
-      $display("raddr_b_i == Ra");
+    //  $display("raddr_b_i == Ra");
       rdata_b_o = ra_b_o;
     end else rdata_b_o = x3_31_b_o;
 
@@ -87,7 +87,7 @@ module register_file
       ra_wdata = wdata_a_i;
     end
 
-    $display("x3_31_we %b, ra_we %b", x3_31_we, ra_we);
+   // $display("x3_31_we %b, ra_we %b", x3_31_we, ra_we);
 
   end
 
@@ -125,7 +125,7 @@ module rf
 
   always_ff @(posedge clk_i) begin : sync_write
     if (we == 1'b1) begin
-      $display("<< -- write -- >>");
+     // $display("<< -- write -- >>");
       mem[waddr_a_i] <= wdata_a_i;
     end
   end : sync_write

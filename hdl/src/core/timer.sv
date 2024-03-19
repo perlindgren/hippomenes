@@ -1,10 +1,12 @@
 // timer
 `timescale 1ns / 1ps
-
+import config_pkg::*;
+import decoder_pkg::*;
 //  Programmable timer peripheral
-module timer
-  import config_pkg::*;
-  import decoder_pkg::*;
+module timer #(
+    parameter CsrAddrT Addr = CsrAddrT'(TimerAddr)
+)
+
 (
     input logic clk,
     input logic reset,
@@ -27,7 +29,7 @@ module timer
 
   csr #(
       .CsrWidth(TimerTWidth),
-      .Addr(TimerAddr)
+      .Addr(Addr)
   ) csr_timer (
       // in
       .clk,
@@ -54,12 +56,16 @@ module timer
       counter <= 0;
       interrupt_set <= 0;
     end else begin
+      $display("TIMER EVAL %h", Addr);
       if (timer.counter_top << timer.prescaler == counter) begin
-        $display("counter top: counter = %d", counter);
+        $display("counter top: counter = %d, timer = %h", counter, Addr);
         counter <= 0;
         interrupt_set <= 1;
       end else begin
-        if (interrupt_clear) interrupt_set <= 0;
+        if (interrupt_clear) begin
+            interrupt_set <= 0;
+            $display("TIMER %h CLEAR", Addr);
+        end
         counter <= counter + 1;
       end
     end
