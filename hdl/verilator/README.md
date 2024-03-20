@@ -1,6 +1,6 @@
 # Verilator workflow
 
-The verilator workflow has been tested under `arch` linux, and Windows `wsl` (running ubuntu 22).
+The Verilator workflow has been tested under `arch` linux, and Windows `wsl` (running ubuntu 22).
 
 ## Dependencies
 
@@ -19,26 +19,27 @@ This will remove the `obj_dir` where compilation artifacts are stored. (Not doin
 
 ## Makefile structure
 
-The HippoMenes design is modular, with separate test benches for each larger module. Useage:
+The HippoMenes design is modular, with separate test benches for each larger module. Usage:
 
 ```
 make <tb> # to run test
 make <tb>_g # to open corresponding gtkwave
 ```
 
+Test benches for the `core`.
 
-Testbenches for the `core`.
-
-- `alu` 
-- `branch_logic`
-- `csr`
-- `register_file`
+- `tb_alu` 
+- `tb_branch_logic`
+- `tb_csr`
+- `tb_nc_lic`
+- `tb_register_file` (single register file)
+- `tb_rf_stack` (stacked `register_file` instances)
+- `tb_stack` (general stack used by the `n_clic`)
+- `tb_timer`
+- `tb_time_stamp`
 
 And at `top` level:
-- `top` (test the top modul)
-- `test_mem` (test storage operations)
-- `test_branch` (test branching operations)
-- `mem` (tests the generic memory module)
-- `di_mem` (tests separation of memory banks)
-
+- `tb_di_mem` (tests separation of memory banks)
+- `tb_mem` (test generic data memory)
+- `tb_top_n_clic` (testing the whole Hippo)
 
