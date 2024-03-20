@@ -12,4 +12,5 @@ SECTIONS
     KEEP(*(.data));  
   }
 }
+
 PROVIDE(_stack_start = 0x50000500);
