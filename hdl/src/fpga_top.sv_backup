@@ -1,0 +1,42 @@
+// fpga_top
+`timescale 1ns / 1ps
+
+module fgpa_top (
+    input sysclk,
+    output reg led0,
+    output reg led1,
+    output reg led2
+);
+
+  reg [2:0] r_count = 0;
+  reg reset_out = 1;
+  reg clk;
+  reg locked;
+
+  top hippo (
+      .clk  (clk),  // really slow clock
+      .led  (led0),
+      .reset(reset_out)
+  );
+ 
+  clk_wiz_0 clock (
+      // Clock out ports  
+      .clk_out1(clk),
+      // Status and control signals               
+      .locked(locked),
+      // Clock in ports
+      .clk_in1(sysclk)
+  );
+
+  // generate reset
+  always @(posedge clk) begin
+    if (r_count == 'b111) begin
+        reset_out <= 0;
+        led2 <= 1;
+        led1 <= 0;
+    end    
+    r_count <= r_count + 1;
+  end
+
+endmodule
+

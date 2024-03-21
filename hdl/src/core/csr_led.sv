@@ -45,6 +45,6 @@ module csr_led #(
       .out
   );
 
-  assign led = csr_led.data[0];
+  assign led = out[0];
 
 endmodule

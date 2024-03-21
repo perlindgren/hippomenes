@@ -10,5 +10,5 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 global_asm! {
-    include_str!("../asm.s")
+    include_str!("asm_blinky.s")
 }
