@@ -6,12 +6,18 @@
 ## Clock signal 125 MHz
 
 set_property -dict {PACKAGE_PIN H16 IOSTANDARD LVCMOS33} [get_ports sysclk]
-create_clock -period 8.000 -name sys_clk_pin -waveform {0.000 4.000} -add [get_ports sysclk]
+# create_clock -period 8.000 -name sys_clk_pin -waveform {0.000 4.000} -add [get_ports sysclk]
+
+# do not time async inputs
+
+set_false_path -from [get_ports sw0]
+set_false_path -from [get_ports sw1]
+
 
 ##Switches
 
-#set_property -dict { PACKAGE_PIN M20   IOSTANDARD LVCMOS33 } [get_ports { sw[0] }]; #IO_L7N_T1_AD2N_35 Sch=sw[0]
-#set_property -dict { PACKAGE_PIN M19   IOSTANDARD LVCMOS33 } [get_ports { sw[1] }]; #IO_L7P_T1_AD2P_35 Sch=sw[1]
+set_property -dict {PACKAGE_PIN M20 IOSTANDARD LVCMOS33} [get_ports sw0]
+set_property -dict {PACKAGE_PIN M19 IOSTANDARD LVCMOS33} [get_ports sw1]
 
 ##RGB LEDs
 
@@ -24,10 +30,10 @@ create_clock -period 8.000 -name sys_clk_pin -waveform {0.000 4.000} -add [get_p
 
 ##LEDs
 
-set_property -dict {PACKAGE_PIN R14 IOSTANDARD LVCMOS33} [get_ports led]
-set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports led2]
-#set_property -dict { PACKAGE_PIN N16   IOSTANDARD LVCMOS33 } [get_ports { led[2] }]; #IO_L21N_T3_DQS_AD14N_35 Sch=led[2]
-#set_property -dict { PACKAGE_PIN M14   IOSTANDARD LVCMOS33 } [get_ports { led[3] }]; #IO_L23P_T3_35 Sch=led[3]
+set_property -dict {PACKAGE_PIN R14 IOSTANDARD LVCMOS33} [get_ports led0]
+set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports led1]
+set_property -dict {PACKAGE_PIN N16 IOSTANDARD LVCMOS33} [get_ports led2]
+set_property -dict {PACKAGE_PIN M14 IOSTANDARD LVCMOS33} [get_ports led3]
 
 ##Buttons
 
@@ -193,12 +199,14 @@ set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports led2]
 
 
 
+
+
 create_debug_core u_ila_0 ila
 set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
-set_property ALL_PROBE_SAME_MU_CNT 1 [get_debug_cores u_ila_0]
-set_property C_ADV_TRIGGER false [get_debug_cores u_ila_0]
+set_property ALL_PROBE_SAME_MU_CNT 4 [get_debug_cores u_ila_0]
+set_property C_ADV_TRIGGER true [get_debug_cores u_ila_0]
 set_property C_DATA_DEPTH 1024 [get_debug_cores u_ila_0]
-set_property C_EN_STRG_QUAL false [get_debug_cores u_ila_0]
+set_property C_EN_STRG_QUAL true [get_debug_cores u_ila_0]
 set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
 set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
 set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
@@ -206,7 +214,11 @@ set_property port_width 1 [get_debug_ports u_ila_0/clk]
 connect_debug_port u_ila_0/clk [get_nets [list clk_gen/inst/clk_in1_clk_wiz_0]]
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
 set_property port_width 14 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {hippo/pc_reg/pc_reg_out[0]} {hippo/pc_reg/pc_reg_out[1]} {hippo/pc_reg/pc_reg_out[2]} {hippo/pc_reg/pc_reg_out[3]} {hippo/pc_reg/pc_reg_out[4]} {hippo/pc_reg/pc_reg_out[5]} {hippo/pc_reg/pc_reg_out[6]} {hippo/pc_reg/pc_reg_out[7]} {hippo/pc_reg/pc_reg_out[8]} {hippo/pc_reg/pc_reg_out[9]} {hippo/pc_reg/pc_reg_out[10]} {hippo/pc_reg/pc_reg_out[11]} {hippo/pc_reg/pc_reg_out[12]} {hippo/pc_reg/pc_reg_out[13]}]]
+connect_debug_port u_ila_0/probe0 [get_nets [list {hippo/pc_reg/Q[0]} {hippo/pc_reg/Q[1]} {hippo/pc_reg/Q[2]} {hippo/pc_reg/Q[3]} {hippo/pc_reg/Q[4]} {hippo/pc_reg/Q[5]} {hippo/pc_reg/Q[6]} {hippo/pc_reg/Q[7]} {hippo/pc_reg/Q[8]} {hippo/pc_reg/Q[9]} {hippo/pc_reg/Q[10]} {hippo/pc_reg/Q[11]} {hippo/pc_reg/Q[12]} {hippo/pc_reg/Q[13]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
+set_property port_width 1 [get_debug_ports u_ila_0/probe1]
+connect_debug_port u_ila_0/probe1 [get_nets [list {hippo/csr_led/csr_led/data_reg[0]_0}]]
 set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
 set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
