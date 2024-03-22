@@ -3,18 +3,13 @@
 
 module rom
   import config_pkg::*;
-  import mem_pkg::*;
-#(
-    parameter integer unsigned MemSize = 'h0000_1000,
-    localparam integer MemAddrWidth = $clog2(MemSize)  // derived
-) (
+(
     input logic clk,
-    input logic [MemAddrWidth-1:0] address,
-
-    output logic [31:0] data_out
+    input IMemAddrT address,
+    output IMemDataT data_out
 );
 
-  word mem[MemSize >> 2];
+  IMemDataT mem[IMemSize >> 2];
   integer errno;
   integer fd;
 
@@ -22,9 +17,11 @@ module rom
   string error_msg;
 `endif
 
-  assign data_out = mem[address[MemAddrWidth-1:2]];
+  assign data_out = mem[address[IMemAddrWidth-1:2]];
+
+  // loading binary
   initial begin
-    for (integer k = 0; k < MemSize >> 2; k++) begin
+    for (integer k = 0; k < IMemSize >> 2; k++) begin
       mem[k] = 0;
     end
     $display("Loading memory file binary.mem");

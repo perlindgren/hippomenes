@@ -58,9 +58,7 @@ module top_n_clic (
   // instruction memory
   word imem_data_out;
 
-  rom #(
-      .MemSize(IMemSize)
-  ) imem (
+  rom imem (
       // in
       .clk(clk),
       .address(pc_reg_out[IMemAddrWidth-1:0]),

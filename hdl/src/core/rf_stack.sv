@@ -55,13 +55,13 @@ module rf_stack
       .clk_i(clk),
       .rst_ni(reset),
       // Read port R1
-      .raddr_a_i(0),
+      .raddr_a_i(1'(0)),
       .rdata_a_o(sp_a_o),
       // Read port R2
       .raddr_b_i(0),
       .rdata_b_o(sp_b_o),
       // Write port W1
-      .waddr_a_i(0),
+      .waddr_a_i(1'(0)),
       .wdata_a_i(writeData),
       .we_a_i(sp_we)
   );
