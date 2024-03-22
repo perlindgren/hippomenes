@@ -57,7 +57,7 @@ module tb_top_n_clic;
     #20 assert (top.pc_reg_out == 'h34);
     #20 assert (top.pc_reg_out == 'h38);
     #20 assert (top.pc_reg_out == 'h3c); 
-    #20 assert (top.pc_reg_out == 'h40); //interrupt triggered
+    #20 assert (top.pc_reg_out == 'h40); //interrupt 0 (timer)
     #20 assert (top.pc_reg_out == 'h44); 
     #20 assert (top.pc_reg_out == 'h50);
     #20 assert (top.pc_reg_out == 'h54);
@@ -70,10 +70,29 @@ module tb_top_n_clic;
     #20 assert (top.pc_reg_out == 'h70);
     #20 assert (top.pc_reg_out == 'h48);
     #20 assert (top.pc_reg_out == 'h4c);
-    #20 assert (top.pc_reg_out == 'h44); 
-    #20 assert (top.pc_reg_out == 'h50);
+    #20 assert (top.pc_reg_out == 'h74); // interrupt 1 (timer)
+    #20 assert (top.pc_reg_out == 'h78);
+    #20 assert (top.pc_reg_out == 'h7c);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h74); // interrupt 1 (why?)
+    #20 assert (top.pc_reg_out == 'h78);
+    #20 assert (top.pc_reg_out == 'h7c);
+    #20 assert (top.pc_reg_out == 'h4c); // no interrupt for rest (also why?)
+    #20 assert (top.pc_reg_out == 'h4c); 
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h4c);
+    #20 assert (top.pc_reg_out == 'h50); // interrupt 0 (makes sense)
     #20 assert (top.pc_reg_out == 'h54);
     #20 assert (top.pc_reg_out == 'h58);
+    #20 assert (top.pc_reg_out == 'h74); // interrupt 1 (makes sense)
+    #20 assert (top.pc_reg_out == 'h78);
+    #20 assert (top.pc_reg_out == 'h7c);
     #20 assert (top.pc_reg_out == 'h5c);
     #20 assert (top.pc_reg_out == 'h60);
     #20 assert (top.pc_reg_out == 'h64);
@@ -83,6 +102,8 @@ module tb_top_n_clic;
     #20 assert (top.pc_reg_out == 'h4c);
     #20 assert (top.pc_reg_out == 'h4c);
     #20 assert (top.pc_reg_out == 'h4c);
+    
+    
     
     
     

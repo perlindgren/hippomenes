@@ -15,14 +15,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,300.044 ns"></ZoomEndTime>
+      <ZoomEndTime time="1,424.043 ns"></ZoomEndTime>
       <Cursor1Time time="139.593 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="276"></NameColumnWidth>
-      <ValueColumnWidth column_width="68"></ValueColumnWidth>
+      <ValueColumnWidth column_width="64"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="32" />
+   <WVObjectSize size="33" />
    <wvobject type="logic" fp_name="/tb_top_n_clic/top/n_clic/\timer_vec[0].timer /clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -150,5 +150,11 @@
    <wvobject type="array" fp_name="/tb_top_n_clic/top/n_clic/\timer_vec[1].timer /Addr">
       <obj_property name="ElementShortName">Addr[11:0]</obj_property>
       <obj_property name="ObjectShortName">Addr[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_n_clic/top/pc_reg/out">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">out[13:0]</obj_property>
+      <obj_property name="ObjectShortName">out[13:0]</obj_property>
+      <obj_property name="label">pc_reg_out</obj_property>
    </wvobject>
 </wave_config>

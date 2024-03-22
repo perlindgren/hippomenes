@@ -8,9 +8,9 @@ main:       csrwi   0x300, 8                # enable global interrupts
             la      t2, isr_1 
             srl     t2, t2, 2
             csrw    0xB01, t2               # setup isr_1 address
-            li      t2, 0b11110000          # interrupt every 15 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
+            li      t2, 0b11110001          # interrupt every 15 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
             csrw    0x400, t2               # timer.counter_top[0] CSR
-            li      t2, 0b11110010
+            li      t2, 0b11110000
             csrw    0x401, t2               # interrupt every 15 cycles << 2 prescaler = interrupt every 60 cycles
             la t1,  0b1010                  # prio 0b10, enable, 0b1, pend 0b0
             csrw    0xB20, t1               # write to interrupt 0 (timer interrupt 0)

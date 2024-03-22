@@ -57,8 +57,13 @@ module timer #(
       interrupt_set <= 0;
     end else begin
       $display("TIMER EVAL %h", Addr);
-      if (timer.counter_top << timer.prescaler == counter) begin
-        $display("counter top: counter = %d, timer = %h", counter, Addr);
+      if (csr_addr == Addr && csr_enable>0) begin
+        $display("WRITE TO TIMER %d, clear set and counter", Addr);
+        counter <= 0;
+        interrupt_set <= 0;
+      end
+      else if (timer.counter_top << timer.prescaler == counter) begin
+        $display("counter top: counter = %d, , counter_top = %h , timer addr = %h", counter, timer.counter_top, Addr);
         counter <= 0;
         interrupt_set <= 1;
       end else begin
