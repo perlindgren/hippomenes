@@ -282,18 +282,19 @@ module spram
     localparam integer IMemSizeBits = IMemSize * 8  // derived
 ) (
     input logic clk,
+    input logic reset,
     input IMemAddrT address,
     output IMemDataT data_out
 );
 
-  logic dbiterra;  
-  logic sbiterra;  
-  IMemDataT dina; 
-  logic ena; 
-  logic injectdbiterra; 
-  logic injectsbiterra; 
-  logic regcea; 
-  logic rsta;  
+  logic dbiterra;
+  logic sbiterra;
+  IMemDataT dina;
+  logic ena;
+  logic injectdbiterra;
+  logic injectsbiterra;
+  logic regcea;
+  logic rsta;
   logic sleep;
   logic wea;
   assign dina = 0;
@@ -303,6 +304,7 @@ module spram
   assign wea = 0;
   assign sleep = 0;
   assign wea = 0;
+
   // xpm_memory_spram: Single Port RAM
   // Xilinx Parameterized Macro, version 2023.2
 
@@ -325,7 +327,7 @@ module spram
       .READ_DATA_WIDTH_A(IMemDataWidth),  // DECIMAL
       .READ_LATENCY_A(1),  // DECIMAL ? maybe 0 is possible
       .READ_RESET_VALUE_A("0"),  // String
-      .RST_MODE_A("SYNC"),  // String
+      .RST_MODE_A("SYNC"),  // resets output asynchonously, i.e., we should have a valid output once reset is lifted
       .SIM_ASSERT_CHK(0),  // DECIMAL; 0=disable simulation messages, 1=enable simulation messages
       .USE_MEM_INIT(1),  // DECIMAL
       .USE_MEM_INIT_MMI(1),  // DECIMAL Generate MMI config
@@ -337,14 +339,14 @@ module spram
       .dbiterra,
       .douta(data_out),
       .sbiterra,
-      .addra(address),
+      .addra(address[IMemAddrWidth-1:2]),
       .clka (clk),
       .dina,
       .ena,
       .injectdbiterra,
       .injectsbiterra,
       .regcea,
-      .rsta,
+      .rsta (reset),
       .sleep,
       .wea
   );
