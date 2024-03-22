@@ -203,6 +203,7 @@ set_property -dict {PACKAGE_PIN M14 IOSTANDARD LVCMOS33} [get_ports led3]
 
 
 
+
 create_debug_core u_ila_0 ila
 set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
 set_property ALL_PROBE_SAME_MU_CNT 4 [get_debug_cores u_ila_0]
@@ -213,10 +214,10 @@ set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
 set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
 set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
 set_property port_width 1 [get_debug_ports u_ila_0/clk]
-connect_debug_port u_ila_0/clk [get_nets [list clk_gen/inst/clkfbout_buf_clk_wiz_0]]
+connect_debug_port u_ila_0/clk [get_nets [list clk_gen/inst/clk_in1_clk_wiz_0]]
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
-set_property port_width 14 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {hippo/pc_reg/Q[0]} {hippo/pc_reg/Q[1]} {hippo/pc_reg/Q[2]} {hippo/pc_reg/Q[3]} {hippo/pc_reg/Q[4]} {hippo/pc_reg/Q[5]} {hippo/pc_reg/Q[6]} {hippo/pc_reg/Q[7]} {hippo/pc_reg/Q[8]} {hippo/pc_reg/Q[9]} {hippo/pc_reg/Q[10]} {hippo/pc_reg/Q[11]} {hippo/pc_reg/Q[12]} {hippo/pc_reg/Q[13]}]]
+set_property port_width 12 [get_debug_ports u_ila_0/probe0]
+connect_debug_port u_ila_0/probe0 [get_nets [list {hippo/pc_reg/Q[0]} {hippo/pc_reg/Q[1]} {hippo/pc_reg/Q[2]} {hippo/pc_reg/Q[3]} {hippo/pc_reg/Q[4]} {hippo/pc_reg/Q[5]} {hippo/pc_reg/Q[6]} {hippo/pc_reg/Q[7]} {hippo/pc_reg/Q[8]} {hippo/pc_reg/Q[9]} {hippo/pc_reg/Q[10]} {hippo/pc_reg/Q[11]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
 set_property port_width 1 [get_debug_ports u_ila_0/probe1]
@@ -224,4 +225,4 @@ connect_debug_port u_ila_0/probe1 [get_nets [list {hippo/csr_led/csr_led/data_re
 set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
 set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
-connect_debug_port dbg_hub/clk [get_nets u_ila_0_clkfbout_buf_clk_wiz_0]
+connect_debug_port dbg_hub/clk [get_nets u_ila_0_clk_in1_clk_wiz_0]
