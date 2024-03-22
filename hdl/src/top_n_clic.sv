@@ -68,6 +68,17 @@ module top_n_clic (
       .data_out(imem_data_out)
   );
 
+  //  spram imem (
+  //      // in
+  //      .clk(clk),
+  //     // .address(pc_interrupt_mux_out),
+  //     .address(pc_reg_out),
+
+  //      // out
+  //      .data_out(imem_data_out)
+  //  );
+
+
   // decoder
   wb_mux_t decoder_wb_mux_sel;
   alu_a_mux_t decoder_alu_a_mux_sel;

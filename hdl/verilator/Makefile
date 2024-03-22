@@ -162,6 +162,14 @@ tb_branch_logic: $(brach_logic)
 tb_branch_logic_g:
 	gtkwave -a branch_logic.gtkw branch_logic.fst
 
+tb_spram: $(spram)
+	verilator --binary $(psram) --top-module tb_mem --trace-fst --assert
+	obj_dir/Vtb_mem
+
+tb_spram_g:	
+	gtkwave -a spram.gtkw spram.fst
+
+
 tb_mem: $(mem)
 	verilator --binary $(mem) --top-module tb_mem --trace-fst --assert
 	obj_dir/Vtb_mem
