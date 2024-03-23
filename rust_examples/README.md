@@ -6,15 +6,15 @@ This crate contains simple code examples for Hippomenes.
 
 This crate requires the Rust compiler for compiling, and the ``elf2mem`` utility for generating the binary dump file Verilog uses to populate the ROM component.
 
-To set up the Rust toolchain, consult [Install Rust](https://www.rust-lang.org/tools/install)
+To set up the Rust toolchain, consult [Install Rust](https://www.rust-lang.org/tools/install).
 
-On Linux, this amounts to running
+On Linux, this amounts to running:
 
 ```shell
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-With the Rust toolchain set up, ``elf2mem`` can be installed by cloning the ``elf2mem`` repository, and installing the tool via ``cargo``
+With the Rust toolchain set up, ``elf2mem`` can be installed by cloning the ``elf2mem`` repository, and installing the tool via ``cargo``:
 
 ```shell
 git clone git@github.com:perlindgren/elf2mem.git
@@ -32,7 +32,7 @@ To compile one of the examples use:
 cargo build --example <EXAMPLE> --release
 ```
 
-To dump the generated binary as a Verilog ``.mem`` file use
+To dump the generated binary as a Verilog ``.mem`` file use:
 
 ```shell
 elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/<EXAMPLE> -t binary.mem -p

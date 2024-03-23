@@ -58,24 +58,26 @@ module top_n_clic (
   // instruction memory
   word imem_data_out;
 
-//  rom imem (
-//      // in
-//      .clk(clk),
-//      .address(pc_reg_out[IMemAddrWidth-1:0]),
-//      // out
-//      .data_out(imem_data_out)
-//  );
+`ifdef VERILATOR
+  rom imem (
+      // in
+      .clk(clk),
+      .address(pc_reg_out[IMemAddrWidth-1:0]),
+      // out
+      .data_out(imem_data_out)
+  );
+`else
+  spram imem (
+      // in
+      .clk(clk),
+      // .address(pc_interrupt_mux_out),
+      .address(pc_reg_out[IMemAddrWidth-1:0]),
+      .reset,
 
-    spram imem (
-        // in
-        .clk(clk),
-       // .address(pc_interrupt_mux_out),
-       .address(pc_reg_out[IMemAddrWidth-1:0]),
-       .reset,
-
-        // out
-        .data_out(imem_data_out)
-    );
+      // out
+      .data_out(imem_data_out)
+  );
+`endif
 
 
   // decoder

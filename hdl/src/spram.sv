@@ -309,32 +309,32 @@ module spram
   // Xilinx Parameterized Macro, version 2023.2
 
   xpm_memory_spram #(
-      .ADDR_WIDTH_A(IMemAddrWidth),  // DECIMAL 1024 * 4 = 4kByte
-      .AUTO_SLEEP_TIME(0),  // DECIMAL
-      .BYTE_WRITE_WIDTH_A(IMemDataWidth),  // DECIMAL
-      .CASCADE_HEIGHT(0),  // DECIMAL
-      .ECC_BIT_RANGE("7:0"),  // String
-      .ECC_MODE("no_ecc"),  // String
-      .ECC_TYPE("none"),  // String
-      .IGNORE_INIT_SYNTH(0),  // DECIMAL Init file both synth and simulation
-      .MEMORY_INIT_FILE("binary.mem"),  // String
-      .MEMORY_INIT_PARAM("0"),  // String
-      .MEMORY_OPTIMIZATION("true"),  // String
-      .MEMORY_PRIMITIVE("auto"),  // String
-      .MEMORY_SIZE(IMemSizeBits),  // DECIMAL
-      .MESSAGE_CONTROL(0),  // DECIMAL
-      .RAM_DECOMP("auto"),  // String
-      .READ_DATA_WIDTH_A(IMemDataWidth),  // DECIMAL
-      .READ_LATENCY_A(1),  // DECIMAL ? maybe 0 is possible
-      .READ_RESET_VALUE_A("0"),  // String
-      .RST_MODE_A("SYNC"),  // resets output asynchonously, i.e., we should have a valid output once reset is lifted
-      .SIM_ASSERT_CHK(0),  // DECIMAL; 0=disable simulation messages, 1=enable simulation messages
-      .USE_MEM_INIT(1),  // DECIMAL
-      .USE_MEM_INIT_MMI(1),  // DECIMAL Generate MMI config
-      .WAKEUP_TIME("disable_sleep"),  // String
-      .WRITE_DATA_WIDTH_A(32),  // DECIMAL
-      .WRITE_MODE_A("read_first"),  // String
-      .WRITE_PROTECT(1)  // DECIMAL
+      .ADDR_WIDTH_A(IMemAddrWidth - 2),  // IMemDataWidth indexed
+      .AUTO_SLEEP_TIME(0),
+      .BYTE_WRITE_WIDTH_A(IMemDataWidth),
+      .CASCADE_HEIGHT(0),
+      .ECC_BIT_RANGE("7:0"),
+      .ECC_MODE("no_ecc"),
+      .ECC_TYPE("none"),
+      .IGNORE_INIT_SYNTH(0),
+      .MEMORY_INIT_FILE("binary.mem"),
+      .MEMORY_INIT_PARAM("0"),
+      .MEMORY_OPTIMIZATION("true"),
+      .MEMORY_PRIMITIVE("auto"),
+      .MEMORY_SIZE(IMemSizeBits),
+      .MESSAGE_CONTROL(0),
+      .RAM_DECOMP("auto"),
+      .READ_DATA_WIDTH_A(IMemDataWidth),
+      .READ_LATENCY_A(1),
+      .READ_RESET_VALUE_A("0"),
+      .RST_MODE_A("SYNC"),
+      .SIM_ASSERT_CHK(0),
+      .USE_MEM_INIT(1),
+      .USE_MEM_INIT_MMI(1),  // Generate MMI config
+      .WAKEUP_TIME("disable_sleep"),
+      .WRITE_DATA_WIDTH_A(32),
+      .WRITE_MODE_A("read_first"),
+      .WRITE_PROTECT(1)
   ) xpm_memory_spram_inst (
       .dbiterra,
       .douta(data_out),
