@@ -70,8 +70,10 @@ module top_n_clic (
   spram imem (
       // in
       .clk(clk),
-      // .address(pc_interrupt_mux_out),
-      .address(pc_reg_out[IMemAddrWidth-1:0]),
+      // used with 1-cycle latency spram read
+      .address(pc_interrupt_mux_out[IMemAddrWidth-1:0]),
+      // used with combinational 0-cycle latency spram read
+      // .address(pc_reg_out[IMemAddrWidth-1:0]),
       .reset,
 
       // out
