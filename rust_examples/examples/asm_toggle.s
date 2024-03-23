@@ -2,6 +2,7 @@
             .text
 init:       la      sp, _stack_start        # set stack pointer
             la      t0, data
+            sw      zero, 0(t0)
 
            
 main:       lw      t1, 0(t0)

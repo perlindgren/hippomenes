@@ -12,7 +12,10 @@ set_property -dict {PACKAGE_PIN H16 IOSTANDARD LVCMOS33} [get_ports sysclk]
 
 set_false_path -from [get_ports sw0]
 set_false_path -from [get_ports sw1]
-
+set_false_path -to [get_ports led0]
+set_false_path -to [get_ports led1]
+set_false_path -to [get_ports led2]
+set_false_path -to [get_ports led3]
 
 ##Switches
 
