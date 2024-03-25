@@ -3,8 +3,8 @@
 rustflags = [
     # LLD (shipped with the Rust toolchain) is used as the default linker
     "-g",
-    "-C",
-    "link-arg=-Tmemory.x",
+    "-C","link-arg=-Tmemory.x",
+  #    "-C","link-arg=-Tlink.x",
 ]
 
 [build]

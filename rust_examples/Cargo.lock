@@ -84,16 +84,17 @@ checksum = "290f1a1d9242c78d09ce40a5e87e7554ee637af1351968159f4952f028f75604"
 [[package]]
 name = "hippomenes-core"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#92aadd29e7dece69dd35d1365ac7376972e37cff"
+source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
 dependencies = [
  "const_format",
+ "critical-section",
  "hippomenes-derive",
 ]
 
 [[package]]
 name = "hippomenes-derive"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#92aadd29e7dece69dd35d1365ac7376972e37cff"
+source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -101,9 +102,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "hippomenes-hal"
+version = "0.1.0"
+source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
+dependencies = [
+ "hippomenes-core",
+]
+
+[[package]]
 name = "hippomenes-rt"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#92aadd29e7dece69dd35d1365ac7376972e37cff"
+source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
 dependencies = [
  "hippomenes-core",
  "hippomenes-rt-macros",
@@ -112,7 +121,7 @@ dependencies = [
 [[package]]
 name = "hippomenes-rt-macros"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#92aadd29e7dece69dd35d1365ac7376972e37cff"
+source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -124,6 +133,7 @@ name = "hippomenes_rust_examples"
 version = "0.1.0"
 dependencies = [
  "hippomenes-core",
+ "hippomenes-hal",
  "hippomenes-rt",
  "rtic",
 ]

@@ -125,8 +125,9 @@ module decoder (
       OP_JALR: begin
         $display("jalr");
         wb_write_enable = 1;
+        imm = 32'($signed(instr[31:20]));
         alu_a_mux_sel = A_RS1;
-        alu_b_mux_sel = B_RS2;
+        alu_b_mux_sel = B_IMM_EXT;
         wb_mux_sel = WB_PC_PLUS_4;
         branch_always = 1;
       end

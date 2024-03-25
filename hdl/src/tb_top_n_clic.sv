@@ -14,12 +14,12 @@ module tb_top_n_clic;
       .reset(reset),
       .led  (led)
   );
-  
+
   // clock and reset
   initial begin
     $display($time, " << Starting the Simulation >>");
     $display("memsize %h", IMemSize >> 2);
-  
+
     reset = 1;
     clk   = 0;
     #15 reset = 0;
@@ -74,7 +74,7 @@ module tb_top_n_clic;
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h34); */  // 2nd timer interrupt here
-    #3000;
+    #30000;
     $finish;
   end
 

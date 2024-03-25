@@ -5,7 +5,7 @@
 
 ## Clock signal 125 MHz
 
-set_property -dict {PACKAGE_PIN H16 IOSTANDARD LVCMOS33} [get_ports sysclk]
+set_property -dict {PACKAGE_PIN E3 IOSTANDARD LVCMOS33} [get_ports sysclk]
 # create_clock -period 8.000 -name sys_clk_pin -waveform {0.000 4.000} -add [get_ports sysclk]
 
 # do not time async inputs
@@ -19,8 +19,8 @@ set_false_path -to [get_ports led3]
 
 ##Switches
 
-set_property -dict {PACKAGE_PIN M20 IOSTANDARD LVCMOS33} [get_ports sw0]
-set_property -dict {PACKAGE_PIN M19 IOSTANDARD LVCMOS33} [get_ports sw1]
+set_property -dict {PACKAGE_PIN A8 IOSTANDARD LVCMOS33} [get_ports sw0]
+set_property -dict {PACKAGE_PIN C11 IOSTANDARD LVCMOS33} [get_ports sw1]
 
 ##RGB LEDs
 
@@ -33,10 +33,10 @@ set_property -dict {PACKAGE_PIN M19 IOSTANDARD LVCMOS33} [get_ports sw1]
 
 ##LEDs
 
-set_property -dict {PACKAGE_PIN R14 IOSTANDARD LVCMOS33} [get_ports led0]
-set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports led1]
-set_property -dict {PACKAGE_PIN N16 IOSTANDARD LVCMOS33} [get_ports led2]
-set_property -dict {PACKAGE_PIN M14 IOSTANDARD LVCMOS33} [get_ports led3]
+set_property -dict {PACKAGE_PIN F6 IOSTANDARD LVCMOS33} [get_ports led0]
+set_property -dict {PACKAGE_PIN J4 IOSTANDARD LVCMOS33} [get_ports led1]
+set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33} [get_ports led2]
+set_property -dict {PACKAGE_PIN H6 IOSTANDARD LVCMOS33} [get_ports led3]
 
 ##Buttons
 
