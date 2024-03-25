@@ -9,7 +9,7 @@ l1:         addi    t0, t0, -1
             bne     t0, zero, l1
 
             csrwi   0x0, 0                  # led-off
-            li      t0, 200000              # short wait
+            li      t0, 20000000              # short wait
 l2:         addi    t0, t0, -1
             bne     t0, zero, l2
 
