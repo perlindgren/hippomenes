@@ -43,6 +43,12 @@ package config_pkg;
 
   // CSR Related
   localparam type CsrAddrT = logic [11:0];
+
+  // GPIO Related
+  localparam GpioNum = 3;  // We have a gpio bitec of 3 
+  localparam CsrAddrT GpioCsrData = 'h000;
+  localparam CsrAddrT GpioCsrDir = 'h001;
+
   localparam CsrAddrT VecCsrBase = 'hb00;  // up to 32 vectors
   localparam CsrAddrT EntryCsrBase = 'hb20;
   localparam CsrAddrT TimeStampCsrBase = 'hb40;

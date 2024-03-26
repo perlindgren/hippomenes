@@ -205,15 +205,15 @@ module tb_n_clic;
     csr_op   = CSRRW;
     #20;
     $display("VecCsrBase + 2 out %h", csr_out);
-    assert (csr_out == 'h3f);
+    assert (csr_out == 'h3ff);
     csr_enable = 0;  // don't write to csr
     rs1_data   = '0;
 
     #20;
     $display("VecCsrBase + 2 out %h", csr_out);
     $display("VecCsrBase + 2 old_csr %h", old_csr);
-    assert (csr_out == 'h3f);
-    assert (old_csr == 'h3f);
+    assert (csr_out == 'h3ff);
+    assert (old_csr == 'h3ff);
 
     $finish;
 

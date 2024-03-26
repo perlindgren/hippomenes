@@ -4,6 +4,8 @@
 module top_n_clic (
     input  logic clk,
     input  logic reset,
+    input  logic rx,
+    output logic tx,
     output logic led
 );
   import config_pkg::*;
@@ -227,8 +229,28 @@ module top_n_clic (
       .alignment_error(dmem_alignment_error)
   );
 
-  word csr_led_out;
-  csr_led csr_led (
+  word csr_gpio_dir_out;
+  csr #(
+      .CsrWidth(GpioNum),  // Number of GPIOs
+      .Addr(GpioCrsDir)  // Direction register
+  ) csr_gpio_dir (
+      // in
+      .clk,
+      .reset,
+      .csr_enable,
+      .csr_addr,
+      .rs1_zimm,
+      .rs1_data,
+      .csr_op,
+      .ext_data,
+      .ext_write_enable,
+      // out
+      .direct_out,
+      .out(csr_gpio_dir_out)
+  );
+
+  word csr_gpio_data_out;
+  csr_gpio_data csr_gpio_data (  // Data direction register
       // in
       .clk,
       .reset,
@@ -239,10 +261,10 @@ module top_n_clic (
       .csr_op(decoder_csr_op),
       .ext_data(0),
       .ext_write_enable(0),
-      //.rd(decoder_rd),
       // out
-      .out(csr_led_out),
-      .led
+      .out(csr_gpio_data_out),
+      // gpi
+      .io({led, rx, tx})
   );
 
   word n_clic_csr_out;
@@ -265,11 +287,21 @@ module top_n_clic (
       .interrupt_out(n_clic_interrupt_out)
   );
 
+  word csr_out;
+  // match CSR addresses
+  always_comb begin
+    if (decoder_csr_addr == GpioCsrData) csr_out = csr_gpio_dir_out;
+    else if (decoder_csr_addr == GpioCsrDir) crs_out = csr_data_out;
+    else csr_out = n_clic_csr_out;
+    // TODO: should we return 0 on reads for non existing CSRs.
+    // Using safe Rust user code, this will never occur so perhaps not then.
+  end
+
   wb_mux wb_mux (
       .sel(decoder_wb_mux_sel),
       .dm(dmem_data_out),
       .alu(alu_res),
-      .csr(n_clic_csr_out),
+      .csr(crs_out),
       .pc_plus_4(32'($signed(pc_adder_out))),  // should we sign extend?
       .out(wb_mux_out)
   );

@@ -5,8 +5,8 @@
 
 import decoder_pkg::*;
 
-module csr_led #(
-    localparam integer unsigned CsrWidth = 1,  // default to word
+module csr_gpio_data #(
+    localparam integer unsigned CsrWidth = GpioNum,  // default to word
     localparam type CsrDataT = logic [CsrWidth-1:0]  // derived
 ) (
 
@@ -17,19 +17,23 @@ module csr_led #(
     input r rs1_zimm,
     input word rs1_data,
     input csr_op_t csr_op,
+
+    // direction register
+    input CsrDataT direction,
     // output logic match,
     input CsrDataT ext_data,
     input logic ext_write_enable,
     output word out,
-    output logic led
+
+    // io
+    wire CsrDataT io
 );
 
   word direct_out;  // currently not used
   csr #(
-      // .ResetValue(1),  // sanity testing of ResetValue
       .CsrWidth(CsrWidth),
-      .Addr(0)
-  ) csr_led (
+      .Addr(GpioCrsData)  // 
+  ) csr_gpio (
       // in
       .clk,
       .reset,
@@ -45,6 +49,11 @@ module csr_led #(
       .out
   );
 
-  assign led = out[0];
+  always_comb begin
+    for (integer k = 0; k < CsrWith; k++) begin
+      if (direction[k]) io[k] = out[k];
+    end
+  end
+
 
 endmodule

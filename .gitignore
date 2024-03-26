@@ -2,3 +2,7 @@
 /rust_examples/target/*
 /hdl/verilator/riscv_asm/target/*
 !/fpga/hippomenes/hippomenes.srcs/sources_1/ip/*
+!/fgpa/program.sh
+!/fpga/program.tcl
+!/fpga/hippomenes/hippomenes.xpr
+!/fpga/hippomenes.tcl

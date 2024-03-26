@@ -86,6 +86,7 @@ module csr #(
   assign out = 32'($unsigned(data));
 
   always_ff @(posedge clk) begin
+    // TODO: handle Write
     if (reset) begin
       data <= ResetValue;
     end else if (ext_write_enable) begin
