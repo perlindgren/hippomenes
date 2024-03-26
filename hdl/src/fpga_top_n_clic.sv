@@ -8,6 +8,7 @@ module fpga_top_n_clic (
     output logic led1,
     output logic led2,
     output logic led3,
+    output logic uarttx,
     input logic sw0,
     input logic sw1
 );
@@ -26,10 +27,11 @@ module fpga_top_n_clic (
   
   assign led2 = tmp_sw0;
   assign led3 = tmp_sw1;
+  assign led1 = tmp_sw0;
 
   top_n_clic hippo (
         .clk,
-        .led  (led1),
+        .led  (uarttx),
         .reset(tmp_sw1)
   );
 

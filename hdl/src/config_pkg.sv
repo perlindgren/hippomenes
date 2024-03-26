@@ -22,7 +22,7 @@ package config_pkg;
   localparam type IMemDataT = logic [IMemDataWidth -1:0];
 
   // Data memory configuration
-  localparam integer unsigned DMemStart = 'h0001_0000;
+  localparam integer unsigned DMemStart = 'h5000_0000;
   localparam integer unsigned DMemSize = 'h0000_1000;  // in bytes
 
   // Memory relatted
