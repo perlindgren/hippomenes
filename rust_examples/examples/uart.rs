@@ -15,16 +15,16 @@ mod app {
     #[local]
     struct Local {
         uart: UART<Pin0>,
-        buf: [u8; 8],
+        buf: [u8;8],
     }
-
+   
     #[init]
     fn init(cx: init::Context) -> (Shared, Local) {
         let peripherals = cx.device;
         let pin = peripherals.gpio.pins().pin0;
         let timer = peripherals.timer;
         let mut uart = UART::new(pin, timer, 119_200);
-        let buf = [0x13, 0x37, 0x13, 0x37, 0x13, 0x37, 0x13, 0x37];
+        let buf = "hippo!! ".as_bytes().try_into().unwrap();
         uart.send(buf);
         (Shared { dummy: true }, Local { uart, buf })
     }
@@ -34,7 +34,7 @@ mod app {
         loop {}
     }
 
-    #[task(binds = Interrupt2, priority=7, shared=[dummy], local=[uart, buf])]
+    #[task(binds = Interrupt2, priority=3, shared=[dummy], local=[uart, buf])]
     fn uart_done(cx: uart_done::Context) {
         cx.local.uart.send(*cx.local.buf);
     }
