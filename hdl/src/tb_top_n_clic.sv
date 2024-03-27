@@ -7,12 +7,19 @@ module tb_top_n_clic;
 
   logic clk;
   logic reset;
-  logic led;
+
+  GpioT gpio_dir;
+  GpioT gpio_in;
+  GpioT gpio_out;
 
   top_n_clic top (
-      .clk  (clk),
-      .reset(reset),
-      .led  (led)
+      // in
+      .clk,
+      .reset,
+      .gpio_in,
+      // out
+      .gpio_out,
+      .gpio_dir
   );
 
   // clock and reset

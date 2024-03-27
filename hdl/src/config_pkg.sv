@@ -45,7 +45,15 @@ package config_pkg;
   localparam type CsrAddrT = logic [11:0];
 
   // GPIO Related
-  localparam GpioNum = 3;  // We have a gpio bitec of 3 
+  localparam GpioNum = 3;  // We have a gpio bitvec of 3 
+  localparam type GpioT = logic [GpioNum-1:0];
+
+  typedef enum logic [GpioNum-1:0] {
+    LED = GpioT'(0),  // index 0
+    TX  = GpioT'(1),
+    RX  = GpioT'(2)
+  } GpioIndexT;
+
   localparam CsrAddrT GpioCsrData = 'h000;
   localparam CsrAddrT GpioCsrDir = 'h001;
 

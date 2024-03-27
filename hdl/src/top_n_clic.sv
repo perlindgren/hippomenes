@@ -4,9 +4,9 @@
 module top_n_clic (
     input  logic clk,
     input  logic reset,
-    input  logic rx,
-    output logic tx,
-    output logic led
+    input  GpioT gpio_in,
+    output GpioT gpio_out,
+    output GpioT gpio_dir
 );
   import config_pkg::*;
   import decoder_pkg::*;
@@ -77,12 +77,10 @@ module top_n_clic (
       // used with combinational 0-cycle latency spram read
       // .address(pc_reg_out[IMemAddrWidth-1:0]),
       .reset,
-
       // out
       .data_out(imem_data_out)
   );
 `endif
-
 
   // decoder
   wb_mux_t decoder_wb_mux_sel;
@@ -230,27 +228,12 @@ module top_n_clic (
   );
 
   word csr_gpio_dir_out;
+  word csr_gpio_direct_out;  // not used
+  assign gpio_dir = GpioT'(csr_gpio_dir_out);
   csr #(
       .CsrWidth(GpioNum),  // Number of GPIOs
-      .Addr(GpioCrsDir)  // Direction register
+      .Addr(GpioCsrDir)  // Direction register
   ) csr_gpio_dir (
-      // in
-      .clk,
-      .reset,
-      .csr_enable,
-      .csr_addr,
-      .rs1_zimm,
-      .rs1_data,
-      .csr_op,
-      .ext_data,
-      .ext_write_enable,
-      // out
-      .direct_out,
-      .out(csr_gpio_dir_out)
-  );
-
-  word csr_gpio_data_out;
-  csr_gpio_data csr_gpio_data (  // Data direction register
       // in
       .clk,
       .reset,
@@ -262,9 +245,28 @@ module top_n_clic (
       .ext_data(0),
       .ext_write_enable(0),
       // out
+      .direct_out(csr_gpio_direct_out),  // not used
+      .out(csr_gpio_dir_out)
+  );
+
+  word csr_gpio_data_out;
+  csr_gpio csr_gpio_data (
+      // in
+      .clk,
+      .reset,
+      .csr_enable(decoder_csr_enable),
+      .csr_addr(decoder_csr_addr),
+      .rs1_zimm(decoder_rs1),
+      .rs1_data(rf_rs1),
+      .csr_op(decoder_csr_op),
+      .ext_data(0),
+      .ext_write_enable(0),
+      .direction(GpioT'(csr_gpio_dir_out)),
+      // out
       .out(csr_gpio_data_out),
       // gpi
-      .io({led, rx, tx})
+      .gpio_in,
+      .gpio_out
   );
 
   word n_clic_csr_out;
@@ -291,7 +293,7 @@ module top_n_clic (
   // match CSR addresses
   always_comb begin
     if (decoder_csr_addr == GpioCsrData) csr_out = csr_gpio_dir_out;
-    else if (decoder_csr_addr == GpioCsrDir) crs_out = csr_data_out;
+    else if (decoder_csr_addr == GpioCsrDir) csr_out = csr_gpio_data_out;
     else csr_out = n_clic_csr_out;
     // TODO: should we return 0 on reads for non existing CSRs.
     // Using safe Rust user code, this will never occur so perhaps not then.
@@ -301,7 +303,7 @@ module top_n_clic (
       .sel(decoder_wb_mux_sel),
       .dm(dmem_data_out),
       .alu(alu_res),
-      .csr(crs_out),
+      .csr(csr_out),
       .pc_plus_4(32'($signed(pc_adder_out))),  // should we sign extend?
       .out(wb_mux_out)
   );

@@ -3,13 +3,9 @@
 
 `timescale 1ns / 1ps
 
-import decoder_pkg::*;
+import config_pkg::*;
 
-module csr_gpio_data #(
-    localparam integer unsigned CsrWidth = GpioNum,  // default to word
-    localparam type CsrDataT = logic [CsrWidth-1:0]  // derived
-) (
-
+module csr_gpio (
     input logic clk,
     input logic reset,
     input logic csr_enable,
@@ -18,21 +14,24 @@ module csr_gpio_data #(
     input word rs1_data,
     input csr_op_t csr_op,
 
-    // direction register
-    input CsrDataT direction,
     // output logic match,
-    input CsrDataT ext_data,
+    input GpioT ext_data,
     input logic ext_write_enable,
-    output word out,
 
     // io
-    wire CsrDataT io
+    input GpioT direction,
+    input GpioT gpio_in,
+
+    output GpioT gpio_out,
+    output word  out
 );
 
+  word data;
   word direct_out;  // currently not used
+
   csr #(
-      .CsrWidth(CsrWidth),
-      .Addr(GpioCrsData)  // 
+      .CsrWidth(GpioNum),
+      .Addr(GpioCsrData)
   ) csr_gpio (
       // in
       .clk,
@@ -50,8 +49,8 @@ module csr_gpio_data #(
   );
 
   always_comb begin
-    for (integer k = 0; k < CsrWith; k++) begin
-      if (direction[k]) io[k] = out[k];
+    for (integer k = 0; k < GpioNum; k++) begin
+      // if (direction[k]) data[k] = out[k] else data[k] = io_in[k];
     end
   end
 
