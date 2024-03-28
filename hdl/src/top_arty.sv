@@ -2,12 +2,10 @@
 `timescale 1ns / 1ps
 
 module top_arty (
-    input logic clk,
-    input logic reset,
-    input logic [3:0] pins_in,
-    output logic [3:0] pins_out
-
-    // output Output out,
+    input  logic clk,
+    input  logic reset,
+    input  BtnT  btn,
+    output LedT  led
 
     // TODO: gpio
     // input  GpioT gpio_in,
@@ -233,8 +231,13 @@ module top_arty (
       .alignment_error(dmem_alignment_error)
   );
 
-  word csr_pins_out_out;
-  csr_pins_out csr_pins_out (
+  // led out
+  word csr_led_out;
+  word csr_led_direct_out;  // currently not used
+  csr #(
+      .CsrWidth(LedWidth),
+      .Addr(LedAddr)
+  ) csr_led (
       // in
       .clk,
       .reset,
@@ -243,11 +246,13 @@ module top_arty (
       .rs1_zimm(decoder_rs1),
       .rs1_data(rf_rs1),
       .csr_op(decoder_csr_op),
-
+      .ext_data(0),
+      .ext_write_enable(0),
       // out
-      .out(csr_pins_out_out),
-      .pins_out
+      .direct_out(csr_led_direct_out),
+      .out(csr_led_out)
   );
+  assign led = LedT'(csr_led_out);
 
 
   // TODO: GPIO

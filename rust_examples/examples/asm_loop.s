@@ -3,7 +3,7 @@
 init:       la      sp, _stack_start        # set stack pointer
            
 main:       csrwi   0x0, 1                  # led-on
-            li      t0, 5000000             # shorter wait
+            li      t0, 50000             # shorter wait
 
 l1:         addi    t0, t0, -1
             bne     t0, zero, l1

@@ -3,22 +3,21 @@
 
 module tb_top_arty;
   import config_pkg::*;
-  import decoder_pkg::*;
 
   logic clk;
   logic reset;
 
 
-  logic [3:0] pins_in;
-  logic [3:0] pins_out;
+  BtnT  btn;
+  LedT  led;
 
   top_arty top (
       // in
       .clk,
       .reset,
-      .pins_in,
+      .btn,
       // out
-      .pins_out
+      .led
   );
 
   // clock and reset
