@@ -24,11 +24,16 @@ module fpga_arty (
     output logic led_b2,
     output logic led_b3,
 
-    output logic rx, // host 
-    input  logic tx, // host
-    
+    output logic rx,  // host 
+    input  logic tx,  // host
+
     input logic sw0,
-    input logic sw1
+    input logic sw1,
+
+    input logic btn
+    // input logic btn1,
+    // input logic btn2,
+    // input logic btn3
 );
 
   logic clk;
@@ -40,8 +45,17 @@ module fpga_arty (
   logic tmp_sw0;
   logic tmp_sw1;
 
+  logic tmp_btn0;
+  logic tmp_btn1;
+  logic tmp_btn2;
+  logic tmp_btn3;
+
   assign tmp_sw0 = sw0;
   assign tmp_sw1 = sw1;
+  assign tmp_btn0 = btn0;
+  assign tmp_btn1 = btn1;
+  assign tmp_btn2 = btn2;
+  assign tmp_btn3 = btn3;
 
   assign led2 = tmp_sw0;
   assign led3 = tmp_sw1;
@@ -61,13 +75,17 @@ module fpga_arty (
   assign led_b2 = 0;
   assign led_b3 = 0;
 
+  always_comb begin
+
+  end
 
   top_n_clic hippo (
       .clk,
-      .led  (led1),
-      .tx (rx),
-      .rx (tx),
-      .reset(tmp_sw1)
+      .reset(tmp_sw1),
+      .btn  (btn)
+      // .gpio_in({led1, rx, tx}),
+      // .gpio_out({led1, rx, tx}),
+      // .rx(tx),
   );
 
   clk_wiz_0 clk_gen (

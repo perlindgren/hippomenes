@@ -1,0 +1,90 @@
+[*]
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Thu Mar 28 10:23:18 2024
+[*]
+[dumpfile] "/data/riscv/hippomenes/hdl/verilator/top_arty.fst"
+[dumpfile_mtime] "Thu Mar 28 10:21:58 2024"
+[dumpfile_size] 22623
+[savefile] "/data/riscv/hippomenes/hdl/verilator/top_arty.gtkw"
+[timestart] 0
+[size] 1439 836
+[pos] -1 -1
+*-22.901115 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_top_arty.
+[sst_width] 209
+[signals_width] 271
+[sst_expanded] 1
+[sst_vpaned_height] 239
+@22
+TOP.tb_top_arty.top.alu_a_mux_out[31:0]
+TOP.tb_top_arty.top.alu_b_mux_out[31:0]
+TOP.tb_top_arty.top.alu_res[31:0]
+@100000028
+TOP.tb_top_arty.top.branch_logic_out
+@22
+TOP.tb_top_arty.top.btn[3:0]
+@28
+TOP.tb_top_arty.top.clk
+@22
+TOP.tb_top_arty.top.csr_out[31:0]
+@100000028
+TOP.tb_top_arty.top.decoder_alu_a_mux_sel[1:0]
+TOP.tb_top_arty.top.decoder_alu_b_mux_sel
+TOP.tb_top_arty.top.decoder_alu_op[2:0]
+@28
+TOP.tb_top_arty.top.decoder_branch_always
+TOP.tb_top_arty.top.decoder_branch_instr
+@100000028
+TOP.tb_top_arty.top.decoder_branch_op[2:0]
+@22
+TOP.tb_top_arty.top.decoder_csr_addr[11:0]
+@28
+TOP.tb_top_arty.top.decoder_csr_enable
+@100000028
+TOP.tb_top_arty.top.decoder_csr_op[2:0]
+@28
+TOP.tb_top_arty.top.decoder_dmem_sign_extend
+@100000028
+TOP.tb_top_arty.top.decoder_dmem_width[1:0]
+@28
+TOP.tb_top_arty.top.decoder_dmem_write_enable
+@22
+TOP.tb_top_arty.top.decoder_imm[31:0]
+@100000028
+TOP.tb_top_arty.top.decoder_mem_with[1:0]
+@22
+TOP.tb_top_arty.top.decoder_rd[4:0]
+TOP.tb_top_arty.top.decoder_rs1[4:0]
+TOP.tb_top_arty.top.decoder_rs2[4:0]
+@28
+TOP.tb_top_arty.top.decoder_sub_arith
+@100000028
+TOP.tb_top_arty.top.decoder_wb_mux_sel
+@28
+TOP.tb_top_arty.top.decoder_wb_write_enable
+TOP.tb_top_arty.top.dmem_alignment_error
+@22
+TOP.tb_top_arty.top.dmem_data_out[31:0]
+TOP.tb_top_arty.top.imem_data_out[31:0]
+TOP.tb_top_arty.top.n_clic_csr_out[31:0]
+TOP.tb_top_arty.top.n_clic_interrupt_addr[11:0]
+@28
+TOP.tb_top_arty.top.n_clic_interrupt_out
+TOP.tb_top_arty.top.n_clic_level_out[1:0]
+@100000028
+TOP.tb_top_arty.top.n_clic_pc_interrupt_sel
+@22
+TOP.tb_top_arty.top.pc_adder_out[11:0]
+TOP.tb_top_arty.top.pc_branch_mux_out[11:0]
+TOP.tb_top_arty.top.pc_interrupt_mux_out[11:0]
+TOP.tb_top_arty.top.pc_reg_out[11:0]
+@28
+TOP.tb_top_arty.top.reset
+@22
+TOP.tb_top_arty.top.rf_rs1[31:0]
+TOP.tb_top_arty.top.rf_rs2[31:0]
+TOP.tb_top_arty.top.rf_stack_ra[31:0]
+TOP.tb_top_arty.top.wb_mux_out[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

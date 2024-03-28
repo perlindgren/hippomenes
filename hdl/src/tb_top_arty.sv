@@ -1,7 +1,7 @@
-// tb_top_n_clic
+// tb_top_arty
 `timescale 1ns / 1ps
 
-module tb_top_n_clic;
+module tb_top_arty;
   import config_pkg::*;
   import decoder_pkg::*;
 
@@ -14,7 +14,7 @@ module tb_top_n_clic;
 
   logic [3:0] btn;
 
-  top_n_clic top (
+  top_arty top (
       // in
       .clk,
       .reset,
@@ -43,7 +43,7 @@ module tb_top_n_clic;
   end
 
   initial begin
-    $dumpfile("top_n_clic.fst");
+    $dumpfile("top_arty.fst");
     $dumpvars;
     //  $display("mem : %h, %h, %h, %h", top.imem.mem[0], top.imem.mem[1], top.imem.mem[2],
     //         top.imem.mem['hB00>>2]);

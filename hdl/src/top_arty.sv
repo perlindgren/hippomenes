@@ -1,7 +1,7 @@
 // top_n_clic
 `timescale 1ns / 1ps
 
-module top_n_clic (
+module top_arty (
     input logic clk,
     input logic reset,
     input logic [3:0] btn

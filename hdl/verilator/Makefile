@@ -25,9 +25,9 @@ $(core)/wb_mux.sv
 
 top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
-fgpa_top = $(top_dep) $(root)/top.sv $(root)/tb_fpga_top.sv
-
 top_n_clic = $(top_dep) $(root)/top_n_clic.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_n_clic.sv
+
+top_arty = $(top_dep) $(root)/top_arty.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_arty.sv
 
 top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
 
@@ -64,7 +64,7 @@ all: \
 	tb_timer \
 	tb_time_stamp \
 	tb_stack \
-	tb_top_n_clic
+	tb_top_arty 
 	# tb_top_branch \
 	# tb_top_mem \
 	# tb_top \
@@ -76,6 +76,13 @@ all: \
 
 asm: 
 #	cd ../../rust_examples/; cargo build --example asm --release; elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/asm -t ../hdl/verilator/binary.mem -p;
+
+tb_top_arty: $(top_arty)
+	verilator --binary $(top_arty) --top-module tb_top_arty --trace-fst --assert -y $(rust) 
+	obj_dir/Vtb_top_arty
+
+tb_top_arty_g: 
+	gtkwave -a top_arty.gtkw top_arty.fst
 
 tb_top_n_clic: $(top_n_clic)
 	make asm
