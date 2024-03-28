@@ -8,23 +8,17 @@ module tb_top_arty;
   logic clk;
   logic reset;
 
-  GpioT gpio_dir;
-  GpioT gpio_in;
-  GpioT gpio_out;
 
-  logic [3:0] btn;
+  logic [3:0] pins_in;
+  logic [3:0] pins_out;
 
   top_arty top (
       // in
       .clk,
       .reset,
-      .btn
-
-      // TODO: GPIO
-      // .gpio_in,
-      // // out
-      // .gpio_out,
-      // .gpio_dir
+      .pins_in,
+      // out
+      .pins_out
   );
 
   // clock and reset

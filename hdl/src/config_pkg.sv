@@ -44,7 +44,17 @@ package config_pkg;
   // CSR Related
   localparam type CsrAddrT = logic [11:0];
 
-  // GPIO Related
+  // Outputs
+  localparam CsrAddrT OutAddr = 'h000;
+  localparam integer unsigned OutWidth = 4;
+  localparam type OutT = logic [OutWidth-1:0];
+
+  // Inputs
+  localparam CsrAddrT InAddr = 'h001;
+  localparam integer unsigned InWidth = 4;
+  localparam type InT = logic [InWidth-1:0];
+
+  // GPIO Related, TODO
   localparam GpioNum = 3;  // We have a gpio bitvec of 3 
   localparam type GpioT = logic [GpioNum-1:0];
 
@@ -54,20 +64,20 @@ package config_pkg;
     RX  = GpioT'(2)
   } GpioIndexT;
 
-  localparam CsrAddrT GpioCsrData = 'h000;
-  localparam CsrAddrT GpioCsrDir = 'h001;
+  localparam CsrAddrT GpioCsrDir = 'h002;
+  localparam CsrAddrT GpioCsrData = 'h003;
 
   localparam CsrAddrT VecCsrBase = 'hb00;  // up to 32 vectors
   localparam CsrAddrT EntryCsrBase = 'hb20;
   localparam CsrAddrT TimeStampCsrBase = 'hb40;
 
-  // CSR registers
+  // General CSR registers
   localparam CsrAddrT MStatusAddr = 'h305;
   localparam CsrAddrT MIntThreshAddr = 'h347;
   localparam CsrAddrT StackDepthAddr = 'h350;
-  localparam CsrAddrT TimerAddr = 'h400;
 
   // Peripheral timer
+  localparam CsrAddrT TimerAddr = 'h400;
   localparam integer unsigned TimerWidth = 16;
   localparam integer unsigned TimerPreWith = 4;
 

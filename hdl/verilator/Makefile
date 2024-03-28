@@ -20,7 +20,8 @@ $(core)/alu_b_mux.sv \
 $(root)/mem.sv \
 $(root)/rom.sv \
 $(core)/csr.sv \
-$(core)/csr_gpio.sv \
+$(core)/csr_pins_in.sv \
+$(core)/csr_pins_out.sv \
 $(core)/wb_mux.sv 
 
 top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv

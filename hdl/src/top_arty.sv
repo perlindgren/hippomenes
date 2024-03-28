@@ -1,10 +1,11 @@
-// top_n_clic
+// top_arty
 `timescale 1ns / 1ps
 
 module top_arty (
     input logic clk,
     input logic reset,
-    input logic [3:0] btn
+    input logic [3:0] pins_in,
+    output logic [3:0] pins_out
 
     // output Output out,
 
@@ -15,7 +16,7 @@ module top_arty (
 );
   import config_pkg::*;
   import decoder_pkg::*;
-  import mem_pkg::*;
+  // import mem_pkg::*;
 
   IMemAddrT pc_interrupt_mux_out;
   // registers
@@ -232,6 +233,23 @@ module top_arty (
       .alignment_error(dmem_alignment_error)
   );
 
+  word csr_pins_out_out;
+  csr_pins_out csr_pins_out (
+      // in
+      .clk,
+      .reset,
+      .csr_enable(decoder_csr_enable),
+      .csr_addr(decoder_csr_addr),
+      .rs1_zimm(decoder_rs1),
+      .rs1_data(rf_rs1),
+      .csr_op(decoder_csr_op),
+
+      // out
+      .out(csr_pins_out_out),
+      .pins_out
+  );
+
+
   // TODO: GPIO
   //   word csr_gpio_dir_out;
   //   word csr_gpio_direct_out;  // not used
@@ -299,7 +317,7 @@ module top_arty (
   // match CSR addresses
   always_comb begin
     csr_out = n_clic_csr_out;
-    // TODO: GPIO
+    // TODO: for now we can only read csr:s from n_clic
     // if (decoder_csr_addr == GpioCsrData) csr_out = csr_gpio_dir_out;
     // else if (decoder_csr_addr == GpioCsrDir) csr_out = csr_gpio_data_out;
     // else csr_out = n_clic_csr_out;
