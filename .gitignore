@@ -1,6 +1,5 @@
 *.log
 *.jou
-/fpga/arty
 /fpga/hippomenes
 /rust_examples/target/*
 /hdl/verilator/riscv_asm/target/*
@@ -9,9 +8,12 @@
 !/fpga/hippomenes/hippomenes.xpr
 !/fpga/hippomenes.tcl
 
-!fpga/arty/arty.xpr
-!fpga/arty/arty.tcl
-!fpga/arty/arty.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
-!fpga/arty/arty.srcs/sources_1/new/fpga_arty.sv
-!fpga/arty/arty.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
+/fpga/arty/*
+!/fpga/arty/arty.xpr
+!/fpga/arty/arty.tcl
+!/fpga/arty/arty.srcs/sources_1/ip/clk_wiz_0
+!/fpga/arty/arty.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
+/fpga/arty/arty.srcs/sources_1/new/*
+!/fpga/arty/arty.srcs/sources_1/new/fpga_arty.sv
+/fpga/arty/arty.srcs/sources_1/ip/clk_wiz_0/*
 !fpga/arty/arty.srcs/constrs_1/new/ARTY.xdc
