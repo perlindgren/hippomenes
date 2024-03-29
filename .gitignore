@@ -11,10 +11,6 @@
 /fpga/hippomenes
 /fpga/arty/*
 
-!arty/arty.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
-!arty/arty.srcs/sources_1/new/fpga_arty.sv
-!arty/arty.srcs/constrs_1/new/ARTY.xdc
-
 
 
 # /fpga/arty/arty.srcs/sources_1/ip/clk_wiz_0/*
