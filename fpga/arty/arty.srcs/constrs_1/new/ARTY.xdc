@@ -8,7 +8,7 @@
 set_property -dict {PACKAGE_PIN E3 IOSTANDARD LVCMOS33} [get_ports sysclk]
 
 # do not time async inputs
- set_false_path -from [get_ports sw[0] ]
+set_false_path -from [get_ports sw[0] ]
 set_false_path -from [get_ports sw[1] ]
 set_false_path -from [get_ports btn[0] ]
 set_false_path -from [get_ports btn[1] ]
