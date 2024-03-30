@@ -2,12 +2,7 @@
 *.jou
 
 /rust_examples/target/*
-
 /hdl/verilator/riscv_asm/target/*
-# !/fpga/hippomenes/hippomenes.srcs/sources_1/ip/*
-# !/fpga/hippomenes/hippomenes.srcs/constrs_1/new/*
-# !/fpga/hippomenes/hippomenes.xpr
-# !/fpga/hippomenes.tcl
 
 /fpga/hippomenes
 /fpga/arty/*
