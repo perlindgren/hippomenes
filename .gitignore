@@ -11,3 +11,4 @@
 
 /fpga/hippomenes
 /fpga/arty/*
+/fpga/arty_top/*
