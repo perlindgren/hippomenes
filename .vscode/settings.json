@@ -1,8 +1,8 @@
 {
-    "verilog.languageServer.veribleVerilogLs.path": "/home/pln/downloads/verible-v0.0-3545-ge4028f19/bin/verible-verilog-ls",
-    "verilog.formatting.verilogHDL.formatter": "verible-verilog-format",
+    // "verilog.languageServer.veribleVerilogLs.path": "/home/pln/downloads/verible-v0.0-3545-ge4028f19/bin/verible-verilog-ls",
+    // "verilog.formatting.verilogHDL.formatter": "verible-verilog-format",
     "verilog.languageServer.veribleVerilogLs.enabled": true,
-    "verilog.formatting.veribleVerilogFormatter.path": "/home/pln/downloads/verible-v0.0-3545-ge4028f19/bin/verible-verilog-format",
+    // "verilog.formatting.veribleVerilogFormatter.path": "/home/pln/downloads/verible-v0.0-3545-ge4028f19/bin/verible-verilog-format",
     "editor.formatOnSave": true,
     "cSpell.ignoreWords": [
         "Verilator"
