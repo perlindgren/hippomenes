@@ -1,6 +1,10 @@
 // top_arty
 `timescale 1ns / 1ps
 
+import config_pkg::*;
+import arty_pkg::*;
+import decoder_pkg::*;
+
 module top_arty (
     input  logic clk,
     input  logic reset,
@@ -12,8 +16,7 @@ module top_arty (
     // output GpioT gpio_out,
     // output GpioT gpio_dir
 );
-  import config_pkg::*;
-  import decoder_pkg::*;
+
   // import mem_pkg::*;
 
   IMemAddrT pc_interrupt_mux_out;
