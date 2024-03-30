@@ -5,7 +5,6 @@ register_file = $(root)/config_pkg.sv $(core)/register_file.sv $(core)/tb_regist
 rf_stack = $(root)/config_pkg.sv $(core)/reg_n.sv $(core)/rf_stack.sv $(core)/register_file.sv $(core)/tb_rf_stack.sv
 
 top_dep = \
-$(root)/config_pkg.sv \
 $(core)/decoder_pkg.sv \
 $(root)/mem_pkg.sv \
 $(core)/decoder.sv \
@@ -27,7 +26,7 @@ top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
 top_n_clic = $(top_dep) $(root)/top_n_clic.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_n_clic.sv
 
-top_arty = $(top_dep) $(root)/top_arty.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_arty.sv
+top_arty =  $(root)/config_pkg.sv $(root)/arty_pkg.sv $(top_dep) $(root)/top_arty.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_arty.sv
 
 top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
 
