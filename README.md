@@ -2,6 +2,8 @@
 
 Experimental RISC-V RT extension implementation.
 
+Welcome to the [RISC-V RT](https://discord.gg/4KZUqZ29mq) Discord server for discussions/suggestions etc.
+
 Architectural design follows the submitted proposal (contact <per.lindgren@ltu.se> for pre-print).
 The design goal of RISC-V RT is to provide a specification for light-weight MCU implementations enabling the implementation of (hard) real-time systems. RISC-V RT currently features:
 
