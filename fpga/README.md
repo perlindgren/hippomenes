@@ -13,15 +13,24 @@ Workflow tested under Win10 and arch Linux.
 - Rust toolchain with `riscv32i-unknown-none-elf` target
   - `rustup target add riscv32i-unknown-none-elf`
 - `elf2mem`
-  - `cargo install --git https://github.com/perlindgren/elf2mem.git`, or
-  - ```shell
-    git clone https://github.com/perlindgren/elf2mem
-    cargo install --path . 
-    ```
+
+You can install `elf2mem` either by:
+
+```shell
+cargo install --git https://github.com/perlindgren/elf2mem.git`
+```
+
+or locally by:
+  
+```shell
+git clone https://github.com/perlindgren/elf2mem
+cd elf2mem
+cargo install --path . 
+```
 
 ## Project build
 
-Fork/Clone the project. Run following commands:
+Fork/Clone the project (currently use the ARTY branch but this will be merged to master later). Run following commands:
 
 ```shell
 cd hippomenes/fpga
@@ -67,7 +76,7 @@ To patch the generated bitstream with the new binary, run in the `fpga` folder, 
 ./program_arty.cmd
 ```
 
-or, for Linux 
+or, for Linux
 
 ```shell
 ./program_arty.sh
@@ -79,4 +88,4 @@ Notice, under Windows we rely on Vivado for the programming which is tremendousl
 
 Under Linux we use the `openFPGAloader` which directly connects to the target without the need to start Vivado. It might be possible to use `openFPGAloader` under `wsl`, but this is not yet tested.
 
-For patching the bitstream we currently use the Vivado tool `updatemem`, also here an open source variant would be preferrable. 
+For patching the bitstream we currently use the Vivado tool `updatemem`, also here an open source variant would be preferable.
