@@ -10,5 +10,5 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 global_asm! {
-    include_str!("asm_intr.s")
+    include_str!("asm_timer_task_prescaler.s")
 }

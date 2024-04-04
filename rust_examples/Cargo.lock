@@ -84,7 +84,7 @@ checksum = "290f1a1d9242c78d09ce40a5e87e7554ee637af1351968159f4952f028f75604"
 [[package]]
 name = "hippomenes-core"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
+source = "git+https://github.com/onsdagens/hippomenes-core#1a8ecd3f15d73c9931c74203acf4f51691603b4b"
 dependencies = [
  "const_format",
  "critical-section",
@@ -94,17 +94,17 @@ dependencies = [
 [[package]]
 name = "hippomenes-derive"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
+source = "git+https://github.com/onsdagens/hippomenes-core#1a8ecd3f15d73c9931c74203acf4f51691603b4b"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.52",
+ "syn 2.0.58",
 ]
 
 [[package]]
 name = "hippomenes-hal"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
+source = "git+https://github.com/onsdagens/hippomenes-core#1a8ecd3f15d73c9931c74203acf4f51691603b4b"
 dependencies = [
  "hippomenes-core",
 ]
@@ -112,7 +112,7 @@ dependencies = [
 [[package]]
 name = "hippomenes-rt"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
+source = "git+https://github.com/onsdagens/hippomenes-core#1a8ecd3f15d73c9931c74203acf4f51691603b4b"
 dependencies = [
  "hippomenes-core",
  "hippomenes-rt-macros",
@@ -121,7 +121,7 @@ dependencies = [
 [[package]]
 name = "hippomenes-rt-macros"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#184e4e9a76e5b4737409d9cc35663bee01f0951e"
+source = "git+https://github.com/onsdagens/hippomenes-core#1a8ecd3f15d73c9931c74203acf4f51691603b4b"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -140,9 +140,9 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.2.5"
+version = "2.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b0b929d511467233429c45a44ac1dcaa21ba0f5ba11e4879e6ed28ddb4f9df4"
+checksum = "168fb715dda47215e360912c096649d23d58bf392ac62f73919e831745e40f26"
 dependencies = [
  "equivalent",
  "hashbrown",
@@ -262,9 +262,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.52"
+version = "2.0.58"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b699d15b36d1f02c3e7c69f8ffef53de37aefae075d8488d4ba1a7788d574a07"
+checksum = "44cfb93f38070beee36b3fef7d4f5a16f27751d94b187b666a5cc5e9b0d30687"
 dependencies = [
  "proc-macro2",
  "quote",
