@@ -22,7 +22,7 @@ module timer
     output word  csr_direct_out,
     output word  csr_out
 );
-  TimerWidthT counter;
+  TimerCounterT counter;
   TimerT timer;
 
   csr #(

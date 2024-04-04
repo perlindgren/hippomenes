@@ -72,6 +72,26 @@ module n_clic
       .direct_out(m_int_thresh_direct_out),
       .out(m_int_thresh_out)
   );
+  
+  
+  word mstatus_direct_out;
+  word mstatus_out;
+  csr #(
+    .CsrWidth(MStatusWidth),
+    .Addr(MStatusAddr)
+  ) mstatus (
+    .clk,
+    .reset,
+    .csr_enable,
+    .csr_addr,
+    .rs1_zimm,
+    .rs1_data,
+    .csr_op,
+    .ext_data(MStatusT'(0)),
+    .ext_write_enable(1'(0)),
+    .direct_out(mstatus_direct_out),
+    .out(mstatus_out)
+  );
 
   // packed struct allowng for 5 bit immediates in CSR
   typedef struct packed {
@@ -205,8 +225,17 @@ module n_clic
       ext_write_enable[0] = 1;
       ext_entry_data[0]   = entry[0] | 1;  // set pend bit
     end
-
-    if (max_prio[VecSize-1] > m_int_thresh.data) begin
+    
+    if (mstatus_direct_out[3] == 0) begin
+      push = 0;
+      pop = 0;
+      m_int_thresh_data = 0;
+      m_int_thresh_write_enable = 0;
+      int_addr = pc_in;
+      interrupt_out = 0;
+      pc_interrupt_sel = PC_NORMAL;
+      timer_interrupt_clear = 0;
+    end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
       // take higher priority interrupt
       push = 1;
       pop = 0;

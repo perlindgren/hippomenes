@@ -49,15 +49,18 @@ package config_pkg;
   localparam CsrAddrT TimeStampCsrBase = 'hb40;
 
   // General CSR registers
-  localparam CsrAddrT MStatusAddr = 'h305;
+  localparam CsrAddrT MStatusAddr = 'h300;
   localparam CsrAddrT MIntThreshAddr = 'h347;
   localparam CsrAddrT StackDepthAddr = 'h350;
+  localparam integer unsigned MStatusWidth = 4;
+  localparam type MStatusT = logic [MStatusWidth-1:0];
 
   // Peripheral timer
   localparam CsrAddrT TimerAddr = 'h400;
   localparam integer unsigned TimerWidth = 16;
   localparam integer unsigned TimerPreWith = 4;
-
+  localparam integer unsigned TimerCounterWidth = TimerWidth + 2 ** TimerPreWith;
+  localparam type TimerCounterT = logic [TimerCounterWidth-1:0];
   localparam type TimerWidthT = logic [TimerWidth-1:0];
   localparam type TimerPresWidthT = logic [TimerPreWith-1:0];
 
