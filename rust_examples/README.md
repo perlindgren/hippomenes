@@ -38,9 +38,13 @@ To dump the generated binary as a Verilog ``.mem`` file use:
 elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/<EXAMPLE> -t binary.mem 
 ```
 
-The generated ``binary.mem`` file is pointed to by the Hippomenes ``ROM`` component, and so it should be used to initialize the ``ROM`` automatically.
+To resynthesize, and replace the Hippomenes memory component, and reprogram your Arty board under Linux or Windows, the ``../fpga/program_arty.sh`` and ``../fpga/program_arty.cmd`` scripts can be used.
 
-For Vivado, you *may* need to add the ``binary.mem`` file to the simulation sources once (the included project should already contain this).
+Under Linux, all of the above steps can be performed via the runner, so running one of the examples on your board amounts to
+
+```shell
+cargo run --example <EXAMPLE> --release
+```
 
 ## The examples
 
