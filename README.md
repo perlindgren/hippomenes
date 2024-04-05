@@ -49,7 +49,7 @@ The repository is structured as follows:
 - `fpga`, backend workflow (currently targeting Vivado/Xilinx Pynq-Z1, more targets will follow)
 - `hdl`
   - `src`, general top level sources and test benches
-    - `core`, Hippomenes specific sources and test benches 
+    - `core`, Hippomenes specific sources and test benches
   - `verilator`, simulation setup.
 
 ## Simulation
@@ -64,20 +64,20 @@ The design can be synthesized to the entry level Pynq-Z1 platform using the Viva
 
 Hippomenes RTL at top level:
 
-![RISC-V RT TOP](fpga_top.png)
+![RISC-V RT TOP](pictures/fpga_top.png)
 
 Resource usage for a configuration with 4 priority levels (as the ARM Cortex M0) and 4K of SRAM is depicted below:
 
 The data memory (`dmem`) stands for the majority of the required resources, while the stacked register file (`rf`) and (`n-clic`) together amounts to a third of the resources used.
 
-![RISC-V RT SYNTH](fpga_synth.png)
+![RISC-V RT SYNTH](pictures/fpga_synth.png)
 
 Looking closer at the resource utilization:
-![FPGA-STATS](fpga_stats.png)
+![FPGA-STATS](pictures/fpga_stats.png)
 
 And in comparison to resources available for the entry level Pynq-Z1:
 
-![FPGA-STATS-COMP](fpga_stats_comp.png)
+![FPGA-STATS-COMP](pictures/fpga_stats_comp.png)
 
 Interesting here is that the total design amounts to less than 4 percent of the logic resources, thus the design can be considered ultra light-weight.
 
@@ -87,7 +87,7 @@ This is also reflected by the modest synthesis time, less than 2 minutes for a c
 
 The RISC-RT and its implementation has been modelled using the [SyncRim](https://github.com/perlindgren/syncrim/tree/hippomenes) tool. The high-level SyncRim model and its implementation is in 1-1 functional correspondence, thus providing an interactive, cycle accurate, high-level simulation model of the proposed RISC-V RT specification.
 
-![RISC-V RT](SyncRim.png)
+![RISC-V RT](pictures/SyncRim.png)
 
 ## Example
 
@@ -236,6 +236,23 @@ As seen it instantiates a single CSR, which address (`TimerAddr`) and layout (`T
 ```
 
 As seen there is currently just a `counter_top` and `prescaler` (we kept it simple). As a side effect, the `timer` has in Verilator simulation the reset value 0, thus a match to the `counter` register will happen immediately after reset, the `interrupt_set` goes high, and and the interrupt is dispatched by the `n_clic` as soon as the corresponding enable bit in the vector table is set.
+
+## AMD/Xilinx Zynq/Artix 7000 series and the Pynq Z1
+
+HDL sources are written in synthesis friendly SystemVerilog. The design is kept minimal, as reported by `cloc` the core is about 1k-loc with another 1k-loc of test-benches (one for each component). Top level includes data and instruction memory, where XPM-SPRAM (Xilinx proprietary single ported block-ram) is used by Vivado for synthesis for both simulation and synthesis of the instruction memory. This allows post-synthesis updates of memory content, without re-synthesis (vastly improving code-change iterations). (`Verilator` based simulation uses a simpler rom model with the same functionality). Timing is met at approximately 50MHz which is surprisingly good for a single cycle/non-pipelined design (no backend tuning has been applied). During development it is however recommended to target lower frequencies to improve synthesis iterations, a full iteration cycle (synthesis, implementation and bitstream generation) is well under 2 minutes at 20MHz on a standard desktop (AMD 7950x3d 32G ram, Vivado 2023.2).
+
+A single file `config_pkg.sv` is used to configure Hippomenes, defaulting to a light-weight configuration with 4 interrupt priorities and 8 interrupt vectors.
+
+Top level defines the interface to the environment, currently:
+
+- 4 LEDs for status indication (led0, bound to clock)
+- 2 Switches, SW0 tied to external clock reset, SW1 tied to internal soft reset. Additional interfaces can be straightforwardly added.
+
+The released version does not ship with any ILA/DGB blocks activated, as their use is very much feature specific.
+
+## Rust Examples
+
+In line with requirements to memory safety, Hippomenes is leveraging on the Rust language and ecosystem. The only pre-requisite is a working Rust tool-chain. The Rust tooling is fully integrated with the Pynq-Z1 target, offering dfu like programming with iterations (source code updates to code deployed) in less than 15 seconds. Jtag debug functionality and [probe-rs](https://probe.rs/) is planned.
 
 ## Contribution
 
