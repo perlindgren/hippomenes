@@ -38,7 +38,7 @@ To dump the generated binary as a Verilog ``.mem`` file use:
 elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/<EXAMPLE> -t binary.mem 
 ```
 
-To resynthesize, and replace the Hippomenes memory component, and reprogram your Arty board under Linux or Windows, the ``../fpga/program_arty.sh`` and ``../fpga/program_arty.cmd`` scripts can be used.
+To resynthesize, and replace the Hippomenes memory component, and reprogram your Arty board under Linux or Windows, the ``../fpga/program_arty.sh`` and ``../fpga/program_arty.cmd`` scripts can be used respectively.
 
 Under Linux, all of the above steps can be performed via the runner, so running one of the examples on your board amounts to
 
