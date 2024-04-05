@@ -6,8 +6,8 @@ package arty_pkg;
 
   // Led
   localparam CsrAddrT LedAddr = 'h000;
-  localparam integer unsigned LedWidth = 4;
-  localparam type LedT = logic [LedWidth-1:0];
+  localparam integer unsigned LedWidth = 5;
+  localparam type LedT = logic [LedWidth-2:0];
 
   // Buttons
   localparam CsrAddrT BtnAddr = 'h001;

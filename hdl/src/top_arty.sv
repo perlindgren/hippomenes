@@ -9,8 +9,9 @@ module top_arty (
     input  logic clk,
     input  logic reset,
     input  BtnT  btn,
-    output LedT  led
+    output LedT  led,
 
+    output logic rx
     // TODO: gpio
     // input  GpioT gpio_in,
     // output GpioT gpio_out,
@@ -255,7 +256,8 @@ module top_arty (
       .direct_out(csr_led_direct_out),
       .out(csr_led_out)
   );
-  assign led = LedT'(csr_led_out);
+  assign led = LedT'(csr_led_out[LedWidth - 2:0]);
+  assign rx = csr_led_out[LedWidth - 1]; //last pin is RX
 
 
   // TODO: GPIO

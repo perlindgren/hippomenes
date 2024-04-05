@@ -5,7 +5,7 @@ use hippomenes_rt as _;
 
 #[rtic::app(device = hippomenes_core)]
 mod app {
-    use hippomenes_core::{Pin, Pin0};
+    use hippomenes_core::Pin4;
     use hippomenes_hal::UART;
     #[shared]
     struct Shared {
@@ -14,14 +14,14 @@ mod app {
 
     #[local]
     struct Local {
-        uart: UART<Pin0>,
+        uart: UART<Pin4>,
         buf: [u8; 8],
     }
 
     #[init]
     fn init(cx: init::Context) -> (Shared, Local) {
         let peripherals = cx.device;
-        let pin = peripherals.gpio.pins().pin0;
+        let pin = peripherals.gpio.pins().pin4;
         let timer = peripherals.timer;
         let mut uart = UART::new(pin, timer, 119_200);
         let buf = "hippo!! ".as_bytes().try_into().unwrap();

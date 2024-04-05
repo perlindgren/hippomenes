@@ -34,7 +34,8 @@ module fpga_arty (
       .clk,
       .reset(sw[1]),
       .btn,
-      .led
+      .led,
+      .rx
   );
 
   clk_wiz_0 clk_gen (
