@@ -2,6 +2,7 @@
     "editor.formatOnSave": true,
     "cSpell.ignoreWords": [
         "Artix",
+        "Bitstream",
         "CLIC",
         "GPIO",
         "MMIO",
@@ -21,7 +22,9 @@
         "posedge",
         "prescaler",
         "riscv",
+        "rustup",
         "struct",
+        "updatemem",
         "verible",
         "verilog",
         "xori",
