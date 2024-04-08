@@ -2,9 +2,17 @@
 all: $(PROJ).bin
 
 %.json: %.v $(ADD_SRC) $(ADD_DEPS)
+	@echo 'run yosys'
 	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $< $(ADD_SRC)
+	
+%.json: %.sv $(ADD_SRC) $(ADD_DEPS)
+	@echo 'run yosys read_systemverilog'
+	yosys -ql $*.log -p 'plugin -i systemverilog; read_systemverilog; synth_ice40 -top top -json $@' $< $(ADD_SRC)
+	
+#	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $< $(ADD_SRC)
 
-%.asc: $(PIN_DEF) %.json
+%.asc: $(PIN_DEF) %.json 
+	@echo 'run nextpnr-ice40'
 	nextpnr-ice40 --$(DEVICE) \
 	$(if $(PACKAGE),--package $(PACKAGE)) \
 	--json $(filter-out $<,$^) \
@@ -13,6 +21,7 @@ all: $(PROJ).bin
 	$(if $(PNR_SEED),--seed $(PNR_SEED))
 
 %.bin: %.asc
+	@echo 'run icepack'
 	icepack $< $@
 
 %_tb: %_tb.v %.v

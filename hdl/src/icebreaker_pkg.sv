@@ -1,7 +1,7 @@
-// arty_pkg
+// icebreaker_pkg
 `timescale 1ns / 1ps
 
-package arty_pkg;
+package icebreaker_pkg;
   import config_pkg::*;
 
   // Led
