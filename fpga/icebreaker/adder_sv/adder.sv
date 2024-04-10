@@ -44,7 +44,7 @@ module top (
   end
 
   adder adder_inst (
-      .a,
+      .a(a),
       .b,
       .s,
       .c

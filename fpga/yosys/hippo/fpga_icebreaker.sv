@@ -1,24 +1,29 @@
 // fpga_icebreaker
 `timescale 1ns / 1ps
 
-import config_pkg::*;
-import decoder_pkg::*;
+
 module top (
     input  CLK,
     output LED1
 );
-
-  logic [3:0] btn;
-  assign btn = '{0, 0, 0, 0};
-
-  top_n_clic hippo (
-      .clk  (CLK),
-      .reset(0),
-      .btn
-  );
-
-
   logic [31:0] r_count;
+
+  logic a;
+  logic b;
+  logic s;
+  logic c;
+
+  always_comb begin
+    a = 0;
+    b = 1;
+  end
+
+  adder adder_inst (
+      .a(a),
+      .b,
+      .s,
+      .c
+  );
 
   // clock devider
   always @(posedge CLK) begin

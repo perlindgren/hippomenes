@@ -31,9 +31,9 @@ module top (
 	wire s;
 	wire c;
 
-  assign LED1 = BTN1;
-  assign 	LED2 = BTN2;
-  assign 	LED3 = BTN3;
+  	assign LED1 = BTN1;
+  	assign 	LED2 = BTN2;
+  	assign 	LED3 = BTN3;
 
 	assign a = BTN1;
 	assign b = BTN2;

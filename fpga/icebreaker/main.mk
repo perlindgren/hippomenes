@@ -1,15 +1,13 @@
 
 all: $(PROJ).bin
 
-%.json: %.v $(ADD_SRC) $(ADD_DEPS)
+%.json: %_top.v 
 	@echo 'run yosys'
-	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $< $(ADD_SRC)
-	
-%.json: %.sv $(ADD_SRC) $(ADD_DEPS)
-	@echo 'run yosys read_systemverilog'
-	yosys -ql $*.log -p 'plugin -i systemverilog; read_systemverilog; synth_ice40 -top top -json $@' $< $(ADD_SRC)
-	
-#	yosys -ql $*.log -p 'synth_ice40 -top top -json $@' $< $(ADD_SRC)
+	yosys -p 'synth_ice40 -top top -json $@' $< 
+
+%_top.v: %.sv
+	@echo 'sv2v' $< $(ADD_SRC)
+	sv2v $< $(ADD_SRC) > $@ 
 
 %.asc: $(PIN_DEF) %.json 
 	@echo 'run nextpnr-ice40'
@@ -57,7 +55,7 @@ sudo-dfuprog: $(PROJ).bin
 	sudo dfu-util$(if $(DFU_DEVICE), -d $(DFU_DEVICE))$(if $(DFU_SERIAL), -S $(DFU_SERIAL)) -a 0 -D $< -R
 
 clean:
-	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).bin $(PROJ).json $(PROJ).log $(ADD_CLEAN)
+	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).bin $(PROJ).json $(PROJ).log $(PROJ)_top.v $(ADD_CLEAN)
 
 .SECONDARY:
 .PHONY: all prog clean

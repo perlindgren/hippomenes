@@ -39,7 +39,8 @@ module n_clic
       .csr_op,
       .rs1_zimm,
       .rs1_data,
-      .ext_data(TimerT'(0)),
+      //.ext_data(TimerT'(0)),
+      .ext_data(0),
       .ext_write_enable(1'b0),
       .interrupt_clear(timer_interrupt_clear),
       // out
@@ -72,25 +73,25 @@ module n_clic
       .direct_out(m_int_thresh_direct_out),
       .out(m_int_thresh_out)
   );
-  
-  
+
+
   word mstatus_direct_out;
   word mstatus_out;
   csr #(
-    .CsrWidth(MStatusWidth),
-    .Addr(MStatusAddr)
+      .CsrWidth(MStatusWidth),
+      .Addr(MStatusAddr)
   ) mstatus (
-    .clk,
-    .reset,
-    .csr_enable,
-    .csr_addr,
-    .rs1_zimm,
-    .rs1_data,
-    .csr_op,
-    .ext_data(MStatusT'(0)),
-    .ext_write_enable(1'(0)),
-    .direct_out(mstatus_direct_out),
-    .out(mstatus_out)
+      .clk,
+      .reset,
+      .csr_enable,
+      .csr_addr,
+      .rs1_zimm,
+      .rs1_data,
+      .csr_op,
+      .ext_data(MStatusT'(0)),
+      .ext_write_enable(1'(0)),
+      .direct_out(mstatus_direct_out),
+      .out(mstatus_out)
   );
 
   // packed struct allowng for 5 bit immediates in CSR
@@ -215,7 +216,7 @@ module n_clic
 
   // handle interrupts: take-, tail-chain-, exit- and no-interrupt
   always_comb begin
-  // this assignment is broken under vivado, always yields max_i = x
+    // this assignment is broken under vivado, always yields max_i = x
     automatic VecT max_i = max_index[VecSize-1];
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = '{default: '0};
@@ -225,7 +226,7 @@ module n_clic
       ext_write_enable[0] = 1;
       ext_entry_data[0]   = entry[0] | 1;  // set pend bit
     end
-    
+
     if (mstatus_direct_out[3] == 0) begin
       push = 0;
       pop = 0;
