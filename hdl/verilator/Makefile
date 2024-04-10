@@ -26,7 +26,7 @@ top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
 top_n_clic = $(top_dep) $(root)/top_n_clic.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_n_clic.sv
 
-top_icebreaker = $(root)/config_pkg.sv $(top_dep) $(root)/icebreaker_top_n_clic.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_icebreaker.sv
+top_icebreaker= $(root)/config_pkg.sv $(root)/icebreaker_pkg.sv $(top_dep) $(root)/top_icebreaker.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_icebreaker.sv
 
 top_arty =  $(root)/config_pkg.sv $(root)/arty_pkg.sv $(top_dep) $(root)/top_arty.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_arty.sv
 
@@ -64,7 +64,8 @@ all: \
 	tb_time_stamp \
 	tb_stack \
 	tb_timer \
-	tb_top_arty
+	tb_top_arty \
+	tb_top_ice
 	 
 	# tb_top_branch \
 	# tb_top_mem \

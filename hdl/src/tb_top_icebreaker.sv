@@ -2,16 +2,15 @@
 `timescale 1ns / 1ps
 
 module tb_top_icebreaker;
-  import config_pkg::*;
+  import icebreaker_pkg::*;
 
   logic clk;
   logic reset;
 
-
   BtnT  btn;
   logic led;
 
-  top_arty top_n_clic (
+  top_icebreaker top (
       // in
       .clk,
       .reset,

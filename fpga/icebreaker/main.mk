@@ -1,15 +1,15 @@
 
 all: $(PROJ).bin
 
-%.json: export YOSYS = foo
-%_top.v: export YOSYS = foo
+# %.json: export YOSYS = foo
+# %_gen.v: export YOSYS = foo
 
-%.json: %_top.v 
+%.json: %_gen.v 
 	@echo 'run yosys'
 	@echo $(YOSYS)
 	yosys -p 'synth_ice40 -top top -json $@' $< 
 
-%_top.v: %.sv
+%_gen.v: %.sv
 	@echo 'sv2v' $(ADD_SRC) $<
 	@echo $(YOSYS)
 	sv2v -v $(ADD_SRC) $< > $@ 
@@ -60,7 +60,7 @@ sudo-dfuprog: $(PROJ).bin
 	sudo dfu-util$(if $(DFU_DEVICE), -d $(DFU_DEVICE))$(if $(DFU_SERIAL), -S $(DFU_SERIAL)) -a 0 -D $< -R
 
 clean:
-	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).bin $(PROJ).json $(PROJ).log $(PROJ)_top.v $(ADD_CLEAN)
+	rm -f $(PROJ).blif $(PROJ).asc $(PROJ).bin $(PROJ).json $(PROJ).log $(PROJ)_gen.v $(ADD_CLEAN)
 
 .SECONDARY:
 .PHONY: all prog clean

@@ -2,21 +2,21 @@
 `timescale 1ns / 1ps
 
 module top
-  import config_pkg::*;
+  import icebreaker_pkg::*;
   import decoder_pkg::*;
 (
     input  CLK,
     output LED1,
     output LED2
 );
-  logic [3:0] btn;
+  BtnT btn;
   assign btn = '{0, 0, 0, 0};
 
-  top_n_clic hippo (
+  top_icebreaker top (
       .clk  (CLK),
       .reset(0),
       .btn,
-      .LED2
+      .led  (LED2)
   );
 
   logic [31:0] r_count;

@@ -12,10 +12,6 @@ module top_arty (
     output LedT  led,
 
     output logic rx
-    // TODO: gpio
-    // input  GpioT gpio_in,
-    // output GpioT gpio_out,
-    // output GpioT gpio_dir
 );
 
   // import mem_pkg::*;

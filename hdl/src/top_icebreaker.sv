@@ -1,16 +1,16 @@
 // top_n_clic
 `timescale 1ns / 1ps
 
-module top_n_clic (
-    input logic clk,
-    input logic reset,
-    input logic [3:0] btn,
-    output logic LED2
-);
-
-  import config_pkg::*;
+module top_icebreaker
+  import icebreaker_pkg::*;
   import decoder_pkg::*;
   import mem_pkg::*;
+(
+    input  logic clk,
+    input  logic reset,
+    input  BtnT  btn,
+    output logic led
+);
 
   IMemAddrT pc_interrupt_mux_out;
   // registers
@@ -245,7 +245,7 @@ module top_n_clic (
       .direct_out(csr_led_direct_out),  // not used
       .out(csr_led_out)
   );
-  assign LED2 = csr_led_out[0];
+  assign led = csr_led_out[0];
 
   //   word csr_gpio_data_out;
   //   csr_gpio csr_gpio_data (

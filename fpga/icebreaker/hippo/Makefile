@@ -7,6 +7,7 @@ PACKAGE = sg48
 SRC = ../../../hdl/src
 ADD_SRC = \
  $(SRC)/config_pkg.sv \
+ $(SRC)/icebreaker_pkg.sv \
  $(SRC)/core/decoder_pkg.sv \
  $(SRC)/mem_pkg.sv \
  $(SRC)/core/alu.sv \
@@ -29,16 +30,8 @@ ADD_SRC = \
  $(SRC)/core/wb_mux.sv \
  $(SRC)/rom.sv \
  $(SRC)/mem.sv \
- $(SRC)/icebreaker_top_n_clic.sv 
+ $(SRC)/top_icebreaker.sv 
  
- #$(SRC)/rom.sv \
- 
- 
-# $(SRC)/core/reg_n.sv
-
-
-# ADD_DEPS = a_pkg.sv
-
 prog: iceprog
 
 include ../main.mk
