@@ -1,13 +1,18 @@
 
 all: $(PROJ).bin
 
+%.json: export YOSYS = foo
+%_top.v: export YOSYS = foo
+
 %.json: %_top.v 
 	@echo 'run yosys'
+	@echo $(YOSYS)
 	yosys -p 'synth_ice40 -top top -json $@' $< 
 
 %_top.v: %.sv
-	@echo 'sv2v' $< $(ADD_SRC)
-	sv2v -v $< $(ADD_SRC) > $@ 
+	@echo 'sv2v' $(ADD_SRC) $<
+	@echo $(YOSYS)
+	sv2v -v $(ADD_SRC) $< > $@ 
 
 %.asc: $(PIN_DEF) %.json 
 	@echo 'run nextpnr-ice40'

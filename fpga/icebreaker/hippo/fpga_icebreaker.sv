@@ -1,15 +1,15 @@
 // fpga_icebreaker
 `timescale 1ns / 1ps
 
-import config_pkg::*;
-import decoder_pkg::*;
-module top (
+module top
+  import config_pkg::*;
+  import decoder_pkg::*;
+(
     input  CLK,
     output LED1,
     output LED2
 );
-
-  BtnT btn;
+  logic [3:0] btn;
   assign btn = '{0, 0, 0, 0};
 
   top_n_clic hippo (
@@ -18,7 +18,6 @@ module top (
       .btn,
       .LED2
   );
-
 
   logic [31:0] r_count;
 

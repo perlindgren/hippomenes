@@ -15,7 +15,7 @@ module top_n_clic (
 );
   import config_pkg::*;
   import decoder_pkg::*;
-  import mem_pkg::*;
+  im port mem_pkg::*;
 
   IMemAddrT pc_interrupt_mux_out;
   // registers

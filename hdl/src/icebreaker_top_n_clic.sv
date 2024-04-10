@@ -2,9 +2,9 @@
 `timescale 1ns / 1ps
 
 module top_n_clic (
-    input  logic clk,
-    input  logic reset,
-    input  BtnT  btn,
+    input logic clk,
+    input logic reset,
+    input logic [3:0] btn,
     output logic LED2
 );
 

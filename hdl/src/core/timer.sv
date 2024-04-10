@@ -22,47 +22,51 @@ module timer
     output word  csr_direct_out,
     output word  csr_out
 );
-  TimerCounterT counter;
-  TimerT timer;
+  assign csr_direct_out = 0;
+  assign csr_out = 0;
+  assign interrupt_set = 0;
 
-  csr #(
-      .CsrWidth(TimerTWidth),
-      .Addr(TimerAddr)
-  ) csr_timer (
-      // in
-      .clk,
-      .reset,
+  // TimerCounterT counter;
+  // TimerT timer;
 
-      .csr_enable,
-      .csr_addr,
-      .csr_op,
-      .rs1_zimm,
-      .rs1_data,
+  // csr #(
+  //     .CsrWidth(TimerTWidth),
+  //     .Addr(TimerAddr)
+  // ) csr_timer (
+  //     // in
+  //     .clk,
+  //     .reset,
 
-      // external access for side effects
-      .ext_data,
-      .ext_write_enable,
-      // out
-      .direct_out(csr_direct_out),
-      .out(csr_out)
-  );
+  //     .csr_enable,
+  //     .csr_addr,
+  //     .csr_op,
+  //     .rs1_zimm,
+  //     .rs1_data,
 
-  assign timer = csr_timer.data;
+  //     // external access for side effects
+  //     .ext_data,
+  //     .ext_write_enable,
+  //     // out
+  //     .direct_out(csr_direct_out),
+  //     .out(csr_out)
+  // );
 
-  always_ff @(posedge clk) begin
-    if (reset) begin
-      counter <= 0;
-      interrupt_set <= 0;
-    end else begin
-      if ((TimerCounterT'(timer.counter_top) << timer.prescaler) == counter) begin
-        $display("counter top: counter = %d", counter);
-        counter <= 0;
-        interrupt_set <= 1;
-      end else begin
-        if (interrupt_clear) interrupt_set <= 0;
-        counter <= counter + 1;
-      end
-    end
-  end
+  // assign timer = csr_timer.data;
+
+  // always_ff @(posedge clk) begin
+  //   if (reset) begin
+  //     counter <= 0;
+  //     interrupt_set <= 0;
+  //   end else begin
+  //     if ((TimerCounterT'(timer.counter_top) << timer.prescaler) == counter) begin
+  //       $display("counter top: counter = %d", counter);
+  //       counter <= 0;
+  //       interrupt_set <= 1;
+  //     end else begin
+  //       if (interrupt_clear) interrupt_set <= 0;
+  //       counter <= counter + 1;
+  //     end
+  //   end
+  // end
 
 endmodule
