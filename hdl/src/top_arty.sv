@@ -256,8 +256,8 @@ module top_arty (
       .direct_out(csr_led_direct_out),
       .out(csr_led_out)
   );
-  assign led = LedT'(csr_led_out[LedWidth - 2:0]);
-  assign rx = csr_led_out[LedWidth - 1]; //last pin is RX
+  assign led = LedT'(csr_led_out[LedWidth-2:0]);
+  assign rx  = csr_led_out[LedWidth-1];  //last pin is RX
 
 
   // TODO: GPIO

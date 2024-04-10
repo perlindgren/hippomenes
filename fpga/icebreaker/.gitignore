@@ -2,3 +2,4 @@
 *.bin
 *.json
 *_syn.v
+*_top.v

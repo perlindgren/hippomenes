@@ -54,7 +54,7 @@ module timer
       counter <= 0;
       interrupt_set <= 0;
     end else begin
-      if (timer.counter_top << timer.prescaler == counter) begin
+      if ((TimerCounterT'(timer.counter_top) << timer.prescaler) == counter) begin
         $display("counter top: counter = %d", counter);
         counter <= 0;
         interrupt_set <= 1;

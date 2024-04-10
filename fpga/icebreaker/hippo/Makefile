@@ -25,6 +25,7 @@ ADD_SRC = \
  $(SRC)/core/rf_stack.sv \
  $(SRC)/core/stack.sv \
  $(SRC)/core/time_stamp.sv \
+ $(SRC)/core/timer.sv \
  $(SRC)/core/wb_mux.sv \
  $(SRC)/rom.sv \
  $(SRC)/mem.sv \

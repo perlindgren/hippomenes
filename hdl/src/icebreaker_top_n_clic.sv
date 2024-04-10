@@ -2,17 +2,12 @@
 `timescale 1ns / 1ps
 
 module top_n_clic (
-    input logic clk,
-    input logic reset,
-    input logic [3:0] btn
-
-    // output Output out,
-
-    // TODO: gpio
-    // input  GpioT gpio_in,
-    // output GpioT gpio_out,
-    // output GpioT gpio_dir
+    input  logic clk,
+    input  logic reset,
+    input  BtnT  btn,
+    output logic LED2
 );
+
   import config_pkg::*;
   import decoder_pkg::*;
   import mem_pkg::*;
@@ -228,28 +223,29 @@ module top_n_clic (
       .alignment_error(dmem_alignment_error)
   );
 
-  // TODO: GPIO
-  //   word csr_gpio_dir_out;
-  //   word csr_gpio_direct_out;  // not used
-  //   assign gpio_dir = GpioT'(csr_gpio_dir_out);
-  //   csr #(
-  //       .CsrWidth(GpioNum),  // Number of GPIOs
-  //       .Addr(GpioCsrDir)  // Direction register
-  //   ) csr_gpio_dir (
-  //       // in
-  //       .clk,
-  //       .reset,
-  //       .csr_enable(decoder_csr_enable),
-  //       .csr_addr(decoder_csr_addr),
-  //       .rs1_zimm(decoder_rs1),
-  //       .rs1_data(rf_rs1),
-  //       .csr_op(decoder_csr_op),
-  //       .ext_data(0),
-  //       .ext_write_enable(0),
-  //       // out
-  //       .direct_out(csr_gpio_direct_out),  // not used
-  //       .out(csr_gpio_dir_out)
-  //   );
+
+  // led
+  word csr_led_out;
+  word csr_led_direct_out;  // not used
+  csr #(
+      .CsrWidth(1),  // Number of GPIOs
+      .Addr(0)  // LED address
+  ) csr_led (
+      // in
+      .clk,
+      .reset,
+      .csr_enable(decoder_csr_enable),
+      .csr_addr(decoder_csr_addr),
+      .rs1_zimm(decoder_rs1),
+      .rs1_data(rf_rs1),
+      .csr_op(decoder_csr_op),
+      .ext_data(0),
+      .ext_write_enable(0),
+      // out
+      .direct_out(csr_led_direct_out),  // not used
+      .out(csr_led_out)
+  );
+  assign LED2 = csr_led_out[0];
 
   //   word csr_gpio_data_out;
   //   csr_gpio csr_gpio_data (

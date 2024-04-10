@@ -5,16 +5,18 @@ import config_pkg::*;
 import decoder_pkg::*;
 module top (
     input  CLK,
-    output LED1
+    output LED1,
+    output LED2
 );
 
-  logic [3:0] btn;
+  BtnT btn;
   assign btn = '{0, 0, 0, 0};
 
   top_n_clic hippo (
       .clk  (CLK),
       .reset(0),
-      .btn
+      .btn,
+      .LED2
   );
 
 

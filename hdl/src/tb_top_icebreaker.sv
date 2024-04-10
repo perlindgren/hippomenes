@@ -1,7 +1,7 @@
-// tb_top_arty
+// tb_top_icebreaker
 `timescale 1ns / 1ps
 
-module tb_top_arty;
+module tb_top_icebreaker;
   import config_pkg::*;
 
   logic clk;
@@ -9,17 +9,15 @@ module tb_top_arty;
 
 
   BtnT  btn;
-  LedT  led;
-  logic rx;
+  logic led;
 
-  top_arty top (
+  top_arty top_n_clic (
       // in
       .clk,
       .reset,
       .btn,
       // out
-      .led,
-      .rx
+      .led
   );
 
   // clock and reset
@@ -38,7 +36,7 @@ module tb_top_arty;
   end
 
   initial begin
-    $dumpfile("top_arty.fst");
+    $dumpfile("top_icebreaker.fst");
     $dumpvars;
     //  $display("mem : %h, %h, %h, %h", top.imem.mem[0], top.imem.mem[1], top.imem.mem[2],
     //         top.imem.mem['hB00>>2]);
@@ -81,7 +79,7 @@ module tb_top_arty;
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h34); */  // 2nd timer interrupt here
-    #300;
+    #30000;
     $finish;
   end
 

@@ -26,6 +26,8 @@ top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
 top_n_clic = $(top_dep) $(root)/top_n_clic.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_n_clic.sv
 
+top_icebreaker = $(root)/config_pkg.sv $(top_dep) $(root)/icebreaker_top_n_clic.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_icebreaker.sv
+
 top_arty =  $(root)/config_pkg.sv $(root)/arty_pkg.sv $(top_dep) $(root)/top_arty.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_arty.sv
 
 top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
@@ -59,11 +61,11 @@ all: \
 	tb_di_mem \
 	tb_mem \
 	tb_stack \
-	tb_n_clic \
-	tb_timer \
 	tb_time_stamp \
 	tb_stack \
-	tb_top_arty 
+	tb_timer \
+	tb_top_arty
+	 
 	# tb_top_branch \
 	# tb_top_mem \
 	# tb_top \
@@ -75,6 +77,13 @@ all: \
 
 asm: 
 #	cd ../../rust_examples/; cargo build --example asm --release; elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/asm -t ../hdl/verilator/binary.mem -p;
+
+tb_top_ice: $(top_icebreaker)
+	verilator --binary $(top_icebreaker) --top-module tb_top_icebreaker --trace-fst --assert -y $(rust) 
+	obj_dir/Vtb_top_icebreaker
+
+tb_top_ice_g: 
+	gtkwave -a top_icebreaker.gtkw top_icebreaker.fst
 
 tb_top_arty: $(top_arty)
 	verilator --binary $(top_arty) --top-module tb_top_arty --trace-fst --assert -y $(rust) 

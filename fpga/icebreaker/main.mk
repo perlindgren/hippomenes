@@ -7,7 +7,7 @@ all: $(PROJ).bin
 
 %_top.v: %.sv
 	@echo 'sv2v' $< $(ADD_SRC)
-	sv2v $< $(ADD_SRC) > $@ 
+	sv2v -v $< $(ADD_SRC) > $@ 
 
 %.asc: $(PIN_DEF) %.json 
 	@echo 'run nextpnr-ice40'

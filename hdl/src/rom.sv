@@ -31,6 +31,8 @@ module rom
     if (errno == -1 | errno == 2) begin
       $fatal("Could not find binary.mem");
     end
+`elseif YOSYS
+    $readmemh("../../../rust_examples/binary.mem", mem);
 `else
     $readmemh("binary.mem", mem);
 `endif
