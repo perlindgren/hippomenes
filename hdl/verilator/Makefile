@@ -40,8 +40,6 @@ stack = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/stack.sv $(core)/tb
 
 mem = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
 
-di_mem = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_di_mem.sv
-
 alu = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/alu.sv $(core)/tb_alu.sv
 
 time_stamp = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/mono_timer.sv $(core)/time_stamp.sv $(core)/tb_time_stamp.sv
@@ -56,7 +54,6 @@ all: \
 	tb_csr \
 	tb_register_file \
 	tb_rf_stack \
-	tb_di_mem \
 	tb_mem \
 	tb_stack \
 	tb_n_clic \

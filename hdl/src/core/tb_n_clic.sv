@@ -108,7 +108,7 @@ module tb_n_clic;
     reset = 1;
     #15 $display("time ", $time());  // force clock
 
-    reset = 0;
+    reset = 0;  // reset phase over
 
     dut.m_int_thresh.data = 0;  // initial prio, minthresh
 
@@ -122,10 +122,13 @@ module tb_n_clic;
     dut.gen_vec[4].csr_vec.data = 8;  // 32
     dut.gen_vec[7].csr_vec.data = 14;  // 56
 
+    dut.mstatus.data = 8;  // enable global interrupts
+
     pc_branch_mux_sel = PC_NEXT;
     pc_branch = 0;
 
     $display("dut.gen_vec[0].csr_vec.data %h", dut.gen_vec[0].csr_vec.data);
+
 
     #20 $display("time ", $time());  // force clocking
 
