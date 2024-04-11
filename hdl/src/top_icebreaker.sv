@@ -6,10 +6,23 @@ module top_icebreaker
   import decoder_pkg::*;
   import mem_pkg::*;
 (
-    input  logic clk,
-    input  logic reset,
-    input  BtnT  btn,
-    output logic led
+    input logic clk,
+    input logic reset,
+    input BtnT  btn,
+
+    output logic pb1,
+    output logic pb2,
+    output logic pb3,
+    output logic pb4,
+    output logic pb7,
+    output logic pb8,
+    output logic pb9,
+    // output logic pb10,
+
+    output logic led1,
+    output logic led2,
+    output logic led3,
+    output logic led4
 );
 
   IMemAddrT pc_interrupt_mux_out;
@@ -60,7 +73,7 @@ module top_icebreaker
   // instruction memory
   word imem_data_out;
 
-`ifdef VERILATOR
+  // `ifdef VERILATOR
   rom imem (
       // in
       .clk(clk),
@@ -68,15 +81,15 @@ module top_icebreaker
       // out
       .data_out(imem_data_out)
   );
-`else
-  rom imem (
-      // in
-      .clk(clk),
-      .address(pc_interrupt_mux_out[IMemAddrWidth-1:0]),
-      // out
-      .data_out(imem_data_out)
-  );
-`endif
+  // `else
+  //   rom imem (
+  //       // in
+  //       .clk(clk),
+  //       .address(pc_interrupt_mux_out[IMemAddrWidth-1:0]),
+  //       // out
+  //       .data_out(imem_data_out)
+  //   );
+  // `endif
 
   // decoder
   wb_mux_t decoder_wb_mux_sel;
@@ -228,7 +241,7 @@ module top_icebreaker
   word csr_led_out;
   word csr_led_direct_out;  // not used
   csr #(
-      .CsrWidth(1),  // Number of GPIOs
+      .CsrWidth(1),  // Number of leds
       .Addr(0)  // LED address
   ) csr_led (
       // in
@@ -245,27 +258,31 @@ module top_icebreaker
       .direct_out(csr_led_direct_out),  // not used
       .out(csr_led_out)
   );
-  assign led = csr_led_out[0];
 
-  //   word csr_gpio_data_out;
-  //   csr_gpio csr_gpio_data (
-  //       // in
-  //       .clk,
-  //       .reset,
-  //       .csr_enable(decoder_csr_enable),
-  //       .csr_addr(decoder_csr_addr),
-  //       .rs1_zimm(decoder_rs1),
-  //       .rs1_data(rf_rs1),
-  //       .csr_op(decoder_csr_op),
-  //       .ext_data(0),
-  //       .ext_write_enable(0),
-  //       .direction(GpioT'(csr_gpio_dir_out)),
-  //       // out
-  //       .out(csr_gpio_data_out),
-  //       // gpi
-  //       .gpio_in,
-  //       .gpio_out
-  //   );
+  assign led1 = pc_reg_out[2];
+  assign led2 = pc_reg_out[3];
+  assign led3 = pc_reg_out[4];
+  assign led4 = pc_reg_out[5];
+
+  // assign pb1  = pc_reg_out[2];  // csr_led_out[0];
+  //   assign pb1  = imem_data_out[0];
+  //   assign pb2  = imem_data_out[1];
+  //   assign pb3  = imem_data_out[2];
+  //   assign pb4  = imem_data_out[3];
+  //   assign pb7  = imem_data_out[4];
+  //   assign pb8  = imem_data_out[5];
+  //   assign pb9  = imem_data_out[6];
+  //  assign pb10 = imem_data_out[7];
+
+  assign pb1  = pc_reg_out[2];
+  assign pb2  = pc_reg_out[3];
+  assign pb3  = pc_reg_out[4];
+  assign pb4  = pc_reg_out[5];
+  assign pb7  = pc_reg_out[6];
+  assign pb8  = pc_reg_out[7];
+  assign pb9  = csr_led_out[0];
+
+
 
   word n_clic_csr_out;
   n_clic n_clic (

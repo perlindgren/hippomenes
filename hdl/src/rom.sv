@@ -10,34 +10,37 @@ module rom
 );
 
   IMemDataT mem[IMemSize >> 2];
-  integer errno;
-  integer fd;
-
-`ifdef VERILATOR
-  string error_msg;
-`endif
-
+  IMemDataT tmp_mem[IMemSize >> 2];
   assign data_out = mem[address[IMemAddrWidth-1:2]];
 
-  // loading binary
   initial begin
+    $readmemh("../../../rust_examples/binary.mem", tmp_mem);
+  end
+
+  always_comb begin
     for (integer k = 0; k < IMemSize >> 2; k++) begin
       mem[k] = 0;
+      mem[k] = tmp_mem[k];
     end
-    $display("Loading memory file binary.mem");
-`ifdef VERILATOR
-    $readmemh("../../rust_examples/binary.mem", mem);
-    errno = $ferror(fd, error_msg);
-    if (errno == -1 | errno == 2) begin
-      $fatal("Could not find binary.mem");
-    end
-`elsif `ifdef YOSYS
-    $readmemh("../../../rust_examples/binary.mem", mem);
-`else
-    $readmemh("binary.mem", mem);
-`endif
-`endif
 
   end
+  // `endif
+  //   end
+
+  // TODO: Vivado?
+  // `else
+  //     $readmemh("binary.mem", mem);
+  // `endif
+
+  // always_comb begin
+
+  //   mem[0] = 'h50000117;
+  //   mem[1] = 'h50010113;
+  //   mem[2] = 'h0000d073;
+  //   mem[3] = 'h00005073;
+  //   mem[4] = 'hff9ff06f;
+
+  // end
+
 
 endmodule

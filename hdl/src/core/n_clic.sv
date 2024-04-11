@@ -53,7 +53,7 @@ module n_clic
   logic m_int_thresh_write_enable;
   word  m_int_thresh_direct_out;  // not used
   word  m_int_thresh_out;
-  PrioT m_int_thresh_data;
+  PrioT m_int_thresh_ext_data;
 
   csr #(
       .CsrWidth(PrioWidth),
@@ -67,7 +67,7 @@ module n_clic
       .rs1_zimm,
       .rs1_data,
       .csr_op,
-      .ext_data(m_int_thresh_data),
+      .ext_data(m_int_thresh_ext_data),
       .ext_write_enable(m_int_thresh_write_enable),
       // out
       .direct_out(m_int_thresh_direct_out),
@@ -120,7 +120,7 @@ module n_clic
       .reset,
       .push,
       .pop,
-      .data_in  ({pc_in, m_int_thresh.data}),
+      .data_in  ({pc_in, PrioT'(m_int_thresh_out)}),
       // out,
       .data_out (stack_out),
       .index_out(level_out)
@@ -191,12 +191,12 @@ module n_clic
   VecT          max_index[VecSize];
   always_comb begin
     // check first index in vector table
-    if (entry[0].enabled && entry[0].pended && (prio[0] >= m_int_thresh.data)) begin
+    if (entry[0].enabled && entry[0].pended && (prio[0] >= PrioT'(m_int_thresh_out))) begin
       max_prio[0]  = prio[0];
       max_vec[0]   = csr_vec_data[0];
       max_index[0] = 0;
     end else begin
-      max_prio[0]  = m_int_thresh.data;
+      max_prio[0]  = PrioT'(m_int_thresh_out);
       max_vec[0]   = 0;
       max_index[0] = 0;
     end
@@ -230,18 +230,18 @@ module n_clic
     if (mstatus_direct_out[3] == 0) begin
       push = 0;
       pop = 0;
-      m_int_thresh_data = 0;
+      m_int_thresh_ext_data = 0;
       m_int_thresh_write_enable = 0;
       int_addr = pc_in;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
-    end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
+    end else if (max_prio[VecSize-1] > PrioT'(m_int_thresh_out)) begin
       // take higher priority interrupt
       push = 1;
       pop = 0;
       int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
-      m_int_thresh_data = max_prio[VecSize-1];
+      m_int_thresh_ext_data = max_prio[VecSize-1];
       m_int_thresh_write_enable = 1;
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
@@ -256,12 +256,12 @@ module n_clic
       $display("interrupt take int_addr %d", int_addr);
     end else if ((pc_in == ~(IMemAddrWidth'(0))) &&
         entry[max_i].enabled && entry[max_i].pended &&
-        (max_prio[VecSize-1] >= m_int_thresh.data)) begin
+        (max_prio[VecSize-1] >= PrioT'(m_int_thresh_out))) begin
       // tail chain only in case the vector is actually enabled and pended
       push = 0;
       pop = 0;
       int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte addressed instruction memory
-      m_int_thresh_data = 0;  // no update of threshold
+      m_int_thresh_ext_data = 0;  // no update of threshold
       m_int_thresh_write_enable = 0;  // no update of threshold
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
@@ -277,7 +277,7 @@ module n_clic
       push = 0;
       pop = 1;
       int_addr = stack_out.addr;
-      m_int_thresh_data = stack_out.prio;
+      m_int_thresh_ext_data = stack_out.prio;
       m_int_thresh_write_enable = 1;
       interrupt_out = 0;
       pc_interrupt_sel = PC_INTERRUPT;
@@ -287,7 +287,7 @@ module n_clic
       // no interrupt
       push = 0;
       pop = 0;
-      m_int_thresh_data = 0;
+      m_int_thresh_ext_data = 0;
       m_int_thresh_write_enable = 0;
       int_addr = pc_in;
       interrupt_out = 0;

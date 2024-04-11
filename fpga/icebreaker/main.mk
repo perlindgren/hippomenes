@@ -1,13 +1,13 @@
 
 all: $(PROJ).bin
 
-# %.json: export YOSYS = foo
-# %_gen.v: export YOSYS = foo
+%.json: export YOSYS = foo
+%_gen.v: export YOSYS = foo
 
 %.json: %_gen.v 
 	@echo 'run yosys'
 	@echo $(YOSYS)
-	yosys -p 'synth_ice40 -top top -json $@' $< 
+	yosys -l %.log -p 'synth_ice40 -top top -json $@' $< 
 
 %_gen.v: %.sv
 	@echo 'sv2v' $(ADD_SRC) $<

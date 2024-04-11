@@ -8,7 +8,11 @@ module tb_top_icebreaker;
   logic reset;
 
   BtnT  btn;
-  logic led;
+  logic led1;
+  logic led2;
+  logic led3;
+  logic led4;
+  logic led5;
 
   top_icebreaker top (
       // in
@@ -16,7 +20,11 @@ module tb_top_icebreaker;
       .reset,
       .btn,
       // out
-      .led
+      .led1,
+      .led2,
+      .led3,
+      .led4,
+      .led5
   );
 
   // clock and reset
@@ -78,7 +86,7 @@ module tb_top_icebreaker;
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h34); */  // 2nd timer interrupt here
-    #30000;
+    #500;
     $finish;
   end
 
