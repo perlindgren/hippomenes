@@ -21,6 +21,7 @@ module decoder (
     output alu_b_mux_t alu_b_mux_sel,
     output alu_op_t alu_op,
     output logic sub_arith,
+    output mul_op_t mul_op,
     // data memory
     output logic dmem_write_enable,
     output logic dmem_sign_extend,
@@ -77,6 +78,7 @@ module decoder (
     alu_b_mux_sel = B_IMM_EXT;
     alu_op = ALU_ADD;
     sub_arith = 0;
+    mul_op = MUL_MULHSU;
     // data memory
     dmem_write_enable = 0;
     dmem_sign_extend = 0;
@@ -191,14 +193,24 @@ module decoder (
       end
 
       OP_ALU: begin
+        if (funct7 == 'b0000001) begin
+            $display("mul");
+            alu_a_mux_sel = A_RS1;
+            alu_b_mux_sel = B_RS2;
+            mul_op = mul_op_t'(funct3[1:0]);
+            wb_mux_sel = WB_MUL;
+            wb_write_enable = 1;
+        end
+        else begin
         $display("alu");
-        // imm = 32'($signed(instr[31:20]));
-        sub_arith = instr[30];
-        alu_a_mux_sel = A_RS1;
-        alu_b_mux_sel = B_RS2;
-        alu_op = alu_op_t'(funct3);
-        wb_mux_sel = WB_ALU;
-        wb_write_enable = 1;
+            // imm = 32'($signed(instr[31:20]));
+            sub_arith = instr[30];
+            alu_a_mux_sel = A_RS1;
+            alu_b_mux_sel = B_RS2;
+            alu_op = alu_op_t'(funct3);
+            wb_mux_sel = WB_ALU;
+            wb_write_enable = 1;
+        end
       end
 
       OP_FENCE: begin

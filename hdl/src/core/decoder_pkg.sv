@@ -25,6 +25,13 @@ package decoder_pkg;
     PC_INTERRUPT = 'b1
   } pc_interrupt_mux_t;
 
+  typedef enum logic [1:0] {
+    MUL_MUL    = 'b00,
+    MUL_MULH   = 'b01,
+    MUL_MULHSU = 'b10,
+    MUL_MULHU  = 'b11
+  } mul_op_t;
+
   typedef enum logic [2:0] {
     ALU_ADD  = 3'b000,  // ADDI
     ALU_SLL  = 3'b001,  // SLLI
@@ -63,7 +70,8 @@ package decoder_pkg;
     WB_ALU,
     WB_DM,
     WB_CSR,
-    WB_PC_PLUS_4
+    WB_PC_PLUS_4,
+    WB_MUL
   } wb_mux_t;
 
   typedef logic [4:0] r;

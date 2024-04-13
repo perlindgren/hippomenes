@@ -10,14 +10,15 @@ module tb_top_arty;
 
   BtnT  btn;
   LedT  led;
-
+  logic rx;
   top_arty top (
       // in
       .clk,
       .reset,
       .btn,
       // out
-      .led
+      .led,
+      .rx
   );
 
   // clock and reset
@@ -79,7 +80,7 @@ module tb_top_arty;
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h30);
     #20 assert (top.pc_reg_out == 'h34); */  // 2nd timer interrupt here
-    #30000;
+    #100000;
     $finish;
   end
 
