@@ -29,8 +29,8 @@ module uart (
       data <= 0;
       bit_counter <= 0;
       byte_counter <= 0;
-      cmp <= 168;
-      //cmp <= 4;
+      cmp <= UartCmpVal; //potentially this could be configurable, however with a configurable prescaler,
+      // this can be set to yield highest standard baudrate at prescaler = 0, with the rest being reachable through prescaler config;
       tx <= 1;
       w <= 0;
       next_int <= 1;
