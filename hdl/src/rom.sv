@@ -10,14 +10,13 @@ module rom
 );
 
   IMemDataT mem[IMemSize >> 2];
-  integer errno;
-  integer fd;
+  assign data_out = mem[address[IMemAddrWidth-1:2]];
 
 `ifdef VERILATOR
-  string error_msg;
+  string  error_msg;
+  integer errno;
+  integer fd;
 `endif
-
-  assign data_out = mem[address[IMemAddrWidth-1:2]];
 
   // loading binary
   initial begin

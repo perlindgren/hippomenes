@@ -256,8 +256,32 @@ module top_arty (
       .direct_out(csr_led_direct_out),
       .out(csr_led_out)
   );
-  assign led = LedT'(csr_led_out[LedWidth - 2:0]);
-  assign rx = csr_led_out[LedWidth - 1]; //last pin is RX
+  assign led = LedT'(csr_led_out[LedWidth-2:0]);
+  assign rx  = csr_led_out[LedWidth-1];  //last pin is RX
+
+  // Button input
+  word csr_btn_out;
+  word csr_btn_direct_out;  // currently not used
+  csr #(
+      .CsrWidth(BtnWidth),
+      .Addr(BtnAddr),
+      .Write(0)  // only readable register
+  ) csr_btn (
+      // in
+      .clk,
+      .reset,
+      .csr_enable(decoder_csr_enable),
+      .csr_addr(decoder_csr_addr),
+      .rs1_zimm(decoder_rs1),
+      .rs1_data(rf_rs1),
+      .csr_op(decoder_csr_op),
+      .ext_data(0),
+      .ext_write_enable(0),
+      // out
+      .direct_out(csr_btn_direct_out),
+      .out(csr_btn_out)
+  );
+  assign csr_btn.data = btn;
 
 
   // TODO: GPIO

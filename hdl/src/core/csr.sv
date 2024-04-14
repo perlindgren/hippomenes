@@ -1,11 +1,16 @@
 // csr, individual register
 
+// CsrWidth     The width of the register
+// ResetValue   Reset value (only in case of Write)
+// Read         A readable register
+// Write        A writable register
+
 `timescale 1ns / 1ps
 
-import config_pkg::*;
-import decoder_pkg::*;
-
-module csr #(
+module csr
+  import config_pkg::*;
+  import decoder_pkg::*;
+#(
     parameter integer unsigned CsrWidth = 32,  // default to word
     localparam type CsrDataT = logic [CsrWidth-1:0],  // derived
     parameter CsrDataT ResetValue = CsrDataT'(0),
@@ -82,17 +87,18 @@ module csr #(
   end
 
   assign direct_out = 32'($unsigned(tmp));
-  assign out = 32'($unsigned(data));
+  assign out = (Read) ? 32'($unsigned(data)) : 0;
 
   always_ff @(posedge clk) begin
-    // TODO: handle Write
-    if (reset) begin
-      data <= ResetValue;
-    end else if (ext_write_enable) begin
-      // here we do side effect write
-      $display("--- ext data ---");
-      data <= ext_data;
-    end else data <= tmp;
+    if (Write) begin
+      if (reset) begin
+        data <= ResetValue;
+      end else if (ext_write_enable) begin
+        // here we do side effect write
+        $display("--- ext data ---");
+        data <= ext_data;
+      end else data <= tmp;
+    end
   end
 
 endmodule
