@@ -79,4 +79,12 @@ package config_pkg;
   localparam integer unsigned TimeStampPreScaler = 0;
   localparam type TimeStampT = logic [TimeStampWidth-1:0];
 
+  //UART config
+  localparam integer unsigned FifoQueueSize = 32;
+  localparam integer unsigned FifoPtrSize = $clog2(FifoQueueSize);
+  localparam integer unsigned FifoCsrAddr = 'h50;
+  localparam integer unsigned CoreFreq = 20000000;
+  localparam integer unsigned UartBaudRate = 119200;
+  localparam integer unsigned UartCmpVal = CoreFreq / UartBaudRate;
+
 endpackage

@@ -95,6 +95,7 @@ module top_arty (
   alu_a_mux_t decoder_alu_a_mux_sel;
   alu_b_mux_t decoder_alu_b_mux_sel;
   alu_op_t decoder_alu_op;
+  mul_op_t decoder_mul_op;
   logic decoder_sub_arith;
   word decoder_imm;
   r decoder_rs1;
@@ -138,6 +139,7 @@ module top_arty (
       .alu_b_mux_sel(decoder_alu_b_mux_sel),
       .alu_op(decoder_alu_op),
       .sub_arith(decoder_sub_arith),
+      .mul_op(decoder_mul_op),
       // data memory
       .dmem_write_enable(decoder_dmem_write_enable),
       .dmem_sign_extend(decoder_dmem_sign_extend),
@@ -218,6 +220,13 @@ module top_arty (
       .sub_arith(decoder_sub_arith),
       .op(decoder_alu_op),
       .res(alu_res)
+  );
+  word mul_res;
+  mul mul (
+      .a  (alu_a_mux_out),
+      .b  (alu_b_mux_out),
+      .op (decoder_mul_op),
+      .res(mul_res)
   );
 
   word  dmem_data_out;
@@ -347,6 +356,35 @@ module top_arty (
       .interrupt_out(n_clic_interrupt_out)
   );
 
+  word  d_in;
+  logic uart_next;
+  word  fifo_data;
+  word  fifo_csr_data_out;
+  logic fifo_have_next;
+  fifo i_fifo (
+      .clk_i(clk),
+      .reset_i(reset),
+      .next(uart_next),
+      .csr_enable(decoder_csr_enable),
+      .csr_addr(decoder_csr_addr),
+      .rs1_zimm(decoder_rs1),
+      .rs1_data(rf_rs1),
+      .csr_op(decoder_csr_op),
+      .data(fifo_data),
+      .csr_data_out(fifo_csr_data_out),
+      .have_next(fifo_have_next)
+  );
+  uart i_uart (
+      .clk_i(clk),
+      .reset_i(reset),
+      .prescaler(0),
+      .d_in(fifo_data),
+      .rts(fifo_have_next),
+      // .tx(led[0]),
+      .tx(rx),
+      .next(uart_next)
+  );
+
   word csr_out;
   // match CSR addresses
   always_comb begin
@@ -363,6 +401,7 @@ module top_arty (
       .alu(alu_res),
       .csr(csr_out),
       .pc_plus_4(32'($signed(pc_adder_out))),  // should we sign extend?
+      .mul(mul_res),
       .out(wb_mux_out)
   );
 endmodule

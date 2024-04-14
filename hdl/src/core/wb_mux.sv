@@ -8,6 +8,7 @@ module wb_mux (
     input word dm,
     input word csr,
     input word pc_plus_4,
+    input word mul,
     output word out
 );
 
@@ -17,6 +18,7 @@ module wb_mux (
       WB_DM: out = dm;
       WB_CSR: out = csr;
       WB_PC_PLUS_4: out = pc_plus_4;
+      WB_MUL: out = mul;
       default: out = alu;
     endcase
   end

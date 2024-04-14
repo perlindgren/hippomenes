@@ -5,6 +5,7 @@ register_file = $(root)/config_pkg.sv $(core)/register_file.sv $(core)/tb_regist
 rf_stack = $(root)/config_pkg.sv $(core)/reg_n.sv $(core)/rf_stack.sv $(core)/register_file.sv $(core)/tb_rf_stack.sv
 
 top_dep = \
+$(root)/config_pkg.sv \
 $(core)/decoder_pkg.sv \
 $(root)/mem_pkg.sv \
 $(core)/decoder.sv \
@@ -26,7 +27,7 @@ top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
 top_n_clic = $(top_dep) $(root)/top_n_clic.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_n_clic.sv
 
-top_arty =  $(root)/config_pkg.sv $(root)/arty_pkg.sv $(top_dep) $(root)/top_arty.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_arty.sv
+top_arty =  $(top_dep) $(root)/arty_pkg.sv $(root)/top_arty.sv $(core)/timer.sv $(core)/pc_interrupt_mux.sv $(core)/n_clic.sv $(core)/stack.sv $(core)/rf_stack.sv $(root)/tb_top_arty.sv $(root)/uart/fifo.sv $(root)/uart/uart.sv $(core)/mul.sv
 
 top_branch = $(top_dep) $(root)/top.sv $(root)/tb_top_branch.sv
 
@@ -42,11 +43,15 @@ mem = $(root)/config_pkg.sv $(root)/mem_pkg.sv $(root)/mem.sv $(root)/tb_mem.sv
 
 alu = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/alu.sv $(core)/tb_alu.sv
 
+mul = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/mul.sv $(core)/tb_mul.sv
+
 time_stamp = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/mono_timer.sv $(core)/time_stamp.sv $(core)/tb_time_stamp.sv
 
 timer = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/timer.sv $(core)/tb_timer.sv 
 
 branch_logic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch_logic.sv
+
+uart = $(root)/config_pkg.sv $(root)/core/decoder_pkg.sv $(root)/uart/uart.sv $(root)/uart/tb_uart.sv
 
 all: \
 	tb_alu \
@@ -69,6 +74,13 @@ all: \
 #asm: $(top_n_clic)
 #	cp ./asm.s ./riscv_asm/; cp ./memory.x ./riscv_asm/; cd ./riscv_asm; cargo clean; cargo build --release; rm ./asm.s ./memory.x
 #	elf2mem -f ./riscv_asm/target/riscv32i-unknown-none-elf/release/riscv_asm -t ./binary.mem -p
+
+tb_uart: 
+	verilator --binary $(uart) --top-module tb_uart --trace-fst --assert -y $(rust)
+	obj_dir/Vtb_uart
+
+tb_uart_g:
+	gtkwave -a uart.gtkw uart.fst
 
 asm: 
 #	cd ../../rust_examples/; cargo build --example asm --release; elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/asm -t ../hdl/verilator/binary.mem -p;
@@ -157,6 +169,13 @@ tb_alu: $(alu)
 
 tb_alu_g: 
 	gtkwave -a alu.gtkw alu.fst
+
+tb_mul: $(mul)
+	verilator --binary $(mul) --top-module tb_mul --trace-fst --assert
+	obj_dir/Vtb_mul
+
+tb_mul_g:
+	gtkwave -a mul.gktw mul.fst
 
 tb_branch_logic: $(brach_logic)
 	verilator --binary $(branch_logic) --top-module tb_branch_logic --trace-fst --assert

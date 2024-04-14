@@ -50,39 +50,41 @@ module fpga_arty (
   logic tmp_btn2;
   logic tmp_btn3;
 
-  assign tmp_sw0 = sw0;
-  assign tmp_sw1 = sw1;
+  assign tmp_sw0  = sw0;
+  assign tmp_sw1  = sw1;
   assign tmp_btn0 = btn0;
   assign tmp_btn1 = btn1;
   assign tmp_btn2 = btn2;
   assign tmp_btn3 = btn3;
 
-  assign led2 = tmp_sw0;
-  assign led3 = tmp_sw1;
+  //assign led2 = tmp_sw0;
+  //assign led3 = tmp_sw1;
 
-  assign led_r0 = 0;
-  assign led_r1 = 0;
-  assign led_r2 = 0;
-  assign led_r3 = 0;
+  assign led_r0   = 0;
+  assign led_r1   = 0;
+  assign led_r2   = 0;
+  assign led_r3   = 0;
 
-  assign led_g0 = 0;
-  assign led_g1 = 0;
-  assign led_g2 = 0;
-  assign led_g3 = 0;
+  assign led_g0   = 0;
+  assign led_g1   = 0;
+  assign led_g2   = 0;
+  assign led_g3   = 0;
 
-  assign led_b0 = 0;
-  assign led_b1 = 0;
-  assign led_b2 = 0;
-  assign led_b3 = 0;
+  assign led_b0   = 0;
+  assign led_b1   = 0;
+  assign led_b2   = 0;
+  assign led_b3   = 0;
 
   always_comb begin
 
   end
 
-  top_n_clic hippo (
+  top_arty hippo (
       .clk,
       .reset(tmp_sw1),
-      .btn  (btn)
+      .btn  (btn),
+      .led  ({led0, led1, led2, led3}),
+      .rx
       // .gpio_in({led1, rx, tx}),
       // .gpio_out({led1, rx, tx}),
       // .rx(tx),
