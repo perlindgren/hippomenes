@@ -29,15 +29,15 @@ module fpga_arty (
       led_b[k] = 0;
     end
   end
-  logic dummy;
+
   top_arty hippo (
       .clk,
       .reset(sw[1]),
       .btn,
-      .led({dummy, led[1], led[2], led[3]}),
-      .rx
+      .led,
+      .tx(rx) // connect hippo TX with FTDI RX
   );
-  assign led[0] = rx;
+
   clk_wiz_0 clk_gen (
       // Clock in ports
       .clk_in1(sysclk),

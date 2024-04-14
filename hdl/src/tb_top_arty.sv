@@ -10,7 +10,7 @@ module tb_top_arty;
 
   BtnT  btn;
   LedT  led;
-  logic rx;
+  logic tx;
 
   top_arty top (
       // in
@@ -19,7 +19,7 @@ module tb_top_arty;
       .btn,
       // out
       .led,
-      .rx
+      .tx
   );
 
   // clock and reset

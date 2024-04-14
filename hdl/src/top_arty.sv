@@ -10,16 +10,9 @@ module top_arty (
     input  logic reset,
     input  BtnT  btn,
     output LedT  led,
-
-    output logic rx
+    output logic tx
     // TODO: gpio
-    // input  GpioT gpio_in,
-    // output GpioT gpio_out,
-    // output GpioT gpio_dir
 );
-
-  // import mem_pkg::*;
-
   IMemAddrT pc_interrupt_mux_out;
   // registers
   IMemAddrT pc_reg_out;
@@ -265,8 +258,8 @@ module top_arty (
       .direct_out(csr_led_direct_out),
       .out(csr_led_out)
   );
-  assign led = LedT'(csr_led_out[LedWidth-2:0]);
-  assign rx  = csr_led_out[LedWidth-1];  //last pin is RX
+  assign led = LedT'(csr_led_out[LedWidth-1:0]);
+  // assign rx = csr_led_out[LedWidth-1];  //last pin is RX
 
   // Button input
   word csr_btn_out;
@@ -380,8 +373,7 @@ module top_arty (
       .prescaler(0),
       .d_in(fifo_data),
       .rts(fifo_have_next),
-      // .tx(led[0]),
-      .tx(rx),
+      .tx,
       .next(uart_next)
   );
 
@@ -391,7 +383,7 @@ module top_arty (
     // TODO: for now only btn
     case (decoder_csr_addr)
       BtnAddr: csr_out = csr_btn_out;
-      default: csr_addr = 0;
+      default: csr_out = 0;
     endcase
   end
 
