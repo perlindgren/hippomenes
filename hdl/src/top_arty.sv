@@ -350,13 +350,11 @@ module top_arty (
   word csr_out;
   // match CSR addresses
   always_comb begin
-    csr_out = n_clic_csr_out;
-    // TODO: for now we can only read csr:s from n_clic
-    // if (decoder_csr_addr == GpioCsrData) csr_out = csr_gpio_dir_out;
-    // else if (decoder_csr_addr == GpioCsrDir) csr_out = csr_gpio_data_out;
-    // else csr_out = n_clic_csr_out;
-    // // TODO: should we return 0 on reads for non existing CSRs.
-    // // Using safe Rust user code, this will never occur so perhaps not then.
+    // TODO: for now only btn
+    case (decoder_csr_addr)
+      BtnAddr: csr_out = csr_btn_out;
+      default: csr_addr = 0;
+    endcase
   end
 
   wb_mux wb_mux (
