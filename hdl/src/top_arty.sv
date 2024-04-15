@@ -4,6 +4,7 @@
 import config_pkg::*;
 import arty_pkg::*;
 import decoder_pkg::*;
+import mem_pkg::*;
 
 module top_arty (
     input  logic clk,

@@ -317,7 +317,7 @@ module spram
       .ECC_MODE("no_ecc"),
       .ECC_TYPE("none"),
       .IGNORE_INIT_SYNTH(0),
-      .MEMORY_INIT_FILE("binary.mem"),
+      .MEMORY_INIT_FILE("text.mem"),
       .MEMORY_INIT_PARAM("0"),
       .MEMORY_OPTIMIZATION("true"),
       .MEMORY_PRIMITIVE("auto"),

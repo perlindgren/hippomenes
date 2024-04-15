@@ -34,7 +34,7 @@ module d_mem_spram
   logic block_3_we;
 
   spram_block #(
-      .MemFileName("data0.mem")
+      .MemFileName("data_0.mem")
   ) block_0 (
       .clk(clk),
       .reset(reset),
@@ -44,7 +44,7 @@ module d_mem_spram
       .data_out(block_0_dout)
   );
   spram_block #(
-      .MemFileName("data1.mem")
+      .MemFileName("data_1.mem")
   ) block_1 (
       .clk(clk),
       .reset(reset),
@@ -54,7 +54,7 @@ module d_mem_spram
       .data_out(block_1_dout)
   );
   spram_block #(
-      .MemFileName("data2.mem")
+      .MemFileName("data_2.mem")
   ) block_2 (
       .clk(clk),
       .reset(reset),
@@ -64,7 +64,7 @@ module d_mem_spram
       .data_out(block_2_dout)
   );
   spram_block #(
-      .MemFileName("data3.mem")
+      .MemFileName("data_3.mem")
   ) block_3 (
       .clk(clk),
       .reset(reset),

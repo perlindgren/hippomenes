@@ -34,7 +34,7 @@ fn main() -> ! {
 
         if (counter >> 20) & 1 == 1 {
             if flag {
-                uart.write(0x4142_4344);
+                write!(uart, "hello :))");
                 flag = false;
             }
             led.pout3.set_low()
