@@ -21,6 +21,24 @@ fn panic(_info: &PanicInfo) -> ! {
     }
 }
 
+const DATA: [usize; 16] = [
+    0x4142_4344,
+    0x4546_4848,
+    0x495A_5B5C,
+    0x5D5E_5F60,
+    0x4142_4344,
+    0x4546_4848,
+    0x495A_5B5C,
+    0x5D5E_5F60,
+    0x4142_4344,
+    0x4546_4848,
+    0x495A_5B5C,
+    0x5D5E_5F60,
+    0x4142_4344,
+    0x4546_4848,
+    0x495A_5B5C,
+    0x5D5E_5F60,
+];
 #[entry]
 fn main() -> ! {
     let p = unsafe { Peripherals::steal() };
@@ -34,7 +52,7 @@ fn main() -> ! {
 
         if (counter >> 20) & 1 == 1 {
             if flag {
-                uart.write(0x4142_4344);
+                uart.write(DATA[counter as usize % 16]);
                 flag = false;
             }
             led.pout3.set_low()
