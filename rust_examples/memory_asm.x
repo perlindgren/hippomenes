@@ -5,12 +5,16 @@ SECTIONS
   {
     KEEP(*(.text)); 
   }  
-
-  . = 0x50000000;
+  . = 0x10000;
   .data :
   {
     KEEP(*(.data));  
   }
+  . = 0x20000;
+  .rodata :
+  {
+    KEEP(*(.rodata));
+  }
 }
 
-PROVIDE(_stack_start = 0x50000500);
+PROVIDE(_stack_start = 0x00010500);

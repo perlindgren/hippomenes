@@ -224,17 +224,17 @@ module top_arty (
 
   word  dmem_data_out;
   logic dmem_alignment_error;
-  mem dmem (
+  d_mem_spram dmem (
       // in
       .clk(clk),
       .write_enable(decoder_dmem_write_enable),
       .width(decoder_dmem_width),
       .sign_extend(decoder_dmem_sign_extend),
-      .address(alu_res[DMemAddrWidth-1:0]),
+      .addr(alu_res[DMemAddrWidth-1:0]),
       .data_in(rf_rs2),
       // out
-      .data_out(dmem_data_out),
-      .alignment_error(dmem_alignment_error)
+      .data_out(dmem_data_out)
+      //.alignment_error(dmem_alignment_error)
   );
 
   // led out
@@ -386,7 +386,8 @@ module top_arty (
       default: csr_out = 0;
     endcase
   end
-
+  
+  
   wb_mux wb_mux (
       .sel(decoder_wb_mux_sel),
       .dm(dmem_data_out),
@@ -396,4 +397,5 @@ module top_arty (
       .mul(mul_res),
       .out(wb_mux_out)
   );
+
 endmodule

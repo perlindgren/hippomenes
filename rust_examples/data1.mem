@@ -1,0 +1,5 @@
+// section ".rodata"
+@00000000
+be
+56
+ef

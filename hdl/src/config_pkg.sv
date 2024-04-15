@@ -24,12 +24,21 @@ package config_pkg;
   // Data memory configuration
   localparam integer unsigned DMemStart = 'h0001_0000;
   localparam integer unsigned DMemSize = 'h0000_1000;  // in bytes
+  localparam integer unsigned DMemDataWidth = 8;  // byte RW
+
+  // Read-only memory configuratioe
+  localparam integer unsigned RomStart = 'h0002_0000;
+  localparam integer unsigned RomSize = 'h0000_0500;  // in bytes
+  localparam integer unsigned RomDataWidth = 8;  // in bits
+  localparam type RomDataT = logic [RomDataWidth-1:0];
 
   // Memory relatted
   localparam integer unsigned IMemAddrWidth = $clog2(IMemSize);
   localparam integer unsigned DMemAddrWidth = $clog2(DMemSize);
+  localparam integer unsigned RomAddrWidth = $clog2(RomSize);
   localparam type IMemAddrT = logic [IMemAddrWidth-1:0];
   localparam type DMemAddrT = logic [DMemAddrWidth-1:0];
+  localparam type RomAddrT = logic [RomAddrWidth-1:0];
 
   // Interrupt priorities
   localparam integer unsigned PrioNum = 4;
