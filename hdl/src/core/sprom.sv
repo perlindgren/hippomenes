@@ -1,4 +1,4 @@
-// spram.sv
+// sprom.sv
 
 // XPM_MEMORY instantiation template for Single Port RAM configurations
 // Refer to the targeted device family architecture libraries guide for XPM_MEMORY documentation
@@ -276,10 +276,10 @@
 
 //  <-----Cut code below this line---->
 
-module spram
+module sprom
   import config_pkg::*;
 #(
-    localparam integer IMemSizeBits = IMemSize * 8  // derived
+    localparam integer RomSizeBits = RomSize * 8  // derived
 ) (
     input logic clk,
     input logic reset,
@@ -309,22 +309,22 @@ module spram
   // Xilinx Parameterized Macro, version 2023.2
 
   xpm_memory_spram #(
-      .ADDR_WIDTH_A(IMemAddrWidth - 2),  // IMemDataWidth indexed
+      .ADDR_WIDTH_A(RomAddrWidth),  // Byte indexed
       .AUTO_SLEEP_TIME(0),
-      .BYTE_WRITE_WIDTH_A(IMemDataWidth),
+      .BYTE_WRITE_WIDTH_A(RomDataWidth),
       .CASCADE_HEIGHT(0),
       .ECC_BIT_RANGE("7:0"),
       .ECC_MODE("no_ecc"),
       .ECC_TYPE("none"),
       .IGNORE_INIT_SYNTH(0),
-      .MEMORY_INIT_FILE("text.mem"),
+      .MEMORY_INIT_FILE("data.mem"),
       .MEMORY_INIT_PARAM("0"),
       .MEMORY_OPTIMIZATION("true"),
-      .MEMORY_PRIMITIVE("block"),
-      .MEMORY_SIZE(IMemSizeBits),
+      .MEMORY_PRIMITIVE("auto"),
+      .MEMORY_SIZE('h500 * 8),
       .MESSAGE_CONTROL(0),
       .RAM_DECOMP("auto"),
-      .READ_DATA_WIDTH_A(IMemDataWidth),
+      .READ_DATA_WIDTH_A(RomDataWidth),
       .READ_LATENCY_A(1),
       .READ_RESET_VALUE_A("0"),
       .RST_MODE_A("SYNC"),
@@ -332,14 +332,14 @@ module spram
       .USE_MEM_INIT(1),
       .USE_MEM_INIT_MMI(1),  // Generate MMI config
       .WAKEUP_TIME("disable_sleep"),
-      .WRITE_DATA_WIDTH_A(32),
+      .WRITE_DATA_WIDTH_A(RomDataWidth),
       .WRITE_MODE_A("read_first"),
       .WRITE_PROTECT(1)
   ) xpm_memory_spram_inst (
       .dbiterra,
       .douta(data_out),
       .sbiterra,
-      .addra(address[IMemAddrWidth-1:2]),
+      .addra(address[RomAddrWidth-1:0]),
       .clka (clk),
       .dina,
       .ena,
@@ -352,3 +352,4 @@ module spram
   );
 
 endmodule
+

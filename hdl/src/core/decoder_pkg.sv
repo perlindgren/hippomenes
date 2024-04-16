@@ -68,7 +68,7 @@ package decoder_pkg;
 
   typedef enum {
     WB_ALU,
-    WB_DM,
+    //    WB_DM,
     WB_CSR,
     WB_PC_PLUS_4,
     WB_MUL
@@ -78,6 +78,11 @@ package decoder_pkg;
     MEM_DM,
     MEM_ROM
   } mem_sel_t;
+
+  typedef enum {
+    WB_OTHER,
+    WB_MEM
+  } wb_mem_mux_t;
 
   typedef logic [4:0] r;
   typedef logic [31:0] word;

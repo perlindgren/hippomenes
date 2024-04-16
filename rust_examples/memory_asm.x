@@ -5,15 +5,15 @@ SECTIONS
   {
     KEEP(*(.text)); 
   }  
-  . = 0x10000;
-  .data :
-  {
-    KEEP(*(.data));  
-  }
-  . = 0x20000;
+  . = 0x50000000;
   .rodata :
   {
-    KEEP(*(.rodata));
+    KEEP(*(.rodata));  
+  }
+  . = 0x50000500;
+  .data :
+  {
+      KEEP(*(.data));
   }
 }
 

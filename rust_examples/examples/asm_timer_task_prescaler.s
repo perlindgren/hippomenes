@@ -23,6 +23,6 @@ isr_0:      la      t0, toggled             # &static mut toggled state
             sw      t3, 4(t0)               # store timestamp
             jr      ra                      # return 
 
-            .data
+            .rodata
 toggled:    .word   0x0                     # state
             .word   0x0                     # time-stamp

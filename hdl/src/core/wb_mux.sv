@@ -15,7 +15,7 @@ module wb_mux (
   always_comb begin
     case (sel)
       WB_ALU: out = alu;
-      WB_DM: out = dm;
+      //WB_DM: out = dm;
       WB_CSR: out = csr;
       WB_PC_PLUS_4: out = pc_plus_4;
       WB_MUL: out = mul;

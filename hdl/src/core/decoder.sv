@@ -32,7 +32,8 @@ module decoder (
     // write back
     output wb_mux_t wb_mux_sel,
     output r rd,
-    output logic wb_write_enable
+    output logic wb_write_enable,
+    output wb_mem_mux_t wb_mem_mux_sel
 );
   // https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
   // table on page 104
@@ -89,6 +90,7 @@ module decoder (
     // write back
     wb_mux_sel = WB_ALU;
     wb_write_enable = 0;  // set only for instructions writing to rf
+    wb_mem_mux_sel = WB_OTHER;
 
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
@@ -159,7 +161,8 @@ module decoder (
         dmem_width = mem_width_t'(funct3[1:0]);
         dmem_sign_extend = !funct3[2];
 
-        wb_mux_sel = WB_DM;
+        //wb_mux_sel = WB_DM;
+        wb_mem_mux_sel = WB_MEM;
         wb_write_enable = 1;
       end
 
@@ -177,7 +180,7 @@ module decoder (
         dmem_sign_extend = !funct3[2];
         dmem_write_enable = 1;
 
-        wb_mux_sel = WB_DM;
+        //wb_mux_sel = WB_DM;
         wb_write_enable = 0;
       end
 
@@ -194,22 +197,21 @@ module decoder (
 
       OP_ALU: begin
         if (funct7 == 'b0000001) begin
-            $display("mul");
-            alu_a_mux_sel = A_RS1;
-            alu_b_mux_sel = B_RS2;
-            mul_op = mul_op_t'(funct3[1:0]);
-            wb_mux_sel = WB_MUL;
-            wb_write_enable = 1;
-        end
-        else begin
-        $display("alu");
-            // imm = 32'($signed(instr[31:20]));
-            sub_arith = instr[30];
-            alu_a_mux_sel = A_RS1;
-            alu_b_mux_sel = B_RS2;
-            alu_op = alu_op_t'(funct3);
-            wb_mux_sel = WB_ALU;
-            wb_write_enable = 1;
+          $display("mul");
+          alu_a_mux_sel = A_RS1;
+          alu_b_mux_sel = B_RS2;
+          mul_op = mul_op_t'(funct3[1:0]);
+          wb_mux_sel = WB_MUL;
+          wb_write_enable = 1;
+        end else begin
+          $display("alu");
+          // imm = 32'($signed(instr[31:20]));
+          sub_arith = instr[30];
+          alu_a_mux_sel = A_RS1;
+          alu_b_mux_sel = B_RS2;
+          alu_op = alu_op_t'(funct3);
+          wb_mux_sel = WB_ALU;
+          wb_write_enable = 1;
         end
       end
 

@@ -285,10 +285,10 @@ module spram_block
 ) (
     input logic clk,
     input logic reset,
-    input IMemAddrT address,
+    input DMemAddrT address,
     input logic write_enable,
     input logic [7:0] data_in,
-    output IMemDataT data_out
+    output DMemDataT data_out
 );
 
   logic dbiterra;
@@ -322,7 +322,7 @@ module spram_block
       .IGNORE_INIT_SYNTH(0),
       .MEMORY_INIT_FILE(MemFileName),
       .MEMORY_INIT_PARAM("0"),
-      .MEMORY_OPTIMIZATION("true"),
+      .MEMORY_OPTIMIZATION("false"),
       .MEMORY_PRIMITIVE("block"),
       .MEMORY_SIZE(DMemSize / 4),
       .MESSAGE_CONTROL(0),
