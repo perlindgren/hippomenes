@@ -1,4 +1,5 @@
-// d_mem.sv
+// spram_block.sv
+`timescale 1ns / 1ps
 
 // XPM_MEMORY instantiation template for Single Port RAM configurations
 // Refer to the targeted device family architecture libraries guide for XPM_MEMORY documentation
@@ -287,13 +288,12 @@ module spram_block
     input logic reset,
     input DMemAddrT address,
     input logic write_enable,
-    input logic [7:0] data_in,
+    input DMemDataT data_in,
     output DMemDataT data_out
 );
-
   logic dbiterra;
   logic sbiterra;
-  IMemDataT dina;
+  DMemDataT dina;
   logic ena;
   logic injectdbiterra;
   logic injectsbiterra;
@@ -314,7 +314,7 @@ module spram_block
   xpm_memory_spram #(
       .ADDR_WIDTH_A(DMemAddrWidth - 2),  // Word indexed
       .AUTO_SLEEP_TIME(0),
-      .BYTE_WRITE_WIDTH_A(8),
+      .BYTE_WRITE_WIDTH_A(DMemDataWidth),
       .CASCADE_HEIGHT(0),
       .ECC_BIT_RANGE("7:0"),
       .ECC_MODE("no_ecc"),
@@ -324,7 +324,7 @@ module spram_block
       .MEMORY_INIT_PARAM("0"),
       .MEMORY_OPTIMIZATION("false"),
       .MEMORY_PRIMITIVE("block"),
-      .MEMORY_SIZE(DMemSize / 4),
+      .MEMORY_SIZE(DMemSizeBits / 4),
       .MESSAGE_CONTROL(0),
       .RAM_DECOMP("auto"),
       .READ_DATA_WIDTH_A(8),
@@ -335,7 +335,7 @@ module spram_block
       .USE_MEM_INIT(1),
       .USE_MEM_INIT_MMI(1),  // Generate MMI config
       .WAKEUP_TIME("disable_sleep"),
-      .WRITE_DATA_WIDTH_A(8),
+      .WRITE_DATA_WIDTH_A(DMemDataWidth),
       .WRITE_MODE_A("read_first"),
       .WRITE_PROTECT(1)
   ) xpm_memory_spram_inst (

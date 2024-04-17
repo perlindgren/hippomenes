@@ -23,9 +23,9 @@ package config_pkg;
 
   // Data memory configuration
   localparam integer unsigned DMemStart = 'h0001_0000;
-  localparam integer unsigned DMemSize = 'h0001_1000;  // in bytes
+  localparam integer unsigned DMemSize = 'h0000_1000;  // in bytes
   localparam integer unsigned DMemDataWidth = 8;  // byte RW
-  localparam type DMemDataT = logic [(DMemDataWidth*4-1) : 0];
+  localparam type DMemDataT = logic [DMemDataWidth -1:0];
   // Read-only memory configuratioe
   localparam integer unsigned RomStart = 'h0002_0000;
   localparam integer unsigned RomSize = 'h0000_0500;  // in bytes

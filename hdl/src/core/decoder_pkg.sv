@@ -1,7 +1,7 @@
 // decoder_pkg
 `timescale 1ns / 1ps
 
-import config_pkg::*;
+// import config_pkg::*;
 package decoder_pkg;
 
   typedef enum logic [2:0] {

@@ -1,6 +1,10 @@
 // mem
 `timescale 1ns / 1ps
 
+`include "arty_pkg.sv"
+`include "config_pkg.sv"
+`include "mem_pkg.sv"
+
 module d_mem_spram
   import config_pkg::*;
   import mem_pkg::*;

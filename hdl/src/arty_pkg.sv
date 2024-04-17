@@ -1,6 +1,8 @@
 // config_pkg
 `timescale 1ns / 1ps
 
+`include "config_pkg.sv"
+
 package arty_pkg;
   import config_pkg::*;
 
