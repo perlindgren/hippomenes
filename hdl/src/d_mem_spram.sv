@@ -19,7 +19,10 @@ module d_mem_spram
     input logic write_enable,
     output logic [31:0] data_out
 );
-
+  //logic [31:0] data_out;
+  logic [DMemAddrWidth-1:0] address_clocked;
+  mem_width_t width_clocked;
+  logic sign_extend_clocked;
   logic [7:0] block_0_dout;
   logic [7:0] block_1_dout;
   logic [7:0] block_2_dout;
@@ -77,13 +80,22 @@ module d_mem_spram
       .data_in(block_3_din),
       .data_out(block_3_dout)
   );
+  always_ff @(posedge clk) begin
+    if (reset) begin
+        address_clocked <= 0;
+        width_clocked <= WORD;
+        sign_extend_clocked <= 0;
+    end
+    sign_extend_clocked <= sign_extend;
+    width_clocked <= width;
+    address_clocked <= addr;
+  end
   always_comb begin
-    if (addr % 4 == 1) begin
+     if (addr % 4 == 1) begin
       block_0_addr = addr[DMemAddrWidth-1:2] + 1;
       block_1_addr = addr[DMemAddrWidth-1:2];
       block_2_addr = addr[DMemAddrWidth-1:2];
       block_3_addr = addr[DMemAddrWidth-1:2];
-      data_out = {block_0_dout, block_3_dout, block_2_dout, block_1_dout};
       block_0_din = data_in[31:24];
       block_1_din = data_in[7:0];
       block_2_din = data_in[15:8];
@@ -121,7 +133,6 @@ module d_mem_spram
       block_1_addr = addr[DMemAddrWidth-1:2] + 1;
       block_2_addr = addr[DMemAddrWidth-1:2];
       block_3_addr = addr[DMemAddrWidth-1:2];
-      data_out = {block_1_dout, block_0_dout, block_3_dout, block_2_dout};
       block_0_din = data_in[23:16];
       block_1_din = data_in[31:24];
       block_2_din = data_in[7:0];
@@ -157,7 +168,6 @@ module d_mem_spram
       block_1_addr = addr[DMemAddrWidth-1:2] + 1;
       block_2_addr = addr[DMemAddrWidth-1:2] + 1;
       block_3_addr = addr[DMemAddrWidth-1:2];
-      data_out = {block_2_dout, block_1_dout, block_0_dout, block_3_dout};
       block_0_din = data_in[15:8];
       block_1_din = data_in[23:16];
       block_2_din = data_in[31:24];
@@ -193,7 +203,6 @@ module d_mem_spram
       block_1_addr = addr[DMemAddrWidth-1:2];
       block_2_addr = addr[DMemAddrWidth-1:2];
       block_3_addr = addr[DMemAddrWidth-1:2];
-      data_out = {block_3_dout, block_2_dout, block_1_dout, block_0_dout};
       block_0_din = data_in[7:0];
       block_1_din = data_in[15:8];
       block_2_din = data_in[23:16];
@@ -225,16 +234,31 @@ module d_mem_spram
         end
       endcase
     end
-    case (width)
+    if (!write_enable) begin
+      block_0_we = 0;
+      block_1_we = 0;
+      block_2_we = 0;
+      block_3_we = 0;
+    end
+    if (address_clocked % 4 == 1) begin
+      data_out = {block_0_dout, block_3_dout, block_2_dout, block_1_dout};
+    end else if (address_clocked % 4 == 2) begin
+      data_out = {block_1_dout, block_0_dout, block_3_dout, block_2_dout};
+    end else if (address_clocked % 4 == 3) begin
+      data_out = {block_2_dout, block_1_dout, block_0_dout, block_3_dout};
+    end else if (address_clocked % 4 == 0) begin
+      data_out = {block_3_dout, block_2_dout, block_1_dout, block_0_dout};
+    end
+    case (width_clocked)
       BYTE: begin
-        if (sign_extend) begin
+        if (sign_extend_clocked) begin
           data_out = signed'(data_out[7:0]);
         end else begin
           data_out = unsigned'(data_out[7:0]);
         end
       end
       HALFWORD: begin
-        if (sign_extend) begin
+        if (sign_extend_clocked) begin
           data_out = signed'(data_out[15:0]);
         end else begin
           data_out = unsigned'(data_out[15:0]);
@@ -246,12 +270,6 @@ module d_mem_spram
       default: begin
       end
     endcase
-    if (!write_enable) begin
-      block_0_we = 0;
-      block_1_we = 0;
-      block_2_we = 0;
-      block_3_we = 0;
-    end
   end
 
 endmodule

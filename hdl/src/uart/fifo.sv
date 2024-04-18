@@ -1,7 +1,13 @@
 // uart
 `timescale 1ns / 1ps
 
-module fifo (
+`include "../config_pkg.sv"
+`include "../core/decoder_pkg.sv"
+
+module fifo
+    import config_pkg::*;
+    import decoder_pkg::*;
+(
     input logic clk_i,
     input logic reset_i,
     input logic next,
@@ -15,7 +21,6 @@ module fifo (
     output word csr_data_out,
     output logic have_next
 );
-  import decoder_pkg::*;
   word data_int;
   word queue[FifoQueueSize];  // 32 word queue, should be parametric
   logic [FifoPtrSize:0] in_ptr;

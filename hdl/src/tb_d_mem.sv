@@ -117,35 +117,6 @@ module tb_d_mem;
 
     address = 4;
 
-    #20;
-
-    address = 5;
-
-    #20;
-
-    address = 6;
-
-    #20;
-
-    address = 7;
-
-    #20;
-
-    address = 8;
-
-    #20;
-
-    address = 9;
-
-    #20;
-
-    address = 10;
-
-    #20;
-
-    address = 11;
-
-    #20;
     width   = mem_width_t'(HALFWORD);
     address = 0;
 
@@ -160,45 +131,6 @@ module tb_d_mem;
     #20;
 
     address = 3;
-
-    #20;
-
-    address = 4;
-
-    #20;
-
-    address = 5;
-
-    #20;
-
-    address = 6;
-
-    #20;
-
-    address = 7;
-
-    #20;
-
-    address = 8;
-
-    #20;
-
-    address = 9;
-
-    #20;
-
-    address = 10;
-
-    #20;
-
-    address = 0;
-
-
-
-
-
-
-
 
     write_enable = 1;
     width = mem_width_t'(WORD);

@@ -8,27 +8,44 @@ module wt_ctl (
     input r rd,
     input r rs1,
     input r rs2,
-    output word rs1_sel,
-    output logic rs2_sel
+    input logic writeRaEn,
+    input logic writeEn,
+    output wt_mux_sel_t rs1_sel,
+    output wt_mux_sel_t rs2_sel
 );
   r rd_old;
-  always_ff @(posedge clk) begin
+  logic writeRaEn_old;
+  /*  always_ff @(posedge clk) begin
     if (reset) begin
       rd_old <= 0;
+      writeRaEn_old <= 0;
     end
     rd_old <= rd;
+    writeRaEn_old <= writeRaEn;
+  end*/
 
-  end
   always_comb begin
-    if (rd_old == rs1) begin
-      rs1_sel = 1;  //write through
+    if (rs1 == 0) begin
+      rs1_sel = WT_RF_OUT;
+    end else if ((rd == rs1) && writeEn) begin
+      rs1_sel = WT_RF_IN;  //write through
     end else begin
-      rs1_sel = 0;  // regular
+      rs1_sel = WT_RF_OUT;  // regular
     end
-    if (rd_old == rs2) begin
-      rs2_sel = 1;  // write through
+    if (rs2 == 0) begin
+      rs2_sel = WT_RF_OUT;
+    end else if ((rd == rs2) && writeEn) begin
+      rs2_sel = WT_RF_IN;  // write through
     end else begin
-      rs2_sel = 0;  // regular
+      rs2_sel = WT_RF_OUT;  // regular
+    end
+    if (writeRaEn) begin
+      if (rs1 == Ra) begin
+        rs1_sel = WT_MAGIC;
+      end
+      if (rs2 == Ra) begin
+        rs2_sel = WT_MAGIC;
+      end
     end
   end
 

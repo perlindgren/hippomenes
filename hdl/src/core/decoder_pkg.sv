@@ -84,6 +84,13 @@ package decoder_pkg;
     WB_MEM
   } wb_mem_mux_t;
 
+  typedef enum {
+    WT_RF_OUT,
+    WT_RF_IN,
+    WT_MAGIC
+
+  } wt_mux_sel_t;
+
   typedef logic [4:0] r;
   typedef logic [31:0] word;
 

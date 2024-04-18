@@ -1,10 +1,16 @@
 // decoder
 `timescale 1ns / 1ps
 
-import decoder_pkg::*;
-import mem_pkg::*;
 
-module decoder (
+`include "decoder_pkg.sv"
+`include "../mem_pkg.sv"
+`include "../config_pkg.sv"
+
+module decoder 
+    import decoder_pkg::*;
+    import mem_pkg::*;
+    import config_pkg::*;
+(
     input word instr,
     // immediates
     output word imm,
@@ -35,6 +41,8 @@ module decoder (
     output logic wb_write_enable,
     output wb_mem_mux_t wb_mem_mux_sel
 );
+import decoder_pkg::*;
+
   // https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
   // table on page 104
   typedef enum integer {

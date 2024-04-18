@@ -16,15 +16,7 @@ main:       csrwi   0x300, 8                # enable global interrupts
             nop
 stop:       j       stop                    # wait for interrupt
 
-isr_0:      la      t0, toggled             # &static mut toggled state
-            lw      t1, 0(t0)               # deref toggled
-            xori    t1, t1, 1               # toggle bit 0
-            csrw    0x0, t1                 # set bit 0 (t1 = 1) in GPIO CSR (LED on/off)
-            sw      t1, 0(t0)               # store toggled value
-            csrr    t3, 0xB40               # read captured timestamp
-            sw      t3, 4(t0)               # store timestamp
-            jr      ra                      # return 
-
+isr_0:      jr ra
             .rodata
 toggled:    .word   0x0                     # state
             .word   0x0                     # time-stamp

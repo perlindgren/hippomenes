@@ -10,7 +10,7 @@ loop:
             csrw   0x50, t2  # ASCII o!!! to UART
             csrw   0x50, t3  # ASCII uart to UART
             # now wait for couple of seconds
-            li t4, 50000000
+            li t4, 5000000
 
 loop2:
             addi t4, t4, -1
@@ -18,4 +18,4 @@ loop2:
             j loop
             
 stop:  j stop
-data:       .data
+rodata:       .rodata
