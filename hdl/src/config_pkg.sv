@@ -91,7 +91,8 @@ package config_pkg;
   // UART config
   localparam integer unsigned FifoQueueSize = 32;
   localparam integer unsigned FifoPtrSize = $clog2(FifoQueueSize);
-  localparam integer unsigned FifoCsrAddr = 'h50;
+  localparam integer unsigned FifoWordCsrAddr = 'h50;
+  localparam integer unsigned FifoByteCsrAddr = 'h51;
   localparam integer unsigned CoreFreq = 20000000;
   localparam integer unsigned UartBaudRate = 115200;
   localparam integer unsigned UartCmpVal = CoreFreq / UartBaudRate;

@@ -5,8 +5,8 @@
 `include "../core/decoder_pkg.sv"
 
 module fifo
-    import config_pkg::*;
-    import decoder_pkg::*;
+  import config_pkg::*;
+  import decoder_pkg::*;
 (
     input logic clk_i,
     input logic reset_i,
@@ -25,10 +25,12 @@ module fifo
   word queue[FifoQueueSize];  // 32 word queue, should be parametric
   logic [FifoPtrSize:0] in_ptr;
   logic [FifoPtrSize:0] out_ptr;
+
+  // Word
   csr #(
       .CsrWidth(32),
-      .Addr(FifoCsrAddr)
-  ) csr (
+      .Addr(FifoWordCsrAddr)
+  ) csr_word (
       .clk(clk_i),
       .reset(reset_i),
       .csr_enable(csr_enable),
@@ -41,9 +43,31 @@ module fifo
       .direct_out(data_int),
       .out(csr_data_out)
   );
+
+  // Byte 
+  word byte_data_int;
+  word byte_out;
+  csr #(
+      .CsrWidth(8),
+      .Addr(FifoByteCsrAddr)
+  ) csr_byte (
+      .clk(clk_i),
+      .reset(reset_i),
+      .csr_enable(csr_enable),
+      .csr_addr(csr_addr),
+      .rs1_zimm(rs1_zimm),
+      .rs1_data(rs1_data),
+      .csr_op(csr_op),
+      .ext_data(0),
+      .ext_write_enable(0),
+      .direct_out(byte_data_int),
+      .out(byte_out)
+  );
+
   always_comb begin
     data = queue[out_ptr];
   end
+
   always_ff @(posedge clk_i) begin
     if (reset_i) begin
       //data_internal <= 0;
@@ -51,7 +75,7 @@ module fifo
       in_ptr  <= 0;
       out_ptr <= 0;
     end else begin
-      if (csr_enable == 1 && csr_addr == FifoCsrAddr) begin
+      if (csr_enable == 1 && csr_addr == FifoWordCsrAddr) begin
         queue[in_ptr] <= data_int;
         in_ptr <= in_ptr + 1;
       end
