@@ -17,14 +17,15 @@ module fifo
     input r rs1_zimm,
     input word rs1_data,
     //input logic cmp,
-    output word data,
+    output logic [7:0] data,
     output word csr_data_out,
     output logic have_next
 );
   word data_int;
-  word queue[FifoQueueSize];  // 32 word queue, should be parametric
-  logic [FifoPtrSize:0] in_ptr;
-  logic [FifoPtrSize:0] out_ptr;
+  //word queue[FifoQueueSize];  // 32 word queue, should be parametric
+  logic [7:0] queue[FifoQueueSize];
+  logic [FifoPtrSize-1:0] in_ptr;
+  logic [FifoPtrSize-1:0] out_ptr;
 
   // Word
   csr #(
@@ -76,12 +77,18 @@ module fifo
       out_ptr <= 0;
     end else begin
       if (csr_enable == 1 && csr_addr == FifoWordCsrAddr) begin
-        queue[in_ptr] <= data_int;
+        queue[in_ptr] <= data_int[7:0];
+        queue[in_ptr+1] <= data_int[15:8];
+        queue[in_ptr+2] <= data_int[23:16];
+        queue[in_ptr+3] <= data_int[31:24];
+        in_ptr <= in_ptr + 4;
+      end
+      if (csr_enable == 1 && csr_addr == FifoByteCsrAddr) begin
+        queue[in_ptr] <= byte_data_int;
         in_ptr <= in_ptr + 1;
       end
       if (in_ptr != out_ptr) begin
         have_next <= 1;
-        //out_ptr   <= out_ptr + 1;
       end else have_next <= 0;
       if (next) out_ptr <= out_ptr + 1;
     end

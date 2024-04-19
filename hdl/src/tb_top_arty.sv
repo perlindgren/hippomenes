@@ -3,7 +3,7 @@
 
 module tb_top_arty;
   import config_pkg::*;
-
+  import arty_pkg::*;
   logic clk;
   logic reset;
 
