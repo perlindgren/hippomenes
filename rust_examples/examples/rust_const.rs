@@ -53,7 +53,7 @@ fn main() -> ! {
         if (counter >> 20) & 1 == 1 {
             if flag {
                 // uart.write(DATA[0]);
-                uart.write(DATA[counter as usize % 16]);
+                uart.write_word(DATA[counter as usize % 16]);
                 if counter % 16 == 15 {
                     flag = false;
                 }

@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
 
+use core::fmt::Write;
 use core::panic::PanicInfo;
 use hippomenes_core::Peripherals;
 use hippomenes_core::{InputPin, OutputPin}; // traits
@@ -20,15 +21,12 @@ fn panic(_info: &PanicInfo) -> ! {
     }
 }
 
-const DATA: [u8; 16] = [
-    0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, 0x50,
-];
 #[entry]
 fn main() -> ! {
     let p = unsafe { Peripherals::steal() };
     let led = p.gpo.split();
     let btn = p.gpi.split();
-    let uart = p.uart;
+    let mut uart = p.uart;
     let mut counter: u32 = 0;
     let mut flag: bool = false;
     loop {
@@ -36,10 +34,8 @@ fn main() -> ! {
 
         if (counter >> 20) & 1 == 1 {
             if flag {
-                uart.write_byte(DATA[counter as usize % 16]);
-                if counter % 16 == 15 {
-                    flag = false;
-                }
+                write!(uart, "hello from hippo :))").ok();
+                flag = false;
             }
             led.pout3.set_low()
         } else {
