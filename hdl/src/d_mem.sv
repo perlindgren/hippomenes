@@ -1,11 +1,6 @@
 // d_mem
 `timescale 1ns / 1ps
 
-`include "arty_pkg.sv"
-`include "core/decoder_pkg.sv"
-`include "config_pkg.sv"
-`include "mem_pkg.sv"
-
 module d_mem
   import arty_pkg::*;
   import decoder_pkg::*;

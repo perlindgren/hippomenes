@@ -51,7 +51,7 @@ module uart (
           w <= 10;  // emit stop bit for 10 bit periods
           next_int <= 1;  // notify we want more data
         end else begin
-          tx <= 1'(data & 'b1);  // set tx pin to bit
+          tx <= data[0] & 1;  // set tx pin to bit
           bit_counter <= bit_counter + 1;  // increase bit count
           data <= data >> 1;  //shift to next bit
         end

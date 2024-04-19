@@ -21,7 +21,15 @@ $(root)/mem.sv \
 $(root)/rom.sv \
 $(core)/csr.sv \
 $(core)/csr_pins_in.sv \
-$(core)/wb_mux.sv 
+$(core)/wb_mux.sv \
+$(core)/wt_ctl.sv \
+$(core)/wt_mux.sv \
+$(root)/d_mem_spram.sv \
+$(root)/spram_block.sv \
+
+
+#$(core)/d_mem.sv \
+
 
 top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
@@ -85,7 +93,7 @@ tb_uart_g:
 asm: 
 #	cd ../../rust_examples/; cargo build --example asm --release; elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/asm -t ../hdl/verilator/binary.mem -p;
 
-tb_top_arty: $(top_arty)
+tb_top_arty: 
 	verilator --binary $(top_arty) --top-module tb_top_arty --trace-fst --assert -y $(rust) 
 	obj_dir/Vtb_top_arty
 

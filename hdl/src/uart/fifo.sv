@@ -1,8 +1,6 @@
 // uart
 `timescale 1ns / 1ps
 
-`include "../config_pkg.sv"
-`include "../core/decoder_pkg.sv"
 
 module fifo
   import config_pkg::*;
@@ -84,7 +82,7 @@ module fifo
         in_ptr <= in_ptr + 4;
       end
       if (csr_enable == 1 && csr_addr == FifoByteCsrAddr) begin
-        queue[in_ptr] <= byte_data_int;
+        queue[in_ptr] <= byte_data_int[7:0];
         in_ptr <= in_ptr + 1;
       end
       if (in_ptr != out_ptr) begin

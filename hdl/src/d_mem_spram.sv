@@ -1,10 +1,6 @@
 // mem
 `timescale 1ns / 1ps
 
-`include "arty_pkg.sv"
-`include "config_pkg.sv"
-`include "mem_pkg.sv"
-
 module d_mem_spram
   import config_pkg::*;
   import mem_pkg::*;
@@ -82,24 +78,24 @@ module d_mem_spram
   );
   always_ff @(posedge clk) begin
     if (reset) begin
-        address_clocked <= 0;
-        width_clocked <= WORD;
-        sign_extend_clocked <= 0;
+      address_clocked <= 0;
+      width_clocked <= WORD;
+      sign_extend_clocked <= 0;
     end
     sign_extend_clocked <= sign_extend;
     width_clocked <= width;
     address_clocked <= addr;
   end
   always_comb begin
-     if (addr % 4 == 1) begin
+    if (addr % 4 == 1) begin
       block_0_addr = addr[DMemAddrWidth-1:2] + 1;
       block_1_addr = addr[DMemAddrWidth-1:2];
       block_2_addr = addr[DMemAddrWidth-1:2];
       block_3_addr = addr[DMemAddrWidth-1:2];
-      block_0_din = data_in[31:24];
-      block_1_din = data_in[7:0];
-      block_2_din = data_in[15:8];
-      block_3_din = data_in[23:16];
+      block_0_din  = data_in[31:24];
+      block_1_din  = data_in[7:0];
+      block_2_din  = data_in[15:8];
+      block_3_din  = data_in[23:16];
       if (write_enable) begin
         case (width)
           BYTE: begin
@@ -133,10 +129,10 @@ module d_mem_spram
       block_1_addr = addr[DMemAddrWidth-1:2] + 1;
       block_2_addr = addr[DMemAddrWidth-1:2];
       block_3_addr = addr[DMemAddrWidth-1:2];
-      block_0_din = data_in[23:16];
-      block_1_din = data_in[31:24];
-      block_2_din = data_in[7:0];
-      block_3_din = data_in[15:8];
+      block_0_din  = data_in[23:16];
+      block_1_din  = data_in[31:24];
+      block_2_din  = data_in[7:0];
+      block_3_din  = data_in[15:8];
       case (width)
         BYTE: begin
           block_0_we = 0;
@@ -168,10 +164,10 @@ module d_mem_spram
       block_1_addr = addr[DMemAddrWidth-1:2] + 1;
       block_2_addr = addr[DMemAddrWidth-1:2] + 1;
       block_3_addr = addr[DMemAddrWidth-1:2];
-      block_0_din = data_in[15:8];
-      block_1_din = data_in[23:16];
-      block_2_din = data_in[31:24];
-      block_3_din = data_in[7:0];
+      block_0_din  = data_in[15:8];
+      block_1_din  = data_in[23:16];
+      block_2_din  = data_in[31:24];
+      block_3_din  = data_in[7:0];
       case (width)
         BYTE: begin
           block_0_we = 0;
@@ -203,10 +199,10 @@ module d_mem_spram
       block_1_addr = addr[DMemAddrWidth-1:2];
       block_2_addr = addr[DMemAddrWidth-1:2];
       block_3_addr = addr[DMemAddrWidth-1:2];
-      block_0_din = data_in[7:0];
-      block_1_din = data_in[15:8];
-      block_2_din = data_in[23:16];
-      block_3_din = data_in[31:24];
+      block_0_din  = data_in[7:0];
+      block_1_din  = data_in[15:8];
+      block_2_din  = data_in[23:16];
+      block_3_din  = data_in[31:24];
       case (width)
         BYTE: begin
           block_0_we = 1;

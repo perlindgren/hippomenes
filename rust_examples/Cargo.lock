@@ -84,6 +84,7 @@ checksum = "290f1a1d9242c78d09ce40a5e87e7554ee637af1351968159f4952f028f75604"
 [[package]]
 name = "hippomenes-core"
 version = "0.1.0"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "const_format",
  "critical-section",
@@ -93,6 +94,7 @@ dependencies = [
 [[package]]
 name = "hippomenes-derive"
 version = "0.1.0"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -102,6 +104,7 @@ dependencies = [
 [[package]]
 name = "hippomenes-hal"
 version = "0.1.0"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "hippomenes-core",
 ]
@@ -109,6 +112,7 @@ dependencies = [
 [[package]]
 name = "hippomenes-rt"
 version = "0.1.0"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "hippomenes-core",
  "hippomenes-rt-macros",
@@ -117,6 +121,7 @@ dependencies = [
 [[package]]
 name = "hippomenes-rt-macros"
 version = "0.1.0"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -214,6 +219,7 @@ dependencies = [
 [[package]]
 name = "rtic"
 version = "2.0.1"
+source = "git+https://github.com/onsdagens/rtic?branch=hippomenes#c1730e570af2a3297408a4bb24fe10e86bbc072c"
 dependencies = [
  "atomic-polyfill",
  "bare-metal",
@@ -234,6 +240,7 @@ checksum = "d9369355b04d06a3780ec0f51ea2d225624db777acbc60abd8ca4832da5c1a42"
 [[package]]
 name = "rtic-macros"
 version = "2.0.1"
+source = "git+https://github.com/onsdagens/rtic?branch=hippomenes#c1730e570af2a3297408a4bb24fe10e86bbc072c"
 dependencies = [
  "indexmap",
  "proc-macro-error",

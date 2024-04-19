@@ -2,6 +2,8 @@
 `timescale 1ns / 1ps
 
 import decoder_pkg::*;
+import config_pkg::*;
+
 module tb_csr;
 
   localparam integer unsigned CsrWidth = 5;  // default to word
