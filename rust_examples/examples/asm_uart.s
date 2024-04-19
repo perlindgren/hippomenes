@@ -1,5 +1,8 @@
             .option  norvc
             .text
+            .section .init
+# EXPECTED BEHAVIOR
+# Every ~.25s (@20MHz), hippo!!! is written to UART
 init:       la      sp, _stack_start        # set stack pointer
            
 main:       li t1, 0x70706968

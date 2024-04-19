@@ -10,8 +10,7 @@ main:       csrwi   0x300, 8                # enable global interrupts
             la      t1, isr_0
             srl     t1, t1, 2
             csrw    0xB00, t1               # setup isr_0 address
-            #li      t2, 0b1000001010    # interrupt every 1024 << 10 cycles ~ 10_000_000 ~ 0.5Hz  
-            li      t2,  0b100000000001110 #interrupt every 1048 << 14 cycles ~ 20MHz/16.7Mhz = 1.19 Hz 
+            li      t2,  0b100000000001110  #interrupt every 2048 << 14 cycles ~ 33M, yields 20MHz/33M = 0.6Hz 
             csrw    0x400, t2               # timer.counter_top CSR
             la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
             csrw    0xB20, t1
