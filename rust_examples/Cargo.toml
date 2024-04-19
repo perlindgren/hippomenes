@@ -16,13 +16,4 @@ hippomenes-core = {git="https://github.com/onsdagens/hippomenes-core"}
 hippomenes-rt = {git="https://github.com/onsdagens/hippomenes-core"}
 #rtic = {path = "../../../rtic/rtic/", features=["riscv-clic-backend"]}
 rtic = {git="https://github.com/onsdagens/rtic", branch="hippomenes", features=["riscv-clic-backend"]}
-# [workspace]
-
-#[patch]
-#hippomenes-core = { path = "../../hippomenes-core" }
-#hippomenes-rt = { path = "../../hippomenes-core/hippomenes-rt" }
-#hippomenes-hal = { path = "../../hippomenes-core/hippomenes-hal" }
-
-#[patch.crates-io]
-#hippomenes-core = { path = "../../hippomenes-core" }
 
