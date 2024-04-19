@@ -22,22 +22,22 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 const DATA: [usize; 16] = [
-    0x4142_4344,
+    0x4241_4141,
     0x4546_4848,
-    0x495A_5B5C,
-    0x5D5E_5F60,
-    0x4142_4344,
+    0x494A_4B4C,
+    0x4D4E_4F50,
+    0x4241_4141,
     0x4546_4848,
-    0x495A_5B5C,
-    0x5D5E_5F60,
-    0x4142_4344,
+    0x494A_4B4C,
+    0x4D4E_4F50,
+    0x4241_4141,
     0x4546_4848,
-    0x495A_5B5C,
-    0x5D5E_5F60,
-    0x4142_4344,
+    0x494A_4B4C,
+    0x4D4E_4F50,
+    0x4241_4141,
     0x4546_4848,
-    0x495A_5B5C,
-    0x5D5E_5F60,
+    0x494A_4B4C,
+    0x4D4E_4F50,
 ];
 #[entry]
 fn main() -> ! {
@@ -52,9 +52,11 @@ fn main() -> ! {
 
         if (counter >> 20) & 1 == 1 {
             if flag {
-                uart.write(DATA[0]);
-                // uart.write(DATA[counter as usize % 16]);
-                flag = false;
+                // uart.write(DATA[0]);
+                uart.write(DATA[counter as usize % 16]);
+                if counter % 16 == 15 {
+                    flag = false;
+                }
             }
             led.pout3.set_low()
         } else {
