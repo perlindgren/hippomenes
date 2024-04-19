@@ -1,5 +1,11 @@
             .option  norvc
             .text
+            .section .init
+# This tests that the one instruction ISR corner case works.
+# Should be run in conjunction with another interrupt test to make sure interrupts are actually working
+# EXPECTED BEHAVIOR:
+# The timer interrupt keeps returning as expected, and the LED is PWM at a 33% duty cycle, it lights up like 
+# asm_blinky.
 init:       la      sp, _stack_start        # set stack pointer
             la      t0, toggled 
             sw      zero, 0(t0)
@@ -14,7 +20,10 @@ main:       csrwi   0x300, 8                # enable global interrupts
             nop
             nop
             nop
-stop:       j       stop                    # wait for interrupt
+stop:       
+            csrsi 0x0, 1                   # blink LED to prove interrupt has returned
+            csrci 0x0, 1
+            j       stop                    # wait for interrupt
 
 isr_0:      jr ra
             .rodata

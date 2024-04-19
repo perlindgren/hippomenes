@@ -1,13 +1,17 @@
             .option  norvc
             .text
+            .section .init
+# This bench is meant to be run in simulation
+# EXPECTED BEHAVIOR
+# The values specified in the comments should appear in the target registers
 init:       la      sp, _stack_start        # set stack pointer
 
 main:
 
       la t1, word1
-      lw t2, 0(t1)
+      lw t2, 0(t1) ### 0x00000001
       la t1, word2
-      lw t1, 0(t1)
+      lw t1, 0(t1) ### 0x00000002
       add t3, t2, t1
       lw t4, -5(t3)
       sw t4, -1(t3)

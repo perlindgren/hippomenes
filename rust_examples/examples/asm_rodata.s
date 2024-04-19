@@ -1,5 +1,8 @@
             .option  norvc
             .text
+            .section .init
+# EXPECTED BEHAVIOR
+# hippo!!! should be written to UART every .25s at @20MHz
 init:       la      sp, _stack_start        # set stack pointer
            
 main:       
@@ -12,7 +15,7 @@ loop:
     csrw   0x50, t1  # ASCII hipp to UART
     csrw   0x50, t2  # ASCII o!!! to UART
     csrw   0x50, t3  # ASCII uart to UART
-    # now wait for couple of seconds
+    # now wait for a while (.25s)
     li t4, 5000000
 
 loop2:
