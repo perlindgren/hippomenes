@@ -1,41 +1,80 @@
-// fpga_arty
+// fpga_top
 `timescale 1ns / 1ps
 
-import arty_pkg::*;
-
+// This is just illustrative
 module fpga_arty (
     input sysclk,
-    output LedT led,
-    output LedT led_r,
-    output LedT led_g,
-    output LedT led_b,
-    input SwT sw,
+    output logic [3:0] led,
 
-    output logic rx,  // seen from host side 
-    input  logic tx,
+    output logic [3:0] led_r,
 
-    input BtnT btn
+    output logic [3:0] led_g,
+
+    output logic [3:0] led_b,
+
+    output logic rx,  // host
+    input  logic tx,  // host
+
+    input logic [1:0] sw,
+
+    input logic [3:0] btn
+    // input logic btn1,
+    // input logic btn2,
+    // input logic btn3
 );
 
   logic clk;
 
   logic [31:0] r_count;
+  // logic reset;
   logic locked;
 
+  logic tmp_sw0;
+  logic tmp_sw1;
+
+  logic tmp_btn0;
+  logic tmp_btn1;
+  logic tmp_btn2;
+  logic tmp_btn3;
+
+  assign tmp_sw0  = sw[0];
+  assign tmp_sw1  = sw[1];
+  assign tmp_btn0 = btn[0];
+  assign tmp_btn1 = btn[1];
+  assign tmp_btn2 = btn[2];
+  assign tmp_btn3 = btn[3];
+
+  //assign led2 = tmp_sw0;
+  //assign led3 = tmp_sw1;
+
+  //assign led_r[0]   = 0;
+  assign led_r[1] = 0;
+  assign led_r[2] = 0;
+  assign led_r[3] = 0;
+
+  assign led_g[0] = 0;
+  assign led_g[1] = 0;
+  assign led_g[2] = 0;
+  assign led_g[3] = 0;
+
+  assign led_b[0] = 0;
+  assign led_b[1] = 0;
+  assign led_b[2] = 0;
+  assign led_b[3] = 0;
+
   always_comb begin
-    for (integer k = 0; k < LedWidth; k++) begin
-      if (k != 0) led_r[k] = 0;  // used for clock
-      led_g[k] = 0;
-      led_b[k] = 0;
-    end
+
   end
 
   top_arty hippo (
       .clk,
-      .reset(sw[1]),
-      .btn,
-      .led,
-      .tx(rx) // connect hippo TX with FTDI RX
+      .reset(tmp_sw1),
+      .btn(btn),
+      .led(led),
+      .tx(rx)
+      // .gpio_in({led1, rx, tx}),
+      // .gpio_out({led1, rx, tx}),
+      // .rx(tx),
   );
 
   clk_wiz_0 clk_gen (
@@ -44,7 +83,7 @@ module fpga_arty (
       // Clock out ports
       .clk_out1(clk),
       // Status and control signals
-      .reset(sw[0]),
+      .reset(tmp_sw0),
       .locked
   );
 
@@ -55,3 +94,5 @@ module fpga_arty (
   end
 
 endmodule
+
+
