@@ -422,6 +422,7 @@ module top_arty (
       .rs1_zimm(decoder_rs1),
       .rs1_data(rs1_wt_mux_out),
       .csr_op(decoder_csr_op),
+      .level(n_clic_level_out),
       .data(fifo_data),
       .csr_data_out(fifo_csr_data_out),
       .have_next(fifo_have_next)

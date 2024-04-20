@@ -11,20 +11,21 @@ module fifo
     input logic next,
     input logic csr_enable,
     input CsrAddrT csr_addr,
-    input csr_op_t csr_op,
     input r rs1_zimm,
     input word rs1_data,
+    input csr_op_t csr_op,
+    input PrioT level,
     //input logic cmp,
     output logic [7:0] data,
     output word csr_data_out,
     output logic have_next
 );
-  word data_int;
-  //word queue[FifoQueueSize];  // 32 word queue, should be parametric
   logic [7:0] queue[FifoQueueSize];
-  logic [FifoPtrSize-1:0] in_ptr;
-  logic [FifoPtrSize-1:0] out_ptr;
+  FifoPtrT in_ptr;
+  FifoPtrT out_ptr;
+  PrioT old_level;
 
+  word data_int;
   // Word
   csr #(
       .CsrWidth(32),
@@ -67,28 +68,38 @@ module fifo
     data = queue[out_ptr];
   end
 
+  FifoPtrT tmp_in_ptr;
   always_ff @(posedge clk_i) begin
     if (reset_i) begin
       //data_internal <= 0;
-      queue   <= '{default: 0};
-      in_ptr  <= 0;
+      queue <= '{default: 0};
+      in_ptr <= 0;
       out_ptr <= 0;
+      old_level <= PrioNum - 1;
     end else begin
+      tmp_in_ptr = in_ptr;
+      if (level != old_level) begin
+        // we have changed context
+        old_level <= level;
+        queue[in_ptr] <= "-";
+        tmp_in_ptr = tmp_in_ptr + 1;
+      end
       if (csr_enable == 1 && csr_addr == FifoWordCsrAddr) begin
-        queue[in_ptr] <= data_int[7:0];
-        queue[in_ptr+1] <= data_int[15:8];
-        queue[in_ptr+2] <= data_int[23:16];
-        queue[in_ptr+3] <= data_int[31:24];
-        in_ptr <= in_ptr + 4;
+        queue[tmp_in_ptr]   <= data_int[7:0];
+        queue[tmp_in_ptr+1] <= data_int[15:8];
+        queue[tmp_in_ptr+2] <= data_int[23:16];
+        queue[tmp_in_ptr+3] <= data_int[31:24];
+        tmp_in_ptr = tmp_in_ptr + 1;
       end
       if (csr_enable == 1 && csr_addr == FifoByteCsrAddr) begin
-        queue[in_ptr] <= byte_data_int[7:0];
-        in_ptr <= in_ptr + 1;
+        queue[tmp_in_ptr] <= byte_data_int[7:0];
+        tmp_in_ptr = tmp_in_ptr + 1;
       end
-      if (in_ptr != out_ptr) begin
+      if (tmp_in_ptr != out_ptr) begin
         have_next <= 1;
       end else have_next <= 0;
       if (next) out_ptr <= out_ptr + 1;
+      in_ptr <= tmp_in_ptr;
     end
   end
 endmodule
