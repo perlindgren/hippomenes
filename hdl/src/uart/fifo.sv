@@ -69,22 +69,31 @@ module fifo
   end
 
   FifoPtrT tmp_in_ptr;
+  FifoPtrT sentinel_ptr;
+  FifoPtrT frame_end_ptr;
   always_ff @(posedge clk_i) begin
     if (reset_i) begin
-      //data_internal <= 0;
       queue <= '{default: 0};
       in_ptr <= 0;
       out_ptr <= 0;
+      frame_end_ptr <= 0;
       old_level <= PrioNum - 1;
     end else begin
       tmp_in_ptr = in_ptr;
       if (level != old_level) begin
         // we have changed context
         old_level <= level;
-        queue[in_ptr] <= "-";
-        tmp_in_ptr = tmp_in_ptr + 1;
+        // update last sentinel
+        queue[sentinel_ptr] <= (in_ptr - sentinel_ptr) - 1;
+        queue[in_ptr] <= 0;  // end packet sentinel
+        frame_end_ptr <= in_ptr + 1;
+        // queue[in_ptr+1] <= 0;  // new packet sentinel placeholder
+        queue[in_ptr+2] <= level;  // interrupt level
+        sentinel_ptr <= in_ptr + 1;  // pointer to new packet sentinel
+        tmp_in_ptr = tmp_in_ptr + 3;  // next free
       end
       if (csr_enable == 1 && csr_addr == FifoWordCsrAddr) begin
+        // TODO: for now just bytes
         queue[tmp_in_ptr]   <= data_int[7:0];
         queue[tmp_in_ptr+1] <= data_int[15:8];
         queue[tmp_in_ptr+2] <= data_int[23:16];
@@ -92,10 +101,14 @@ module fifo
         tmp_in_ptr = tmp_in_ptr + 1;
       end
       if (csr_enable == 1 && csr_addr == FifoByteCsrAddr) begin
+        if (byte_data_int[7:0] == 0 || in_ptr - sentinel_ptr == FifoQueueSize - 1) begin
+          queue[sentinel_ptr] <= (in_ptr - sentinel_ptr) - 1;
+          sentinel_ptr <= in_ptr;
+        end
         queue[tmp_in_ptr] <= byte_data_int[7:0];
         tmp_in_ptr = tmp_in_ptr + 1;
       end
-      if (tmp_in_ptr != out_ptr) begin
+      if (frame_end_ptr != out_ptr) begin
         have_next <= 1;
       end else have_next <= 0;
       if (next) out_ptr <= out_ptr + 1;
