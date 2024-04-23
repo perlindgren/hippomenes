@@ -51,10 +51,10 @@ module fifo
   FifoPtrT sentinel_ptr;
   FifoPtrT frame_end_ptr;
 
+  FifoPtrT tmp_length;
   // stack 
   logic    has_zero      [PrioNum];
-  byte     length        [PrioNum];
-  byte     tmp_length;
+  FifoPtrT length        [PrioNum];
 
   always_ff @(posedge clk_i) begin
     if (reset_i) begin
