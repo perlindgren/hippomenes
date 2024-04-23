@@ -149,6 +149,21 @@ module top_arty (
       .wb_write_enable(decoder_wb_write_enable),
       .wb_mem_mux_sel(decoder_mem_mux_sel_out)
   );
+  csr_op_t vcsr_op;
+  CsrAddrT vcsr_addr;
+  word vcsr_data;
+  vcsr vcsr_i (
+      .clk,
+      .reset,
+      .rs1_data(rs1_wt_mux_out),
+      .csr_addr(decoder_csr_addr),
+      .rs1_zimm(decoder_rs1),
+      .csr_enable(decoder_csr_enable),
+      .csr_op(decoder_csr_op),
+      .out_addr(vcsr_addr),
+      .out_data(vcsr_data),
+      .out_op(vcsr_op)
+  );
   wt_mux_sel_t wt_ctl_rs1_sel_out;
   wt_mux_sel_t wt_ctl_rs2_sel_out;
   wt_ctl wt_ctl_i (
@@ -307,10 +322,10 @@ module top_arty (
       .clk,
       .reset,
       .csr_enable(decoder_csr_enable),
-      .csr_addr(decoder_csr_addr),
+      .csr_addr(vcsr_addr),
       .rs1_zimm(decoder_rs1),
-      .rs1_data(rs1_wt_mux_out),
-      .csr_op(decoder_csr_op),
+      .rs1_data(vcsr_data),
+      .csr_op(vcsr_op),
       .ext_data(0),
       .ext_write_enable(0),
       // out
@@ -332,10 +347,10 @@ module top_arty (
       .clk,
       .reset,
       .csr_enable(decoder_csr_enable),
-      .csr_addr(decoder_csr_addr),
+      .csr_addr(vcsr_addr),
       .rs1_zimm(decoder_rs1),
-      .rs1_data(rs1_wt_mux_out),
-      .csr_op(decoder_csr_op),
+      .rs1_data(vcsr_data),
+      .csr_op(vcsr_op),
       .ext_data(0),
       .ext_write_enable(0),
       // out
@@ -394,11 +409,11 @@ module top_arty (
       .clk,
       .reset,
       .csr_enable(decoder_csr_enable),
-      .csr_addr(decoder_csr_addr),
+      .csr_addr(vcsr_addr),
       .rs1_zimm(decoder_rs1),
-      .rs1_data(rs1_wt_mux_out),
+      .rs1_data(vcsr_data),
       //.rd(decoder_rd),
-      .csr_op(decoder_csr_op),
+      .csr_op(vcsr_op),
       .pc_in(pc_branch_mux_out),
       // out
       .csr_out(n_clic_csr_out),
@@ -418,10 +433,10 @@ module top_arty (
       .reset_i(reset),
       .next(uart_next),
       .csr_enable(decoder_csr_enable),
-      .csr_addr(decoder_csr_addr),
+      .csr_addr(vcsr_addr),
       .rs1_zimm(decoder_rs1),
-      .rs1_data(rs1_wt_mux_out),
-      .csr_op(decoder_csr_op),
+      .rs1_data(vcsr_data),
+      .csr_op(vcsr_op),
       .level(n_clic_level_out),
       .data(fifo_data),
       .csr_data_out(fifo_csr_data_out),

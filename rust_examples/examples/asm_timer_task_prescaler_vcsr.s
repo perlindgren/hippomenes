@@ -10,8 +10,17 @@ main:       csrwi   0x300, 8                # enable global interrupts
             la      t1, isr_0
             srl     t1, t1, 2
             csrw    0xB00, t1               # setup isr_0 address
-            li      t2,  0b100000000001110  #interrupt every 512 << 14 cycles ~ 8.4M, yields 20MHz/8.4M = 2.38Hz 
-            csrw    0x400, t2               # timer.counter_top CSR
+            # setup VCSR
+            # point to 0x400, bit offset 14, width 5
+            li t3, 0b1000000000001110101 
+            # write config to VCSR0_CFG
+            csrw    0x100, t3
+            # write prescaler (14) directly to timer config
+            csrwi    0x400, 0b1110               # timer
+            # now write cmp value via VCSR0: 1 at bit 14 gives cmp value 512 (bits 5:0 are prescaler)
+            # 512*2^14 ~ 8.4M, yields ~2.38 Hz at 20MHz
+            csrsi   0x110, 1
+
             la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
             csrw    0xB20, t1
 stop:       j       stop                    # wait for interrupt
