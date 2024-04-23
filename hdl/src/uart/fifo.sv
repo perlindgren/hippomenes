@@ -56,8 +56,6 @@ module fifo
   byte     length        [PrioNum];
   byte     tmp_length;
 
-  // byte     tmp_length;
-
   always_ff @(posedge clk_i) begin
     if (reset_i) begin
       queue <= '{default: 0};
@@ -77,33 +75,35 @@ module fifo
       end else if (level > old_level) begin
         // pop frame
         // package length
-        queue[tmp_in_ptr]   <= (has_zero[old_level]) ? -length[old_level] : length[old_level] + 1;
+        queue[tmp_in_ptr] <= (has_zero[old_level]) ? -length[old_level] : length[old_level] + 1;
         // package delimeter
-        queue[tmp_in_ptr+1] <= 0;
-        tmp_in_ptr = tmp_in_ptr + 2;
+        queue[FifoPtrT'(tmp_in_ptr+1)] <= 0;
+        tmp_in_ptr = FifoPtrT'(tmp_in_ptr + 2);
       end
 
       if (csr_enable == 1 && csr_addr == FifoByteCsrAddr) begin
         // write byte
-        // tmp_length = length[level];
-
         if (byte_data_int[7:0] == 0) begin
           queue[tmp_in_ptr] <= (has_zero[level]) ? -length[level] : length[level] + 1;
           length[level] <= 1;
           has_zero[level] <= 1;
         end else begin
           queue[tmp_in_ptr] <= byte_data_int[7:0];
-          length[level] <= tmp_length + 1;
+          tmp_length = FifoPtrT'(tmp_length + 1);
         end
 
         tmp_in_ptr = tmp_in_ptr + 1;
       end
-      if (in_ptr != out_ptr) begin
+      if (tmp_in_ptr != out_ptr) begin
         have_next <= 1;
       end else have_next <= 0;
       if (next) out_ptr <= out_ptr + 1;
-      in_ptr <= tmp_in_ptr;
+
       old_level <= level;
+
+      // update tmp
+      in_ptr <= tmp_in_ptr;
+      length[level] <= tmp_length;
     end
   end
 endmodule

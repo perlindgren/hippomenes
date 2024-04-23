@@ -23,7 +23,7 @@ mod app {
         let timer = peripherals.timer;
         let mut uart = peripherals.uart;
         write!(uart, "init").ok();
-        timer.write(0x500F); //timer interrupt every
+        timer.write(0x100F); //timer interrupt every
                              // 500*2^15 ~ 16M cycles ~0.75s @ 20MHz
         (Shared { dummy: true }, Local { uart })
     }
@@ -33,11 +33,12 @@ mod app {
         loop {}
     }
 
-    #[task(binds = Interrupt0, priority=3, shared=[dummy], local=[uart])]
+    #[task(binds = Interrupt0, priority=1, shared=[dummy], local=[uart])]
     fn some_task(cx: some_task::Context) {
         write!(cx.local.uart, "A").ok();
         cx.local.uart.write_byte(0); // force sentinel, notice NOT end of packet
-        write!(cx.local.uart, "B").ok();
+        write!(cx.local.uart, "C").ok();
+        // write!(cx.local.uart, "B").ok();
     }
 }
 
