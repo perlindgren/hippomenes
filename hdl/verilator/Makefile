@@ -59,7 +59,7 @@ timer = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/time
 
 branch_logic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch_logic.sv
 
-uart = $(root)/config_pkg.sv $(root)/core/decoder_pkg.sv $(root)/uart/uart.sv $(root)/uart/tb_uart.sv
+uart = $(root)/config_pkg.sv $(root)/arty_pkg.sv $(root)/core/decoder_pkg.sv $(core)/csr.sv $(root)/uart/uart.sv $(root)/uart/fifo.sv $(root)/uart/tb_uart.sv
 
 all: \
 	tb_alu \

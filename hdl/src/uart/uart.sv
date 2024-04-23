@@ -1,7 +1,9 @@
 // uart
 `timescale 1ns / 1ps
 
-module uart (
+module uart
+  import decoder_pkg::*;
+(
     input  logic       clk_i,
     input  logic       reset_i,
     input  word        prescaler,  // this can be a config register, for now just wire it to a 0
