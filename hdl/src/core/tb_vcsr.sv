@@ -13,8 +13,8 @@ module tb_vcsr;
   csr_op_t csr_op;
 
   CsrAddrT out_addr;
-  logic [31:0] out_data;
-  csr_op_t out_op;
+  vcsr_offset_t out_offset;
+  vcsr_width_t out_width;
 
   vcsr dut (
       .clk,
@@ -25,8 +25,30 @@ module tb_vcsr;
       .csr_enable,
       .csr_op,
       .out_addr,
-      .out_data,
-      .out_op
+      .out_offset,
+      .out_width
+  );
+  word dut_csr_direct_out;
+  word dut_csr_out;
+  csr #(
+      .Addr(20),
+      .CsrWidth(32)
+  ) dut_csr (
+      .clk,
+      .reset,
+      .csr_enable,
+      .csr_addr,
+      .csr_op,
+      .rs1_zimm,
+      .rs1_data,
+      .ext_write_enable(0),
+      .ext_data(0),
+      .vcsr_addr(out_addr),
+      .vcsr_offset(out_offset),
+      .vcsr_width(out_width),
+
+      .direct_out(dut_csr_direct_out),
+      .out(dut_csr_out)
   );
   always #10 begin
     clk = ~clk;
@@ -48,8 +70,7 @@ module tb_vcsr;
 
     #20;
 
-    assert (out_addr == 0);
-    assert (out_op == 0);
+    assert (out_addr == 'h100);
     csr_addr = 'h100;
     csr_op = CSRRW;
     csr_enable = 1;
@@ -57,23 +78,50 @@ module tb_vcsr;
 
     #20;
 
+    csr_addr = 20;
+    csr_op   = CSRRW;
+    rs1_data = 'hFFFFFFFF;
+
+    #20;
+    assert (dut_csr_direct_out == 'hFFFFFFFF);
+    assert (out_addr == 'h100);
+
     csr_addr = 'h110;
     csr_op = CSRRWI;
     csr_enable = 1;
     rs1_zimm = 'b10101;
     #20;
-    $display("%d", out_addr);
     assert (out_addr == 20);
-    assert (out_op == CSRRW);
-    assert (out_data == 'b10101000000000000);
-    csr_addr = 'h099;
+    assert (dut_csr_direct_out == 'hFFFF5FFF);
+
+    csr_addr = 'h09F;
     #20;
-    assert (out_addr == 'h099);
-    assert (out_op == CSRRWI);
+    assert (out_addr == 'h100);
+    assert (dut_csr_direct_out == 'hFFFF5FFF);
+
+    csr_addr = 'h110;
+    csr_op   = CSRRSI;
+    rs1_zimm = 'b00010;
+
+    #20;
+    assert (out_addr == 20);
+    assert (dut_csr_direct_out == 'hFFFF7FFF);
+
     csr_addr = 'h120;
+
     #20;
-    assert (out_addr == 'h120);
-    assert (out_op == CSRRWI);
+    assert (out_addr == 'h100);
+
+    csr_addr = 'h110;
+    csr_op   = CSRRCI;
+    rs1_zimm = 'b00100;
+    #20;
+
+    assert (out_addr == 20);
+    $display("%h", dut_csr_direct_out);
+    assert (dut_csr_direct_out == 'hFFFF3FFF);
+
+    #20;
     $finish;
 
 

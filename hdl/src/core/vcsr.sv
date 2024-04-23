@@ -5,8 +5,8 @@ module vcsr
   import decoder_pkg::*;
   import config_pkg::*;
 #(
-    parameter integer unsigned VcsrAmount = 16,  // default to 16
-    parameter CsrAddrT VcsrBase = 'h100  // default to 100
+    // parameter integer unsigned VcsrAmount = 16,  // default to 16
+    //  parameter CsrAddrT VcsrBase = 'h100  // default to 100
 ) (
     input logic clk,
     input logic reset,
@@ -16,17 +16,13 @@ module vcsr
     input logic csr_enable,
     input csr_op_t csr_op,
     output CsrAddrT out_addr,
-    output word out_data,
-    output csr_op_t out_op
+    output vcsr_offset_t out_offset,
+    output vcsr_width_t out_width
 );
-
-  typedef logic [$clog2(31)-1:0] offset_t;  // max offset is 31
-  typedef logic [$clog2(5)-1:0] width_t;  // immediate max 5 bits
-  typedef logic [$clog2(VcsrAmount)-1:0] idx_t;
   typedef struct packed {
     CsrAddrT addr;
-    offset_t offset;
-    width_t  width;
+    vcsr_offset_t offset;
+    vcsr_width_t width;
   } config_entry_t;
   config_entry_t cfg_direct_out[VcsrAmount];
   word cfg_out[VcsrAmount];
@@ -48,6 +44,10 @@ module vcsr
           .ext_write_enable(0),
           .ext_data(0),
 
+          .vcsr_addr  (0),
+          .vcsr_width (0),
+          .vcsr_offset(0),
+
           .direct_out(temp_cfg_direct_out[k]),
           .out(temp_cfg_out[k])
       );
@@ -56,41 +56,20 @@ module vcsr
     end
 
   endgenerate
-  offset_t offset;
-  width_t width;
-  idx_t idx;
-  r mask;
-  r masked_imm;
+  vcsr_idx_t idx;
   always_comb begin
     if (word'(csr_addr) < (word'(VcsrBase) + VcsrAmount * 2) && word'(csr_addr) >= (word'(VcsrBase) + VcsrAmount)) begin
-      idx = idx_t'(csr_addr) - idx_t'(VcsrBase);
+      idx = vcsr_idx_t'(csr_addr) - vcsr_idx_t'(VcsrBase);
       out_addr = cfg_direct_out[idx].addr;
-      offset = cfg_direct_out[idx].offset;
-      width = cfg_direct_out[idx].width;
-      mask = (1 << width) - 1;
-      masked_imm = rs1_zimm & mask;
-      case (csr_op)
-        CSRRWI: begin
-          out_op   = CSRRW;
-          out_data = word'(masked_imm) << offset;
-        end
-        CSRRSI: begin
-          out_op   = CSRRS;
-          out_data = word'(masked_imm) << offset;
-        end
-        CSRRCI: begin
-          out_op   = CSRRC;
-          out_data = word'(masked_imm) << offset;
-        end
-        default: begin
-          out_op   = csr_op;
-          out_data = rs1_data;
-        end
-      endcase
+      out_offset = cfg_direct_out[idx].offset;
+      out_width = cfg_direct_out[idx].width;
     end else begin
-      out_addr = csr_addr;
-      out_op   = csr_op;
-      out_data = rs1_data;
+      out_addr = VcsrBase;  // ensure vcsr doesn't do a write in this case
+      // by setting the out address to an internal VCSR CSR (these are not
+      // accessible via VCSR)
+      idx = 0;
+      out_offset = 0;
+      out_width = 0;
     end
   end
 endmodule

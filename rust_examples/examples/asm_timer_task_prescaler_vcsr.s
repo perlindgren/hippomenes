@@ -19,7 +19,7 @@ main:       csrwi   0x300, 8                # enable global interrupts
             csrwi    0x400, 0b1110               # timer
             # now write cmp value via VCSR0: 1 at bit 14 gives cmp value 512 (bits 5:0 are prescaler)
             # 512*2^14 ~ 8.4M, yields ~2.38 Hz at 20MHz
-            csrsi   0x110, 1
+            csrwi   0x110, 1
 
             la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
             csrw    0xB20, t1

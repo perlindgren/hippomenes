@@ -63,7 +63,12 @@ package config_pkg;
   localparam CsrAddrT StackDepthAddr = 'h350;
   localparam integer unsigned MStatusWidth = 4;
   localparam type MStatusT = logic [MStatusWidth-1:0];
-
+  // VCSR
+  localparam integer unsigned VcsrAmount = 16;
+  localparam CsrAddrT VcsrBase = 'h100;
+  typedef logic [$clog2(31)-1:0] vcsr_offset_t;  // max offset is 31
+  typedef logic [$clog2(5)-1:0] vcsr_width_t;  // immediate max 5 bits
+  typedef logic [$clog2(VcsrAmount)-1:0] vcsr_idx_t;
   // Peripheral timer
   localparam CsrAddrT TimerAddr = 'h400;
   localparam integer unsigned TimerWidth = 16;
