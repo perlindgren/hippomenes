@@ -26,6 +26,10 @@ module csr
     input r rs1_zimm,
     input word rs1_data,
 
+    // VCSR signals
+    input CsrAddrT vcsr_addr,
+    input vcsr_width_t vcsr_width,
+    input vcsr_offset_t vcsr_offset,
     // external access for side effects
     input CsrDataT ext_data,
     input logic ext_write_enable,
@@ -34,10 +38,50 @@ module csr
 );
   CsrDataT data;
   CsrDataT tmp;
-
+  r mask;
+  word masked_imm;
+  word masked_reg;
+  word masked_data;
   always_comb begin
     tmp = data;
-    if (csr_enable && (csr_addr == Addr) && Write) begin
+    mask = 0;
+    masked_reg = 0;
+    masked_imm = 0;
+    masked_data = 0;
+    if (vcsr_addr == Addr && csr_enable && Write) begin
+      mask = (1 << vcsr_width) - 1;
+      masked_reg = (rs1_data & word'(mask)) << vcsr_offset;
+      masked_imm = (word'(rs1_zimm) & word'(mask)) << word'(vcsr_offset);
+      masked_data = data & ~(word'(mask) << vcsr_offset);
+      $display("@ %h", vcsr_addr);
+      case (csr_op)
+        CSRRW: begin
+          tmp = masked_data | masked_reg;
+          $display("VCSR CSRRW %b", tmp);
+        end
+        CSRRS: begin
+          tmp = data | masked_reg;
+          $display("VCSR CSRRS %b", tmp);
+        end
+        CSRRC: begin
+          tmp = data & ~masked_reg;
+          $display("VCSR CSRRC %b", tmp);
+        end
+        CSRRWI: begin
+          tmp = masked_data | masked_imm;
+          $display("VCSR CSRRWI %b", tmp);
+        end
+        CSRRSI: begin
+          tmp = data | masked_imm;
+          $display("VCSR CSRRSI %b", tmp);
+        end
+        CSRRCI: begin
+          tmp = data & ~masked_imm;
+          $display("VCSR CSRRCI %b", tmp);
+        end
+        default: ;
+      endcase
+    end else if (csr_enable && (csr_addr == Addr) && Write) begin
       $display("@ %h", csr_addr);
       case (csr_op)
         CSRRW: begin

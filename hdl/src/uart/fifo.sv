@@ -14,6 +14,10 @@ module fifo
     input word rs1_data,
     input csr_op_t csr_op,
     input PrioT level,
+
+    input CsrAddrT vcsr_addr,
+    input vcsr_width_t vcsr_width,
+    input vcsr_offset_t vcsr_offset,
     output logic [7:0] data,
     output word csr_data_out,
     output logic have_next
@@ -22,7 +26,25 @@ module fifo
   FifoPtrT in_ptr;
   FifoPtrT out_ptr;
   PrioT old_level;
+  word data_int;
+  // Word
+  csr #(
+      .CsrWidth(32),
+      .Addr(FifoWordCsrAddr)
+  ) csr_word (
+      .clk(clk_i),
+      .reset(reset_i),
+      .csr_enable(csr_enable),
+      .csr_addr(csr_addr),
+      .rs1_zimm(rs1_zimm),
+      .rs1_data(rs1_data),
+      .csr_op(csr_op),
 
+      .ext_data(0),
+      .ext_write_enable(0),
+      .direct_out(data_int),
+      .out(csr_data_out)
+  );
   // Byte 
   word byte_data_int;
   word byte_out;
@@ -37,6 +59,9 @@ module fifo
       .rs1_zimm(rs1_zimm),
       .rs1_data(rs1_data),
       .csr_op(csr_op),
+      .vcsr_addr,
+      .vcsr_width,
+      .vcsr_offset,
       .ext_data(0),
       .ext_write_enable(0),
       .direct_out(byte_data_int),

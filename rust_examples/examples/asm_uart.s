@@ -9,9 +9,10 @@ main:       li t1, 0x70706968
             li t2, 0x2121216F
             li t3, 0x74726175
 loop:
-            csrw   0x50, t1  # ASCII hipp to UART
-            csrw   0x50, t2  # ASCII o!!! to UART
-            csrw   0x50, t3  # ASCII uart to UART
+            csrw   0x51, t1  # ASCII hipp to UART
+            csrw   0x51, t2  # ASCII o!!! to UART
+            csrw   0x51, t3  # ASCII uart to UART
+            csrwi  0x51, 0
             # now wait for couple of seconds
             li t4, 5000000
 
