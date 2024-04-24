@@ -96,7 +96,7 @@ package config_pkg;
   localparam type TimeStampT = logic [TimeStampWidth-1:0];
 
   // UART config
-  localparam integer unsigned FifoQueueSize = 32;
+  localparam integer unsigned FifoQueueSize = 256;
   localparam integer unsigned FifoPtrSize = $clog2(FifoQueueSize);
   localparam type FifoPtrT = logic [FifoPtrSize -1:0];
   localparam CsrAddrT FifoWordCsrAddr = 'h50;

@@ -303,7 +303,6 @@ module spram
   assign rsta = 0;
   assign wea = 0;
   assign sleep = 0;
-  assign wea = 0;
 
   // xpm_memory_spram: Single Port RAM
   // Xilinx Parameterized Macro, version 2023.2
