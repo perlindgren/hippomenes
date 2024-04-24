@@ -12,7 +12,7 @@ main:       csrwi   0x300, 8                # enable global interrupts
             csrw    0xB00, t1               # setup isr_0 address
             # setup VCSR
             # point to 0x400, bit offset 14, width 5
-            li t3, 0b1000000000001110101 
+            li t3, 0b100000000000111000101 
             # write config to VCSR0_CFG
             csrw    0x100, t3
             # write prescaler (14) directly to timer config

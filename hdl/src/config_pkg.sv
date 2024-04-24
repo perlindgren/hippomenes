@@ -66,8 +66,10 @@ package config_pkg;
   // VCSR
   localparam integer unsigned VcsrAmount = 16;
   localparam CsrAddrT VcsrBase = 'h100;
-  typedef logic [$clog2(31)-1:0] vcsr_offset_t;  // max offset is 31
-  typedef logic [$clog2(5)-1:0] vcsr_width_t;  // immediate max 5 bits
+  localparam integer unsigned MaxFieldWidth = 32;  // widest field accessible via VCSR
+  localparam integer unsigned MaxOffset = 31;  // larger than 31 makes no sense on a 32bit arch
+  typedef logic [$clog2(MaxOffset)-1:0] vcsr_offset_t;
+  typedef logic [$clog2(MaxFieldWidth)-1:0] vcsr_width_t;
   typedef logic [$clog2(VcsrAmount)-1:0] vcsr_idx_t;
   // Peripheral timer
   localparam CsrAddrT TimerAddr = 'h400;
