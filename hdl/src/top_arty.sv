@@ -444,7 +444,7 @@ module top_arty (
       .reset_i(reset),
       .next(uart_next),
       .csr_enable(decoder_csr_enable),
-      .csr_addr(decoder_csr_arr),
+      .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
       .rs1_data(rs1_wt_mux_out),
       .csr_op(decoder_csr_op),

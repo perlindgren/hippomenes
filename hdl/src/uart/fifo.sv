@@ -27,24 +27,6 @@ module fifo
   FifoPtrT out_ptr;
   PrioT old_level;
   word data_int;
-  // Word
-  csr #(
-      .CsrWidth(32),
-      .Addr(FifoWordCsrAddr)
-  ) csr_word (
-      .clk(clk_i),
-      .reset(reset_i),
-      .csr_enable(csr_enable),
-      .csr_addr(csr_addr),
-      .rs1_zimm(rs1_zimm),
-      .rs1_data(rs1_data),
-      .csr_op(csr_op),
-
-      .ext_data(0),
-      .ext_write_enable(0),
-      .direct_out(data_int),
-      .out(csr_data_out)
-  );
   // Byte 
   word byte_data_int;
   word byte_out;

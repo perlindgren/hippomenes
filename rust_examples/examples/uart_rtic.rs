@@ -36,9 +36,9 @@ mod app {
     #[task(binds = Interrupt0, priority=1, shared=[dummy], local=[uart])]
     fn some_task(cx: some_task::Context) {
         write!(cx.local.uart, "A").ok();
-        cx.local.uart.write_byte(0); // force sentinel, notice NOT end of packet
+        //cx.local.uart.write_byte(0); // force sentinel, notice NOT end of packet
         write!(cx.local.uart, "C").ok();
-        // write!(cx.local.uart, "B").ok();
+        write!(cx.local.uart, "B").ok();
     }
 }
 
