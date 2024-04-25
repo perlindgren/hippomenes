@@ -10,7 +10,7 @@ If you are aware of an open-source alternative to `updatemem`, let us know!
 
 ## Tooling
 
-This crate requires the Rust compiler for compiling, and the ``elf2mem`` utility for generating the binary dump file Verilog uses to populate the ROM component.
+This crate requires the Rust compiler for compiling, and the ``elf2mem`` utility for generating the binary dump file that SystemVerilog uses to populate the ROM and RAM components.
 
 To set up the Rust toolchain, consult [Install Rust](https://www.rust-lang.org/tools/install).
 
@@ -45,7 +45,7 @@ yay -S openFPGALoader-git
 For other distros, pre-built release binaries are available on [GitHub](https://github.com/trabucayre/openFPGALoader/releases). Running under Windows is also possible, albeit more involved, consult the excellent guide [here](https://fpga.mit.edu/6205/F22/documentation/openFPGA).
 
 
-The final prerequisite for using the default workflow is Vivado. Make sure to also add the Vivado bin path (typically ``home/<USER>/.local/bin/Xilinx/Vivado/<VERSION>/bin``) to your `PATH` variable, we use the Vivado `updatemem` CLI to replace the Block RAM on the fly.
+The final prerequisite for using the default workflow is Vivado. Make sure to also add the Vivado bin path (typically ``/home/<USER>/.local/bin/Xilinx/Vivado/<VERSION>/bin``) to your `PATH` variable, we use the Vivado `updatemem` CLI to replace the Block RAM on the fly.
 
 ## Compiling
 
@@ -55,7 +55,7 @@ To compile one of the examples use:
 cargo build --example <EXAMPLE> --release
 ```
 
-To dump the generated binary as a Verilog ``.mem`` file use:
+To dump the generated binary as a SystemVerilog ``.mem`` file use:
 
 ```shell
 elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/<EXAMPLE> -t binary.mem 
