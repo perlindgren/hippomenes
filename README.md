@@ -26,6 +26,14 @@ Design elements are scaled with the selected number of priority levels, thus all
 
 The design acts a reference implementation for the RISC-V RT extension, and should be consider the specification.
 
+Additional features of Hippomenes, not part of the RISC-V RT specification are
+
+- RTMT
+    - hardware accelerated implementation of the NCOBS preemptive serial communication protocol.
+    - implemented over a UART peripheral.
+- VCSR
+    - single-cycle read-modify-write of specific CSR fields.
+
 ## Versioning
 
 The design follows semantic versioning (regarding expected behavior) along the triple, $x.y.z$:
