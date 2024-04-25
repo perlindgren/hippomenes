@@ -127,18 +127,18 @@ The run-time (`.init`) for this case is a single instruction to setup the (share
 The interrupt handler (`isr_0`) reads the local resource (`.toggled`), toggles bit 0, updates the gpio (`0x0`) and stores the toggled value back to the local resource. It then reads the timestamp the interrupt (`0xB40`) and stores that to the local resource.
 
 A SyncRim simulation is show below:
-![RISC-V RT](asm_timer_sim.png)
+![RISC-V RT](pictures/asm_timer_sim.png)
 
 At the end of the `isr_0`, the register `ra` has the value `0xFFFFFFFF` indicating to the `n-clic` to return to the preempted task (`.stop` in this case). The `.toggled.led_state` is `00000001` (as indicated by the LED bit 0 being lit red). The `.toggled.timestamp` value is `00000019`, indicate the *global* monotonic time when the interrupt was captured.
 
 State at next interrupt return is shown below:
-![RISC-V RT](asm_timer_sim2.png)
+![RISC-V RT](pictures/asm_timer_sim2.png)
 At this point we see that the `.toggled.led_state` is `00000000` (as indicated by the LED bit 0 being grey). The `.toggled.timestamp` value is `0000002a`, indicate the *global* monotonic time when the interrupt was captured. The timer re-load has for this implementation a latency of 1.
 
 ### HDL Simulation
 
 The same program as run using the Verilator test-bench shows:
-![TIMER](timer_gtkwave.png)
+![TIMER](pictures/timer_gtkwave.png)
 
 To the left the set of signals to view is shown, for this example the `reset`, `clk`, `pc` `instruction` and `n_clic_interrupt`. The cursor is placed at the entry of the second timer interrupt. We can observe that there is exactly 16 clock cycles between interrupts. (The observant reader also observes that the first timer interrupt is taken directly after initialization, wether this is a desired behavior can be debated, but it is in our hands to specify and implement as we see fit!)
 
