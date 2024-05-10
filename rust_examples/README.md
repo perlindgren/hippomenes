@@ -57,5 +57,3 @@ The ``asm`` example emits the contents of ``asm.s`` as a global assembly block, 
 This is a simple example of running the [RTIC](https://github.com/rtic-rs/rtic) framework.
 
 Currently, the hippomenes fork of the framework ONLY supports hardware tasks WITH shared resources.
-
-The linker script ``memory.x.rtic`` must be used by renaming it to ``memory.x``. This step can probably be done automatically, so this is a temporary workaround until that is figured out.
