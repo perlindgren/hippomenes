@@ -1,5 +1,7 @@
             .option  norvc
             .text
+            .section .init
+
 init:       la      sp, _stack_start        # set stack pointer
            
 main:       li t1, 0x70706968
