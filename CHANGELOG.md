@@ -6,7 +6,7 @@ Staging:
 - Improvements to Rust based examples crate
     - Now uses the same linker script for both Asm and Rust
     - Now uses the newest version of Elf2Mem
-- Additional examples
+    - Additional examples
 
 2024-03-12 Version 0.1.0
 
