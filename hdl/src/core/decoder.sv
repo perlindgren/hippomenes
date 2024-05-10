@@ -184,7 +184,12 @@ module decoder (
       OP_ALUI: begin
         $display("alui");
         imm = 32'($signed(instr[31:20]));
-        sub_arith = instr[30];
+        // sub arith only exists for shifts in immediate mode. 
+        if (funct3 == 'b101) begin
+          sub_arith = instr[30];
+        end else begin
+          sub_arith = 0;
+        end
         alu_a_mux_sel = A_RS1;
         alu_b_mux_sel = B_IMM_EXT;
         alu_op = alu_op_t'(funct3);
@@ -194,22 +199,21 @@ module decoder (
 
       OP_ALU: begin
         if (funct7 == 'b0000001) begin
-            $display("mul");
-            alu_a_mux_sel = A_RS1;
-            alu_b_mux_sel = B_RS2;
-            mul_op = mul_op_t'(funct3[1:0]);
-            wb_mux_sel = WB_MUL;
-            wb_write_enable = 1;
-        end
-        else begin
-        $display("alu");
-            // imm = 32'($signed(instr[31:20]));
-            sub_arith = instr[30];
-            alu_a_mux_sel = A_RS1;
-            alu_b_mux_sel = B_RS2;
-            alu_op = alu_op_t'(funct3);
-            wb_mux_sel = WB_ALU;
-            wb_write_enable = 1;
+          $display("mul");
+          alu_a_mux_sel = A_RS1;
+          alu_b_mux_sel = B_RS2;
+          mul_op = mul_op_t'(funct3[1:0]);
+          wb_mux_sel = WB_MUL;
+          wb_write_enable = 1;
+        end else begin
+          $display("alu");
+          // imm = 32'($signed(instr[31:20]));
+          sub_arith = instr[30];
+          alu_a_mux_sel = A_RS1;
+          alu_b_mux_sel = B_RS2;
+          alu_op = alu_op_t'(funct3);
+          wb_mux_sel = WB_ALU;
+          wb_write_enable = 1;
         end
       end
 

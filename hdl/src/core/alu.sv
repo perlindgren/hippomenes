@@ -13,7 +13,12 @@ module alu (
 
   always_comb begin
     case (op)
-      ALU_ADD:  res = a + b;
+      ALU_ADD:
+      if (sub_arith) begin
+        res = a - b;
+      end else begin
+        res = a + b;
+      end
       ALU_SLL:  res = a << b[4:0];
       ALU_SLT:  res = {31'(0), $signed(a) < $signed(b)};
       ALU_SLTU: res = {31'(0), $unsigned(a) < $unsigned(b)};
