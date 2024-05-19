@@ -87,6 +87,11 @@ module d_mem_spram
     address_clocked <= addr;
   end
   always_comb begin
+    //this never happens since all possible modulo results are handled, but vivado still infers a latch if this is not defined
+    block_0_we = 0;
+    block_1_we = 0;
+    block_2_we = 0;
+    block_3_we = 0;
     if (addr % 4 == 1) begin
       block_0_addr = addr[DMemAddrWidth-1:2] + 1;
       block_1_addr = addr[DMemAddrWidth-1:2];
