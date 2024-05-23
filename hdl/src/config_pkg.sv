@@ -16,7 +16,7 @@ package config_pkg;
 
   // Instruction memory configuration
   localparam integer unsigned IMemStart = 'h0000_0000;
-  localparam integer unsigned IMemSize = 'h0000_1000;  // in bytes
+  localparam integer unsigned IMemSize = 'h0000_2000;  // in bytes
 
   localparam integer unsigned IMemDataWidth = 32;  // in bits
   localparam type IMemDataT = logic [IMemDataWidth -1:0];
@@ -32,7 +32,7 @@ package config_pkg;
   localparam integer unsigned RomDataWidth = 8;  // in bits
   localparam type RomDataT = logic [RomDataWidth-1:0];
 
-  // Memory relatted
+  // Memory related
   localparam integer unsigned IMemAddrWidth = $clog2(IMemSize);
   localparam integer unsigned DMemAddrWidth = $clog2(DMemSize);
   localparam integer unsigned RomAddrWidth = $clog2(RomSize);
