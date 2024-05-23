@@ -329,8 +329,11 @@ module n_clic
       $display("!!! CSR m_thresh_out !!!");
     end else if (csr_addr == StackDepthAddr) begin
       csr_out = 32'($unsigned(level_out));
-
+    
       $display("!!! CSR StackDepth !!!");
+    end else if (csr_addr == MStatusAddr) begin
+        csr_out = 32'($unsigned(mstatus_out));
+        $display("mstatus out");
     end else begin
       for (int k = 0; k < VecSize; k++) begin
         if (csr_addr == VecCsrBase + CsrAddrT'(k)) begin
