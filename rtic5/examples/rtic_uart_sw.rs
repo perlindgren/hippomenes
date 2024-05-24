@@ -7,7 +7,7 @@ use hippomenes_rt as _;
 #[rtic::app(device = hippomenes_core, dispatchers = [Interrupt2])]
 mod app {
     use core::fmt::Write;
-    use hippomenes_core::UART;
+    use hippomenes_core::{UART, OutputPin};
 
     #[shared]
     struct Shared {
@@ -20,12 +20,12 @@ mod app {
         let timer = peripherals.timer;
         let mut uart = peripherals.uart;
         write!(uart, "init").ok();
-        timer.write(0x400F); //timer interrupt every
+        timer.write(0x100F); //timer interrupt every
                              // 500*2^15 ~ 16M cycles ~0.75s @ 20MHz
         Shared { uart }
     }
 
-    #[task(binds = Interrupt0, priority=2, shared=[uart])]
+    #[task(binds = Interrupt0, priority=1, shared=[uart])]
     struct SomeTask;
 
     impl RticTask for SomeTask {
@@ -48,7 +48,7 @@ mod app {
         }
     }
 
-    #[sw_task(priority=1, shared=[uart])]
+    #[sw_task(priority=2, shared=[uart])]
     struct Sw1;
 
     impl RticSwTask for Sw1 {
@@ -62,6 +62,7 @@ mod app {
             self.shared().uart.lock(|uart| {
                 write!(uart, "SW").ok();
             });
+            unsafe{rtic::export::Peripherals::steal()}.gpo.split().pout2.set_high();
         }
     }
 }

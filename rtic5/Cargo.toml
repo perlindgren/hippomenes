@@ -9,7 +9,8 @@ edition = "2021"
 
 [dependencies]
 riscv = { version = "0.11.1", features = ["critical-section-single-hart"] }
-rtic = { path = "../../rtic5/rtic-hippo" }
+#rtic = {path = "../../rtic5/rtic-hippo/"}
+rtic = { git = "https://github.com/perlindgren/rtic5" }
 #hippomenes-hal = {path="../../../hippomenes-core/hippomenes-hal/"}
 hippomenes-hal = { git = "https://github.com/onsdagens/hippomenes-core" }
 #hippomenes-core = {path="../../../hippomenes-core/"}

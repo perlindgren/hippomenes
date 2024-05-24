@@ -8,8 +8,9 @@ use core::panic::PanicInfo;
 fn main() -> ! {
     let mut uart = unsafe{Peripherals::steal()}.uart;
     write!(uart, "Hi!").ok();
-    let v = 8;
-    let c = unsafe{core::ptr::read_volatile(&v)};
+    let mut q: rtic::export::Queue<u8, 2> = rtic::export::Queue::new();
+    q.enqueue(8).ok();
+    let c = q.dequeue().unwrap();
     write!(uart, "Bye{}", c).ok();
     loop{}
 }
