@@ -79,7 +79,7 @@ mod app {
                 uart.write_byte(self.data);
                 uart.write_byte(92);
             });
-            self.data = (self.data + 1) % 4;
+            self.data = (self.data + 1) % 10;
         }
     }
 }
