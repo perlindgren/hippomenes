@@ -190,7 +190,12 @@ module decoder
       OP_ALUI: begin
         $display("alui");
         imm = 32'($signed(instr[31:20]));
-        sub_arith = instr[30];
+        if (funct3 == 'b101) begin
+          sub_arith = instr[30];
+        end
+        else begin
+          sub_arith = 0;
+        end
         alu_a_mux_sel = A_RS1;
         alu_b_mux_sel = B_IMM_EXT;
         alu_op = alu_op_t'(funct3);
