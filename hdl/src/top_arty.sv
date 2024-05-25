@@ -480,7 +480,7 @@ module top_arty (
   wb_mux wb_mux (
       .sel(decoder_wb_mux_sel),
       .alu(alu_res),
-      .csr(csr_out),
+      .csr(n_clic_csr_out),
       .pc_plus_4(32'($signed(pc_adder_out))),  // should we sign extend?
       .mul(mul_res),
       .out(wb_mux_out)

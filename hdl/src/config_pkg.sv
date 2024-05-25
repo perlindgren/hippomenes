@@ -91,7 +91,7 @@ package config_pkg;
   localparam integer unsigned TimerTWidth = $bits(TimerT);
 
   // Time-stamp configuration
-  localparam integer unsigned TimeStampWidth = 8;
+  localparam integer unsigned TimeStampWidth = 32;
   localparam integer unsigned TimeStampPreScaler = 0;
   localparam type TimeStampT = logic [TimeStampWidth-1:0];
 

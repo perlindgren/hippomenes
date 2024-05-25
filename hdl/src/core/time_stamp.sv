@@ -19,7 +19,7 @@ module time_stamp
 
   TimeStampT ext_data;
   logic      ext_write_enable  [VecSize];
-  logic      ext_stretch_enable[VecSize];
+ //logic      ext_stretch_enable[VecSize];
   word       temp_direct_out   [VecSize];  // not used
   word       temp_out          [VecSize];
 
@@ -45,16 +45,24 @@ module time_stamp
           .direct_out(temp_direct_out[k]),
           .out(temp_out[k])
       );
-
-      always_ff @(posedge pend[k]) begin : gen_trig
-        ext_write_enable[k]   <= 1;
-        ext_stretch_enable[k] <= 1;
+      logic unpend;
+      always_comb begin
+        if (pend[k]) begin
+          unpend = 1;
+        end
+        else begin
+          unpend = 0;
+        end
       end
 
       // ensure that we have at least a full period to reliably capture the timer
       always_ff @(posedge clk) begin : gen_un_trig
-        if (ext_stretch_enable[k]) ext_stretch_enable[k] <= 0;
-        else ext_write_enable[k] <= 0;
+        if (unpend) begin
+          ext_write_enable[k] <= 1;
+        end
+        else begin
+          ext_write_enable[k] <= 0;
+        end
       end
 
     end
