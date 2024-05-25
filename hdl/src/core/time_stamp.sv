@@ -11,11 +11,11 @@ module time_stamp
     input MonoTimerT mono_timer,
 
     /* verilator lint_off MULTIDRIVEN */
-    input logic pend[VecSize],
+    input logic[VecSize-1:0] pend,
     input CsrAddrT csr_addr,
     output word csr_out
 );
-  logic      old_pend          [VecSize];
+  //logic      old_pend          [VecSize];
 
   TimeStampT ext_data;
   logic      ext_write_enable  [VecSize];
@@ -27,7 +27,7 @@ module time_stamp
     for (genvar k = 0; k < VecSize; k++) begin : gen_stamp
       csr #(
           .CsrWidth(TimeStampWidth),
-          .Write(0)
+          .Write(1)
       ) csr_stamp (
           .clk,
           .reset,
@@ -36,6 +36,9 @@ module time_stamp
           .csr_op(0),
           .rs1_zimm(0),
           .rs1_data(0),
+          .vcsr_width(0),
+          .vcsr_offset(0),
+          .vcsr_addr(0),
           // external access for side effects
           .ext_data,
           .ext_write_enable(ext_write_enable[k]),

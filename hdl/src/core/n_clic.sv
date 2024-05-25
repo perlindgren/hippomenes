@@ -34,6 +34,24 @@ module n_clic
   word  timer_out;
   logic timer_interrupt_set;
   logic timer_interrupt_clear;
+  word timer_csr_out;
+  MonoTimerT mono_timer_out;
+  mono_timer mono_timer (
+    .clk,
+    .reset,
+    
+    .mono_timer(mono_timer_out)
+  );
+  
+  time_stamp time_stamp (
+    .clk,
+    .reset,
+    .mono_timer(mono_timer_out),
+
+    .pend(pended_timer),
+    .csr_addr,
+    .csr_out(timer_csr_out)
+  );
 
   timer timer (
       // in
@@ -203,13 +221,14 @@ module n_clic
       assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
     end
   endgenerate
-
+  logic[VecSize-1:0] pended_timer;
   // simple implementation to find max priority
   PrioT         max_prio [VecSize];
   IMemAddrStore max_vec  [VecSize];
   VecT          max_index[VecSize];
   always_comb begin
     // check first index in vector table
+    pended_timer[0] = entry[0].pended;
     if (entry[0].enabled && entry[0].pended && (prio[0] >= m_int_thresh.data)) begin
       max_prio[0]  = prio[0];
       max_vec[0]   = csr_vec_data[0];
@@ -221,6 +240,7 @@ module n_clic
     end
     // check rest of vector table
     for (integer k = 1; k < VecSize; k++) begin
+      pended_timer[k] = entry[k].pended;
       if (entry[k].enabled && entry[k].pended && (prio[k] >= max_prio[k-1])) begin
         max_prio[k]  = prio[k];
         max_vec[k]   = csr_vec_data[k];
@@ -334,6 +354,8 @@ module n_clic
     end else if (csr_addr == MStatusAddr) begin
         csr_out = 32'($unsigned(mstatus_out));
         $display("mstatus out");
+    end else if (csr_addr >= TimeStampCsrBase && csr_addr <= (TimeStampCsrBase + VecSize)) begin 
+        csr_out = 32'($unsigned(timer_csr_out));
     end else begin
       for (int k = 0; k < VecSize; k++) begin
         if (csr_addr == VecCsrBase + CsrAddrT'(k)) begin
