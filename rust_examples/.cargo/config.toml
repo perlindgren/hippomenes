@@ -4,10 +4,10 @@ runner = "./run.sh"
 rustflags = [
     # LLD (shipped with the Rust toolchain) is used as the default linker
     "-g",
-    # "-C","link-arg=-Tmemory_asm.x",
-  "-C","target-feature=+zmmul",
-  "-C","link-arg=-Tmemory.x",
-  "-C","link-arg=-Tlink.x",
+    "-C","target-feature=+zmmul",
+    "-C","link-arg=-Tmemory.x",
+    "-C","link-arg=-Tlink.x",
+
 ]
 
 [build]

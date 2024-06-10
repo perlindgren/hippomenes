@@ -21,6 +21,24 @@ fn panic(_info: &PanicInfo) -> ! {
     }
 }
 
+const DATA: [usize; 16] = [
+    0x4142_4344,
+    0x4546_4848,
+    0x495A_5B5C,
+    0x5D5E_5F60,
+    0x4142_4344,
+    0x4546_4848,
+    0x495A_5B5C,
+    0x5D5E_5F60,
+    0x4142_4344,
+    0x4546_4848,
+    0x495A_5B5C,
+    0x5D5E_5F60,
+    0x4142_4344,
+    0x4546_4848,
+    0x495A_5B5C,
+    0x5D5E_5F60,
+];
 #[entry]
 fn main() -> ! {
     let p = unsafe { Peripherals::steal() };

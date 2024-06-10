@@ -1,4 +1,4 @@
-            .option  norvc
+.option  norvc
 .text
 .section .init
 # EXPECTED BEHAVIOR:
@@ -10,3 +10,4 @@ main:   csrsi 0x0, 1 # led on
         csrci 0x0, 1 # led off
         j main 
 .rodata
+

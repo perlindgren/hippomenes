@@ -192,8 +192,7 @@ module decoder
         imm = 32'($signed(instr[31:20]));
         if (funct3 == 'b101) begin
           sub_arith = instr[30];
-        end
-        else begin
+        end else begin
           sub_arith = 0;
         end
         alu_a_mux_sel = A_RS1;

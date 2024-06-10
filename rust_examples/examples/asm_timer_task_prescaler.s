@@ -1,8 +1,10 @@
-            .option  norvc
-            .text
-            .section .init
+.option  norvc
+.text
+.section .init
+
 # EXPECTED BEHAVIOR:
 # The interrupt blinks the LED at a ~1s period (@20MHz)
+
 init:       la      sp, _stack_start        # set stack pointer
             la      t0, toggled 
             sw      zero, 0(t0)

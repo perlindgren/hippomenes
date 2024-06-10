@@ -1,9 +1,11 @@
-            .option  norvc
-            .text
-            .section .init
+.option  norvc
+.text
+.section .init
+
 # EXPECTED BEHAVIOR:
 # The interrupt handler should PWM the LED at about 50% duty cycle,
 # the LED glows accordingly.
+
 init:       la      sp, _stack_start        # set stack pointer
             la      t0, toggled 
             sw      zero, 0(t0)
