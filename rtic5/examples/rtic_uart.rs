@@ -28,7 +28,7 @@ mod app {
             let timer = peripherals.timer;
             let mut uart = peripherals.uart;
             write!(uart, "init").ok();
-            timer.write(0x200F); //timer interrupt every
+            timer.write(0x300F); //timer interrupt every
                                  // 500*2^15 ~ 16M cycles ~0.75s @ 20MHz
             Self { uart }
         }

@@ -6,7 +6,7 @@ use hippomenes_rt as _;
 #[rtic::app(device = hippomenes_core)]
 mod app {
     use core::fmt::Write;
-    use hippomenes_core::{UART, Interrupt};
+    use hippomenes_core::{Interrupt, UART};
     #[shared]
     struct Shared {
         uart: UART,
@@ -23,7 +23,7 @@ mod app {
         write!(uart, "init").ok();
         timer.write(0x100F); //timer interrupt every
                              // 500*2^15 ~ 16M cycles ~0.75s @ 20MHz
-        (Shared { uart }, Local { })
+        (Shared { uart }, Local {})
     }
 
     #[idle]
@@ -36,15 +36,15 @@ mod app {
         cx.shared.uart.lock(|uart| {
             write!(uart, "T1");
         });
-        unsafe{hippomenes_core::Interrupt2::pend_int()};
-        cx.shared.uart.lock(|uart|{
-                write!(uart, "T2");
-            }); 
+        unsafe { hippomenes_core::Interrupt2::pend_int() };
+        cx.shared.uart.lock(|uart| {
+            write!(uart, "T2");
+        });
     }
 
     #[task(binds = Interrupt2, priority = 2, shared = [uart])]
     fn sw_task(mut cx: sw_task::Context) {
-        cx.shared.uart.lock(|uart|write!(uart, "SW"));
+        cx.shared.uart.lock(|uart| write!(uart, "SW"));
     }
 }
 

@@ -16,14 +16,14 @@ package config_pkg;
 
   // Instruction memory configuration
   localparam integer unsigned IMemStart = 'h0000_0000;
-  localparam integer unsigned IMemSize = 'h0000_2000;  // in bytes
+  localparam integer unsigned IMemSize = 'h0000_8000;  // in bytes
 
   localparam integer unsigned IMemDataWidth = 32;  // in bits
   localparam type IMemDataT = logic [IMemDataWidth -1:0];
 
   // Data memory configuration
   localparam integer unsigned DMemStart = 'h0001_0000;
-  localparam integer unsigned DMemSize = 'h0000_1000;  // in bytes
+  localparam integer unsigned DMemSize = 'h0000_8000;  // in bytes
   localparam integer unsigned DMemDataWidth = 8;  // byte RW
   localparam type DMemDataT = logic [DMemDataWidth -1:0];
   // Read-only memory configuratioe
@@ -87,6 +87,7 @@ package config_pkg;
 
   // Monotonic timer
   localparam integer unsigned MonoTimerWidth = 32;
+  localparam integer unsigned MonoTimerWidthBytes = MonoTimerWidth / 8;
   localparam type MonoTimerT = logic [MonoTimerWidth-1:0];
   localparam integer unsigned TimerTWidth = $bits(TimerT);
 
@@ -95,13 +96,22 @@ package config_pkg;
   localparam integer unsigned TimeStampPreScaler = 0;
   localparam type TimeStampT = logic [TimeStampWidth-1:0];
 
-  // UART config
-  localparam integer unsigned FifoQueueSize = 256;
+  localparam integer unsigned FifoQueueSize = 'h8000;
+  localparam integer unsigned FifoEntryWidth = 8;
+  localparam type FifoDataT = logic [FifoEntryWidth-1:0][7:0];
+  localparam type FifoDataIdxT = logic [$clog2(FifoEntryWidth):0];
+  localparam integer unsigned FifoEntryWidthBits = FifoEntryWidth * 8;
+  localparam integer unsigned FifoBlockSize = FifoQueueSize / FifoEntryWidth;
+  localparam integer unsigned FifoAddrWidth = $clog2(FifoQueueSize);
+  localparam integer unsigned FifoBlockAddrWidth = $clog2(FifoQueueSize / FifoEntryWidth);
   localparam integer unsigned FifoPtrSize = $clog2(FifoQueueSize);
+  localparam integer unsigned FifoEntryWidthSize = $clog2(FifoEntryWidth - 1);
   localparam type FifoPtrT = logic [FifoPtrSize -1:0];
+  localparam integer unsigned FifoDataWidth = 8;
   localparam CsrAddrT FifoWordCsrAddr = 'h50;
   localparam CsrAddrT FifoByteCsrAddr = 'h51;
   localparam integer unsigned CoreFreq = 20000000;
+  // localparam integer unsigned CoreFreq = 230400;
   localparam integer unsigned UartBaudRate = 115200;
   localparam integer unsigned UartCmpVal = CoreFreq / UartBaudRate;
 

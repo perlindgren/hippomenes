@@ -412,6 +412,9 @@ module top_arty (
   //   );
 
   word n_clic_csr_out;
+  logic [7:0] n_clic_int_id_out;
+  logic [7:0] n_clic_int_prio_out;
+  logic n_clic_tail_chain_out;
   n_clic n_clic (
       // in
       .clk,
@@ -428,42 +431,67 @@ module top_arty (
       .int_addr(n_clic_interrupt_addr),
       .pc_interrupt_sel(n_clic_pc_interrupt_sel),
       .level_out(n_clic_level_out),
+      .int_prio(n_clic_int_prio_out),
+      .int_id(n_clic_int_id_out),
       .interrupt_out(n_clic_interrupt_out),
       .vcsr_addr(vcsr_addr),
       .vcsr_width(vcsr_width),
-      .vcsr_offset(vcsr_offset)
+      .vcsr_offset(vcsr_offset),
+      .tail_chain(n_clic_tail_chain_out)
   );
 
-  word  d_in;
+  word d_in;
   logic uart_next;
-  word  fifo_data;
-  word  fifo_csr_data_out;
-  logic fifo_have_next;
-  fifo i_fifo (
+  logic [7:0] fifo_data_out;
+  word fifo_csr_data_out;
+  logic fifo_have_next_out;
+  MonoTimerT mono_timer_out;
+  logic [FifoEntryWidthBits-1:0] enc_write_data_out;
+  logic [FifoEntryWidthSize:0] enc_write_width_out;
+  logic enc_write_enable_out;
+  logic uart_ack_out;
+  mono_timer timer (
+      .clk(clk),
+      .reset(reset),
+      .mono_timer(mono_timer_out)
+  );
+  n_cobs_encoder enc (
       .clk_i(clk),
       .reset_i(reset),
-      .next(uart_next),
       .csr_enable(decoder_csr_enable),
       .csr_addr(decoder_csr_addr),
-      .rs1_zimm(decoder_rs1),
+      .timer(mono_timer_out),
+
+      .id(n_clic_int_id_out),
       .rs1_data(rs1_wt_mux_out),
-      .csr_op(decoder_csr_op),
-      .level(n_clic_level_out),
-      .data(fifo_data),
-      .csr_data_out(fifo_csr_data_out),
-      .have_next(fifo_have_next),
-      .vcsr_addr(vcsr_addr),
-      .vcsr_width(vcsr_width),
-      .vcsr_offset(vcsr_offset)
+
+      .level(n_clic_int_prio_out),
+      .write_data(enc_write_data_out),
+      .write_width(enc_write_width_out),
+      .write_enable(enc_write_enable_out),
+      .tail_chain(n_clic_tail_chain_out)
+  );
+  fifo_interleaved fifo_i (
+      .clk_i  (clk),
+      .reset_i(reset),
+
+      .write_enable(enc_write_enable_out),
+      .write_data  (enc_write_data_out),
+      .write_width (enc_write_width_out),
+
+
+      .ack(uart_ack_out),
+      .data(fifo_data_out),
+      .have_next(fifo_have_next_out)
   );
   uart i_uart (
       .clk_i(clk),
       .reset_i(reset),
       .prescaler(0),
-      .d_in(fifo_data),
-      .rts(fifo_have_next),
+      .d_in(fifo_data_out),
+      .rts(fifo_have_next_out),
       .tx,
-      .next(uart_next)
+      .next(uart_ack_out)
   );
 
   word csr_out;

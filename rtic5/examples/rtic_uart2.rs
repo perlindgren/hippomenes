@@ -24,30 +24,32 @@ mod app {
         Shared { uart }
     }
 
-    #[task(binds = Interrupt0, priority=2, shared=[uart])]
-    struct Task1;
+    #[task(binds = Interrupt0, priority=2)]
+    struct Task1 {
+        uart: UART,
+    }
 
     impl RticTask for Task1 {
         fn init() -> Self {
-            Self
+            let peripherals = unsafe { hippomenes_core::Peripherals::steal() };
+            let timer = peripherals.timer;
+            let mut uart = peripherals.uart;
+            write!(uart, "init").ok();
+            timer.write(0x300F); //timer interrupt every
+                                 // 500*2^15 ~ 16M cycles ~0.75s @ 20MHz
+            Self { uart }
         }
 
         fn exec(&mut self) {
-            self.shared().uart.lock(|uart| {
-                uart.write_byte(100);
-                uart.write_byte(101);
-            });
+            write!(self.uart, "A").ok();
 
             rtic::export::pend(hippomenes_core::Interrupt1);
 
-            self.shared().uart.lock(|uart| {
-                uart.write_byte(102);
-                uart.write_byte(103);
-            });
+            write!(self.uart, "B").ok();
         }
     }
 
-    #[task(binds = Interrupt1, priority=3, shared=[uart])]
+    #[task(binds = Interrupt1, priority=3)]
     struct Task2;
 
     impl RticTask for Task2 {
@@ -55,13 +57,7 @@ mod app {
             Self
         }
 
-        fn exec(&mut self) {
-            self.shared().uart.lock(|uart| {
-                uart.write_byte(10);
-                uart.write_byte(0);
-                uart.write_byte(11);
-            });
-        }
+        fn exec(&mut self) {}
     }
 }
 

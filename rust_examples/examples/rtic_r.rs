@@ -20,7 +20,7 @@ mod app {
 
     #[init]
     fn init(cx: init::Context) -> (Shared, Local) {
-        rtic::export::pend(interrupt1::Interrupt1);
+        // rtic::export::pend(interrupt1::Interrupt1);
         rtic::export::pend(interrupt2::Interrupt2);
         let p = cx.device;
         let pins = p.gpio.pins();

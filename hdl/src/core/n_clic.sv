@@ -22,35 +22,39 @@ module n_clic
     input vcsr_width_t vcsr_width,
     input vcsr_offset_t vcsr_offset,
 
-    output word               csr_out,
-    output IMemAddrT          int_addr,
-    output pc_interrupt_mux_t pc_interrupt_sel,
-    output PrioT              level_out,         // stack depth
-    output logic              interrupt_out
+
+    output logic              [7:0] int_prio,
+    output logic              [7:0] int_id,
+    output word                     csr_out,
+    output IMemAddrT                int_addr,
+    output pc_interrupt_mux_t       pc_interrupt_sel,
+    output PrioT                    level_out,         // stack depth
+    output logic                    interrupt_out,
+    output logic                    tail_chain
 );
 
   // CSR timer
-  word  timer_direct_out;  // not used
-  word  timer_out;
+  word timer_direct_out;  // not used
+  word timer_out;
   logic timer_interrupt_set;
   logic timer_interrupt_clear;
   word timer_csr_out;
   MonoTimerT mono_timer_out;
   mono_timer mono_timer (
-    .clk,
-    .reset,
-    
-    .mono_timer(mono_timer_out)
-  );
-  
-  time_stamp time_stamp (
-    .clk,
-    .reset,
-    .mono_timer(mono_timer_out),
+      .clk,
+      .reset,
 
-    .pend(pended_timer),
-    .csr_addr,
-    .csr_out(timer_csr_out)
+      .mono_timer(mono_timer_out)
+  );
+
+  time_stamp time_stamp (
+      .clk,
+      .reset,
+      .mono_timer(mono_timer_out),
+
+      .pend(pended_timer),
+      .csr_addr,
+      .csr_out(timer_csr_out)
   );
 
   timer timer (
@@ -221,11 +225,11 @@ module n_clic
       assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
     end
   endgenerate
-  logic[VecSize-1:0] pended_timer;
+  logic         [VecSize-1:0] pended_timer;
   // simple implementation to find max priority
-  PrioT         max_prio [VecSize];
-  IMemAddrStore max_vec  [VecSize];
-  VecT          max_index[VecSize];
+  PrioT                       max_prio     [VecSize];
+  IMemAddrStore               max_vec      [VecSize];
+  VecT                        max_index    [VecSize];
   always_comb begin
     // check first index in vector table
     pended_timer[0] = entry[0].pended;
@@ -259,7 +263,7 @@ module n_clic
     automatic VecT max_i = max_index[VecSize-1];
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = '{default: '0};
-
+    tail_chain = 0;
     if (timer_interrupt_set) begin
       // pend 0 if timer interrupt
       ext_write_enable[0] = 1;
@@ -271,7 +275,9 @@ module n_clic
       pop = 0;
       m_int_thresh_data = 0;
       m_int_thresh_write_enable = 0;
+      int_id = 0;
       int_addr = pc_in;
+      int_prio = m_int_thresh.direct_out;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
@@ -279,7 +285,9 @@ module n_clic
       // take higher priority interrupt
       push = 1;
       pop = 0;
+      int_id = max_index[VecSize-1];
       int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte address inestruction memory
+      int_prio = max_prio[VecSize-1];
       m_int_thresh_data = max_prio[VecSize-1];
       m_int_thresh_write_enable = 1;
       interrupt_out = 1;
@@ -299,9 +307,11 @@ module n_clic
       // tail chain only in case the vector is actually enabled and pended
       push = 0;
       pop = 0;
+      int_id = max_index[VecSize-1];
       int_addr = {max_vec[VecSize-1], 2'b00};  // convert to byte addressed instruction memory
-      m_int_thresh_data = 0;  // no update of threshold
-      m_int_thresh_write_enable = 0;  // no update of threshold
+      int_prio = max_prio[VecSize-1];
+      m_int_thresh_data = max_prio[VecSize-1];
+      m_int_thresh_write_enable = 1;
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
       ext_write_enable[max_i] = 1;  // write to entry
@@ -310,13 +320,16 @@ module n_clic
         $display("take timer");
         timer_interrupt_clear = 1;
       end else timer_interrupt_clear = 0;
+      tail_chain = 1;
       $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
       // interrupt return
       push = 0;
       pop = 1;
       int_addr = stack_out.addr;
+      //int_id = stack_out.prio;
       m_int_thresh_data = stack_out.prio;
+      int_prio = stack_out.prio;
       m_int_thresh_write_enable = 1;
       interrupt_out = 0;
       pc_interrupt_sel = PC_INTERRUPT;
@@ -329,6 +342,7 @@ module n_clic
       m_int_thresh_data = 0;
       m_int_thresh_write_enable = 0;
       int_addr = pc_in;
+      int_prio = m_int_thresh.direct_out;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
@@ -349,13 +363,13 @@ module n_clic
       $display("!!! CSR m_thresh_out !!!");
     end else if (csr_addr == StackDepthAddr) begin
       csr_out = 32'($unsigned(level_out));
-    
+
       $display("!!! CSR StackDepth !!!");
     end else if (csr_addr == MStatusAddr) begin
-        csr_out = 32'($unsigned(mstatus_out));
-        $display("mstatus out");
-    end else if (csr_addr >= TimeStampCsrBase && csr_addr <= (TimeStampCsrBase + VecSize)) begin 
-        csr_out = 32'($unsigned(timer_csr_out));
+      csr_out = 32'($unsigned(mstatus_out));
+      $display("mstatus out");
+    end else if (csr_addr >= TimeStampCsrBase && csr_addr <= (TimeStampCsrBase + VecSize)) begin
+      csr_out = 32'($unsigned(timer_csr_out));
     end else begin
       for (int k = 0; k < VecSize; k++) begin
         if (csr_addr == VecCsrBase + CsrAddrT'(k)) begin
