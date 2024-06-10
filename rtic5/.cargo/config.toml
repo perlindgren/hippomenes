@@ -1,0 +1,21 @@
+[target.riscv32i-unknown-none-elf]
+runner = "./run.sh"
+
+rustflags = [
+  # LLD (shipped with the Rust toolchain) is used as the default linker
+  "-g",
+  # "-C","link-arg=-Tmemory_asm.x",
+  "-C",
+  "target-feature=+zmmul",
+  # "-C",
+  # "target-feature=+a",
+  "-C",
+  "link-arg=-Tmemory.x",
+  "-C",
+  "link-arg=-Tlink.x",
+  # "--cfg",
+  # 'target_has_atomic_load_store = "ptr"',
+]
+
+[build]
+target = "riscv32i-unknown-none-elf"

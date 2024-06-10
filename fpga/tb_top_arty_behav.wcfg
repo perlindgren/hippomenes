@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_top_arty_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="\$unit_xpm_cdc_sv_220102727 " />
+            <top_module name="arty_pkg" />
+            <top_module name="config_pkg" />
+            <top_module name="decoder_pkg" />
+            <top_module name="glbl" />
+            <top_module name="mem_pkg" />
+            <top_module name="tb_top_arty" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="2,101.898354 us"></ZoomStartTime>
+      <ZoomEndTime time="2,129.538355 us"></ZoomEndTime>
+      <Cursor1Time time="4,388.280000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="272"></NameColumnWidth>
+      <ValueColumnWidth column_width="78"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="7" />
+   <wvobject type="logic" fp_name="/tb_top_arty/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_arty/top/pc_reg_out">
+      <obj_property name="ElementShortName">pc_reg_out[11:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_reg_out[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_arty/top/imem_data_out">
+      <obj_property name="ElementShortName">imem_data_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">imem_data_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_arty/top/fifo_data">
+      <obj_property name="ElementShortName">fifo_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_arty/top/i_fifo/in_ptr">
+      <obj_property name="ElementShortName">in_ptr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">in_ptr[5:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_arty/top/i_fifo/out_ptr">
+      <obj_property name="ElementShortName">out_ptr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">out_ptr[5:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_arty/top/i_fifo/queue">
+      <obj_property name="ElementShortName">queue[0:31][7:0]</obj_property>
+      <obj_property name="ObjectShortName">queue[0:31][7:0]</obj_property>
+   </wvobject>
+</wave_config>

@@ -33,3 +33,4 @@ package arty_pkg;
   // localparam CsrAddrT GpioCsrData = 'h003;
 
 endpackage
+

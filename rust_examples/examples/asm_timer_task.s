@@ -1,6 +1,10 @@
-            .option  norvc
-            .text
-            .section .init
+.option  norvc
+.text
+.section .init
+
+# EXPECTED BEHAVIOR:
+# The interrupt handler should PWM the LED at about 50% duty cycle,
+# the LED glows accordingly.
 
 init:       la      sp, _stack_start        # set stack pointer
             la      t0, toggled 
@@ -13,6 +17,9 @@ main:       csrwi   0x300, 8                # enable global interrupts
             csrw    0x400, t2               # timer.counter_top CSR
             la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
             csrw    0xB20, t1
+            nop
+            nop
+            nop
 stop:       j       stop                    # wait for interrupt
 
 isr_0:      la      t0, toggled             # &static mut toggled state
@@ -24,6 +31,6 @@ isr_0:      la      t0, toggled             # &static mut toggled state
             sw      t3, 4(t0)               # store timestamp
             jr      ra                      # return 
 
-            .data
+            .rodata
 toggled:    .word   0x0                     # state
             .word   0x0                     # time-stamp

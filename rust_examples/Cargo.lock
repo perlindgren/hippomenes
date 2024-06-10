@@ -77,14 +77,14 @@ checksum = "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5"
 
 [[package]]
 name = "hashbrown"
-version = "0.14.3"
+version = "0.14.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "290f1a1d9242c78d09ce40a5e87e7554ee637af1351968159f4952f028f75604"
+checksum = "e5274423e17b7c9fc20b6e7e208532f9b19825d82dfd615708b70edd83df41f1"
 
 [[package]]
 name = "hippomenes-core"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#f614a1d84512880851bad5fcc7c38eaf54d0d127"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "const_format",
  "critical-section",
@@ -94,17 +94,17 @@ dependencies = [
 [[package]]
 name = "hippomenes-derive"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#f614a1d84512880851bad5fcc7c38eaf54d0d127"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.58",
+ "syn 2.0.66",
 ]
 
 [[package]]
 name = "hippomenes-hal"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#f614a1d84512880851bad5fcc7c38eaf54d0d127"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "hippomenes-core",
 ]
@@ -112,7 +112,7 @@ dependencies = [
 [[package]]
 name = "hippomenes-rt"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#f614a1d84512880851bad5fcc7c38eaf54d0d127"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "hippomenes-core",
  "hippomenes-rt-macros",
@@ -121,7 +121,7 @@ dependencies = [
 [[package]]
 name = "hippomenes-rt-macros"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#f614a1d84512880851bad5fcc7c38eaf54d0d127"
+source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -189,18 +189,18 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.79"
+version = "1.0.85"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e835ff2298f5721608eb1a980ecaee1aef2c132bf95ecc026a11b7bf3c01c02e"
+checksum = "22244ce15aa966053a896d1accb3a6e68469b97c7f33f284b99f0d576879fc23"
 dependencies = [
  "unicode-ident",
 ]
 
 [[package]]
 name = "quote"
-version = "1.0.35"
+version = "1.0.36"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "291ec9ab5efd934aaf503a6466c5d5251535d108ee747472c3977cc5acc868ef"
+checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
 dependencies = [
  "proc-macro2",
 ]
@@ -219,7 +219,7 @@ dependencies = [
 [[package]]
 name = "rtic"
 version = "2.0.1"
-source = "git+https://github.com/onsdagens/rtic?branch=hippomenes#9f971a3822d61cd8be99475353352f380cc6e33e"
+source = "git+https://github.com/onsdagens/rtic?branch=hippomenes#6ac4d9b2bfb65e1a4cb8f43d27483722def1d94c"
 dependencies = [
  "atomic-polyfill",
  "bare-metal",
@@ -240,7 +240,7 @@ checksum = "d9369355b04d06a3780ec0f51ea2d225624db777acbc60abd8ca4832da5c1a42"
 [[package]]
 name = "rtic-macros"
 version = "2.0.1"
-source = "git+https://github.com/onsdagens/rtic?branch=hippomenes#9f971a3822d61cd8be99475353352f380cc6e33e"
+source = "git+https://github.com/onsdagens/rtic?branch=hippomenes#6ac4d9b2bfb65e1a4cb8f43d27483722def1d94c"
 dependencies = [
  "indexmap",
  "proc-macro-error",
@@ -262,9 +262,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.58"
+version = "2.0.66"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "44cfb93f38070beee36b3fef7d4f5a16f27751d94b187b666a5cc5e9b0d30687"
+checksum = "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
 dependencies = [
  "proc-macro2",
  "quote",

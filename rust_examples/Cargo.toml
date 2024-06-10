@@ -10,7 +10,7 @@ edition = "2021"
 [dependencies]
 #hippomenes-hal = {path="../../hippomenes-core/hippomenes-hal/"}
 hippomenes-hal = {git="https://github.com/onsdagens/hippomenes-core"}
-#hippomenes-core = {path="../../hippomenes-core/"}
+#hippomenes-core = {path="../../../hippomenes-core/"}
 hippomenes-core = {git="https://github.com/onsdagens/hippomenes-core"}
 #hippomenes-rt = {path="../../hippomenes-core/hippomenes-rt/"}
 hippomenes-rt = {git="https://github.com/onsdagens/hippomenes-core"}

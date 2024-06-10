@@ -21,7 +21,15 @@ $(root)/mem.sv \
 $(root)/rom.sv \
 $(core)/csr.sv \
 $(core)/csr_pins_in.sv \
-$(core)/wb_mux.sv 
+$(core)/wb_mux.sv \
+$(core)/wt_ctl.sv \
+$(core)/wt_mux.sv \
+$(root)/d_mem_spram.sv \
+$(root)/spram_block.sv \
+
+
+#$(core)/d_mem.sv \
+
 
 top = $(top_dep) $(root)/top.sv $(root)/tb_top.sv
 
@@ -51,7 +59,9 @@ timer = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/csr.sv $(core)/time
 
 branch_logic = $(root)/config_pkg.sv $(core)/decoder_pkg.sv $(core)/branch_logic.sv $(core)/tb_branch_logic.sv
 
-uart = $(root)/config_pkg.sv $(root)/core/decoder_pkg.sv $(root)/uart/uart.sv $(root)/uart/tb_uart.sv
+uart = $(root)/config_pkg.sv $(root)/arty_pkg.sv $(root)/core/decoder_pkg.sv $(core)/csr.sv $(root)/uart/uart.sv $(root)/uart/fifo.sv $(root)/uart/tb_uart.sv
+
+vcsr = $(root)/config_pkg.sv $(root)/core/decoder_pkg.sv $(root)/core/vcsr.sv $(root)/core/tb_vcsr.sv $(root)/core/csr.sv
 
 all: \
 	tb_alu \
@@ -75,6 +85,13 @@ all: \
 #	cp ./asm.s ./riscv_asm/; cp ./memory.x ./riscv_asm/; cd ./riscv_asm; cargo clean; cargo build --release; rm ./asm.s ./memory.x
 #	elf2mem -f ./riscv_asm/target/riscv32i-unknown-none-elf/release/riscv_asm -t ./binary.mem -p
 
+tb_vcsr:
+	verilator --binary $(vcsr) --top-module tb_vcsr --trace-fst --assert -y $(rust)
+	obj_dir/Vtb_vcsr
+
+tb_vcsr_g:
+	gktwave -a vcsr.gtkw vcsr.fst
+
 tb_uart: 
 	verilator --binary $(uart) --top-module tb_uart --trace-fst --assert -y $(rust)
 	obj_dir/Vtb_uart
@@ -85,7 +102,7 @@ tb_uart_g:
 asm: 
 #	cd ../../rust_examples/; cargo build --example asm --release; elf2mem -f ./target/riscv32i-unknown-none-elf/release/examples/asm -t ../hdl/verilator/binary.mem -p;
 
-tb_top_arty: $(top_arty)
+tb_top_arty: 
 	verilator --binary $(top_arty) --top-module tb_top_arty --trace-fst --assert -y $(rust) 
 	obj_dir/Vtb_top_arty
 

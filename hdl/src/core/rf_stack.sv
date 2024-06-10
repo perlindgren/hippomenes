@@ -83,21 +83,21 @@ module rf_stack
 
     // Register Ra and > Sp
     for (integer k = 0; k < PrioNum; k++) begin
-      we[k] = (level == PrioT'(k)) && writeEn && (writeAddr == Ra || (writeAddr > Sp));
+      we[k] = (level_reg_out == PrioT'(k)) && writeEn && (writeAddr == Ra || (writeAddr > Sp));
       ra_set[k] = 0;
     end
 
     // Ra (on interrupt)
-    if (writeRaEn) ra_set[level-1] = 1;
+    if (writeRaEn) ra_set[level_reg_out-1] = 1;
 
     // Reads to rs1, based on buffered level
     if (readAddr1 == Zero) readData1 = 0;
     else if (readAddr1 == Sp) readData1 = sp_a_o;
-    else readData1 = a_o[level];
+    else readData1 = a_o[level_reg_out];
     // Reads to rs2, based on buffered level
     if (readAddr2 == Zero) readData2 = 0;
     else if (readAddr2 == Sp) readData2 = sp_b_o;
-    else readData2 = b_o[level];
+    else readData2 = b_o[level_reg_out];
   end
 
 endmodule

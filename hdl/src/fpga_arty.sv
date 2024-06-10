@@ -4,33 +4,20 @@
 // This is just illustrative
 module fpga_arty (
     input sysclk,
-    output logic led0,
-    output logic led1,
-    output logic led2,
-    output logic led3,
+    output logic[3:0] led,
 
-    output logic led_r0,
-    output logic led_r1,
-    output logic led_r2,
-    output logic led_r3,
+    output logic[3:0] led_r,
 
-    output logic led_g0,
-    output logic led_g1,
-    output logic led_g2,
-    output logic led_g3,
+    output logic[3:0] led_g,
 
-    output logic led_b0,
-    output logic led_b1,
-    output logic led_b2,
-    output logic led_b3,
+    output logic[3:0] led_b,
 
     output logic rx,  // host 
     input  logic tx,  // host
 
-    input logic sw0,
-    input logic sw1,
+    input logic[1:0] sw,
 
-    input logic btn
+    input logic[3:0] btn
     // input logic btn1,
     // input logic btn2,
     // input logic btn3
@@ -50,30 +37,30 @@ module fpga_arty (
   logic tmp_btn2;
   logic tmp_btn3;
 
-  assign tmp_sw0  = sw0;
-  assign tmp_sw1  = sw1;
-  assign tmp_btn0 = btn0;
-  assign tmp_btn1 = btn1;
-  assign tmp_btn2 = btn2;
-  assign tmp_btn3 = btn3;
+  assign tmp_sw0  = sw[0];
+  assign tmp_sw1  = sw[1];
+  assign tmp_btn0 = btn[0];
+  assign tmp_btn1 = btn[1];
+  assign tmp_btn2 = btn[2];
+  assign tmp_btn3 = btn[3];
 
   //assign led2 = tmp_sw0;
   //assign led3 = tmp_sw1;
 
-  assign led_r0   = 0;
-  assign led_r1   = 0;
-  assign led_r2   = 0;
-  assign led_r3   = 0;
+  //assign led_r[0]   = 0;
+  assign led_r[1]   = 0;
+  assign led_r[2]   = 0;
+  assign led_r[3]   = 0;
 
-  assign led_g0   = 0;
-  assign led_g1   = 0;
-  assign led_g2   = 0;
-  assign led_g3   = 0;
+  assign led_g[0]   = 0;
+  assign led_g[1]   = 0;
+  assign led_g[2]   = 0;
+  assign led_g[3]   = 0;
 
-  assign led_b0   = 0;
-  assign led_b1   = 0;
-  assign led_b2   = 0;
-  assign led_b3   = 0;
+  assign led_b[0]   = 0;
+  assign led_b[1]   = 0;
+  assign led_b[2]   = 0;
+  assign led_b[3]   = 0;
 
   always_comb begin
 
@@ -83,8 +70,8 @@ module fpga_arty (
       .clk,
       .reset(tmp_sw1),
       .btn  (btn),
-      .led  ({led0, led1, led2, led3}),
-      .rx
+      .led  (led),
+      .tx(rx)
       // .gpio_in({led1, rx, tx}),
       // .gpio_out({led1, rx, tx}),
       // .rx(tx),
@@ -103,7 +90,7 @@ module fpga_arty (
   // clock devider
   always @(posedge clk) begin
     r_count <= r_count + 1;
-    led0 <= r_count[22];
+    led_r[0] <= r_count[22];
   end
 
 endmodule

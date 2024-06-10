@@ -1,45 +1,15 @@
-// tb_di_mem
+// tb_uart
 `timescale 1ns / 1ps
+
 import config_pkg::*;
 import decoder_pkg::*;
 import arty_pkg::*;
+
 module tb_uart;
-/*
+
   logic clk;
   logic reset;
-  word  prescaler;
-  word  d_in;
-  logic rts;
-  logic tx;
-  uart u (
-      .clk(clk),
-      .reset(reset),
-      .prescaler(prescaler),
-      .d_in(d_in),
-      .rts(rts),
-      .tx(tx)
-  );
-
-  always #10 clk = ~clk;
-
-  initial begin
-    $dumpfile("uart.fst");
-    $dumpvars;
-    clk = 0;
-    reset = 1;
-    prescaler = 1;
-    d_in = 'h12345678;
-    rts = 1;
-    #100;
-    reset = 0;
-    #10_000;
-
-    $finish;
-  end
-*/
-  logic clk;
-  logic reset;
-  word  prescaler;
+  word prescaler;
   word csr_data_out;
   logic have_next;
   logic csr_enable;
@@ -49,48 +19,113 @@ module tb_uart;
   word rs1_data;
   logic rts;
   logic tx;
-  word fifo_data;
+  byte fifo_data;
+  logic next;
+  PrioT level;
+
   fifo fifo (
-    .clk_i(clk),
-    .reset_i(reset),
-    .next(next),
-    .csr_enable,
-    .csr_addr,
-    .rs1_zimm,
-    .rs1_data,
-    .csr_op,
-    .data(fifo_data),
-    .csr_data_out,
-    .have_next
+      .clk_i(clk),
+      .reset_i(reset),
+      .next(next),
+      .csr_enable,
+      .csr_addr,
+      .rs1_zimm,
+      .rs1_data,
+      .csr_op,
+      .level,
+      .data(fifo_data),
+      .csr_data_out,
+      .have_next
   );
+
   uart uart (
       .clk_i(clk),
       .reset_i(reset),
       .prescaler(prescaler),
       .d_in(fifo_data),
       .rts(have_next),
-      .tx(rx),
+      .tx(tx),
       .next(next)
   );
+
   always #10 clk = ~clk;
+
   initial begin
+    $dumpfile("uart.fst");
+    $dumpvars;
+
     clk = 0;
     prescaler = 0;
-    csr_enable = 1;
-    csr_addr = 'h50;
+    csr_enable = 0;
+    csr_addr = FifoByteCsrAddr;
     csr_op = CSRRW;
-    rs1_data = 'h12345678;
+    rs1_data = 0;
     rs1_zimm = 1;
+    level = 3;
     reset = 1;
     #20;
     reset = 0;
     #20;
-    rs1_data = 'hDEADBEEF;
+    level = 2;
+    csr_enable = 1;
+    rs1_data = 'h41;
+
     #20;
-    rs1_data = 'h13371337;
+    rs1_data = 'h42;
+
     #20;
+    rs1_data = 'h43;
+
+    #20;
+    level = 3;
     csr_enable = 0;
-    #50000;
+
+    #80;
+    level = 2;
+    csr_enable = 1;
+    rs1_data = 'h41;
+
+    #20;
+    rs1_data = 0;
+
+    #20;
+    rs1_data = 'h43;
+
+    #20;
+    level = 3;
+    csr_enable = 0;
+
+
+    // last test
+    #80;
+    level = 2;
+    csr_enable = 1;
+    rs1_data = 'h41;
+
+    #20;
+    rs1_data = 0;
+
+    #20;
+    level = 1;
+    rs1_data = 'h43;
+
+    #20;
+    level = 2;
+    csr_enable = 0;
+
+    #20 csr_enable = 1;
+    rs1_data = 'h44;
+
+    #20;
+
+    level = 3;
+    csr_enable = 0;
+
+
+
+
+
+    #500000;
     $finish;
   end
 endmodule

@@ -82,7 +82,12 @@ or, for Linux
 ./program_arty.sh
 ```
 
-In future updates tighter integration with `cargo` will be provided building on the aforementioned tooling.
+Under Linux, we package all of the above as a `cargo` runner, compiling an example, resynthesizing the memory and reprogramming the target are all done by
+```shell
+cargo run --example <EXAMPLE> --release
+```
+
+<!--In future updates tighter integration with `cargo` will be provided building on the aforementioned tooling.-->
 
 Notice, under Windows we rely on Vivado for the programming which is tremendously slow (several seconds), as it will for each time start the `Hardware Manager` establish a connection to the device, etc. (replicating each action in the gui).
 

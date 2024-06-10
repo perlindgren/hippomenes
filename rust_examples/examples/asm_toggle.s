@@ -1,6 +1,9 @@
-            .option  norvc
-            .text
-            .section .init
+.option  norvc
+.text
+.section .init
+
+# EXPECTED BEHAVIOR
+# LED is PWM at 50% duty cycle, glows accordingly
 
 init:       la      sp, _stack_start        # set stack pointer
             la      t0, data

@@ -9,18 +9,20 @@ module timer
     input logic clk,
     input logic reset,
 
-    input logic    csr_enable,
-    input CsrAddrT csr_addr,
-    input csr_op_t csr_op,
-    input r        rs1_zimm,
-    input word     rs1_data,
-    input TimerT   ext_data,
-    input logic    ext_write_enable,
-    input logic    interrupt_clear,
-
-    output logic interrupt_set,
-    output word  csr_direct_out,
-    output word  csr_out
+    input  logic         csr_enable,
+    input  CsrAddrT      csr_addr,
+    input  csr_op_t      csr_op,
+    input  r             rs1_zimm,
+    input  word          rs1_data,
+    input  TimerT        ext_data,
+    input  logic         ext_write_enable,
+    input  logic         interrupt_clear,
+    input  vcsr_width_t  vcsr_width,
+    input  vcsr_offset_t vcsr_offset,
+    input  CsrAddrT      vcsr_addr,
+    output logic         interrupt_set,
+    output word          csr_direct_out,
+    output word          csr_out
 );
   TimerCounterT counter;
   TimerT timer;
@@ -39,6 +41,9 @@ module timer
       .rs1_zimm,
       .rs1_data,
 
+      .vcsr_width,
+      .vcsr_offset,
+      .vcsr_addr,
       // external access for side effects
       .ext_data,
       .ext_write_enable,

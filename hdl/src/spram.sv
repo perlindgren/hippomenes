@@ -303,7 +303,6 @@ module spram
   assign rsta = 0;
   assign wea = 0;
   assign sleep = 0;
-  assign wea = 0;
 
   // xpm_memory_spram: Single Port RAM
   // Xilinx Parameterized Macro, version 2023.2
@@ -317,10 +316,10 @@ module spram
       .ECC_MODE("no_ecc"),
       .ECC_TYPE("none"),
       .IGNORE_INIT_SYNTH(0),
-      .MEMORY_INIT_FILE("binary.mem"),
+      .MEMORY_INIT_FILE("text.mem"),
       .MEMORY_INIT_PARAM("0"),
-      .MEMORY_OPTIMIZATION("true"),
-      .MEMORY_PRIMITIVE("auto"),
+      .MEMORY_OPTIMIZATION("false"),
+      .MEMORY_PRIMITIVE("block"),
       .MEMORY_SIZE(IMemSizeBits),
       .MESSAGE_CONTROL(0),
       .RAM_DECOMP("auto"),
@@ -332,7 +331,7 @@ module spram
       .USE_MEM_INIT(1),
       .USE_MEM_INIT_MMI(1),  // Generate MMI config
       .WAKEUP_TIME("disable_sleep"),
-      .WRITE_DATA_WIDTH_A(32),
+      .WRITE_DATA_WIDTH_A(IMemDataWidth),
       .WRITE_MODE_A("read_first"),
       .WRITE_PROTECT(1)
   ) xpm_memory_spram_inst (

@@ -1,10 +1,11 @@
 // decoder
 `timescale 1ns / 1ps
 
-import decoder_pkg::*;
-import mem_pkg::*;
-
-module decoder (
+module decoder
+  import decoder_pkg::*;
+  import mem_pkg::*;
+  import config_pkg::*;
+(
     input word instr,
     // immediates
     output word imm,
@@ -32,8 +33,11 @@ module decoder (
     // write back
     output wb_mux_t wb_mux_sel,
     output r rd,
-    output logic wb_write_enable
+    output logic wb_write_enable,
+    output wb_mem_mux_t wb_mem_mux_sel
 );
+  import decoder_pkg::*;
+
   // https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
   // table on page 104
   typedef enum integer {
@@ -89,6 +93,7 @@ module decoder (
     // write back
     wb_mux_sel = WB_ALU;
     wb_write_enable = 0;  // set only for instructions writing to rf
+    wb_mem_mux_sel = WB_OTHER;
 
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
@@ -159,7 +164,8 @@ module decoder (
         dmem_width = mem_width_t'(funct3[1:0]);
         dmem_sign_extend = !funct3[2];
 
-        wb_mux_sel = WB_DM;
+        //wb_mux_sel = WB_DM;
+        wb_mem_mux_sel = WB_MEM;
         wb_write_enable = 1;
       end
 
@@ -177,14 +183,13 @@ module decoder (
         dmem_sign_extend = !funct3[2];
         dmem_write_enable = 1;
 
-        wb_mux_sel = WB_DM;
+        //wb_mux_sel = WB_DM;
         wb_write_enable = 0;
       end
 
       OP_ALUI: begin
         $display("alui");
         imm = 32'($signed(instr[31:20]));
-        // sub arith only exists for shifts in immediate mode. 
         if (funct3 == 'b101) begin
           sub_arith = instr[30];
         end else begin

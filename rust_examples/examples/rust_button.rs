@@ -52,7 +52,7 @@ fn main() -> ! {
 
         if (counter >> 20) & 1 == 1 {
             if flag {
-                uart.write(DATA[counter as usize % 16]);
+                write!(uart, "hello :))");
                 flag = false;
             }
             led.pout3.set_low()

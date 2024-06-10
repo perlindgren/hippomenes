@@ -1,10 +1,13 @@
-            .option  norvc
-            .text
-            .section .init
+.option  norvc
+.text
+.section .init
+# EXPECTED BEHAVIOR:
+# LED 4 is PWM at 33% duty cycle, 
+# i.e. it lights up quite faintly
 init:       la      sp, _stack_start        # set stack pointer
-           
-main:       csrwi   0x0, 0b1111  # leds-on
-            csrwi   0x0, 0b0000  # leds-off 
-            j       main
 
-data:       .data
+main:   csrsi 0x0, 1 # led on
+        csrci 0x0, 1 # led off
+        j main 
+.rodata
+

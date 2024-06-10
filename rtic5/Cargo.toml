@@ -1,0 +1,24 @@
+[package]
+name = "hippomenes_rust_examples"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# crate_type = ["staticlib"]
+
+[dependencies]
+riscv = { version = "0.11.1", features = ["critical-section-single-hart"] }
+#rtic = {path = "../../rtic5/rtic-hippo/"}
+rtic = { git = "https://github.com/perlindgren/rtic5" }
+#hippomenes-hal = {path="../../../hippomenes-core/hippomenes-hal/"}
+hippomenes-hal = { git = "https://github.com/onsdagens/hippomenes-core" }
+#hippomenes-core = {path="../../../hippomenes-core/"}
+hippomenes-core = { git = "https://github.com/onsdagens/hippomenes-core" }
+#hippomenes-rt = {path="../../../hippomenes-core/hippomenes-rt/"}
+hippomenes-rt = { git = "https://github.com/onsdagens/hippomenes-core" }
+#rtic = {path = "../../../rtic/rtic/", features=["riscv-clic-backend"]}
+# rtic = {git="https://github.com/onsdagens/rtic", branch="hippomenes", features=["riscv-clic-backend"]}
+
+[profile.release]
+opt-level = "s"

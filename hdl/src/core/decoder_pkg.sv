@@ -1,7 +1,7 @@
 // decoder_pkg
 `timescale 1ns / 1ps
 
-import config_pkg::*;
+// import config_pkg::*;
 package decoder_pkg;
 
   typedef enum logic [2:0] {
@@ -68,11 +68,28 @@ package decoder_pkg;
 
   typedef enum {
     WB_ALU,
-    WB_DM,
+    //    WB_DM,
     WB_CSR,
     WB_PC_PLUS_4,
     WB_MUL
   } wb_mux_t;
+
+  typedef enum {
+    MEM_DM,
+    MEM_ROM
+  } mem_sel_t;
+
+  typedef enum {
+    WB_OTHER,
+    WB_MEM
+  } wb_mem_mux_t;
+
+  typedef enum {
+    WT_RF_OUT,
+    WT_RF_IN,
+    WT_MAGIC
+
+  } wt_mux_sel_t;
 
   typedef logic [4:0] r;
   typedef logic [31:0] word;

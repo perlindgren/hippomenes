@@ -4,6 +4,7 @@
 import config_pkg::*;
 import arty_pkg::*;
 import decoder_pkg::*;
+import mem_pkg::*;
 
 module top_arty (
     input  logic clk,
@@ -114,6 +115,8 @@ module top_arty (
   // write back
   logic decoder_wb_write_enable;
 
+  wb_mem_mux_t decoder_mem_mux_sel_out;
+
   decoder decoder (
       // in
       .instr(imem_data_out),
@@ -143,13 +146,58 @@ module top_arty (
       // write back
       .wb_mux_sel(decoder_wb_mux_sel),
       .rd(decoder_rd),
-      .wb_write_enable(decoder_wb_write_enable)
+      .wb_write_enable(decoder_wb_write_enable),
+      .wb_mem_mux_sel(decoder_mem_mux_sel_out)
+  );
+  csr_op_t vcsr_op;
+  CsrAddrT vcsr_addr;
+  vcsr_offset_t vcsr_offset;
+  vcsr_width_t vcsr_width;
+  vcsr vcsr_i (
+      .clk,
+      .reset,
+      .rs1_data(rs1_wt_mux_out),
+      .csr_addr(decoder_csr_addr),
+      .rs1_zimm(decoder_rs1),
+      .csr_enable(decoder_csr_enable),
+      .csr_op(decoder_csr_op),
+      .out_addr(vcsr_addr),
+      .out_offset(vcsr_offset),
+      .out_width(vcsr_width)
+  );
+  wt_mux_sel_t wt_ctl_rs1_sel_out;
+  wt_mux_sel_t wt_ctl_rs2_sel_out;
+  wt_ctl wt_ctl_i (
+      .clk,
+      .reset,
+      .rs1(decoder_rs1),
+      .rs2(decoder_rs2),
+      .rd(rd_reg_out),
+      .writeRaEn(writeRaEn_reg_out),
+      .writeEn(we_reg_out),
+      .rs1_sel(wt_ctl_rs1_sel_out),
+      .rs2_sel(wt_ctl_rs2_sel_out)
+
+  );
+  word rf_rs1;
+  word rf_rs2;
+  word rs1_wt_mux_out;
+  word rs2_wt_mux_out;
+  wt_mux rs1_wt_mux (
+      .sel(wt_ctl_rs1_sel_out),
+      .rf_data(rf_rs1),
+      .wt_data(wb_mem_mux_out),
+      .out(rs1_wt_mux_out)
+  );
+  wt_mux rs2_wt_mux (
+      .sel(wt_ctl_rs2_sel_out),
+      .rf_data(rf_rs2),
+      .wt_data(wb_mem_mux_out),
+      .out(rs2_wt_mux_out)
   );
 
   // register file
   word  wb_mux_out;
-  word  rf_rs1;
-  word  rf_rs2;
   logic n_clic_interrupt_out;
   word  rf_stack_ra;
 
@@ -158,23 +206,49 @@ module top_arty (
       // in
       .clk,
       .reset,
-      .writeEn(decoder_wb_write_enable),
-      .writeRaEn(n_clic_interrupt_out),
+      .writeEn(we_reg_out),
+      .writeRaEn(writeRaEn_reg_out),
       .level(n_clic_level_out),
-      .writeAddr(decoder_rd),
-      .writeData(wb_mux_out),
+      .writeAddr(rd_reg_out),
+      .writeData(wb_mem_mux_out),
       .readAddr1(decoder_rs1),
       .readAddr2(decoder_rs2),
       // out
       .readData1(rf_rs1),
       .readData2(rf_rs2)
   );
-
+  logic writeRaEn_reg_out;
+  reg_n #(
+      .DataWidth(1)
+  ) writeRaEn_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(n_clic_interrupt_out),
+      .out(writeRaEn_reg_out)
+  );
+  logic we_reg_out;
+  reg_n #(
+      .DataWidth(1)
+  ) we_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(decoder_wb_write_enable),
+      .out(we_reg_out)
+  );
+  r rd_reg_out;
+  reg_n #(
+      .DataWidth(5)
+  ) rd_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(decoder_rd),
+      .out(rd_reg_out)
+  );
   // branch logic
   branch_logic branch_logic (
       // in
-      .a(rf_rs1),
-      .b(rf_rs2),
+      .a(rs1_wt_mux_out),
+      .b(rs2_wt_mux_out),
       .branch_always(decoder_branch_always),
       .branch_instr(decoder_branch_instr),
       .op(decoder_branch_op),
@@ -188,7 +262,7 @@ module top_arty (
       // in
       .sel (decoder_alu_a_mux_sel),
       .imm (decoder_imm),
-      .rs1 (rf_rs1),
+      .rs1 (rs1_wt_mux_out),
       .zero(32'(0)),
       // out
       .out (alu_a_mux_out)
@@ -199,7 +273,7 @@ module top_arty (
       // in
       .sel      (decoder_alu_b_mux_sel),
       // out
-      .rs2      (rf_rs2),
+      .rs2      (rs2_wt_mux_out),
       .imm      (decoder_imm),
       .pc_plus_4(32'($signed(pc_adder_out))),  // Should we sign extend?
       .pc       (32'($signed(pc_reg_out))),    //
@@ -224,17 +298,18 @@ module top_arty (
 
   word  dmem_data_out;
   logic dmem_alignment_error;
-  mem dmem (
+  d_mem_spram dmem (
       // in
       .clk(clk),
-      .write_enable(decoder_dmem_write_enable),
+      .reset,
+      .addr(alu_res[DMemAddrWidth-1:0]),
       .width(decoder_dmem_width),
       .sign_extend(decoder_dmem_sign_extend),
-      .address(alu_res[DMemAddrWidth-1:0]),
-      .data_in(rf_rs2),
+      .write_enable(decoder_dmem_write_enable),
+      .data_in(rs2_wt_mux_out),
       // out
-      .data_out(dmem_data_out),
-      .alignment_error(dmem_alignment_error)
+      //.data_temp(dmem_data_out)
+      .data_out(dmem_data_out)
   );
 
   // led out
@@ -250,13 +325,16 @@ module top_arty (
       .csr_enable(decoder_csr_enable),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
-      .rs1_data(rf_rs1),
+      .rs1_data(rs1_wt_mux_out),
       .csr_op(decoder_csr_op),
       .ext_data(0),
       .ext_write_enable(0),
       // out
       .direct_out(csr_led_direct_out),
-      .out(csr_led_out)
+      .out(csr_led_out),
+      .vcsr_addr(vcsr_addr),
+      .vcsr_width(vcsr_width),
+      .vcsr_offset(vcsr_offset)
   );
   assign led = LedT'(csr_led_out[LedWidth-1:0]);
   // assign rx = csr_led_out[LedWidth-1];  //last pin is RX
@@ -275,13 +353,17 @@ module top_arty (
       .csr_enable(decoder_csr_enable),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
-      .rs1_data(rf_rs1),
+      .rs1_data(rs1_wt_mux_out),
       .csr_op(decoder_csr_op),
       .ext_data(0),
       .ext_write_enable(0),
       // out
       .direct_out(csr_btn_direct_out),
-      .out(csr_btn_out)
+      .out(csr_btn_out),
+
+      .vcsr_addr  (vcsr_addr),
+      .vcsr_width (vcsr_width),
+      .vcsr_offset(vcsr_offset)
   );
   assign csr_btn.data = btn;
 
@@ -330,6 +412,9 @@ module top_arty (
   //   );
 
   word n_clic_csr_out;
+  logic [7:0] n_clic_int_id_out;
+  logic [7:0] n_clic_int_prio_out;
+  logic n_clic_tail_chain_out;
   n_clic n_clic (
       // in
       .clk,
@@ -337,7 +422,7 @@ module top_arty (
       .csr_enable(decoder_csr_enable),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
-      .rs1_data(rf_rs1),
+      .rs1_data(rs1_wt_mux_out),
       //.rd(decoder_rd),
       .csr_op(decoder_csr_op),
       .pc_in(pc_branch_mux_out),
@@ -346,35 +431,67 @@ module top_arty (
       .int_addr(n_clic_interrupt_addr),
       .pc_interrupt_sel(n_clic_pc_interrupt_sel),
       .level_out(n_clic_level_out),
-      .interrupt_out(n_clic_interrupt_out)
+      .int_prio(n_clic_int_prio_out),
+      .int_id(n_clic_int_id_out),
+      .interrupt_out(n_clic_interrupt_out),
+      .vcsr_addr(vcsr_addr),
+      .vcsr_width(vcsr_width),
+      .vcsr_offset(vcsr_offset),
+      .tail_chain(n_clic_tail_chain_out)
   );
 
-  word  d_in;
+  word d_in;
   logic uart_next;
-  word  fifo_data;
-  word  fifo_csr_data_out;
-  logic fifo_have_next;
-  fifo i_fifo (
+  logic [7:0] fifo_data_out;
+  word fifo_csr_data_out;
+  logic fifo_have_next_out;
+  MonoTimerT mono_timer_out;
+  logic [FifoEntryWidthBits-1:0] enc_write_data_out;
+  logic [FifoEntryWidthSize:0] enc_write_width_out;
+  logic enc_write_enable_out;
+  logic uart_ack_out;
+  mono_timer timer (
+      .clk(clk),
+      .reset(reset),
+      .mono_timer(mono_timer_out)
+  );
+  n_cobs_encoder enc (
       .clk_i(clk),
       .reset_i(reset),
-      .next(uart_next),
       .csr_enable(decoder_csr_enable),
       .csr_addr(decoder_csr_addr),
-      .rs1_zimm(decoder_rs1),
-      .rs1_data(rf_rs1),
-      .csr_op(decoder_csr_op),
-      .data(fifo_data),
-      .csr_data_out(fifo_csr_data_out),
-      .have_next(fifo_have_next)
+      .timer(mono_timer_out),
+
+      .id(n_clic_int_id_out),
+      .rs1_data(rs1_wt_mux_out),
+
+      .level(n_clic_int_prio_out),
+      .write_data(enc_write_data_out),
+      .write_width(enc_write_width_out),
+      .write_enable(enc_write_enable_out),
+      .tail_chain(n_clic_tail_chain_out)
+  );
+  fifo_interleaved fifo_i (
+      .clk_i  (clk),
+      .reset_i(reset),
+
+      .write_enable(enc_write_enable_out),
+      .write_data  (enc_write_data_out),
+      .write_width (enc_write_width_out),
+
+
+      .ack(uart_ack_out),
+      .data(fifo_data_out),
+      .have_next(fifo_have_next_out)
   );
   uart i_uart (
       .clk_i(clk),
       .reset_i(reset),
       .prescaler(0),
-      .d_in(fifo_data),
-      .rts(fifo_have_next),
+      .d_in(fifo_data_out),
+      .rts(fifo_have_next_out),
       .tx,
-      .next(uart_next)
+      .next(uart_ack_out)
   );
 
   word csr_out;
@@ -387,13 +504,42 @@ module top_arty (
     endcase
   end
 
+
   wb_mux wb_mux (
       .sel(decoder_wb_mux_sel),
-      .dm(dmem_data_out),
       .alu(alu_res),
-      .csr(csr_out),
+      .csr(n_clic_csr_out),
       .pc_plus_4(32'($signed(pc_adder_out))),  // should we sign extend?
       .mul(mul_res),
       .out(wb_mux_out)
   );
+  word wb_mux_reg_out;
+  reg_n #(
+      .DataWidth(32)
+  ) wb_mux_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(wb_mux_out),
+      .out(wb_mux_reg_out)
+  );
+
+  logic mem_mux_sel_reg_out;
+  reg_n #(
+      .DataWidth(1)
+  ) mem_mux_sel_reg (
+      .clk(clk),
+      .reset(reset),
+      .in(decoder_mem_mux_sel_out),
+      .out(mem_mux_sel_reg_out)
+  );
+
+
+  word wb_mem_mux_out;
+  wb_mem_mux wb_mem_mux_i (
+      .sel(mem_mux_sel_reg_out),
+      .other_data(wb_mux_reg_out),
+      .memory_data(dmem_data_out),
+      .out(wb_mem_mux_out)
+  );
+
 endmodule
