@@ -244,6 +244,7 @@ dependencies = [
 [[package]]
 name = "rtic"
 version = "0.1.0"
+source = "git+https://github.com/perlindgren/rtic5#2e7e3d3096bbd6d762810bc78bdb0ffde49b5451"
 dependencies = [
  "heapless",
  "hippomenes-core",
@@ -256,6 +257,7 @@ dependencies = [
 [[package]]
 name = "rtic-core"
 version = "0.1.0"
+source = "git+https://github.com/perlindgren/rtic5#2e7e3d3096bbd6d762810bc78bdb0ffde49b5451"
 dependencies = [
  "derive_builder",
  "heck 0.4.1",
@@ -268,6 +270,7 @@ dependencies = [
 [[package]]
 name = "rtic-deadline-pass"
 version = "0.1.0"
+source = "git+https://github.com/perlindgren/rtic5#2e7e3d3096bbd6d762810bc78bdb0ffde49b5451"
 dependencies = [
  "heck 0.5.0",
  "proc-macro2",
@@ -279,6 +282,7 @@ dependencies = [
 [[package]]
 name = "rtic-macro"
 version = "0.1.0"
+source = "git+https://github.com/perlindgren/rtic5#2e7e3d3096bbd6d762810bc78bdb0ffde49b5451"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -291,10 +295,12 @@ dependencies = [
 [[package]]
 name = "rtic-spsc"
 version = "0.1.0"
+source = "git+https://github.com/perlindgren/rtic5#2e7e3d3096bbd6d762810bc78bdb0ffde49b5451"
 
 [[package]]
 name = "rtic-sw-pass"
 version = "0.1.0"
+source = "git+https://github.com/perlindgren/rtic5#2e7e3d3096bbd6d762810bc78bdb0ffde49b5451"
 dependencies = [
  "heck 0.5.0",
  "proc-macro2",
