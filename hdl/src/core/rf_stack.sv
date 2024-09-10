@@ -15,13 +15,15 @@ module rf_stack
     input RegAddrT readAddr1,
     input RegAddrT readAddr2,
     output RegT readData1,
-    output RegT readData2
+    output RegT readData2,
+    output RegT sp_out
 );
   RegT a_o[PrioNum];
   RegT b_o[PrioNum];
   logic we[PrioNum];
   /* verilator lint_off UNOPTFLAT */
   logic ra_set[PrioNum];
+  logic sp_set[PrioNum]; //stack pointers
 
   generate
     for (genvar k = 0; k < PrioNum; k++) begin : gen_rf
@@ -47,6 +49,8 @@ module rf_stack
   RegT  sp_a_o;
   RegT  sp_b_o;
   logic sp_we;
+  RegT sp_registry;
+  assign sp_out = sp_registry;
 
   rf #(
       .RegNum(1)  // A single instance for Ra
@@ -63,7 +67,9 @@ module rf_stack
       // Write port W1
       .waddr_a_i(1'(0)),
       .wdata_a_i(writeData),
-      .we_a_i(sp_we)
+      .we_a_i(sp_we),
+      //stack pointer
+      .sp_o(sp_registry)
   );
 
   PrioT level_reg_out;
@@ -80,6 +86,7 @@ module rf_stack
     // Writes
     // Sp
     sp_we = writeEn && (writeAddr == Sp);
+
 
     // Register Ra and > Sp
     for (integer k = 0; k < PrioNum; k++) begin
@@ -98,6 +105,9 @@ module rf_stack
     if (readAddr2 == Zero) readData2 = 0;
     else if (readAddr2 == Sp) readData2 = sp_b_o;
     else readData2 = b_o[level_reg_out];
+
   end
+  
+  
 
 endmodule

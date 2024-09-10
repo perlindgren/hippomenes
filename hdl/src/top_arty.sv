@@ -61,7 +61,6 @@ module top_arty (
 
   // instruction memory
   word imem_data_out;
-
 `ifdef VERILATOR
   rom imem (
       // in
@@ -70,7 +69,18 @@ module top_arty (
       // out
       .data_out(imem_data_out)
   );
-`else
+`endif
+`ifndef SYNTHESIS
+  rom imem (
+      // in
+      .clk(clk),
+      .address(pc_reg_out[IMemAddrWidth-1:0]),
+      // out
+      .data_out(imem_data_out)
+  );
+`endif
+`ifdef SYNTHESIS
+`ifndef VERILATOR
   spram imem (
       // in
       .clk(clk),
@@ -83,7 +93,7 @@ module top_arty (
       .data_out(imem_data_out)
   );
 `endif
-
+`endif
   // decoder
   wb_mux_t decoder_wb_mux_sel;
   alu_a_mux_t decoder_alu_a_mux_sel;
@@ -94,7 +104,7 @@ module top_arty (
   word decoder_imm;
   r decoder_rs1;
   r decoder_rs2;
-
+  
   // mem
   logic decoder_dmem_write_enable;
   logic decoder_dmem_sign_extend;
@@ -116,7 +126,8 @@ module top_arty (
   logic decoder_wb_write_enable;
 
   wb_mem_mux_t decoder_mem_mux_sel_out;
-
+  // pmp
+  logic [6:0] op_code;
   decoder decoder (
       // in
       .instr(imem_data_out),
@@ -147,7 +158,9 @@ module top_arty (
       .wb_mux_sel(decoder_wb_mux_sel),
       .rd(decoder_rd),
       .wb_write_enable(decoder_wb_write_enable),
-      .wb_mem_mux_sel(decoder_mem_mux_sel_out)
+      .wb_mem_mux_sel(decoder_mem_mux_sel_out),
+      // pmp
+      .op_o(op_code)
   );
   csr_op_t vcsr_op;
   CsrAddrT vcsr_addr;
@@ -200,7 +213,7 @@ module top_arty (
   word  wb_mux_out;
   logic n_clic_interrupt_out;
   word  rf_stack_ra;
-
+  RegT sp;
   PrioT n_clic_level_out;
   rf_stack rf (
       // in
@@ -215,7 +228,8 @@ module top_arty (
       .readAddr2(decoder_rs2),
       // out
       .readData1(rf_rs1),
-      .readData2(rf_rs2)
+      .readData2(rf_rs2),
+      .sp_out(sp)
   );
   logic writeRaEn_reg_out;
   reg_n #(
@@ -423,6 +437,7 @@ module top_arty (
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
       .rs1_data(rs1_wt_mux_out),
+      .interrupt_in(memory_interrupt),
       //.rd(decoder_rd),
       .csr_op(decoder_csr_op),
       .pc_in(pc_branch_mux_out),
@@ -541,5 +556,20 @@ module top_arty (
       .memory_data(dmem_data_out),
       .out(wb_mem_mux_out)
   );
+
+
+    logic memory_interrupt;
+    pmp pmp (
+        // opt in toggle
+        .toggle(1),
+        .addr(alu_res), 
+        .sp(sp),
+        .op(op_code),
+        .interrupt_raised(n_clic_interrupt_out),
+        
+        .mem_interrupt_out(memory_interrupt)
+    );
+
+
 
 endmodule

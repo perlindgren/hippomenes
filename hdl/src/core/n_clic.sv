@@ -18,9 +18,11 @@ module n_clic
     input IMemAddrT pc_in,
 
     // VCSR
-    input CsrAddrT vcsr_addr,
-    input vcsr_width_t vcsr_width,
+    input CsrAddrT      vcsr_addr,
+    input vcsr_width_t  vcsr_width,
     input vcsr_offset_t vcsr_offset,
+
+    input logic         interrupt_in,
 
 
     output logic              [7:0] int_prio,
@@ -143,7 +145,7 @@ module n_clic
     IMemAddrT addr;
     PrioT     prio;
   } stack_t;
-
+  
   stack_t stack_out;
   // epc address stack
   stack #(
@@ -175,7 +177,7 @@ module n_clic
     word vec_out   [VecSize];
     word entry_out [VecSize];
 
-    for (genvar k = 0; k < VecSize; k++) begin : gen_vec
+    for (genvar k = 0; k < VecSize-1; k++) begin : gen_vec
       csr #(
           .Addr(VecCsrBase + CsrAddrT'(k)),
           .CsrWidth(IMemAddrWidth - 2)
@@ -225,6 +227,18 @@ module n_clic
       assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
     end
   endgenerate
+
+  
+  entry_t         memory_interrupt; 
+  IMemAddrStore   memAddr;
+
+  assign memory_interrupt         = '{2'b11, 1, interrupt_in}; // Interupt caused by PMP
+  assign memAddr                  = '0;
+  assign entry[VecSize-1]         = memory_interrupt;
+  assign prio[VecSize-1]          = '1;
+  assign csr_vec_data[VecSize-1]  = memAddr;
+  
+
   logic         [VecSize-1:0] pended_timer;
   // simple implementation to find max priority
   PrioT                       max_prio     [VecSize];
@@ -270,7 +284,7 @@ module n_clic
       ext_entry_data[0]   = entry[0] | 1;  // set pend bit
     end
 
-    if (mstatus_direct_out[3] == 0) begin
+    if (mstatus_direct_out[3] == 0 && interrupt_in == 0 ) begin //
       push = 0;
       pop = 0;
       m_int_thresh_data = 0;
@@ -281,7 +295,7 @@ module n_clic
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
-    end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
+    end else if (max_prio[VecSize-1] > m_int_thresh.data || interrupt_in == 1) begin
       // take higher priority interrupt
       push = 1;
       pop = 0;
