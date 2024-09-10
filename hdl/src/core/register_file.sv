@@ -113,15 +113,20 @@ module rf
     // Write port W1
     input RegAddrT waddr_a_i,
     input RegT wdata_a_i,
-    input logic we_a_i
+    input logic we_a_i,
+    
+    output RegT sp_o
 );
 
   RegT  mem[RegNum];
   logic we;
 
-  assign we = we_a_i;
+
+  assign we        = we_a_i;
   assign rdata_a_o = mem[raddr_a_i];
   assign rdata_b_o = mem[raddr_b_i];
+  assign sp_o      = mem[0];
+
 
   always_ff @(posedge clk_i) begin : sync_write
     if (we == 1'b1) begin

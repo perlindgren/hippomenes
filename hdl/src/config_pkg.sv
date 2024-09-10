@@ -46,7 +46,7 @@ package config_pkg;
   localparam type PrioT = logic [PrioWidth-1:0];
 
   // N-CLIC configuration
-  localparam integer unsigned VecSize = 8;
+  localparam integer unsigned VecSize = 9;
   localparam integer unsigned VecWidth = $clog2(VecSize);
   localparam type VecT = logic [VecWidth-1:0];
 
