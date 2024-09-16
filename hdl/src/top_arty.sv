@@ -560,13 +560,17 @@ module top_arty (
 
     logic memory_interrupt;
     pmp pmp (
+        .clk(clk),
+        .reset(reset),
         // opt in toggle
         .toggle(1),
         .addr(alu_res), 
         .sp(sp),
         .op(op_code),
         .interrupt_raised(n_clic_interrupt_out),
-        
+        .id(n_clic_int_id_out),
+
+        //out
         .mem_interrupt_out(memory_interrupt)
     );
 

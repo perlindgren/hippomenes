@@ -49,8 +49,6 @@ module rf_stack
   RegT  sp_a_o;
   RegT  sp_b_o;
   logic sp_we;
-  RegT sp_registry;
-  assign sp_out = sp_registry;
 
   rf #(
       .RegNum(1)  // A single instance for Ra
@@ -67,9 +65,7 @@ module rf_stack
       // Write port W1
       .waddr_a_i(1'(0)),
       .wdata_a_i(writeData),
-      .we_a_i(sp_we),
-      //stack pointer
-      .sp_o(sp_registry)
+      .we_a_i(sp_we)
   );
 
   PrioT level_reg_out;
@@ -106,6 +102,7 @@ module rf_stack
     else if (readAddr2 == Sp) readData2 = sp_b_o;
     else readData2 = b_o[level_reg_out];
 
+    sp_out = sp_a_o;
   end
   
   

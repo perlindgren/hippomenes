@@ -25,10 +25,11 @@ main:
         nop
 tsk0:
         //sw      t0, -4(sp) // current SP
-        sw      t0, 4(sp) // Latched SP
+        lw      t0, 0(sp) // Latched SP
         nop
         csrwi   0x0, 0
         nop
+        jr      ra
         nop
 end:    
         j end
