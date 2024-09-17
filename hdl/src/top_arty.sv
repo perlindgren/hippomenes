@@ -567,9 +567,22 @@ module top_arty (
         .addr(alu_res), 
         .sp(sp),
         .op(op_code),
-        .interrupt_raised(n_clic_interrupt_out),
+        .interrupt_prio(n_clic_int_prio_out),
         .id(n_clic_int_id_out),
 
+
+        //csr
+        .csr_enable(decoder_csr_enable),
+        .csr_addr(decoder_csr_addr),
+        .rs1_zimm(decoder_rs1),
+        .rs1_data(rs1_wt_mux_out),
+        .csr_op(decoder_csr_op),
+
+        // VSCR
+        .vcsr_addr(vcsr_addr),
+        .vcsr_width(vcsr_width),
+        .vcsr_offset(vcsr_offset),
+        
         //out
         .mem_interrupt_out(memory_interrupt)
     );

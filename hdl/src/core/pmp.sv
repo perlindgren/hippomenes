@@ -11,38 +11,66 @@ typedef enum integer {
 module pmp(
     input logic clk,
     input logic reset,
+
     //On off flag
     input logic toggle, 
     input logic [15:0] addr,   //The address which is accessed
     input logic [15:0] sp,
-    input logic interrupt_raised,
     input logic [6:0] op,
-    input logic [7:0] id,
+    input logic [7:0] interrupt_prio,
+    input logic [7:0] id, 
+
+    // csr registers
+    input logic     csr_enable,
+    input CsrAddrT  csr_addr,
+    input r         rs1_zimm,
+    input word      rs1_data,
+    input csr_op_t  csr_op,
+    
+    // VCSR
+    input CsrAddrT      vcsr_addr,
+    input vcsr_width_t  vcsr_width,
+    input vcsr_offset_t vcsr_offset,
 
     //interruption flag for n-clic    
     output logic mem_interrupt_out 
 );
 
-logic [15:0] entry_point;
+
 logic is_memory_accessed;
-
-rf #(
-      .RegNum(VecSize-1)  // A single instance for Ra
-  )  ep ( // entry points
-      // Clock and Reset
-      .clk_i(clk),
-      .rst_ni(reset),
-      // Read port R1
-      .raddr_a_i(id),
-      .rdata_a_o(entry_point),
-      // Write port W1
-      .waddr_a_i(id),
-      .wdata_a_i(sp),
-      .we_a_i(interrupt_raised)
+logic [15:0] ep_vec[7:0];
+logic [15:0] ep;
+csr #(
+      .Addr('h400) 
+  ) mstatus (
+      .clk,
+      .reset,
+      .csr_enable,
+      .csr_addr,
+      .rs1_zimm,
+      .rs1_data,
+      .csr_op,
+      .vcsr_width,
+      .vcsr_offset,
+      .vcsr_addr,
+      .ext_data(MStatusT'(0)),
+      .ext_write_enable(1'(0))
   );
+  
+initial begin
+    
+end
 
+always_ff  @(interrupt_prio) begin
+    ep_vec[$clog2(id)] = sp;
+end
 
 always_comb begin
+    ep = ep_vec[$clog2(id)];
+    
+    if (reset == 1) begin
+        ep_vec = '{default:'0};
+    end
     //check if opcode is load/save
     if (op == OP_LOAD || op == OP_STORE )  begin
         is_memory_accessed = 1;
@@ -50,9 +78,11 @@ always_comb begin
         is_memory_accessed = 0;
     end
 
-    mem_interrupt_out = 0;
-    if ((addr < sp || addr > entry_point) && is_memory_accessed) begin
+    
+    if ((addr < sp || addr > ep) && is_memory_accessed) begin
         mem_interrupt_out = 1;
+    end else begin
+        mem_interrupt_out = 0;
     end
 end
 
