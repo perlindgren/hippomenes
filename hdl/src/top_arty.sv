@@ -584,7 +584,7 @@ module top_arty (
         .vcsr_offset(vcsr_offset),
         
         //out
-        .mem_interrupt_out(memory_interrupt)
+        .mem_fault_out(memory_interrupt)
     );
 
 
