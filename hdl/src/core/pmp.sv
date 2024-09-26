@@ -21,7 +21,7 @@ module pmp#(
     input logic [15:0] sp,
     input logic [6:0] op,
     input logic [7:0] interrupt_prio,
-    input logic [7:0] id, 
+    input logic [2:0] id, 
 
     // csr registers
     input logic     csr_enable,
@@ -56,12 +56,6 @@ typedef struct packed {
 // generate vector table
 pmp_addr_t  pmp_addr_map    [maps][rows];
 pmp_cfg_t   pmp_cfg_map     [maps][rows];
-
-//assign test_addr_interval = '{'h400, 'h404};
-//assign pmp_addr[0] = test_addr_interval;
-
-//assign test_cfg = '{0,1};
-//assign pmp_cfg[0] = test_cfg;
 
 
 generate
@@ -131,34 +125,32 @@ endgenerate
 
 logic [15:0] ep_vec[7:0];
 logic [15:0] ep;
-logic [2:0]  task_id;
 
-assign task_id = one_hot_decode(id);
-
-always_ff  @(interrupt_prio) begin
-    ep_vec[task_id] = sp;
+always  @(interrupt_prio) begin
+    ep_vec[id] = sp;
 end
 
 always_ff @(posedge clk) begin
-    
-    //pmp_cfg
-    //pmp_addr
     if (reset == 1) begin
         ep_vec = '{default:'0};
     end else begin
-        ep = ep_vec[task_id];
+        ep = ep_vec[id];
     end
     //Todo: have different memfaults for operations
     mem_fault_out = addr < ep && (op == OP_STORE || op == OP_LOAD);
-
+        
     for (integer k = 0; k < rows; k++ ) begin
-        if (pmp_addr_map[task_id][k].top_addr <= addr && pmp_addr_map[task_id][k].bot_addr >= addr && mem_fault_out) begin
+        automatic logic [15:0] top_addr = pmp_addr_map[id][k].top_addr;
+        automatic logic [15:0] bot_addr = pmp_addr_map[id][k].bot_addr;
+        automatic logic read_en = pmp_cfg_map[id][k].read_en;
+        automatic logic write_en = pmp_cfg_map[id][k].write_en;
+        if ( top_addr <= addr && bot_addr >= addr && mem_fault_out) begin
             case (op)
             OP_LOAD: begin
-                mem_fault_out = !pmp_cfg_map[task_id][k].read_en;
+                mem_fault_out = !read_en;
             end 
             OP_STORE: begin
-                mem_fault_out = !pmp_cfg_map[task_id][k].write_en;
+                mem_fault_out = !write_en;
             end
             endcase 
         end
@@ -166,22 +158,3 @@ always_ff @(posedge clk) begin
 end
 
 endmodule
-
-
-//ta upp i rapport?
-function integer one_hot_decode;
-   input [7:0] value;
-   begin
-        case (value)
-            8'b00000001: one_hot_decode = 3'd0;
-            8'b00000010: one_hot_decode = 3'd1;
-            8'b00000100: one_hot_decode = 3'd2;
-            8'b00001000: one_hot_decode = 3'd3;
-            8'b00010000: one_hot_decode = 3'd4;
-            8'b00100000: one_hot_decode = 3'd5;
-            8'b01000000: one_hot_decode = 3'd6;
-            8'b10000000: one_hot_decode = 3'd7;
-            default:     one_hot_decode = -1;  // In case of invalid one-hot code
-        endcase
-   end
-endfunction
