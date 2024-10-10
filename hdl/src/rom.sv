@@ -31,7 +31,7 @@ module rom
       $fatal("Could not find binary.mem");
     end
 `else
-    $readmemh("binary.mem", mem);
+    $readmemh("text.mem", mem);
 `endif
 
   end

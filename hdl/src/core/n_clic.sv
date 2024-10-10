@@ -177,7 +177,7 @@ module n_clic
     word vec_out   [VecSize];
     word entry_out [VecSize];
 
-    for (genvar k = 0; k < VecSize-1; k++) begin : gen_vec
+    for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
           .Addr(VecCsrBase + CsrAddrT'(k)),
           .CsrWidth(IMemAddrWidth - 2)
@@ -199,7 +199,9 @@ module n_clic
           .direct_out(temp_vec[k]),
           .out(vec_out[k])
       );
-
+    assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
+    end
+    for (genvar k = 0; k < VecSize-1; k++) begin : gen_cfg
       csr #(
           .Addr(EntryCsrBase + CsrAddrT'(k)),
           .CsrWidth($bits(entry_t))
@@ -221,10 +223,8 @@ module n_clic
           .direct_out(temp_entry[k]),
           .out(entry_out[k])
       );
-
       assign entry[k]        = entry_t'(temp_entry[k]);
       assign prio[k]         = entry[k].prio;  // a bit of a hack to please Verilator
-      assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
     end
   endgenerate
 
@@ -233,10 +233,8 @@ module n_clic
   IMemAddrStore   memAddr;
 
   assign memory_interrupt         = '{2'b11, 1, interrupt_in}; // Interupt caused by PMP
-  assign memAddr                  = '0;
   assign entry[VecSize-1]         = memory_interrupt;
   assign prio[VecSize-1]          = '1;
-  assign csr_vec_data[VecSize-1]  = memAddr;
   
 
   logic         [VecSize-1:0] pended_timer;

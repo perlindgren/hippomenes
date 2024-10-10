@@ -562,8 +562,7 @@ module top_arty (
     pmp pmp (
         .clk(clk),
         .reset(reset),
-        // opt in toggle
-        .toggle(1),
+        
         .addr(alu_res), 
         .sp(sp),
         .op(op_code),

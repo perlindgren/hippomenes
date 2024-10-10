@@ -15,8 +15,6 @@ module pmp#(
     input logic clk,
     input logic reset,
 
-    //On off flag
-    input logic toggle, 
     input logic [15:0] addr,   //The address which is accessed
     input logic [15:0] sp,
     input logic [6:0] op,
@@ -39,30 +37,22 @@ module pmp#(
     output logic mem_fault_out 
 );
 
+/*
 typedef struct packed {
-    logic       locked;
-    logic       reserved;
-    logic [2:0] mode;           // pmpcfg.A
-    logic       i_exection;     // instruction execution
+    logic [13:0] addr;
+    logic [15:0] length;
     logic       write_en;       // Write enable
     logic       read_en;        // Read enable
-} pmp_cfg_t;
-
-typedef struct packed {
-    logic [15:0] top_addr;
-    logic [15:0] bot_addr;
 } pmp_addr_t;
-
+*/
 // generate vector table
-pmp_addr_t  pmp_addr_map    [maps][rows];
-pmp_cfg_t   pmp_cfg_map     [maps][rows];
+//pmp_addr_t  pmp_addr_map    [maps][rows];
 
-
+/*
 generate
     localparam CsrAddrT AddrCsrBase    = 'h400; // 3BF - B84 | 16 rader enlight spec
     word temp_addr [maps-1:0][rows-1:0];
 
-    //Todo: add csr control over cfg
     for (genvar k = 0; k < maps; k++) begin
         for (genvar i = 0; i < rows; i++) begin
             csr #(
@@ -78,8 +68,8 @@ generate
                 .vcsr_width,
                 .vcsr_offset,
                 .vcsr_addr,
-                .ext_write_enable(0),
-                .ext_data(0),
+                .ext_write_enable('0),
+                .ext_data('0),
                 // out
                 .direct_out(temp_addr[k][i]),
                 .out()//do i need?
@@ -88,73 +78,60 @@ generate
         end
     end
 endgenerate
-
-generate
-    localparam integer unsigned cfg_rows    = rows>>2;
-    localparam CsrAddrT         CfgCsrBase  = 'h480; // 3A0 - 3A3 | 4 rader
-    word temp_cfg [maps-1:0][cfg_rows-1:0];
-    //Todo: add csr control over cfg
-    for (genvar k = 0; k < maps; k++) begin
-        for (genvar i = 0; i < cfg_rows; i++) begin
-            csr #(
-                .Addr(CfgCsrBase + CsrAddrT'(i+cfg_rows*k))
-            ) cfg_csr (
-                .clk,
-                .reset,
-                .csr_enable,
-                .csr_addr,
-                .rs1_zimm,
-                .rs1_data,
-                .csr_op,
-                .vcsr_width,
-                .vcsr_offset,
-                .vcsr_addr,
-                .ext_write_enable(0),
-                .ext_data(0),
-                // out
-                .direct_out(temp_cfg[k][i]),
-                .out()//do i need?
-            );
-            assign pmp_cfg_map[k][4*i]      = pmp_cfg_t'(temp_cfg[k][i][7:0]);
-            assign pmp_cfg_map[k][4*i+1]    = pmp_cfg_t'(temp_cfg[k][i][15:8]);
-            assign pmp_cfg_map[k][4*i+2]    = pmp_cfg_t'(temp_cfg[k][i][23:16]);
-            assign pmp_cfg_map[k][4*i+3]    = pmp_cfg_t'(temp_cfg[k][i][31:24]);
-        end
-    end
-endgenerate
+*/
 
 logic [15:0] ep_vec[7:0];
 logic [15:0] ep;
+logic [7:0] last_prio;
 
-always  @(interrupt_prio) begin
-    ep_vec[id] = sp;
-end
+//pmp_addr_t current_map[rows];
+
+//assign current_map   = pmp_addr_map[id];
+assign ep = sp;
 
 always_ff @(posedge clk) begin
-    if (reset == 1) begin
-        ep_vec = '{default:'0};
-    end else begin
-        ep = ep_vec[id];
+    if (reset) begin
+        ep_vec[id] <= '0;
+        last_prio <= '0;
     end
-    //Todo: have different memfaults for operations
-    mem_fault_out = addr < ep && (op == OP_STORE || op == OP_LOAD);
-        
+    else begin
+        if (interrupt_prio != last_prio) begin
+            ep_vec[id] <= sp;
+        end
+        last_prio <= interrupt_prio;
+    end
+end
+
+always_comb begin
+    static logic below_ep = 0;
+    //static logic valid_access = 0;
+    //logic [15:0] top_addr[rows];
+    //logic [15:0] bot_addr[rows];
+    //logic read_en[rows];
+    //logic write_en[rows];
+    
+    below_ep = addr < ep && (op == OP_STORE || op == OP_LOAD);
+    
+    /*
     for (integer k = 0; k < rows; k++ ) begin
-        automatic logic [15:0] top_addr = pmp_addr_map[id][k].top_addr;
-        automatic logic [15:0] bot_addr = pmp_addr_map[id][k].bot_addr;
-        automatic logic read_en = pmp_cfg_map[id][k].read_en;
-        automatic logic write_en = pmp_cfg_map[id][k].write_en;
-        if ( top_addr <= addr && bot_addr >= addr && mem_fault_out) begin
+        top_addr[k] = {current_map[k].addr, 2'b00};
+        bot_addr[k] = top_addr[k] - current_map[k].length;
+        read_en[k]  = current_map[k].read_en;
+        write_en[k] = current_map[k].write_en;
+        
+        if ( top_addr[k] <= addr && bot_addr[k] >= addr && below_ep) begin
             case (op)
             OP_LOAD: begin
-                mem_fault_out = !read_en;
+                valid_access = read_en[k];
             end 
             OP_STORE: begin
-                mem_fault_out = !write_en;
+                valid_access = write_en[k];
             end
             endcase 
         end
     end
+    */
+    //mem_fault_out = !(below_ep == valid_access);
+    mem_fault_out = below_ep;
 end
-
 endmodule
