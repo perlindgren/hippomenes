@@ -23,7 +23,7 @@
 # 2. The following source(s) files that were local or imported into the original project.
 #    (Please see the '$orig_proj_dir' and '$origin_dir' variable setting below at the start of the script)
 #
-#    "/home/pawel/hippomenes/hippomenes/fpga/arty/tb_top_arty_behav1.wcfg"
+#    "/home/pawel/hippomenes/hippomenes/fpga/arty/tb_top_arty_behav.wcfg"
 #
 # 3. The following remote source files that were added to the original project:-
 #
@@ -81,7 +81,7 @@
 proc checkRequiredFiles { origin_dir} {
   set status true
   set files [list \
- "[file normalize "$origin_dir/arty/tb_top_arty_behav1.wcfg"]"\
+ "[file normalize "$origin_dir/arty/tb_top_arty_behav.wcfg"]"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -1030,7 +1030,7 @@ add_files -norecurse -fileset $obj $files
 
 # Import local files from the original project
 set files [list \
- [file normalize "${origin_dir}/arty/tb_top_arty_behav1.wcfg" ]\
+ [file normalize "${origin_dir}/arty/tb_top_arty_behav.wcfg" ]\
 ]
 set imported_files ""
 foreach f $files {
@@ -1053,7 +1053,7 @@ set_property -name "used_in_synthesis" -value "1" -objects $file_obj
 
 
 # Set 'sim_1' fileset file properties for local files
-set file "arty/tb_top_arty_behav1.wcfg"
+set file "arty/tb_top_arty_behav.wcfg"
 set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
 set_property -name "is_enabled" -value "1" -objects $file_obj
 set_property -name "is_global_include" -value "0" -objects $file_obj

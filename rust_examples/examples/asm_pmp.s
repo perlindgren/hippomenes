@@ -35,7 +35,10 @@ tsk0:
         lw      t0, 0(sp) 
         nop
         csrwi   0x0, 1
-        lw      t0, -4(sp) 
+        lw      t0, 0(t1)
+        nop 
+        csrwi   0x0, 4
+        lw      t0, -4(t1) 
         nop
         nop
         csrwi   0x0, 8
