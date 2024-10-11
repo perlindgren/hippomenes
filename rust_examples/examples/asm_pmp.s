@@ -2,7 +2,7 @@
 .text
 .section .init 
 
-init:       
+init:   
         la      sp, _stack_start        # set stack pointer
         csrwi   0x300, 8                # enable global interrupts
         
@@ -13,7 +13,7 @@ init:
         li      t1, 0x0400 # t1 =0x400 
         slli    t1, t1, 16
         addi    t1, t1, 0xF3
-        csrw    0x400, t1       #entry for accessing between 0x400 and 0x400
+        csrw    0x400, t1       #entry for accessing between 0x400 and 0x40F
 
         la      t1, tsk0
         srl     t1, t1, 2
@@ -32,17 +32,13 @@ tsk0:
         
         
         addi    t1, x0, 0x400
-        lw      t0, 0(sp) 
-        nop
-        csrwi   0x0, 1
         lw      t0, 0(t1)
         nop 
-        csrwi   0x0, 4
+        csrwi   0x0, 1
         lw      t0, -4(t1) 
         nop
         nop
         csrwi   0x0, 8
-        nop
         jr      ra
         nop
         
