@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
 typedef enum integer {
-    OP_LOAD   = 'b0000011,
-    OP_STORE  = 'b0100011
+    OP_LOAD   = 7'b0000011,
+    OP_STORE  = 7'b0100011
 } op_t;
 
 //Physical memory protection
@@ -36,7 +36,6 @@ module pmp#(
     //interruption flag for n-clic    
     output logic mem_fault_out 
 );
-
 
 typedef struct packed {
     logic [13:0] addr;
@@ -94,28 +93,23 @@ logic read_en[rows];
 logic write_en[rows];
 logic valid_access;
 
-always_latch begin
-    if (interrupt_prio != last_prio) begin
-        ep_vec[id] = sp;
-    end
-    last_prio = interrupt_prio;
-end
 
-always_ff @(posedge reset) begin
-    if (reset) begin
-        ep_vec[id] = '{default: '0};
-    end
-end
-
-assign ep = ep_vec[id];
 
 always_comb begin
     valid_access = 0;
     below_ep = addr < ep;
-    
+    if (reset) begin
+        ep_vec[id] = '{default: '0};
+    end
+
+    if (interrupt_prio != last_prio) begin
+        ep_vec[id] = sp;
+    end
+    last_prio = interrupt_prio;
+    ep = ep_vec[id];
     for (integer k = 0; k < rows; k++ ) begin
         bot_addr[k] = {current_map[k].addr, 2'b00};
-        top_addr[k] = bot_addr[k] + current_map[k].length;
+        top_addr[k] = bot_addr[k] + current_map[k].length - 1;
         read_en[k]  = current_map[k].read_en;
         write_en[k] = current_map[k].write_en;
         

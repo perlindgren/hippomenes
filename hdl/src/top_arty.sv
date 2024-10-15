@@ -557,8 +557,9 @@ module top_arty (
       .out(wb_mem_mux_out)
   );
 
-
+    
     logic memory_interrupt;
+    
     pmp pmp (
         .clk(clk),
         .reset(reset),
@@ -585,7 +586,6 @@ module top_arty (
         //out
         .mem_fault_out(memory_interrupt)
     );
-
-
+    
 
 endmodule
