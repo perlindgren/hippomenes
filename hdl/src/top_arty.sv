@@ -61,6 +61,7 @@ module top_arty (
 
   // instruction memory
   word imem_data_out;
+
 `ifdef VERILATOR
   rom imem (
       // in
@@ -69,18 +70,7 @@ module top_arty (
       // out
       .data_out(imem_data_out)
   );
-`endif
-`ifndef SYNTHESIS
-  rom imem (
-      // in
-      .clk(clk),
-      .address(pc_reg_out[IMemAddrWidth-1:0]),
-      // out
-      .data_out(imem_data_out)
-  );
-`endif
-`ifdef SYNTHESIS
-`ifndef VERILATOR
+`else
   spram imem (
       // in
       .clk(clk),
@@ -92,7 +82,6 @@ module top_arty (
       // out
       .data_out(imem_data_out)
   );
-`endif
 `endif
   // decoder
   wb_mux_t decoder_wb_mux_sel;
@@ -424,7 +413,7 @@ module top_arty (
   //       .gpio_in,
   //       .gpio_out
   //   );
-
+  logic memory_interrupt;
   word n_clic_csr_out;
   logic [7:0] n_clic_int_id_out;
   logic [7:0] n_clic_int_prio_out;
@@ -558,7 +547,7 @@ module top_arty (
   );
 
     
-    logic memory_interrupt;
+
     
     pmp pmp (
         .clk(clk),

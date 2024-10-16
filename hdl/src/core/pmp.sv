@@ -93,11 +93,7 @@ logic read_en[rows];
 logic write_en[rows];
 logic valid_access;
 
-
-
-always_comb begin
-    valid_access = 0;
-    below_ep = addr < ep;
+always_ff @(posedge clk) begin
     if (reset) begin
         ep_vec[id] = '{default: '0};
     end
@@ -107,6 +103,12 @@ always_comb begin
     end
     last_prio = interrupt_prio;
     ep = ep_vec[id];
+end
+
+always_comb begin
+    valid_access = 0;
+    below_ep = addr < ep;
+    
     for (integer k = 0; k < rows; k++ ) begin
         bot_addr[k] = {current_map[k].addr, 2'b00};
         top_addr[k] = bot_addr[k] + current_map[k].length - 1;
