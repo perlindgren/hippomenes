@@ -21,8 +21,8 @@ module n_clic
     input CsrAddrT vcsr_addr,
     input vcsr_width_t vcsr_width,
     input vcsr_offset_t vcsr_offset,
-
-
+    input logic         interrupt_in,
+    
     output logic              [7:0] int_prio,
     output logic              [7:0] int_id,
     output word                     csr_out,
@@ -197,7 +197,9 @@ module n_clic
           .direct_out(temp_vec[k]),
           .out(vec_out[k])
       );
-
+      assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
+    end
+    for (genvar k = 0; k < VecSize-1; k++) begin : gen_cfg
       csr #(
           .Addr(EntryCsrBase + CsrAddrT'(k)),
           .CsrWidth($bits(entry_t))
@@ -222,7 +224,6 @@ module n_clic
 
       assign entry[k]        = entry_t'(temp_entry[k]);
       assign prio[k]         = entry[k].prio;  // a bit of a hack to please Verilator
-      assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
     end
   endgenerate
   logic         [VecSize-1:0] pended_timer;
@@ -230,6 +231,14 @@ module n_clic
   PrioT                       max_prio     [VecSize];
   IMemAddrStore               max_vec      [VecSize];
   VecT                        max_index    [VecSize];
+  
+  entry_t         memory_interrupt; 
+  IMemAddrStore   memAddr;
+
+  assign memory_interrupt         = '{2'b11, 1, interrupt_in}; // Interupt caused by PMP
+  assign entry[VecSize-1]         = memory_interrupt;
+  assign prio[VecSize-1]          = '1;
+  
   always_comb begin
     // check first index in vector table
     pended_timer[0] = entry[0].pended;
@@ -270,7 +279,7 @@ module n_clic
       ext_entry_data[0]   = entry[0] | 1;  // set pend bit
     end
 
-    if (mstatus_direct_out[3] == 0) begin
+    if (mstatus_direct_out[3] == 0 && interrupt_in == 0 ) begin
       push = 0;
       pop = 0;
       m_int_thresh_data = 0;
@@ -281,7 +290,7 @@ module n_clic
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
-    end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
+    end else if (max_prio[VecSize-1] > m_int_thresh.data || interrupt_in == 1) begin
       // take higher priority interrupt
       push = 1;
       pop = 0;

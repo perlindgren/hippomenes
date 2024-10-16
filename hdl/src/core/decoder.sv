@@ -34,7 +34,8 @@ module decoder
     output wb_mux_t wb_mux_sel,
     output r rd,
     output logic wb_write_enable,
-    output wb_mem_mux_t wb_mem_mux_sel
+    output wb_mem_mux_t wb_mem_mux_sel,
+    output logic [6:0] op_o
 );
   import decoder_pkg::*;
 
@@ -95,6 +96,7 @@ module decoder
     wb_write_enable = 0;  // set only for instructions writing to rf
     wb_mem_mux_sel = WB_OTHER;
 
+    op_o = op_t'(op);
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
       OP_LUI: begin
