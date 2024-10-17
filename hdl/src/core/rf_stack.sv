@@ -23,8 +23,7 @@ module rf_stack
   logic we[PrioNum];
   /* verilator lint_off UNOPTFLAT */
   logic ra_set[PrioNum];
-  logic sp_set[PrioNum]; //stack pointers
-
+  logic sp_set[PrioNum];
   generate
     for (genvar k = 0; k < PrioNum; k++) begin : gen_rf
       register_file rf (
@@ -83,7 +82,6 @@ module rf_stack
     // Sp
     sp_we = writeEn && (writeAddr == Sp);
 
-
     // Register Ra and > Sp
     for (integer k = 0; k < PrioNum; k++) begin
       we[k] = (level_reg_out == PrioT'(k)) && writeEn && (writeAddr == Ra || (writeAddr > Sp));
@@ -101,10 +99,7 @@ module rf_stack
     if (readAddr2 == Zero) readData2 = 0;
     else if (readAddr2 == Sp) readData2 = sp_b_o;
     else readData2 = b_o[level_reg_out];
-
     sp_out = sp_a_o;
   end
-  
-  
 
 endmodule

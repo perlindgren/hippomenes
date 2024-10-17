@@ -1,14 +1,14 @@
 `timescale 1ns / 1ps
 
 typedef enum integer {
-    OP_LOAD   = 'b0000011,
-    OP_STORE  = 'b0100011
+    OP_LOAD   = 7'b0000011,
+    OP_STORE  = 7'b0100011
 } op_t;
 
 //Physical memory protection
 //Denies read/write access to memory if outside task's stack
 //Can be granted access to memory outside stack if specified by csr
-module pmp#(
+module mpu#(
     parameter integer unsigned maps = 8,  // Number of configurations
     parameter integer unsigned rows = 4
 ) (
@@ -37,16 +37,15 @@ module pmp#(
     output logic mem_fault_out 
 );
 
-
 typedef struct packed {
     logic [13:0] addr;
     logic [15:0] length;
     logic       write_en;       // Write enable
     logic       read_en;        // Read enable
-} pmp_addr_t;
+} mpu_addr_t;
 
 // generate vector table
-pmp_addr_t  pmp_addr_map    [maps][rows];
+mpu_addr_t  mpu_addr_map    [maps][rows];
 
 
 generate
@@ -74,14 +73,14 @@ generate
                 .direct_out(temp_addr[k][i]),
                 .out()//do i need?
             );
-            assign pmp_addr_map[k][i]   = pmp_addr_t'(temp_addr[k][i]);
+            assign mpu_addr_map[k][i]   = mpu_addr_t'(temp_addr[k][i]);
         end
     end
 endgenerate
 
-pmp_addr_t current_map[rows];
+mpu_addr_t current_map[rows];
 
-assign current_map   = pmp_addr_map[id];
+assign current_map   = mpu_addr_map[id];
 
 bit [15:0] ep_vec[7:0];
 bit [15:0] ep;
@@ -94,20 +93,18 @@ logic read_en[rows];
 logic write_en[rows];
 logic valid_access;
 
-always_latch begin
+always_ff @(posedge clk) begin
+    if (reset) begin
+        ep_vec[id] = '{default: '0};
+        last_prio = '0;
+    end
+
     if (interrupt_prio != last_prio) begin
         ep_vec[id] = sp;
     end
     last_prio = interrupt_prio;
+    ep = ep_vec[id];
 end
-
-always_ff @(posedge reset) begin
-    if (reset) begin
-        ep_vec[id] = '{default: '0};
-    end
-end
-
-assign ep = ep_vec[id];
 
 always_comb begin
     valid_access = 0;
@@ -119,13 +116,16 @@ always_comb begin
         read_en[k]  = current_map[k].read_en;
         write_en[k] = current_map[k].write_en;
         
-        if ( top_addr[k] >= addr && bot_addr[k] <= addr && below_ep) begin
+        if ( top_addr[k] >= addr && bot_addr[k] <= addr) begin
             case (op)
             OP_LOAD: begin
                 valid_access = valid_access || read_en[k];
             end 
             OP_STORE: begin
                 valid_access = valid_access || write_en[k];
+            end
+            default: begin
+                valid_access = valid_access;
             end
             endcase 
         end

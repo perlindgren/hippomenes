@@ -10,5 +10,5 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 global_asm! {
-    include_str!("asm_pmp.s")
+        include_str!("asm_mpu.s")
 }

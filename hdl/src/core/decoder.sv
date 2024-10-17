@@ -95,8 +95,8 @@ module decoder
     wb_mux_sel = WB_ALU;
     wb_write_enable = 0;  // set only for instructions writing to rf
     wb_mem_mux_sel = WB_OTHER;
-    
-    op_o = op;
+
+    op_o = op_t'(op);
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
       OP_LUI: begin
@@ -242,7 +242,7 @@ module decoder
         $display("-- non matched op --");
       end
     endcase
-    
+
   end
 
 endmodule

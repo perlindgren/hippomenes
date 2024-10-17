@@ -12,10 +12,8 @@ main:       csrwi   0x300, 8                # enable global interrupts
             la      t2, isr_1
             srl     t1, t1, 2
             srl     t2, t2, 2
-            la      t3, exception
             csrw    0xB00, t1               # setup isr_0 address
             csrw    0xB01, t2
-            csrw    0xB09, t3
             li      t2, 0b11110000          # interrupt every 16 cycles, cmp value 0b1111 = 15, prescaler 0b0000                                           
             csrw    0x400, t2               # timer.counter_top CSR
             la t1,  0b0110                  # prio 0b01, enable, 0b1, pend 0b0
@@ -43,6 +41,3 @@ isr_1:      nop
             .rodata
 toggled:    .word   0x0                     # state
             .word   0x0                     # time-stamp
-
-exception:
-    j exception

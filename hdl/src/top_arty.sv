@@ -61,6 +61,7 @@ module top_arty (
 
   // instruction memory
   word imem_data_out;
+
 `ifdef VERILATOR
   rom imem (
       // in
@@ -69,18 +70,7 @@ module top_arty (
       // out
       .data_out(imem_data_out)
   );
-`endif
-`ifndef SYNTHESIS
-  rom imem (
-      // in
-      .clk(clk),
-      .address(pc_reg_out[IMemAddrWidth-1:0]),
-      // out
-      .data_out(imem_data_out)
-  );
-`endif
-`ifdef SYNTHESIS
-`ifndef VERILATOR
+`else
   spram imem (
       // in
       .clk(clk),
@@ -93,7 +83,7 @@ module top_arty (
       .data_out(imem_data_out)
   );
 `endif
-`endif
+
   // decoder
   wb_mux_t decoder_wb_mux_sel;
   alu_a_mux_t decoder_alu_a_mux_sel;
@@ -104,7 +94,7 @@ module top_arty (
   word decoder_imm;
   r decoder_rs1;
   r decoder_rs2;
-  
+
   // mem
   logic decoder_dmem_write_enable;
   logic decoder_dmem_sign_extend;
@@ -126,7 +116,6 @@ module top_arty (
   logic decoder_wb_write_enable;
 
   wb_mem_mux_t decoder_mem_mux_sel_out;
-  // pmp
   logic [6:0] op_code;
   decoder decoder (
       // in
@@ -556,36 +545,32 @@ module top_arty (
       .memory_data(dmem_data_out),
       .out(wb_mem_mux_out)
   );
+    
+  logic memory_interrupt;
+  mpu mpu (
+    .clk(clk),
+    .reset(reset),
+    
+    .addr(alu_res), 
+    .sp(sp),
+    .op(op_code),
+    .interrupt_prio(n_clic_int_prio_out),
+    .id(n_clic_int_id_out),
 
 
-    logic memory_interrupt;
-    pmp pmp (
-        .clk(clk),
-        .reset(reset),
-        
-        .addr(alu_res), 
-        .sp(sp),
-        .op(op_code),
-        .interrupt_prio(n_clic_int_prio_out),
-        .id(n_clic_int_id_out),
+    //csr
+    .csr_enable(decoder_csr_enable),
+    .csr_addr(decoder_csr_addr),
+    .rs1_zimm(decoder_rs1),
+    .rs1_data(rs1_wt_mux_out),
+    .csr_op(decoder_csr_op),
 
-
-        //csr
-        .csr_enable(decoder_csr_enable),
-        .csr_addr(decoder_csr_addr),
-        .rs1_zimm(decoder_rs1),
-        .rs1_data(rs1_wt_mux_out),
-        .csr_op(decoder_csr_op),
-
-        // VSCR
-        .vcsr_addr(vcsr_addr),
-        .vcsr_width(vcsr_width),
-        .vcsr_offset(vcsr_offset),
-        
-        //out
-        .mem_fault_out(memory_interrupt)
-    );
-
-
-
+    // VSCR
+    .vcsr_addr(vcsr_addr),
+    .vcsr_width(vcsr_width),
+    .vcsr_offset(vcsr_offset),
+    
+    //out
+    .mem_fault_out(memory_interrupt)
+  );
 endmodule

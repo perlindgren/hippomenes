@@ -45,4 +45,3 @@ module tb_top_arty;
   end
 
 endmodule
-

@@ -119,11 +119,9 @@ module rf
   RegT  mem[RegNum];
   logic we;
 
-
-  assign we        = we_a_i;
+  assign we = we_a_i;
   assign rdata_a_o = mem[raddr_a_i];
   assign rdata_b_o = mem[raddr_b_i];
-
 
   always_ff @(posedge clk_i) begin : sync_write
     if (we == 1'b1) begin
