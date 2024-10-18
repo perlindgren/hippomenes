@@ -1,10 +1,10 @@
 .option  norvc
 .text
 .section .init 
-# This test checks if an interrupt does not happens when accessing inside the tasks local stack.
+# This test checks if an interrupt happens when accessing outside the tasks local stack.
 # EXPECTED BEHAVIOR:
-# LED 2 should turn on if working correctly
-# LED 1 should not turn on
+# LED 1 should turn on if working correctly
+# LED 2 should not turn on
 init:   
         nop     #hippo skipps first instruction for some reason
         la      sp, _stack_start # set stack pointer
@@ -30,8 +30,8 @@ main:                  # queue interrupt
         nop
 tsk0:
         
-        lw      t0, 0(sp) 
-        jr       ra
+        lw      t0, -4(sp) 
+        j       main
         nop
 
 

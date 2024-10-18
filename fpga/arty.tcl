@@ -138,7 +138,7 @@ proc checkRequiredFiles { origin_dir} {
  "[file normalize "$origin_dir/../rust_examples/data_1.mem"]"\
  "[file normalize "$origin_dir/arty_top/arty.srcs/constrs_1/new/ARTY.xdc"]"\
  "[file normalize "$origin_dir/../hdl/src/tb_top_arty.sv"]"\
- "[file normalize "$origin_dir/../hdl/src/core/pmp.sv"]"\
+ "[file normalize "$origin_dir/../hdl/src/core/mpu.sv"]"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -368,7 +368,7 @@ set files [list \
  [file normalize "${origin_dir}/../rust_examples/data_2.mem"] \
  [file normalize "${origin_dir}/../rust_examples/data_0.mem"] \
  [file normalize "${origin_dir}/../rust_examples/data_1.mem"] \
-  [file normalize "${origin_dir}/../hdl/src/core/pmp.sv"] \
+  [file normalize "${origin_dir}/../hdl/src/core/mpu.sv"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -961,7 +961,7 @@ set_property -name "used_in_simulation" -value "1" -objects $file_obj
 set_property -name "used_in_synthesis" -value "1" -objects $file_obj
 
 
-set file "$origin_dir/../hdl/src/core/pmp.sv"
+set file "$origin_dir/../hdl/src/core/mpu.sv"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
