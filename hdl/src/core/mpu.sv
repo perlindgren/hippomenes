@@ -86,18 +86,6 @@ bit [15:0] ep_vec[7:0];
 bit [15:0] ep;
 logic [7:0] last_prio;
 
-always_ff @(posedge clk) begin
-    if (reset) begin
-        ep_vec[id] <= '{default: '0};
-        last_prio <= '0;
-    end
-
-    if (interrupt_prio != last_prio) begin
-        ep_vec[id] <= sp;
-    end
-    last_prio <= interrupt_prio;
-    ep <= ep_vec[id];
-end
 
 logic [15:0] top_addr[rows];
 logic [15:0] bot_addr[rows];
@@ -105,9 +93,18 @@ logic read_en[rows];
 logic write_en[rows];
 logic valid_access;
 logic below_ep;
-logic inside_area;
 
 always_comb begin
+    if (reset) begin
+        ep_vec[id] = '{default: '0};
+        last_prio = '0;
+    end
+
+    if (interrupt_prio != last_prio) begin
+        ep_vec[id] = sp;
+        last_prio = interrupt_prio;
+    end
+    ep = ep_vec[id];
     valid_access = 0;
     below_ep = addr < ep;
     

@@ -23,15 +23,17 @@ init:
         la      t1,  0b0111             # prio 0b01, enable, 0b1, pend 0b0
         csrw    0xB21, t1
 
+        la      t1, terminated
+        srl     t1, t1, 2
+        csrw    0xB01, t1
+        la      t1,  0b0111 
+        csrw    0xB21, t1
 
-loop:   j loop
-        nop
-
+        j exit
 tsk0:
         
         lw      t0, 0(sp) 
-        j       terminated
-        nop
+        jr      ra
 
 terminated:                  
         li      t1, 0x6D726574
@@ -48,7 +50,7 @@ ed:     csrw    0x51, t3     # rightmost byte of t1 to UART
         srl     t3, t3, 8    # shift rightmost byte out
         bnez    t3, ed     # if we have bytes left in register, write them, else continue
 
-        j       exit
+        jr       ra
         nop
 
 _memexhandler:    
@@ -62,8 +64,8 @@ int:    csrw    0x51, t2     # rightmost byte of t1 to UART
         srl     t2, t2, 8    # shift rightmost byte out
         bnez    t2, int     # if we have bytes left in register, write them, else continue
 
-        j       exit
-        nop
+        csrwi   0x300, 0
+        csrwi   0x347, 1
 
 exit:   j       exit
 .global 
