@@ -31,6 +31,7 @@ module n_cobs_encoder
   // Byte
   FifoDataT                           tmp_data;
   FifoPtrT                            tmp_length;
+  FifoPtrT                            eof_length;
   // stack
   FifoPtrT                            length          [PrioNum];
   FifoDataIdxT                        write_index;
@@ -85,13 +86,15 @@ module n_cobs_encoder
         write_index = 7;
       end else if (level < old_level) begin
         // pop frame
+        tmp_length = length[old_level];
         for (integer i = 0; i < MonoTimerWidthBytes; i++) begin
           enqueue(8'(timer >> ((MonoTimerWidthBytes - 1 - i) * 8)), tmp_length, tmp_data,
                   write_index);
         end
         write_index = 4;
-        n_cobs_eof(length[old_level], tmp_data, write_index);
+        n_cobs_eof(tmp_length, tmp_data, write_index);
         write_index = 6;
+        tmp_length = length[level];
       end
       if (csr_enable == 1 && csr_addr == FifoByteCsrAddr) begin
         // write byte
