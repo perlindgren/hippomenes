@@ -3,8 +3,8 @@
 .section .init 
 # This test checks if an interrupt happens when reading an allowed area outside of stack with the wrong permissions.
 # EXPECTED BEHAVIOR:
-# LED 1 should turn on if working correctly
-# LED 2 should not turn on
+# writes mem_ex to uart if working correctly
+
 init:   
         nop     #hippo skipps first instruction for some reason
         la      sp, _stack_start # set stack pointer
@@ -18,7 +18,7 @@ init:
         li      t1, 0x0400 # t1 =0x400 
         slli    t1, t1, 16      # bits 31:18 is the start/lowest address 
         addi    t1, t1, 0b1110     # bits 0 is for reading enable, bit 1 is for writing enable and bits 18:2 is for the length. length + start address is the higher limit. all access below is granted
-        csrw    0x400, t1       #entry for accessing between 0x400 and 0x404
+        csrw    0x400, t1       #entry for accessing between 0x400 and 0x408
 
         la      t1, tsk0
         srl     t1, t1, 2
@@ -29,23 +29,46 @@ init:
         csrw    0xB21, t1
         nop
 
-main:                  # queue interrupt
-        csrwi   0x0, 2
-        j       main
-        nop
+loop: j loop
+
 tsk0:
         li    t1, 0x400
         lw      t0, 0(t1) 
-        jr      ra
-        nop
+        j       terminated
 
+terminated:                  
+        li      t1, 0x6D726574 # mret
+        li      t2, 0x74616E69 # tani
+        li      t3, 0x00006465 # de
+
+term:   csrw    0x51, t1     # rightmost byte of t1 to UART
+        srl     t1, t1, 8    # shift rightmost byte out
+        bnez    t1, term     # if we have bytes left in register, write them, else continue
+inat:   csrw    0x51, t2     
+        srl     t2, t2, 8    
+        bnez    t2, inat     
+ed:     csrw    0x51, t3     
+        srl     t3, t3, 8    
+        bnez    t3, ed     
+
+        j       exit
+        nop
 
 _memexhandler:    
+        li      t1, 0x5F6D656D  # _mem
+        li      t2, 0x00007865  # ex
 
-        csrwi   0x0, 1
-        j       _memexhandler
+mem_:   csrw    0x51, t1     # rightmost byte of t1 to UART
+        srl     t1, t1, 8    # shift rightmost byte out
+        bnez    t1, mem_     # if we have bytes left in register, write them, else continue
+int:    csrw    0x51, t2     # rightmost byte of t1 to UART
+        srl     t2, t2, 8    # shift rightmost byte out
+        bnez    t2, int     # if we have bytes left in register, write them, else continue
+
+        j       exit
         nop
 
+exit:   j       exit
 .global 
 
 .rodata

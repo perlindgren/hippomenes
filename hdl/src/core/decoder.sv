@@ -95,8 +95,7 @@ module decoder
     wb_mux_sel = WB_ALU;
     wb_write_enable = 0;  // set only for instructions writing to rf
     wb_mem_mux_sel = WB_OTHER;
-
-    op_o = op_t'(op);
+    op_o = '0;
     // {imm_20, imm_10_1, imm_11j, imm_19_12} = instruction[31:12];
     case (op_t'(op))
       OP_LUI: begin
@@ -169,6 +168,7 @@ module decoder
         //wb_mux_sel = WB_DM;
         wb_mem_mux_sel = WB_MEM;
         wb_write_enable = 1;
+        op_o = OP_LOAD;
       end
 
       OP_STORE: begin
@@ -187,6 +187,7 @@ module decoder
 
         //wb_mux_sel = WB_DM;
         wb_write_enable = 0;
+        op_o = OP_STORE;
       end
 
       OP_ALUI: begin

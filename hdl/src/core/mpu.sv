@@ -49,7 +49,7 @@ mpu_addr_t  mpu_addr_map    [maps][rows];
 
 
 generate
-    localparam CsrAddrT AddrCsrBase    = 'h400; // 3BF - B84 | 16 rader enlight spec
+    localparam CsrAddrT AddrCsrBase    = 'h400; 
     word temp_addr [maps-1:0][rows-1:0];
 
     for (genvar k = 0; k < maps; k++) begin
@@ -70,8 +70,8 @@ generate
                 .ext_write_enable('0),
                 .ext_data('0),
                 // out
-                .direct_out(temp_addr[k][i]),
-                .out()//do i need?
+                .direct_out(temp_addr[k][i])
+                //.out()//do i need?
             );
             assign mpu_addr_map[k][i]   = mpu_addr_t'(temp_addr[k][i]);
         end
@@ -85,26 +85,27 @@ assign current_map   = mpu_addr_map[id];
 bit [15:0] ep_vec[7:0];
 bit [15:0] ep;
 logic [7:0] last_prio;
-logic below_ep;
+
+always_ff @(posedge clk) begin
+    if (reset) begin
+        ep_vec[id] <= '{default: '0};
+        last_prio <= '0;
+    end
+
+    if (interrupt_prio != last_prio) begin
+        ep_vec[id] <= sp;
+    end
+    last_prio <= interrupt_prio;
+    ep <= ep_vec[id];
+end
 
 logic [15:0] top_addr[rows];
 logic [15:0] bot_addr[rows];
 logic read_en[rows];
 logic write_en[rows];
 logic valid_access;
-
-always_ff @(posedge clk) begin
-    if (reset) begin
-        ep_vec[id] = '{default: '0};
-        last_prio = '0;
-    end
-
-    if (interrupt_prio != last_prio) begin
-        ep_vec[id] = sp;
-    end
-    last_prio = interrupt_prio;
-    ep = ep_vec[id];
-end
+logic below_ep;
+logic inside_area;
 
 always_comb begin
     valid_access = 0;
@@ -118,20 +119,15 @@ always_comb begin
         
         if ( top_addr[k] >= addr && bot_addr[k] <= addr) begin
             case (op)
-            OP_LOAD: begin
-                valid_access = valid_access || read_en[k];
-            end 
-            OP_STORE: begin
-                valid_access = valid_access || write_en[k];
-            end
-            default: begin
-                valid_access = valid_access;
-            end
+                OP_LOAD: valid_access |= read_en[k];
+                OP_STORE: valid_access |= write_en[k];
+                default: valid_access = 0;
             endcase 
         end
+        
     end
     
-    mem_fault_out = !(below_ep == valid_access) && (op == OP_STORE || op == OP_LOAD);
-
+    mem_fault_out = !(below_ep == valid_access) && (OP_LOAD == op || OP_STORE == op);
+ 
 end
 endmodule
