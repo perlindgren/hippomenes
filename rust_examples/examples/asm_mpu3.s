@@ -17,7 +17,7 @@ init:
         li      t1, 0x0400 # t1 =0x400 
         slli    t1, t1, 16      # bits 31:18 is the start/lowest address 
         addi    t1, t1, 0b1111     # bits 0 is for reading enable, bit 1 is for writing enable and bits 18:2 is for the length. length + start address is the higher limit. all access below is granted
-        csrw    0x400, t1       #entry for accessing between 0x400 and 0x404
+        csrw    0x404, t1       #entry for accessing between 0x400 and 0x404
 
         la      t1, tsk0
         srl     t1, t1, 2
