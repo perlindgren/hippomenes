@@ -96,24 +96,29 @@ logic below_ep;
 always_ff @(posedge clk) begin
     if (reset) begin
         ep_vec = '{default: '0};
+        last_prio = '0;
     end
     if (interrupt_prio != last_prio)begin
         ep_vec[interrupt_prio] = sp;
+        last_prio = interrupt_prio;
     end
-    last_prio = interrupt_prio;
+    
     ep = ep_vec[interrupt_prio];
     current_map   <= mpu_addr_map[id];
-    below_ep = addr < ep;
+    
 end
 
 always_comb begin
-     for (integer k = 0; k < rows; k++ ) begin
+    if (reset) begin
+        valid_access = 0;
+    end
+    for (integer k = 0; k < rows; k++ ) begin
         bot_addr[k] = {current_map[k].addr, 2'b00};
         top_addr[k] = bot_addr[k] + current_map[k].length;
         read_en[k]  = current_map[k].read_en;
         write_en[k] = current_map[k].write_en;
         
-        if ( top_addr[k] >= addr && bot_addr[k] <= addr) begin
+        if ( top_addr[k] >= addr && bot_addr[k] <= addr && reset == 0) begin
             case (op)
                 OP_LOAD:    valid_access |= read_en[k];
                 OP_STORE:   valid_access |= write_en[k];
@@ -122,6 +127,11 @@ always_comb begin
         end
     end
     //valid_access = 1;
-    mem_fault_out = !(below_ep == valid_access) && (OP_LOAD == op || OP_STORE == op);
+    below_ep = addr < ep && (OP_LOAD == op || OP_STORE == op);
+    if (below_ep) begin
+        mem_fault_out = !valid_access;
+    end else begin
+        mem_fault_out = 0;
+    end 
 end
 endmodule
