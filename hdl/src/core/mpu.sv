@@ -10,12 +10,13 @@ typedef enum integer {
 //Can be granted access to memory outside stack if specified by csr
 module mpu#(
     parameter integer unsigned maps = 9,  // Number of configurations
-    parameter integer unsigned rows = 4
+    parameter integer unsigned rows = 4,
+    parameter integer unsigned stack_top = 1280
 ) (
     input logic clk,
     input logic reset,
 
-    input logic [15:0] addr,   //The address which is accessed
+    input logic [15:0] mem_address,   //The address which is accessed
     input logic [15:0] sp,
     input logic [6:0] op,
     input logic [7:0] interrupt_prio,
@@ -34,12 +35,12 @@ module mpu#(
     input vcsr_offset_t vcsr_offset,
 
     //interruption flag for n-clic    
-    output logic mem_fault_out 
+    output logic mem_fault_out
 );
 
 typedef struct packed {
-    logic [13:0] addr;
-    logic [15:0] length;
+    logic [17:0] mem_address;
+    logic [11:0] length;
     logic        write_en;       // Write enable
     logic        read_en;        // Read enable
 } mpu_addr_t;
@@ -86,49 +87,45 @@ bit [15:0] ep;
 logic [7:0] last_prio;
 
 
-logic [15:0] top_addr[rows];
-logic [15:0] bot_addr[rows];
-logic read_en[rows];
-logic write_en[rows];
+logic [17:0] top_addr;
+logic [17:0] bot_addr;
+logic read_en;
+logic write_en;
 logic valid_access;
-logic below_ep;
+logic outside_stack;
 
 always_ff @(posedge clk) begin
-    if (reset) begin
-        ep_vec = '{default: '0};
-        last_prio = '0;
+        if (reset) begin
+        ep_vec <= '{default: '0};
+        last_prio <= '0;
     end
     if (interrupt_prio != last_prio)begin
         ep_vec[interrupt_prio] = sp;
-        last_prio = interrupt_prio;
     end
-    
+    last_prio <= interrupt_prio;
     ep = ep_vec[interrupt_prio];
     current_map   <= mpu_addr_map[id];
-    
 end
 
 always_comb begin
-    if (reset) begin
-        valid_access = 0;
-    end
+    valid_access = 0;
     for (integer k = 0; k < rows; k++ ) begin
-        bot_addr[k] = {current_map[k].addr, 2'b00};
-        top_addr[k] = bot_addr[k] + current_map[k].length;
-        read_en[k]  = current_map[k].read_en;
-        write_en[k] = current_map[k].write_en;
+        bot_addr = current_map[k].mem_address;
+        top_addr = bot_addr + current_map[k].length;
+        read_en  = current_map[k].read_en;
+        write_en = current_map[k].write_en;
         
-        if ( top_addr[k] >= addr && bot_addr[k] <= addr && reset == 0) begin
+        if ( top_addr >= mem_address && bot_addr <= mem_address && reset == 0) begin
             case (op)
-                OP_LOAD:    valid_access |= read_en[k];
-                OP_STORE:   valid_access |= write_en[k];
+                OP_LOAD:    valid_access |= read_en;
+                OP_STORE:   valid_access |= write_en;
                 default:    valid_access = 0;
             endcase 
-        end
+        end 
     end
-    //valid_access = 1;
-    below_ep = addr < ep && (OP_LOAD == op || OP_STORE == op);
-    if (below_ep) begin
+    
+    outside_stack = mem_address > ep || mem_address < stack_top;
+    if (outside_stack && (OP_LOAD == op || OP_STORE == op)) begin
         mem_fault_out = !valid_access;
     end else begin
         mem_fault_out = 0;

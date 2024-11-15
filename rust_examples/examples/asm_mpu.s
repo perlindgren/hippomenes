@@ -6,7 +6,6 @@
 # writes terminated to uart if working correctly
 
 init:   
-        nop     #hippo skipps first instruction for some reason
         la      sp, _stack_start # set stack pointer
         
         csrwi   0x300, 8                # enable global interrupts
@@ -15,59 +14,69 @@ init:
         srl     t1, t1, 2
         csrw    0xb08, t1               #set memexhandler jump adrs
 
-        la      t1, tsk0
+        la      t1, mem_ex
+        sll     t1, t1, 14
+        addi    t1, t1, 0x21
+        csrw    0x420, t1
+
+        la      t1, secret_key
+        sll     t1, t1, 14
+        addi    t1, t1, 0x2D
+        csrw    0x404, t1
+
+        la      t1, tsk1
         srl     t1, t1, 2
         csrw    0xB01, t1               # setup tsk0 address
 
-
-        la      t1,  0b0111             # prio 0b01, enable, 0b1, pend 0b0
-        csrw    0xB21, t1
-
-        la      t1, terminated
-        srl     t1, t1, 2
-        csrw    0xB01, t1
-        la      t1,  0b0111 
-        csrw    0xB21, t1
-
-        j exit
-tsk0:
         
-        lw      t0, 0(sp) 
+        la      t1, tsk2
+        srl     t1, t1, 2
+        csrw    0xB02, t1               # setup tsk0 address
+
+        la      t1,  0b0111             # prio 0b01, enable, 0b1, pend 0b1
+        csrw    0xB21, t1
+
+
+
+        
+        j exit
+
+tsk1:
+        la      t1,  0b1111             # prio 0b10, enable, 0b1, pend 0b0
+        csrw    0xB22, t1
+
+        la      t0, secret_key
+key:
+        lb      t1, 0(t0)
+        beqz    t1, key_end
+        csrw    0x51, t1
+        addi    t0, t0, 1
+        j       key
+key_end:        
         jr      ra
 
-terminated:                  
-        li      t1, 0x6D726574
-        li      t2, 0x74616E69
-        li      t3, 0x00006465
-
-term:   csrw    0x51, t1     # rightmost byte of t1 to UART
-        srl     t1, t1, 8    # shift rightmost byte out
-        bnez    t1, term     # if we have bytes left in register, write them, else continue
-inat:   csrw    0x51, t2     # rightmost byte of t1 to UART
-        srl     t2, t2, 8    # shift rightmost byte out
-        bnez    t2, inat     # if we have bytes left in register, write them, else continue
-ed:     csrw    0x51, t3     # rightmost byte of t1 to UART
-        srl     t3, t3, 8    # shift rightmost byte out
-        bnez    t3, ed     # if we have bytes left in register, write them, else continue
-
-        jr       ra
-        nop
 
 _memexhandler:    
-        li      t1, 0x5F6D656D
-        li      t2, 0x00746E69
-
-mem_:   csrw    0x51, t1     # rightmost byte of t1 to UART
-        srl     t1, t1, 8    # shift rightmost byte out
-        bnez    t1, mem_     # if we have bytes left in register, write them, else continue
-int:    csrw    0x51, t2     # rightmost byte of t1 to UART
-        srl     t2, t2, 8    # shift rightmost byte out
-        bnez    t2, int     # if we have bytes left in register, write them, else continue
-
+        la      t0, mem_ex
+mem:
+        lb      t1, 0(t0)
+        beqz    t1, mem_end
+        csrw    0x51, t1
+        addi    t0, t0, 1
+        j       mem
+mem_end:        
         csrwi   0x300, 0
         csrwi   0x347, 1
 
 exit:   j       exit
+
+tsk2:
+        lw      t1, 4(sp)
+        jr      ra
 .global 
 
 .rodata
+mem_ex:
+.word 0x5F6D656D, 0x00746E69
+secret_key:
+.word 0x72636573, 0x6B5F7465, 0x00007965

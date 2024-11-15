@@ -235,7 +235,16 @@ module n_clic
   entry_t         memory_interrupt; 
   IMemAddrStore   memAddr;
 
-  assign memory_interrupt         = '{2'b11, 1, interrupt_in}; // Interupt caused by PMP
+    logic memory_interrupt_ff;
+  always_ff @(posedge clk) begin
+    if (reset) begin
+        memory_interrupt_ff <= 0;
+    end
+    else begin
+        memory_interrupt_ff <= interrupt_in;
+    end
+  end
+  assign memory_interrupt         = '{2'b11, 1, memory_interrupt_ff}; // Interupt caused by PMP
   assign entry[VecSize-1]         = memory_interrupt;
   assign prio[VecSize-1]          = '1;
   
@@ -279,7 +288,7 @@ module n_clic
       ext_entry_data[0]   = entry[0] | 1;  // set pend bit
     end
 
-    if (mstatus_direct_out[3] == 0 && interrupt_in == 0 ) begin
+     if (mstatus_direct_out[3] == 0) begin
       push = 0;
       pop = 0;
       m_int_thresh_data = 0;
@@ -290,7 +299,10 @@ module n_clic
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
-    end else if (max_prio[VecSize-1] > m_int_thresh.data || interrupt_in == 1) begin
+       // these can probably be fixed by having a special case for interrupt_in == 1
+    // where the taken vector is hardwired to be ID 8 (memory violation)
+    //end else if (max_prio[VecSize-1] > m_int_thresh.data || interrupt_in == 1) begin
+    end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
       // take higher priority interrupt
       push = 1;
       pop = 0;

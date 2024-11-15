@@ -300,7 +300,10 @@ module top_arty (
   );
 
   word  dmem_data_out;
+  word  dmem_data;
   logic dmem_alignment_error;
+  logic write_enable;
+  assign write_enable = decoder_dmem_write_enable && !memory_interrupt;
   d_mem_spram dmem (
       // in
       .clk(clk),
@@ -308,13 +311,21 @@ module top_arty (
       .addr(alu_res[DMemAddrWidth-1:0]),
       .width(decoder_dmem_width),
       .sign_extend(decoder_dmem_sign_extend),
-      .write_enable(decoder_dmem_write_enable),
+      .write_enable(write_enable),
       .data_in(rs2_wt_mux_out),
       // out
       //.data_temp(dmem_data_out)
-      .data_out(dmem_data_out)
+      .data_out(dmem_data)
   );
-
+  /*
+  always_comb begin
+    if (memory_interrupt) begin
+        dmem_data = '0;
+    end else begin
+        dmem_data = dmem_data_out;
+    end
+  end
+  */
   // led out
   word csr_led_out;
   word csr_led_direct_out;  // currently not used
@@ -542,7 +553,7 @@ module top_arty (
   wb_mem_mux wb_mem_mux_i (
       .sel(mem_mux_sel_reg_out),
       .other_data(wb_mux_reg_out),
-      .memory_data(dmem_data_out),
+      .memory_data(dmem_data),
       .out(wb_mem_mux_out)
   );
     
@@ -551,7 +562,7 @@ module top_arty (
     .clk(clk),
     .reset(reset),
     
-    .addr(alu_res), 
+    .mem_address(alu_res), 
     .sp(sp),
     .op(op_code),
     .interrupt_prio(n_clic_int_prio_out),
