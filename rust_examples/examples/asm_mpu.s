@@ -1,9 +1,9 @@
 .option  norvc
 .text
 .section .init 
-# This test checks if an interrupt does not happens when accessing inside the tasks local stack.
+
 # EXPECTED BEHAVIOR:
-# writes terminated to uart if working correctly
+# writes [SOF Interrupt Id: 8, Interrupt Priority: 7]31:mem_int[EOF]73 to uart ith decoder
 
 init:   
         la      sp, _stack_start # set stack pointer
@@ -15,12 +15,12 @@ init:
         csrw    0xb08, t1               #set memexhandler jump adrs
 
         la      t1, mem_ex
-        sll     t1, t1, 14
+        sll     t1, t1, 16
         addi    t1, t1, 0x21
         csrw    0x420, t1
 
         la      t1, secret_key
-        sll     t1, t1, 14
+        sll     t1, t1, 16
         addi    t1, t1, 0x2D
         csrw    0x404, t1
 
@@ -42,6 +42,10 @@ init:
         j exit
 
 tsk1:
+        li      t0, 0x69
+        sw      t0, 0(sp)
+        addi    sp, sp, -4
+        
         la      t1,  0b1111             # prio 0b10, enable, 0b1, pend 0b0
         csrw    0xB22, t1
 
@@ -58,20 +62,24 @@ key_end:
 
 _memexhandler:    
         la      t0, mem_ex
+        nop
+        
 mem:
         lb      t1, 0(t0)
         beqz    t1, mem_end
         csrw    0x51, t1
         addi    t0, t0, 1
+        
         j       mem
-mem_end:        
+mem_end:      
         csrwi   0x300, 0
         csrwi   0x347, 1
+        csrwi   0x0, 0x1
 
 exit:   j       exit
 
 tsk2:
-        lw      t1, 4(sp)
+        lw      t1, 4(sp) #Switch 4 to 0 for "secret_key" output
         jr      ra
 .global 
 

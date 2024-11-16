@@ -315,17 +315,17 @@ module top_arty (
       .data_in(rs2_wt_mux_out),
       // out
       //.data_temp(dmem_data_out)
-      .data_out(dmem_data)
+      .data_out(dmem_data_out)
   );
-  /*
+
   always_comb begin
-    if (memory_interrupt) begin
+    if (memory_interrupt_ff) begin
         dmem_data = '0;
     end else begin
         dmem_data = dmem_data_out;
     end
   end
-  */
+ 
   // led out
   word csr_led_out;
   word csr_led_direct_out;  // currently not used
@@ -558,6 +558,7 @@ module top_arty (
   );
     
   logic memory_interrupt;
+  logic memory_interrupt_ff;
   mpu mpu (
     .clk(clk),
     .reset(reset),
@@ -582,6 +583,7 @@ module top_arty (
     .vcsr_offset(vcsr_offset),
     
     //out
-    .mem_fault_out(memory_interrupt)
+    .mem_fault_out(memory_interrupt),
+    .mem_fault_out_ff(memory_interrupt_ff)
   );
 endmodule

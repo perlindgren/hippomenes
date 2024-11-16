@@ -131,11 +131,17 @@ module n_clic
 
   // packed struct allowng for 5 bit immediates in CSR
   typedef struct packed {
-    PrioT prio;
+    CsrPrioT prio;
     logic enabled;
     logic pended;   // LSB
-  } entry_t;
+  } entry_csr_t;
 
+  typedef struct packed {
+    PrioT prio;
+    logic enabled;
+    logic pended;
+  } entry_t;
+  
   // stack
   logic push;
   logic pop;
@@ -164,8 +170,8 @@ module n_clic
   // generate vector table
   typedef logic [(IMemAddrWidth - 2)-1:0] IMemAddrStore;
 
-  entry_t                            entry           [VecSize];
-  PrioT                              prio            [VecSize];
+  entry_csr_t                        entry           [VecSize];
+  CsrPrioT                           prio            [VecSize];
   IMemAddrStore                      csr_vec_data    [VecSize];
   logic                              ext_write_enable[VecSize];
   logic         [$bits(entry_t)-1:0] ext_entry_data  [VecSize];
@@ -235,16 +241,7 @@ module n_clic
   entry_t         memory_interrupt; 
   IMemAddrStore   memAddr;
 
-    logic memory_interrupt_ff;
-  always_ff @(posedge clk) begin
-    if (reset) begin
-        memory_interrupt_ff <= 0;
-    end
-    else begin
-        memory_interrupt_ff <= interrupt_in;
-    end
-  end
-  assign memory_interrupt         = '{2'b11, 1, memory_interrupt_ff}; // Interupt caused by PMP
+  assign memory_interrupt         = '{2'b11, 1, interrupt_in}; // Interupt caused by PMP
   assign entry[VecSize-1]         = memory_interrupt;
   assign prio[VecSize-1]          = '1;
   
@@ -287,8 +284,8 @@ module n_clic
       ext_write_enable[0] = 1;
       ext_entry_data[0]   = entry[0] | 1;  // set pend bit
     end
-
-     if (mstatus_direct_out[3] == 0) begin
+    
+      if (mstatus_direct_out[3] == 0) begin
       push = 0;
       pop = 0;
       m_int_thresh_data = 0;

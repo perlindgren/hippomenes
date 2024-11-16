@@ -41,9 +41,14 @@ package config_pkg;
   localparam type RomAddrT = logic [RomAddrWidth-1:0];
 
   // Interrupt priorities
-  localparam integer unsigned PrioNum = 4;
+  localparam integer unsigned PrioNum = 8;
   localparam integer unsigned PrioWidth = $clog2(PrioNum);
   localparam type PrioT = logic [PrioWidth-1:0];
+
+    // csr Interrupt priorities
+  localparam integer unsigned CsrPrioNum = 4;
+  localparam integer unsigned CsrPrioWidth = $clog2(PrioNum);
+  localparam type CsrPrioT = logic [PrioWidth-1:0];
 
   // N-CLIC configuration
   localparam integer unsigned VecSize = 9;

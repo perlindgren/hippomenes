@@ -35,12 +35,13 @@ module mpu#(
     input vcsr_offset_t vcsr_offset,
 
     //interruption flag for n-clic    
-    output logic mem_fault_out
+    output logic mem_fault_out,
+    output logic mem_fault_out_ff
 );
 
 typedef struct packed {
-    logic [17:0] mem_address;
-    logic [11:0] length;
+    logic [15:0] mem_address;
+    logic [13:0] length;
     logic        write_en;       // Write enable
     logic        read_en;        // Read enable
 } mpu_addr_t;
@@ -105,6 +106,7 @@ always_ff @(posedge clk) begin
     last_prio <= interrupt_prio;
     ep = ep_vec[interrupt_prio];
     current_map   <= mpu_addr_map[id];
+    mem_fault_out_ff <= mem_fault_out;
 end
 
 always_comb begin
