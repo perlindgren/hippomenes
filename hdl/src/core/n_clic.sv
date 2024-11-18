@@ -24,7 +24,7 @@ module n_clic
     input logic         interrupt_in,
     
     output logic              [7:0] int_prio,
-    output logic              [7:0] int_id,
+    output logic              [7:0] id_out,
     output word                     csr_out,
     output IMemAddrT                int_addr,
     output pc_interrupt_mux_t       pc_interrupt_sel,
@@ -274,7 +274,8 @@ module n_clic
       end
     end
   end
-
+logic int_id_write_enable;
+logic[7:0] int_id;
   // handle interrupts: take-, tail-chain-, exit- and no-interrupt
   always_comb begin
     // this assignment is broken under vivado, always yields max_i = x
@@ -282,6 +283,7 @@ module n_clic
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = '{default: '0};
     tail_chain = 0;
+    int_id_write_enable = 0;
     if (timer_interrupt_set) begin
       // pend 0 if timer interrupt
       ext_write_enable[0] = 1;
@@ -293,6 +295,7 @@ module n_clic
       pop = 0;
       m_int_thresh_data = 0;
       m_int_thresh_write_enable = 0;
+      int_id_write_enable = 0;
       int_id = 0;
       int_addr = pc_in;
       int_prio = m_int_thresh.direct_out;
@@ -311,6 +314,7 @@ module n_clic
       int_prio = max_prio[VecSize-1];
       m_int_thresh_data = max_prio[VecSize-1];
       m_int_thresh_write_enable = 1;
+      int_id_write_enable = 1;
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
       ext_write_enable[max_i] = 1;  // write to entry
@@ -333,6 +337,7 @@ module n_clic
       int_prio = max_prio[VecSize-1];
       m_int_thresh_data = max_prio[VecSize-1];
       m_int_thresh_write_enable = 1;
+      int_id_write_enable = 1;
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
       ext_write_enable[max_i] = 1;  // write to entry
@@ -343,16 +348,19 @@ module n_clic
       end else timer_interrupt_clear = 0;
       tail_chain = 1;
       $display("tail chaining level_out %d, pop %d", level_out, pop);
-    end else if (pc_in == ~(IMemAddrWidth'(0))) begin
+    end else if ((pc_in == ~(IMemAddrWidth'(0)))) begin
       
       // interrupt return
       push = 0;
-      pop = 1;
+      if (latched_id != stack_out.id) begin
+        pop = 1;
+      end
       int_addr = stack_out.addr;
       int_prio = stack_out.prio;
       int_id = stack_out.id;
       m_int_thresh_data = stack_out.prio;
       m_int_thresh_write_enable = 1;
+      int_id_write_enable = 1;
       interrupt_out = 0;
       pc_interrupt_sel = PC_INTERRUPT;
       timer_interrupt_clear = 0;
@@ -363,6 +371,7 @@ module n_clic
       pop = 0;
       m_int_thresh_data = 0;
       m_int_thresh_write_enable = 0;
+      int_id_write_enable = 0;
       int_addr = pc_in;
       int_prio = m_int_thresh.direct_out;
       interrupt_out = 0;
@@ -404,7 +413,16 @@ module n_clic
   end
   
   always_ff @(posedge clk) begin
-    latched_id <= int_id;
+    if (reset) begin
+        latched_id <= 0;
+        id_out <= 0;
+    end
+    else begin
+        latched_id <= int_id;
+        if (int_id_write_enable) begin
+            id_out <= int_id;
+        end
+    end
   end
 endmodule
 
