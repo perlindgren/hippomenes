@@ -142,15 +142,18 @@ module n_clic
     logic pended;
   } entry_t;
   
+
   // stack
   logic push;
   logic pop;
   typedef struct packed {
     IMemAddrT addr;
+    logic [7:0] id;
     PrioT     prio;
   } stack_t;
 
   stack_t stack_out;
+  logic [7:0] latched_id;
   // epc address stack
   stack #(
       .StackDepth(PrioNum),
@@ -161,7 +164,7 @@ module n_clic
       .reset,
       .push,
       .pop,
-      .data_in  ({pc_in, m_int_thresh.data}),
+      .data_in  ({pc_in, latched_id, m_int_thresh.data}),
       // out,
       .data_out (stack_out),
       .index_out(level_out)
@@ -170,16 +173,16 @@ module n_clic
   // generate vector table
   typedef logic [(IMemAddrWidth - 2)-1:0] IMemAddrStore;
 
-  entry_csr_t                        entry           [VecSize];
-  CsrPrioT                           prio            [VecSize];
+  entry_t                            entry           [VecSize];
+  PrioT                              prio            [VecSize];
   IMemAddrStore                      csr_vec_data    [VecSize];
   logic                              ext_write_enable[VecSize];
   logic         [$bits(entry_t)-1:0] ext_entry_data  [VecSize];
   generate
     word temp_vec  [VecSize];
-    word temp_entry[VecSize];
+    word temp_entry[VecSize-1];
     word vec_out   [VecSize];
-    word entry_out [VecSize];
+    word entry_out [VecSize-1];
 
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
@@ -229,7 +232,7 @@ module n_clic
       );
 
       assign entry[k]        = entry_t'(temp_entry[k]);
-      assign prio[k]         = entry[k].prio;  // a bit of a hack to please Verilator
+      assign prio[k]         = CsrPrioT'(entry[k].prio);  // a bit of a hack to please Verilator
     end
   endgenerate
   logic         [VecSize-1:0] pended_timer;
@@ -241,7 +244,7 @@ module n_clic
   entry_t         memory_interrupt; 
   IMemAddrStore   memAddr;
 
-  assign memory_interrupt         = '{2'b11, 1, interrupt_in}; // Interupt caused by PMP
+  assign memory_interrupt         = '{3'b111, 1, interrupt_in}; // Interupt caused by PMP
   assign entry[VecSize-1]         = memory_interrupt;
   assign prio[VecSize-1]          = '1;
   
@@ -341,13 +344,14 @@ module n_clic
       tail_chain = 1;
       $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
+      
       // interrupt return
       push = 0;
       pop = 1;
       int_addr = stack_out.addr;
-      //int_id = stack_out.prio;
-      m_int_thresh_data = stack_out.prio;
       int_prio = stack_out.prio;
+      int_id = stack_out.id;
+      m_int_thresh_data = stack_out.prio;
       m_int_thresh_write_enable = 1;
       interrupt_out = 0;
       pc_interrupt_sel = PC_INTERRUPT;
@@ -367,7 +371,6 @@ module n_clic
       // $display("interrupt NOT take");
     end
   end
-
   // set csr_out
   always_comb begin
     csr_out = 0;
@@ -398,6 +401,10 @@ module n_clic
         end
       end
     end
+  end
+  
+  always_ff @(posedge clk) begin
+    latched_id <= int_id;
   end
 endmodule
 

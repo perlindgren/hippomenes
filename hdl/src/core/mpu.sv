@@ -101,7 +101,7 @@ always_ff @(posedge clk) begin
     ep = ep_vec[interrupt_prio];
     current_map         <= mpu_addr_map[id];
     mem_fault_out_ff    <= mem_fault_out;
-    invalid_stack       = (mem_address > ep || mem_address < stack_top);
+    
 end
 genvar k;
 
@@ -130,7 +130,9 @@ generate
         end
     end
 endgenerate
-always_comb begin
-    mem_fault_out = &invalid_access && invalid_stack && (OP_LOAD == op || OP_STORE == op);
+
+always @(posedge clk) begin
+    invalid_stack = (mem_address > ep || mem_address < stack_top) && (OP_LOAD == op || OP_STORE == op);
+    mem_fault_out = &invalid_access && invalid_stack;
 end
 endmodule
