@@ -79,7 +79,7 @@ mem_end:
 exit:   j       exit
 
 tsk2:
-        lw      t1, 4(sp) #Switch 4 to 0 for "secret_key" output
+        lw      t1, 0(sp) #Switch 4 to 0 for "secret_key" output
         jr      ra
 .global 
 

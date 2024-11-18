@@ -51,33 +51,33 @@ mpu_addr_t  mpu_addr_map    [maps][rows];
 
 
 generate
-    localparam CsrAddrT AddrCsrBase    = 'h400; 
-    word temp_addr [maps-1:0][rows-1:0];
+localparam CsrAddrT AddrCsrBase    = 'h400; 
+word temp_addr [maps-1:0][rows-1:0];
 
-    for (genvar k = 0; k < maps; k++) begin
-        for (genvar i = 0; i < rows; i++) begin
-            csr #(
-                .Addr(AddrCsrBase + CsrAddrT'(i+rows*k))
-            ) addr_csr (
-                .clk,
-                .reset,
-                .csr_enable,
-                .csr_addr,
-                .rs1_zimm,
-                .rs1_data,
-                .csr_op,
-                .vcsr_width,
-                .vcsr_offset,
-                .vcsr_addr,
-                .ext_write_enable('0),
-                .ext_data('0),
-                // out
-                .direct_out(temp_addr[k][i])
-                //.out()//do i need?
-            );
-            assign mpu_addr_map[k][i]   = mpu_addr_t'(temp_addr[k][i]);
-        end
+for (genvar k = 0; k < maps; k++) begin
+    for (genvar i = 0; i < rows; i++) begin
+        csr #(
+            .Addr(AddrCsrBase + CsrAddrT'(i+rows*k))
+        ) addr_csr (
+            .clk,
+            .reset,
+            .csr_enable,
+            .csr_addr,
+            .rs1_zimm,
+            .rs1_data,
+            .csr_op,
+            .vcsr_width,
+            .vcsr_offset,
+            .vcsr_addr,
+            .ext_write_enable('0),
+            .ext_data('0),
+            // out
+            .direct_out(temp_addr[k][i])
+            //.out()//do i need?
+        );
+        assign mpu_addr_map[k][i]   = mpu_addr_t'(temp_addr[k][i]);
     end
+end
 endgenerate
 
 mpu_addr_t current_map[rows];
@@ -86,17 +86,11 @@ mpu_addr_t current_map[rows];
 bit [15:0] ep_vec[3:0];
 bit [15:0] ep;
 logic [7:0] last_prio;
-
-
-logic [17:0] top_addr;
-logic [17:0] bot_addr;
-logic read_en;
-logic write_en;
-logic valid_access;
-logic outside_stack;
+logic [rows-1:0]invalid_access;
+logic invalid_stack;
 
 always_ff @(posedge clk) begin
-        if (reset) begin
+    if (reset) begin
         ep_vec <= '{default: '0};
         last_prio <= '0;
     end
@@ -105,32 +99,38 @@ always_ff @(posedge clk) begin
     end
     last_prio <= interrupt_prio;
     ep = ep_vec[interrupt_prio];
-    current_map   <= mpu_addr_map[id];
-    mem_fault_out_ff <= mem_fault_out;
+    current_map         <= mpu_addr_map[id];
+    mem_fault_out_ff    <= mem_fault_out;
+    invalid_stack       = (mem_address > ep || mem_address < stack_top);
 end
+genvar k;
 
-always_comb begin
-    valid_access = 0;
-    for (integer k = 0; k < rows; k++ ) begin
-        bot_addr = current_map[k].mem_address;
-        top_addr = bot_addr + current_map[k].length;
-        read_en  = current_map[k].read_en;
-        write_en = current_map[k].write_en;
-        
-        if ( top_addr >= mem_address && bot_addr <= mem_address && reset == 0) begin
-            case (op)
-                OP_LOAD:    valid_access |= read_en;
-                OP_STORE:   valid_access |= write_en;
-                default:    valid_access = 0;
-            endcase 
-        end 
+generate
+    logic [15:0] top_addr[rows];
+    logic [15:0] bot_addr[rows];
+    logic read_en[rows];
+    logic write_en[rows];
+    for (k = 0; k < rows; k++ ) begin
+        always_comb begin
+            bot_addr[k] = current_map[k].mem_address;
+            top_addr[k] = bot_addr[k] + current_map[k].length;
+            read_en[k]  = current_map[k].read_en;
+            write_en[k] = current_map[k].write_en;
+            
+            if ( top_addr[k] >= mem_address && bot_addr[k] <= mem_address) begin
+                case (op)
+                    OP_LOAD:    invalid_access[k] = !read_en[k];
+                    OP_STORE:   invalid_access[k] = !write_en[k];
+                    default:    invalid_access[k] = 1;
+                endcase 
+            end 
+            else begin
+                invalid_access[k] = 1;
+            end
+        end
     end
-    
-    outside_stack = mem_address > ep || mem_address < stack_top;
-    if (outside_stack && (OP_LOAD == op || OP_STORE == op)) begin
-        mem_fault_out = !valid_access;
-    end else begin
-        mem_fault_out = 0;
-    end 
+endgenerate
+always_comb begin
+    mem_fault_out = &invalid_access && invalid_stack && (OP_LOAD == op || OP_STORE == op);
 end
 endmodule
