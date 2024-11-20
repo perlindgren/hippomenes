@@ -258,7 +258,7 @@ module n_clic
     end else begin
       max_prio[0]  = m_int_thresh.data;
       max_vec[0]   = pc_in;
-      max_index[0] = int_id;
+      max_index[0] = latched_id;
     end
     // check rest of vector table
     for (integer k = 1; k < VecSize; k++) begin
@@ -352,7 +352,7 @@ module n_clic
       pop = 1;
       int_addr = stack_out.addr;
       int_prio = stack_out.prio;
-      int_id = latched_id;
+      int_id = stack_out.id;
       m_int_thresh_data = stack_out.prio;
       m_int_thresh_write_enable = 1;
       interrupt_out = 0;
@@ -367,6 +367,7 @@ module n_clic
       m_int_thresh_write_enable = 0;
       int_addr = pc_in;
       int_prio = m_int_thresh.direct_out;
+      int_id = max_index[VecSize-1];
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
@@ -413,7 +414,7 @@ module n_clic
         latched_id <= max_index[VecSize-1];
     end
     else if (pop) begin
-        latched_id <= stack_out.id;
+        latched_id <= int_id;
     end
   end
 endmodule
