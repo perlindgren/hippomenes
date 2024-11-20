@@ -105,13 +105,13 @@ always_ff @(posedge clk) begin
 end
 genvar k;
 
-generate
+//generate
     logic [15:0] top_addr[rows];
     logic [15:0] bot_addr[rows];
     logic read_en[rows];
     logic write_en[rows];
     for (k = 0; k < rows; k++ ) begin
-        always_comb begin
+        always @(posedge clk) begin
             bot_addr[k] = current_map[k].mem_address;
             top_addr[k] = bot_addr[k] + current_map[k].length;
             read_en[k]  = current_map[k].read_en;
@@ -129,9 +129,9 @@ generate
             end
         end
     end
-endgenerate
+//endgenerate
 
-always @(posedge clk) begin
+ always_ff @(posedge clk) begin
     invalid_stack = (mem_address > ep || mem_address < stack_top) && (OP_LOAD == op || OP_STORE == op);
     mem_fault_out = &invalid_access && invalid_stack;
 end

@@ -447,7 +447,7 @@ module top_arty (
       .pc_interrupt_sel(n_clic_pc_interrupt_sel),
       .level_out(n_clic_level_out),
       .int_prio(n_clic_int_prio_out),
-      .id_out(n_clic_int_id_out),
+      .int_id(n_clic_int_id_out),
       .interrupt_out(n_clic_interrupt_out),
       .vcsr_addr(vcsr_addr),
       .vcsr_width(vcsr_width),
