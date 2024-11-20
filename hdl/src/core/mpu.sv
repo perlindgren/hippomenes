@@ -86,7 +86,7 @@ mpu_addr_t current_map[rows];
 bit [15:0] ep_vec[3:0];
 bit [15:0] ep;
 logic [7:0] last_prio;
-logic invalid_access;//[rows-1:0]
+logic [rows-1:0]invalid_access;
 logic invalid_stack;
 
 always_ff @(posedge clk) begin
@@ -99,40 +99,40 @@ always_ff @(posedge clk) begin
     end
     last_prio <= interrupt_prio;
     ep = ep_vec[interrupt_prio];
-    current_map         <= mpu_addr_map[id];
+    current_map         <= mpu_addr_map[1];
     mem_fault_out_ff    <= mem_fault_out;
     
 end
 
-
-
-logic [15:0] top_addr;
-logic [15:0] bot_addr;
-logic read_en;
-logic write_en;
-always_ff @(posedge clk) begin
-
-    bot_addr = current_map[0].mem_address;
-    top_addr = bot_addr + current_map[0].length;
-    read_en = current_map[0].read_en;
-    write_en = current_map[0].write_en;
-    
-    if ( top_addr >= mem_address && bot_addr <= mem_address) begin
-        case (op)
-            OP_LOAD:    invalid_access = !read_en;
-            OP_STORE:   invalid_access = !write_en;
-            default:    invalid_access = 1;
-        endcase 
-    end 
-    else begin
-        invalid_access = 1;
+genvar k;
+generate
+    logic [15:0] top_addr[rows];
+    logic [15:0] bot_addr[rows];
+    logic read_en[rows];
+    logic write_en[rows];
+    for (k = 0; k < rows; k++ ) begin
+        always @(posedge clk) begin
+            bot_addr[k] <= current_map[k].mem_address;
+            top_addr[k] <= bot_addr[k] + current_map[k].length;
+            read_en[k]  <= current_map[k].read_en;
+            write_en[k] <= current_map[k].write_en;
+            
+            if ( top_addr[k] >= mem_address && bot_addr[k] <= mem_address) begin
+                case (op)
+                    OP_LOAD:    invalid_access[k] <= !read_en[k];
+                    OP_STORE:   invalid_access[k] <= !write_en[k];
+                    default:    invalid_access[k] <= 1;
+                endcase 
+            end 
+            else begin
+                invalid_access[k] <= 1;
+            end
+        end
     end
-    invalid_access = 0;
-end
-//endgenerate
+endgenerate
 
  always_ff @(posedge clk) begin
     invalid_stack <= (mem_address > ep || mem_address < stack_top) && (OP_LOAD == op || OP_STORE == op);
-    mem_fault_out = invalid_access && invalid_stack;
+    mem_fault_out <= &invalid_access && invalid_stack;
 end
 endmodule
