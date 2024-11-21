@@ -367,7 +367,7 @@ module n_clic
       m_int_thresh_write_enable = 0;
       int_addr = pc_in;
       int_prio = m_int_thresh.direct_out;
-      int_id = max_index[VecSize-1];
+      int_id = latched_id;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;

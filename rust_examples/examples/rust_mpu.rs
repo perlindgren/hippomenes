@@ -14,9 +14,9 @@ fn panic(_info: &PanicInfo) -> ! {
 #[entry]
 fn main() -> ! {
     // rodata region, preformatted strings are kept here
-    hippomenes_core::mpu::Interrupt1Config::Region0Permissions::set(3);
-    hippomenes_core::mpu::Interrupt1Config::Region0Address::set(0x5000_0000);
-    hippomenes_core::mpu::Interrupt1Config::Region0Width::set(0x64);
+    hippomenes_core::mpu::MPUConfig::Region0Permissions::set(3);
+    hippomenes_core::mpu::MPUConfig::Region0Address::set(0x5000_0000);
+    hippomenes_core::mpu::MPUConfig::Region0Width::set(0x64);
 
     hippomenes_core::mpu::Interrupt1Config::Region1Permissions::set(3);
     hippomenes_core::mpu::Interrupt1Config::Region1Address::set(*keystore as usize);
@@ -35,6 +35,7 @@ use core::fmt::Write;
 #[no_mangle]
 fn Interrupt1() {
     let key: u32 = unsafe { core::ptr::read_volatile(*keystore as *const _) };
+
     let key_2: u32 = unsafe { core::ptr::read_volatile(*keystore.byte_offset(4) as *const _) };
     let mut uart = unsafe { Peripherals::steal() }.uart;
     write!(uart, "Uart").ok();

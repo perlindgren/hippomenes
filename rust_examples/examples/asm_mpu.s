@@ -3,7 +3,7 @@
 .section .init 
 
 # EXPECTED BEHAVIOR:
-# writes [SOF Interrupt Id: 8, Interrupt Priority: 7]31:mem_int[EOF]73 to uart ith decoder
+# writes [SOF Interrupt Id: 8, Interrupt Priority: 7]33:mem_int[EOF]75 to uart ith decoder
 
 init:   
         la      sp, _stack_start # set stack pointer
@@ -43,15 +43,18 @@ init:
 
 tsk1:
         li      t0, 0x69
-        sw      t0, 0(sp)
         addi    sp, sp, -4
+        sw      t0, 4(sp)
         
-        la      t1,  0b1111             # prio 0b10, enable, 0b1, pend 0b0
+        
+        la      t1,  0b1111             # prio 0b11, enable, 0b1, pend 0b0
         csrw    0xB22, t1
 
         la      t0, secret_key
 key:
-        lb      t1, 0(t0)
+        lb      t1, 0(t0) # gets memex
+        nop
+        csrw    0x0, 1
         beqz    t1, key_end
         csrw    0x51, t1
         addi    t0, t0, 1
@@ -74,7 +77,7 @@ mem:
 mem_end:      
         csrwi   0x300, 0
         csrwi   0x347, 1
-        csrwi   0x0, 0x1
+
 
 exit:   j       exit
 
