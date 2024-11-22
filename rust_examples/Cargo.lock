@@ -35,18 +35,18 @@ dependencies = [
 
 [[package]]
 name = "const_format"
-version = "0.2.32"
+version = "0.2.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e3a214c7af3d04997541b18d432afaff4c455e79e2029079647e72fc2bd27673"
+checksum = "50c655d81ff1114fb0dcdea9225ea9f0cc712a6f8d189378e82bdf62a473a64b"
 dependencies = [
  "const_format_proc_macros",
 ]
 
 [[package]]
 name = "const_format_proc_macros"
-version = "0.2.32"
+version = "0.2.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c7f6ff08fd20f4f299298a28e2dfa8a8ba1036e6cd2460ac1de7b425d76f2500"
+checksum = "eff1a44b93f47b1bac19a27932f5c591e43d1ba357ee4f61526c8a25603f0eb1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -55,9 +55,9 @@ dependencies = [
 
 [[package]]
 name = "critical-section"
-version = "1.1.2"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7059fff8937831a9ae6f0fe4d658ffabf58f2ca96aa9dec1c889f936f705f216"
+checksum = "790eea4361631c5e7d22598ecd5723ff611904e3344ce8720784c93e3d83d40b"
 
 [[package]]
 name = "embedded-hal"
@@ -77,51 +77,71 @@ checksum = "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5"
 
 [[package]]
 name = "hashbrown"
-version = "0.14.5"
+version = "0.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5274423e17b7c9fc20b6e7e208532f9b19825d82dfd615708b70edd83df41f1"
+checksum = "3a9bfc1af68b1726ea47d3d5109de126281def866b33970e10fbab11b5dafab3"
 
 [[package]]
 name = "hippomenes-core"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
+source = "git+https://github.com/Mehdows/hippomenes-core?branch=mpu#bd1b37ee82a8a4fe4d30fac3d207f22c0df07d49"
 dependencies = [
  "const_format",
  "critical-section",
- "hippomenes-derive",
+ "hippomenes-derive 0.1.0 (git+https://github.com/Mehdows/hippomenes-core?branch=mpu)",
+]
+
+[[package]]
+name = "hippomenes-core"
+version = "0.1.0"
+source = "git+https://github.com/onsdagens/hippomenes-core#435d3e0f8a5add80fa3285d4c2d96c6d099dcc18"
+dependencies = [
+ "const_format",
+ "critical-section",
+ "hippomenes-derive 0.1.0 (git+https://github.com/onsdagens/hippomenes-core)",
 ]
 
 [[package]]
 name = "hippomenes-derive"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
+source = "git+https://github.com/Mehdows/hippomenes-core?branch=mpu#bd1b37ee82a8a4fe4d30fac3d207f22c0df07d49"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.66",
+ "syn 2.0.89",
+]
+
+[[package]]
+name = "hippomenes-derive"
+version = "0.1.0"
+source = "git+https://github.com/onsdagens/hippomenes-core#435d3e0f8a5add80fa3285d4c2d96c6d099dcc18"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.89",
 ]
 
 [[package]]
 name = "hippomenes-hal"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
+source = "git+https://github.com/Mehdows/hippomenes-core?branch=mpu#bd1b37ee82a8a4fe4d30fac3d207f22c0df07d49"
 dependencies = [
- "hippomenes-core",
+ "hippomenes-core 0.1.0 (git+https://github.com/Mehdows/hippomenes-core?branch=mpu)",
 ]
 
 [[package]]
 name = "hippomenes-rt"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
+source = "git+https://github.com/Mehdows/hippomenes-core?branch=mpu#bd1b37ee82a8a4fe4d30fac3d207f22c0df07d49"
 dependencies = [
- "hippomenes-core",
+ "hippomenes-core 0.1.0 (git+https://github.com/Mehdows/hippomenes-core?branch=mpu)",
  "hippomenes-rt-macros",
 ]
 
 [[package]]
 name = "hippomenes-rt-macros"
 version = "0.1.0"
-source = "git+https://github.com/onsdagens/hippomenes-core#67fb70a7cd910e44e6d94233813d6ad04a06b83c"
+source = "git+https://github.com/Mehdows/hippomenes-core?branch=mpu#bd1b37ee82a8a4fe4d30fac3d207f22c0df07d49"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -132,7 +152,7 @@ dependencies = [
 name = "hippomenes_rust_examples"
 version = "0.1.0"
 dependencies = [
- "hippomenes-core",
+ "hippomenes-core 0.1.0 (git+https://github.com/Mehdows/hippomenes-core?branch=mpu)",
  "hippomenes-hal",
  "hippomenes-rt",
  "rtic",
@@ -140,9 +160,9 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.2.6"
+version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "168fb715dda47215e360912c096649d23d58bf392ac62f73919e831745e40f26"
+checksum = "707907fe3c25f5424cce2cb7e1cbcafee6bdbe735ca90ef77c29e84591e5b9da"
 dependencies = [
  "equivalent",
  "hashbrown",
@@ -189,18 +209,18 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.85"
+version = "1.0.91"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "22244ce15aa966053a896d1accb3a6e68469b97c7f33f284b99f0d576879fc23"
+checksum = "307e3004becf10f5a6e0d59d20f3cd28231b0e0827a96cd3e0ce6d14bc1e4bb3"
 dependencies = [
  "unicode-ident",
 ]
 
 [[package]]
 name = "quote"
-version = "1.0.36"
+version = "1.0.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
+checksum = "b5b9d34b8991d19d98081b46eacdd8eb58c6f2b201139f7c5f643cc155a633af"
 dependencies = [
  "proc-macro2",
 ]
@@ -225,7 +245,7 @@ dependencies = [
  "bare-metal",
  "clic",
  "critical-section",
- "hippomenes-core",
+ "hippomenes-core 0.1.0 (git+https://github.com/onsdagens/hippomenes-core)",
  "riscv",
  "rtic-core",
  "rtic-macros",
@@ -262,9 +282,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.66"
+version = "2.0.89"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
+checksum = "44d46482f1c1c87acd84dea20c1bf5ebff4c757009ed6bf19cfd36fb10e92c4e"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -273,15 +293,15 @@ dependencies = [
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.12"
+version = "1.0.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
+checksum = "adb9e6ca4f869e1180728b7950e35922a7fc6397f7b641499e8f3ef06e50dc83"
 
 [[package]]
 name = "unicode-xid"
-version = "0.2.4"
+version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f962df74c8c05a667b5ee8bcf162993134c104e96440b663c8daa176dc772d8c"
+checksum = "ebc1c04c71510c7f702b52b7c350734c9ff1295c464a03335b00bb84fc54f853"
 
 [[package]]
 name = "vcell"
@@ -291,9 +311,9 @@ checksum = "77439c1b53d2303b20d9459b1ade71a83c716e3f9c34f3228c00e6f185d6c002"
 
 [[package]]
 name = "version_check"
-version = "0.9.4"
+version = "0.9.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
+checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
 name = "void"

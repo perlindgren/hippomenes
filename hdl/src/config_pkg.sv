@@ -41,12 +41,17 @@ package config_pkg;
   localparam type RomAddrT = logic [RomAddrWidth-1:0];
 
   // Interrupt priorities
-  localparam integer unsigned PrioNum = 4;
+  localparam integer unsigned PrioNum = 8;
   localparam integer unsigned PrioWidth = $clog2(PrioNum);
   localparam type PrioT = logic [PrioWidth-1:0];
 
+    // csr Interrupt priorities
+  localparam integer unsigned CsrPrioNum = 4;
+  localparam integer unsigned CsrPrioWidth = $clog2(PrioNum);
+  localparam type CsrPrioT = logic [PrioWidth-1:0];
+
   // N-CLIC configuration
-  localparam integer unsigned VecSize = 8;
+  localparam integer unsigned VecSize = 9;
   localparam integer unsigned VecWidth = $clog2(VecSize);
   localparam type VecT = logic [VecWidth-1:0];
 
@@ -110,7 +115,7 @@ package config_pkg;
   localparam integer unsigned FifoDataWidth = 8;
   localparam CsrAddrT FifoWordCsrAddr = 'h50;
   localparam CsrAddrT FifoByteCsrAddr = 'h51;
-  localparam integer unsigned CoreFreq = 20000000;
+  localparam integer unsigned CoreFreq = 10000000;
   // localparam integer unsigned CoreFreq = 230400;
   localparam integer unsigned UartBaudRate = 115200;
   localparam integer unsigned UartCmpVal = CoreFreq / UartBaudRate;

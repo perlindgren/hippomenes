@@ -116,7 +116,7 @@ module top_arty (
   logic decoder_wb_write_enable;
 
   wb_mem_mux_t decoder_mem_mux_sel_out;
-
+  logic [6:0] op_code;
   decoder decoder (
       // in
       .instr(imem_data_out),
@@ -147,7 +147,9 @@ module top_arty (
       .wb_mux_sel(decoder_wb_mux_sel),
       .rd(decoder_rd),
       .wb_write_enable(decoder_wb_write_enable),
-      .wb_mem_mux_sel(decoder_mem_mux_sel_out)
+      .wb_mem_mux_sel(decoder_mem_mux_sel_out),
+      // pmp
+      .op_o(op_code)
   );
   csr_op_t vcsr_op;
   CsrAddrT vcsr_addr;
@@ -159,7 +161,7 @@ module top_arty (
       .rs1_data(rs1_wt_mux_out),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_op(decoder_csr_op),
       .out_addr(vcsr_addr),
       .out_offset(vcsr_offset),
@@ -200,7 +202,7 @@ module top_arty (
   word  wb_mux_out;
   logic n_clic_interrupt_out;
   word  rf_stack_ra;
-
+  RegT sp;
   PrioT n_clic_level_out;
   rf_stack rf (
       // in
@@ -215,7 +217,8 @@ module top_arty (
       .readAddr2(decoder_rs2),
       // out
       .readData1(rf_rs1),
-      .readData2(rf_rs2)
+      .readData2(rf_rs2),
+      .sp_out(sp)
   );
   logic writeRaEn_reg_out;
   reg_n #(
@@ -297,7 +300,10 @@ module top_arty (
   );
 
   word  dmem_data_out;
+  word  dmem_data;
   logic dmem_alignment_error;
+  logic write_enable;
+  assign write_enable = decoder_dmem_write_enable && !memory_interrupt;
   d_mem_spram dmem (
       // in
       .clk(clk),
@@ -305,13 +311,21 @@ module top_arty (
       .addr(alu_res[DMemAddrWidth-1:0]),
       .width(decoder_dmem_width),
       .sign_extend(decoder_dmem_sign_extend),
-      .write_enable(decoder_dmem_write_enable),
+      .write_enable(write_enable),
       .data_in(rs2_wt_mux_out),
       // out
       //.data_temp(dmem_data_out)
       .data_out(dmem_data_out)
   );
 
+  always_comb begin
+    if (memory_interrupt_ff) begin
+        dmem_data = '0;
+    end else begin
+        dmem_data = dmem_data_out;
+    end
+  end
+ 
   // led out
   word csr_led_out;
   word csr_led_direct_out;  // currently not used
@@ -322,7 +336,7 @@ module top_arty (
       // in
       .clk,
       .reset,
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
       .rs1_data(rs1_wt_mux_out),
@@ -350,7 +364,7 @@ module top_arty (
       // in
       .clk,
       .reset,
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
       .rs1_data(rs1_wt_mux_out),
@@ -379,7 +393,7 @@ module top_arty (
   //       // in
   //       .clk,
   //       .reset,
-  //       .csr_enable(decoder_csr_enable),
+  //       .csr_enable(csr_enable),
   //       .csr_addr(decoder_csr_addr),
   //       .rs1_zimm(decoder_rs1),
   //       .rs1_data(rf_rs1),
@@ -396,7 +410,7 @@ module top_arty (
   //       // in
   //       .clk,
   //       .reset,
-  //       .csr_enable(decoder_csr_enable),
+  //       .csr_enable(csr_enable),
   //       .csr_addr(decoder_csr_addr),
   //       .rs1_zimm(decoder_rs1),
   //       .rs1_data(rf_rs1),
@@ -419,10 +433,11 @@ module top_arty (
       // in
       .clk,
       .reset,
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
       .rs1_data(rs1_wt_mux_out),
+      .interrupt_in(memory_interrupt),
       //.rd(decoder_rd),
       .csr_op(decoder_csr_op),
       .pc_in(pc_branch_mux_out),
@@ -458,7 +473,7 @@ module top_arty (
   n_cobs_encoder enc (
       .clk_i(clk),
       .reset_i(reset),
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_addr(decoder_csr_addr),
       .timer(mono_timer_out),
 
@@ -538,8 +553,56 @@ module top_arty (
   wb_mem_mux wb_mem_mux_i (
       .sel(mem_mux_sel_reg_out),
       .other_data(wb_mux_reg_out),
-      .memory_data(dmem_data_out),
+      .memory_data(dmem_data),
       .out(wb_mem_mux_out)
   );
+    
+  logic memory_interrupt;
+  logic memory_interrupt_ff;
+  mpu mpu (
+    .clk(clk),
+    .reset(reset),
+    
+    .mem_address(alu_res), 
+    .sp(sp),
+    .op(op_code),
+    .interrupt_prio(n_clic_int_prio_out),
+    .id(n_clic_int_id_out),
 
+
+    //csr
+    .csr_enable(csr_enable),
+    .csr_addr(decoder_csr_addr),
+    .rs1_zimm(decoder_rs1),
+    .rs1_data(rs1_wt_mux_out),
+    .csr_op(decoder_csr_op),
+
+    // VSCR
+    .vcsr_addr(vcsr_addr),
+    .vcsr_width(vcsr_width),
+    .vcsr_offset(vcsr_offset),
+    
+    //out
+    .mem_fault_out(memory_interrupt),
+    .mem_fault_out_ff(memory_interrupt_ff)
+  );
+logic csr_enable;
+csr_block csr_block(
+    .clk(clk),
+    .reset(reset),
+    
+    //csr
+    .csr_enable(decoder_csr_enable),
+    .csr_addr(decoder_csr_addr),
+    .rs1_zimm(decoder_rs1),
+    .rs1_data(rs1_wt_mux_out),
+    .csr_op(decoder_csr_op),
+
+    // VSCR
+    .vcsr_addr(vcsr_addr),
+    .vcsr_width(vcsr_width),
+    .vcsr_offset(vcsr_offset),
+    
+    .csr_enable_out(csr_enable)
+);
 endmodule

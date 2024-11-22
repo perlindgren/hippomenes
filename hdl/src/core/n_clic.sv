@@ -21,8 +21,8 @@ module n_clic
     input CsrAddrT vcsr_addr,
     input vcsr_width_t vcsr_width,
     input vcsr_offset_t vcsr_offset,
-
-
+    input logic         interrupt_in,
+    
     output logic              [7:0] int_prio,
     output logic              [7:0] int_id,
     output word                     csr_out,
@@ -131,20 +131,29 @@ module n_clic
 
   // packed struct allowng for 5 bit immediates in CSR
   typedef struct packed {
-    PrioT prio;
+    CsrPrioT prio;
     logic enabled;
     logic pended;   // LSB
+  } entry_csr_t;
+
+  typedef struct packed {
+    PrioT prio;
+    logic enabled;
+    logic pended;
   } entry_t;
+  
 
   // stack
   logic push;
   logic pop;
   typedef struct packed {
     IMemAddrT addr;
+    logic [3:0] id;
     PrioT     prio;
   } stack_t;
 
   stack_t stack_out;
+
   // epc address stack
   stack #(
       .StackDepth(PrioNum),
@@ -155,7 +164,7 @@ module n_clic
       .reset,
       .push,
       .pop,
-      .data_in  ({pc_in, m_int_thresh.data}),
+      .data_in  ({pc_in, latched_id, m_int_thresh.data}),
       // out,
       .data_out (stack_out),
       .index_out(level_out)
@@ -171,9 +180,9 @@ module n_clic
   logic         [$bits(entry_t)-1:0] ext_entry_data  [VecSize];
   generate
     word temp_vec  [VecSize];
-    word temp_entry[VecSize];
+    word temp_entry[VecSize-1];
     word vec_out   [VecSize];
-    word entry_out [VecSize];
+    word entry_out [VecSize-1];
 
     for (genvar k = 0; k < VecSize; k++) begin : gen_vec
       csr #(
@@ -197,7 +206,9 @@ module n_clic
           .direct_out(temp_vec[k]),
           .out(vec_out[k])
       );
-
+      assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
+    end
+    for (genvar k = 0; k < VecSize-1; k++) begin : gen_cfg
       csr #(
           .Addr(EntryCsrBase + CsrAddrT'(k)),
           .CsrWidth($bits(entry_t))
@@ -221,8 +232,7 @@ module n_clic
       );
 
       assign entry[k]        = entry_t'(temp_entry[k]);
-      assign prio[k]         = entry[k].prio;  // a bit of a hack to please Verilator
-      assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
+      assign prio[k]         = CsrPrioT'(entry[k].prio);  // a bit of a hack to please Verilator
     end
   endgenerate
   logic         [VecSize-1:0] pended_timer;
@@ -230,6 +240,14 @@ module n_clic
   PrioT                       max_prio     [VecSize];
   IMemAddrStore               max_vec      [VecSize];
   VecT                        max_index    [VecSize];
+  
+  entry_t         memory_interrupt; 
+  IMemAddrStore   memAddr;
+
+  assign memory_interrupt         = '{3'b111, 1, interrupt_in}; // Interupt caused by PMP
+  assign entry[VecSize-1]         = memory_interrupt;
+  assign prio[VecSize-1]          = '1;
+  
   always_comb begin
     // check first index in vector table
     pended_timer[0] = entry[0].pended;
@@ -239,8 +257,8 @@ module n_clic
       max_index[0] = 0;
     end else begin
       max_prio[0]  = m_int_thresh.data;
-      max_vec[0]   = 0;
-      max_index[0] = 0;
+      max_vec[0]   = pc_in;
+      max_index[0] = latched_id;
     end
     // check rest of vector table
     for (integer k = 1; k < VecSize; k++) begin
@@ -269,18 +287,22 @@ module n_clic
       ext_write_enable[0] = 1;
       ext_entry_data[0]   = entry[0] | 1;  // set pend bit
     end
-
-    if (mstatus_direct_out[3] == 0) begin
+    
+      if (mstatus_direct_out[3] == 0) begin
       push = 0;
       pop = 0;
       m_int_thresh_data = 0;
       m_int_thresh_write_enable = 0;
+
       int_id = 0;
       int_addr = pc_in;
       int_prio = m_int_thresh.direct_out;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
+       // these can probably be fixed by having a special case for interrupt_in == 1
+    // where the taken vector is hardwired to be ID 8 (memory violation)
+    //end else if (max_prio[VecSize-1] > m_int_thresh.data || interrupt_in == 1) begin
     end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
       // take higher priority interrupt
       push = 1;
@@ -290,6 +312,7 @@ module n_clic
       int_prio = max_prio[VecSize-1];
       m_int_thresh_data = max_prio[VecSize-1];
       m_int_thresh_write_enable = 1;
+
       interrupt_out = 1;
       pc_interrupt_sel = PC_INTERRUPT;
       ext_write_enable[max_i] = 1;  // write to entry
@@ -322,14 +345,15 @@ module n_clic
       end else timer_interrupt_clear = 0;
       tail_chain = 1;
       $display("tail chaining level_out %d, pop %d", level_out, pop);
-    end else if (pc_in == ~(IMemAddrWidth'(0))) begin
+    end else if ((pc_in == ~(IMemAddrWidth'(0)))) begin
+      
       // interrupt return
       push = 0;
       pop = 1;
       int_addr = stack_out.addr;
-      //int_id = stack_out.prio;
-      m_int_thresh_data = stack_out.prio;
       int_prio = stack_out.prio;
+      int_id = stack_out.id;
+      m_int_thresh_data = stack_out.prio;
       m_int_thresh_write_enable = 1;
       interrupt_out = 0;
       pc_interrupt_sel = PC_INTERRUPT;
@@ -343,13 +367,13 @@ module n_clic
       m_int_thresh_write_enable = 0;
       int_addr = pc_in;
       int_prio = m_int_thresh.direct_out;
+      int_id = latched_id;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
       // $display("interrupt NOT take");
     end
   end
-
   // set csr_out
   always_comb begin
     csr_out = 0;
@@ -379,6 +403,18 @@ module n_clic
           csr_out = entry_out[k];
         end
       end
+    end
+  end
+  logic [3:0] latched_id;
+  always_ff @(posedge clk) begin
+    if (reset) begin
+        latched_id <= 0;
+    end
+    else if (push) begin
+        latched_id <= max_index[VecSize-1];
+    end
+    else if (pop) begin
+        latched_id <= int_id;
     end
   end
 endmodule
