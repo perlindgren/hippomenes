@@ -16,18 +16,17 @@ init:
 
         la      t1, mem_ex
         sll     t1, t1, 16
-        addi    t1, t1, 0x21
-        csrw    0x420, t1
+        addi    t1, t1, 0b11001
+        csrw    0x520, t1               #MPU config for memex
 
         la      t1, secret_key
         sll     t1, t1, 16
-        addi    t1, t1, 0x2D
-        csrw    0x404, t1
+        addi    t1, t1, 0b101101        # 0b1011 length with 0b01 read permission
+        csrw    0x504, t1               #MPU config for task1
 
         la      t1, tsk1
         srl     t1, t1, 2
         csrw    0xB01, t1               # setup tsk0 address
-
         
         la      t1, tsk2
         srl     t1, t1, 2
@@ -35,10 +34,7 @@ init:
 
         la      t1,  0b0111             # prio 0b01, enable, 0b1, pend 0b1
         csrw    0xB21, t1
-
-
-
-        
+main:
         j exit
 
 tsk1:

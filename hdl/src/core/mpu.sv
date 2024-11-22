@@ -51,7 +51,7 @@ mpu_addr_t  mpu_addr_map    [maps][rows];
 
 
 generate
-localparam CsrAddrT AddrCsrBase    = 'h400; 
+localparam CsrAddrT AddrCsrBase    = 'h500; 
 word temp_addr [maps-1:0][rows-1:0];
 
 for (genvar k = 0; k < maps; k++) begin

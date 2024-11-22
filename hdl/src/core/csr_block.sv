@@ -1,10 +1,12 @@
 //csr_block
 `timescale 1ns / 1ps
+import config_pkg::*;
 
 module csr_block
   import config_pkg::*;
 #(
-    parameter integer unsigned blocks = 32
+    parameter integer unsigned blocks = 8,
+    parameter integer unsigned CsrAddr = 'h4FF
 ) (
     input logic clk,
     input logic reset,
@@ -23,16 +25,54 @@ module csr_block
 
     output logic     csr_enable_out
 );
+CsrAddrT csr_out;
+csr #(
+    .Addr('h4FF),
+    .CsrWidth(12)
+) addr_csr (
+    .clk,
+    .reset,
+    .csr_enable,
+    .csr_addr,
+    .rs1_zimm,
+    .rs1_data,
+    .csr_op,
+    .vcsr_width,
+    .vcsr_offset,
+    .vcsr_addr,
+    .ext_write_enable('0),
+    .ext_data('0),
+    // out
+    .direct_out(csr_out)
+    //.out()
+);
+CsrAddrT blocked_csr [blocks];
+logic [$clog2(blocks)-1:0] id;
+always_ff @(posedge clk) begin
+    if (reset) begin
+        blocked_csr <= '{default: '0};
+        id <= 0;
+    end 
+    if (csr_addr == CsrAddr) begin
+        blocked_csr[id] <= csr_out;
+        id += 1;
+    end;
+end
 
+logic [blocks-1:0] block_vec;
+generate
+    for (genvar k = 0; k < blocks; k++) begin
+        always_comb begin
+            block_vec[k] = 1;
+            if (csr_addr == blocked_csr[k] && k < id) begin
+                block_vec[k] = 0;
+            end
+        end
+    end
+endgenerate
 
-
-
-
-logic block;
-assign block = 1;
 always_comb begin
-    csr_enable_out = csr_enable & block;
-
+    csr_enable_out = &block_vec && csr_enable;
 end
 
 endmodule

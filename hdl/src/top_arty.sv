@@ -161,7 +161,7 @@ module top_arty (
       .rs1_data(rs1_wt_mux_out),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_op(decoder_csr_op),
       .out_addr(vcsr_addr),
       .out_offset(vcsr_offset),
@@ -336,7 +336,7 @@ module top_arty (
       // in
       .clk,
       .reset,
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
       .rs1_data(rs1_wt_mux_out),
@@ -364,7 +364,7 @@ module top_arty (
       // in
       .clk,
       .reset,
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
       .rs1_data(rs1_wt_mux_out),
@@ -393,7 +393,7 @@ module top_arty (
   //       // in
   //       .clk,
   //       .reset,
-  //       .csr_enable(decoder_csr_enable),
+  //       .csr_enable(csr_enable),
   //       .csr_addr(decoder_csr_addr),
   //       .rs1_zimm(decoder_rs1),
   //       .rs1_data(rf_rs1),
@@ -410,7 +410,7 @@ module top_arty (
   //       // in
   //       .clk,
   //       .reset,
-  //       .csr_enable(decoder_csr_enable),
+  //       .csr_enable(csr_enable),
   //       .csr_addr(decoder_csr_addr),
   //       .rs1_zimm(decoder_rs1),
   //       .rs1_data(rf_rs1),
@@ -433,7 +433,7 @@ module top_arty (
       // in
       .clk,
       .reset,
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_addr(decoder_csr_addr),
       .rs1_zimm(decoder_rs1),
       .rs1_data(rs1_wt_mux_out),
@@ -473,7 +473,7 @@ module top_arty (
   n_cobs_encoder enc (
       .clk_i(clk),
       .reset_i(reset),
-      .csr_enable(decoder_csr_enable),
+      .csr_enable(csr_enable),
       .csr_addr(decoder_csr_addr),
       .timer(mono_timer_out),
 
@@ -571,7 +571,7 @@ module top_arty (
 
 
     //csr
-    .csr_enable(decoder_csr_enable),
+    .csr_enable(csr_enable),
     .csr_addr(decoder_csr_addr),
     .rs1_zimm(decoder_rs1),
     .rs1_data(rs1_wt_mux_out),
@@ -586,4 +586,23 @@ module top_arty (
     .mem_fault_out(memory_interrupt),
     .mem_fault_out_ff(memory_interrupt_ff)
   );
+logic csr_enable;
+csr_block csr_block(
+    .clk(clk),
+    .reset(reset),
+    
+    //csr
+    .csr_enable(decoder_csr_enable),
+    .csr_addr(decoder_csr_addr),
+    .rs1_zimm(decoder_rs1),
+    .rs1_data(rs1_wt_mux_out),
+    .csr_op(decoder_csr_op),
+
+    // VSCR
+    .vcsr_addr(vcsr_addr),
+    .vcsr_width(vcsr_width),
+    .vcsr_offset(vcsr_offset),
+    
+    .csr_enable_out(csr_enable)
+);
 endmodule
