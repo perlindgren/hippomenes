@@ -288,14 +288,14 @@ module top_arty (
       .op(decoder_alu_op),
       .res(alu_res)
   );
-  word mul_res;
-  mul mul (
+ // word mul_res;
+ /* mul mul (
       .a  (alu_a_mux_out),
       .b  (alu_b_mux_out),
       .op (decoder_mul_op),
       .res(mul_res)
   );
-
+*/
   word  dmem_data_out;
   logic dmem_alignment_error;
   d_mem_spram dmem (
@@ -510,7 +510,7 @@ module top_arty (
       .alu(alu_res),
       .csr(n_clic_csr_out),
       .pc_plus_4(32'($signed(pc_adder_out))),  // should we sign extend?
-      .mul(mul_res),
+      .mul(0),
       .out(wb_mux_out)
   );
   word wb_mux_reg_out;
