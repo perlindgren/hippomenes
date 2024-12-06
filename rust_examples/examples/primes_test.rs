@@ -1,7 +1,5 @@
 #![no_std]
 #![no_main]
-#![feature(type_alias_impl_trait)]
-
 use core::panic::PanicInfo;
 use hippomenes_rt as _;
 
@@ -24,9 +22,8 @@ mod helpers {
 
 #[rtic::app(device = hippomenes_core)]
 mod app {
-    use hippomenes_core::*;
-
     use crate::helpers::is_prime;
+    use hippomenes_core::*;
 
     #[shared]
     struct Shared {
@@ -36,21 +33,21 @@ mod app {
     #[local]
     struct Local {
         light: i32,
-        pin0: Pin0,
-        pin1: Pin1,
-        pin2: Pin2,
-        pin3: Pin3,
+        pin0: Pout0,
+        pin1: Pout1,
+        pin2: Pout2,
+        pin3: Pout3,
     }
 
     #[init]
     fn init(cx: init::Context) -> (Shared, Local) {
         let peripherals = cx.device;
 
-        let pins = peripherals.gpio.pins();
-        let pin0 = pins.pin0;
-        let pin1 = pins.pin1;
-        let pin2 = pins.pin2;
-        let pin3 = pins.pin3;
+        let pins = peripherals.gpo.split();
+        let pin0 = pins.pout0;
+        let pin1 = pins.pout1;
+        let pin2 = pins.pout2;
+        let pin3 = pins.pout3;
 
         let light = 0;
         let timer = peripherals.timer;
@@ -58,7 +55,6 @@ mod app {
         timer.write(0b100000000001110); // interrupt every (1024 << 14) cycles, at 20Mhz yields
                                         // ~1.19Hz
                                         //timer.write(0b101110);
-        rtic::export::pend(interrupt1::Interrupt1);
 
         (
             Shared { dummy: 0 },
@@ -111,9 +107,10 @@ mod app {
             cx.local.pin2.set_high();
         }
 
-        // Increment light to be turned on for next interrupt, modulo 3 for 3 lights
+        // Increment light to be turned on for next interrupt, mask everything but the lowest 3
+        // bits
         *cx.local.light += 1;
-        *cx.local.light %= 3;
+        *cx.local.light &= !0x3;
     }
 }
 

@@ -2,7 +2,7 @@
             .text
             .section .init
 # EXPECTED BEHAVIOR
-# hippo!!! should be written to UART every .25s at @20MHz
+# RTMT packet containing "hippo!!!" should be written to UART every .25s at @20MHz
 init:       la      sp, _stack_start        # set stack pointer
            
 main:      
@@ -11,12 +11,15 @@ main:
     csrw 0x0, t0
     xori t0, t0, 1
     sw t0, 0(t2)
-    la t0, rodata 
+    la t0, rodata
+    csrwi 0x347, 1 # start NCOBS frame 
 loop:
-    lw t1, 0(t0)
+    lb t1, 0(t0)
     csrw 0x51, t1
     addi t0, t0, 1
     bne t0, t2, loop
+
+  csrwi 0x347, 0 # end NCOBS frame
 
     # now wait for a while (.25s)
     li t4, 5000000

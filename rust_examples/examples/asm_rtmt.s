@@ -5,6 +5,9 @@
 # Timer interrupt occurs every ~0.75s at 20 MHz, prints "Timer" to UART
 # Timer ISR gets preempted between the printing of 'i' and 'm' by a software interrupt
 # which prints "Software" to UART.
+# This is RTMT packaged, so the "Software" frame is finished first (because it preempts),
+# meaning it should also be decoded first.
+
 
 init:       la      sp, _stack_start        # set stack pointer
 
