@@ -1,5 +1,5 @@
 // time_stamp
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 
 module time_stamp
@@ -11,17 +11,17 @@ module time_stamp
     input MonoTimerT mono_timer,
 
     /* verilator lint_off MULTIDRIVEN */
-    input logic[VecSize-1:0] pend,
+    input logic [VecSize-1:0] pend,
     input CsrAddrT csr_addr,
     output word csr_out
 );
   //logic      old_pend          [VecSize];
 
   TimeStampT ext_data;
-  logic      ext_write_enable  [VecSize];
- //logic      ext_stretch_enable[VecSize];
-  word       temp_direct_out   [VecSize];  // not used
-  word       temp_out          [VecSize];
+  logic      ext_write_enable[VecSize];
+  //logic      ext_stretch_enable[VecSize];
+  word       temp_direct_out [VecSize];  // not used
+  word       temp_out        [VecSize];
 
   generate
     for (genvar k = 0; k < VecSize; k++) begin : gen_stamp
@@ -49,8 +49,7 @@ module time_stamp
       always_comb begin
         if (pend[k]) begin
           unpend = 1;
-        end
-        else begin
+        end else begin
           unpend = 0;
         end
       end
@@ -59,8 +58,7 @@ module time_stamp
       always_ff @(posedge clk) begin : gen_un_trig
         if (unpend) begin
           ext_write_enable[k] <= 1;
-        end
-        else begin
+        end else begin
           ext_write_enable[k] <= 0;
         end
       end

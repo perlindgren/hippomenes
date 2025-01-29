@@ -1,5 +1,5 @@
 // tb_top_arty
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module tb_top_arty;
   import config_pkg::*;
@@ -12,7 +12,9 @@ module tb_top_arty;
   LedT  led;
   logic tx;
 
-  top_arty top (
+  top_arty #(
+      .INIT_IMEM_FILE("../../rust_examples/text.mem")
+  ) top (
       // in
       .clk,
       .reset,
@@ -25,8 +27,7 @@ module tb_top_arty;
   // clock and reset
   initial begin
     $display($time, " << Starting the Simulation >>");
-    $display("memsize %h", IMemSize >> 2);
-
+    //$display("memsize %h", IMemSize >> 2);
     reset = 1;
     clk   = 0;
     #15 reset = 0;

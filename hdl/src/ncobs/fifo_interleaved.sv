@@ -1,5 +1,5 @@
 // fifo_interleaved
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 import decoder_pkg::*;
 import config_pkg::*;

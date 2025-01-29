@@ -1,5 +1,5 @@
 // uart
-`timescale 1ns / 1ps
+// `timescale 1ns / 1ps
 
 module uart
   import decoder_pkg::*;

@@ -1,5 +1,5 @@
 // pc_branch_mux
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 import decoder_pkg::*;
 module pc_branch_mux #(

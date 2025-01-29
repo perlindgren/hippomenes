@@ -1,5 +1,5 @@
 // timer
-`timescale 1ns / 1ps
+// `timescale 1ns / 1ps
 
 //  Programmable timer peripheral
 module timer

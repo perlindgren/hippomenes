@@ -1,5 +1,5 @@
 // stack
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module stack
   import decoder_pkg::*;

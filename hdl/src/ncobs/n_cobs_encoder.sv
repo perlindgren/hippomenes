@@ -1,5 +1,5 @@
 // n_cobs_encoder
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module n_cobs_encoder
   import config_pkg::*;
@@ -19,7 +19,7 @@ module n_cobs_encoder
     input word rs1_data,
 
     input PrioT level,
-    
+
     input logic tail_chain,
 
     output [FifoEntryWidthBits-1:0] write_data,
@@ -57,6 +57,7 @@ module n_cobs_encoder
 
     write_index = write_index + 2;
   endfunction
+
   always_ff @(posedge clk_i) begin
     if (reset_i) begin
       old_level <= level;  //PrioT'(PrioNum - 1);

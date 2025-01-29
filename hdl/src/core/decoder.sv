@@ -1,5 +1,5 @@
 // decoder
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module decoder
   import decoder_pkg::*;

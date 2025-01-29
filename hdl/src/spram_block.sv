@@ -1,5 +1,5 @@
 // spram_block.sv
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 // XPM_MEMORY instantiation template for Single Port RAM configurations
 // Refer to the targeted device family architecture libraries guide for XPM_MEMORY documentation

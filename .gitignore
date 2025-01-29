@@ -1,6 +1,6 @@
 *.log
 *.jou
-
+/build/*
 /rust_examples/target/*
 /hdl/verilator/riscv_asm/target/*
 

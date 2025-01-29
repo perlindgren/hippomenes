@@ -1,5 +1,5 @@
 // fpga_top
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 // This is just illustrative
 module fpga_top_n_clic (

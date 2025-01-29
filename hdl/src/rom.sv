@@ -1,5 +1,5 @@
 // rom
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module rom
   import config_pkg::*;

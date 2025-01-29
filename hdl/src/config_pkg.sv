@@ -1,5 +1,5 @@
 // config_pkg
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 package config_pkg;
   // General

@@ -1,0 +1,7 @@
+packages:
+  edf-ic:
+    revision: null
+    version: null
+    source:
+      Path: ../../edf-ic
+    dependencies: []

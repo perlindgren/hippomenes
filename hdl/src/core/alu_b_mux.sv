@@ -1,5 +1,5 @@
 // alu_b_mux
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 import decoder_pkg::*;
 module alu_b_mux (

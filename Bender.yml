@@ -1,0 +1,55 @@
+# A more detailed description of the manifest format `Bender.yml` can be found here:
+# https://github.com/pulp-platform/bender#manifest-format-benderyml
+
+package:
+  name: hippomenes
+  authors:
+    - "onsdagens <pawdzi-7@student.ltu.se>"
+
+dependencies:
+  edf-ic: {path: "../../edf-ic/"}
+sources:
+  - ./hdl/src/config_pkg.sv
+  - ./hdl/src/arty_pkg.sv
+  - ./hdl/src/core/decoder_pkg.sv
+  - ./hdl/src/mem_pkg.sv
+  - ./hdl/src/core/csr.sv
+  - ./hdl/src/core/reg_n.sv
+  - ./hdl/src/core/pc_branch_mux.sv
+  - ./hdl/src/core/pc_interrupt_mux.sv
+  - ./hdl/src/core/pc_adder.sv
+  - ./hdl/src/core/xilinx_sp_BRAM.sv
+  - ./hdl/src/core/atl_rom.sv
+  - ./hdl/src/core/decoder.sv
+  - ./hdl/src/core/vcsr.sv
+  - ./hdl/src/core/wt_ctl.sv
+  - ./hdl/src/core/wt_mux.sv
+  - ./hdl/src/core/register_file.sv
+  - ./hdl/src/core/rf_stack.sv
+  - ./hdl/src/core/branch_logic.sv
+  - ./hdl/src/core/alu_a_mux.sv
+  - ./hdl/src/core/alu_b_mux.sv
+  - ./hdl/src/core/alu.sv
+  - ./hdl/src/core/mul.sv
+  - ./hdl/src/core/mono_timer.sv
+  - ./hdl/src/core/time_stamp.sv
+  - ./hdl/src/core/timer.sv
+  - ./hdl/src/core/stack.sv
+  - ./hdl/src/core/n_clic.sv
+  - ./hdl/src/core/wb_mux.sv
+  - ./hdl/src/core/wb_mem_mux.sv
+  - ./hdl/src/core/xilinx_sp_BRAM.sv
+  - ./hdl/src/core/atl_sp_bram.sv
+  - ./hdl/src/core/xilinx_dp_BRAM.sv
+  - ./hdl/src/ncobs/atl_sdpram_block.sv
+  - ./hdl/src/d_mem_spram.sv
+  - ./hdl/src/ncobs/interleaved_memory.sv
+  - ./hdl/src/top_arty.sv
+  -
+    target: simulation
+    files:
+    - ./hdl/src/tb_top_arty.sv
+  # Source files grouped in levels. Files in level 0 have no dependencies on files in this
+  # package. Files in level 1 only depend on files in level 0, files in level 2 on files in
+  # levels 1 and 0, etc. Files within a level are ordered alphabetically.
+  # Level 0

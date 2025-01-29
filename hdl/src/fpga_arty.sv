@@ -1,23 +1,23 @@
 // fpga_top
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 // This is just illustrative
 module fpga_arty (
     input sysclk,
-    output logic[3:0] led,
+    output logic [3:0] led,
 
-    output logic[3:0] led_r,
+    output logic [3:0] led_r,
 
-    output logic[3:0] led_g,
+    output logic [3:0] led_g,
 
-    output logic[3:0] led_b,
+    output logic [3:0] led_b,
 
     output logic rx,  // host 
     input  logic tx,  // host
 
-    input logic[1:0] sw,
+    input logic [1:0] sw,
 
-    input logic[3:0] btn
+    input logic [3:0] btn
     // input logic btn1,
     // input logic btn2,
     // input logic btn3
@@ -48,19 +48,19 @@ module fpga_arty (
   //assign led3 = tmp_sw1;
 
   //assign led_r[0]   = 0;
-  assign led_r[1]   = 0;
-  assign led_r[2]   = 0;
-  assign led_r[3]   = 0;
+  assign led_r[1] = 0;
+  assign led_r[2] = 0;
+  assign led_r[3] = 0;
 
-  assign led_g[0]   = 0;
-  assign led_g[1]   = 0;
-  assign led_g[2]   = 0;
-  assign led_g[3]   = 0;
+  assign led_g[0] = 0;
+  assign led_g[1] = 0;
+  assign led_g[2] = 0;
+  assign led_g[3] = 0;
 
-  assign led_b[0]   = 0;
-  assign led_b[1]   = 0;
-  assign led_b[2]   = 0;
-  assign led_b[3]   = 0;
+  assign led_b[0] = 0;
+  assign led_b[1] = 0;
+  assign led_b[2] = 0;
+  assign led_b[3] = 0;
 
   always_comb begin
 
@@ -69,8 +69,8 @@ module fpga_arty (
   top_arty hippo (
       .clk,
       .reset(tmp_sw1),
-      .btn  (btn),
-      .led  (led),
+      .btn(btn),
+      .led(led),
       .tx(rx)
       // .gpio_in({led1, rx, tx}),
       // .gpio_out({led1, rx, tx}),
@@ -89,7 +89,7 @@ module fpga_arty (
 
   // clock devider
   always @(posedge clk) begin
-    r_count <= r_count + 1;
+    r_count  <= r_count + 1;
     led_r[0] <= r_count[22];
   end
 

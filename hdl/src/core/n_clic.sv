@@ -1,5 +1,5 @@
 // n_clic
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module n_clic
   import decoder_pkg::*;
@@ -261,8 +261,16 @@ module n_clic
   always_comb begin
     // this assignment is broken under vivado, always yields max_i = x
     automatic VecT max_i = max_index[VecSize-1];
-    ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
-    ext_entry_data   = '{default: '0};
+    ext_write_enable = '{default: 0};  // we don't touch the csr:s by default
+    ext_entry_data = '{default: 0};
+    int_addr = '0;
+    int_id = '0;
+    int_prio = '0;
+    m_int_thresh_data = '0;
+    m_int_thresh_write_enable = '0;
+    interrupt_out = '0;
+    pc_interrupt_sel = PC_NORMAL;
+    timer_interrupt_clear = '0;
     tail_chain = 0;
     if (timer_interrupt_set) begin
       // pend 0 if timer interrupt

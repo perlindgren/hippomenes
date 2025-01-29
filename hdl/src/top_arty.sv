@@ -1,12 +1,14 @@
 // top_arty
-`timescale 1ns / 1ps
+// `timescale 1ns / 1ps
 
 import config_pkg::*;
 import arty_pkg::*;
 import decoder_pkg::*;
 import mem_pkg::*;
 
-module top_arty (
+module top_arty #(
+    parameter string INIT_IMEM_FILE = ""
+) (
     input  logic clk,
     input  logic reset,
     input  BtnT  btn,
@@ -61,7 +63,7 @@ module top_arty (
 
   // instruction memory
   word imem_data_out;
-
+  /*
 `ifdef VERILATOR
   rom imem (
       // in
@@ -83,7 +85,20 @@ module top_arty (
       .data_out(imem_data_out)
   );
 `endif
+*/
+  atl_sp_bram #(
+      .BRAM_WIDTH_BITS(32),
+      .INIT_FILE(INIT_IMEM_FILE)
+  ) imem (
+      .clk_i(clk),
+      .rst_i(reset),
 
+      .addr_i(pc_reg_out[IMemAddrWidth-1:0]),
+
+      .we_i  (0),
+      .data_i('0),
+      .data_o(imem_data_out)
+  );
   // decoder
   wb_mux_t decoder_wb_mux_sel;
   alu_a_mux_t decoder_alu_a_mux_sel;
@@ -455,7 +470,7 @@ module top_arty (
       .reset(reset),
       .mono_timer(mono_timer_out)
   );
-  n_cobs_encoder enc (
+  /*n_cobs_encoder enc (
       .clk_i(clk),
       .reset_i(reset),
       .csr_enable(decoder_csr_enable),
@@ -493,7 +508,7 @@ module top_arty (
       .tx,
       .next(uart_ack_out)
   );
-
+*/
   word csr_out;
   // match CSR addresses
   always_comb begin

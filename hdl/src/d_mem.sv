@@ -1,5 +1,5 @@
 // d_mem
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module d_mem
   import arty_pkg::*;

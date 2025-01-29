@@ -1,5 +1,5 @@
 // decoder_pkg
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 // import config_pkg::*;
 package decoder_pkg;

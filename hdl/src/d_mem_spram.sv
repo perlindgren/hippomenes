@@ -1,5 +1,5 @@
 // mem
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module d_mem_spram
   import config_pkg::*;
@@ -36,7 +36,50 @@ module d_mem_spram
   logic block_2_we;
   logic block_3_we;
 
-  spram_block #(
+
+  atl_sp_bram #(
+      .BRAM_DEPTH(512)
+  ) block_0 (
+      .clk_i (clk),
+      .rst_i (reset),
+      .addr_i(block_0_addr),
+      .we_i  (block_0_we),
+      .data_i(block_0_din),
+      .data_o(block_0_dout)
+  );
+
+  atl_sp_bram #(
+      .BRAM_DEPTH(512)
+  ) block_1 (
+      .clk_i (clk),
+      .rst_i (reset),
+      .addr_i(block_1_addr),
+      .we_i  (block_1_we),
+      .data_i(block_1_din),
+      .data_o(block_1_dout)
+  );
+  atl_sp_bram #(
+      .BRAM_DEPTH(512)
+  ) block_2 (
+      .clk_i (clk),
+      .rst_i (reset),
+      .addr_i(block_2_addr),
+      .we_i  (block_2_we),
+      .data_i(block_2_din),
+      .data_o(block_2_dout)
+  );
+  atl_sp_bram #(
+      .BRAM_DEPTH(512)
+  ) block_3 (
+      .clk_i (clk),
+      .rst_i (reset),
+      .addr_i(block_3_addr),
+      .we_i  (block_3_we),
+      .data_i(block_3_din),
+      .data_o(block_3_dout)
+  );
+
+  /* spram_block #(
       .MemFileName("data_0.mem")
   ) block_0 (
       .clk(clk),
@@ -75,7 +118,7 @@ module d_mem_spram
       .write_enable(block_3_we),
       .data_in(block_3_din),
       .data_out(block_3_dout)
-  );
+  ); */
   always_ff @(posedge clk) begin
     if (reset) begin
       address_clocked <= 0;

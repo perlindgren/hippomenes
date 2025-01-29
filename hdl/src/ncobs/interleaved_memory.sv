@@ -1,6 +1,6 @@
 
 // mem
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module interleaved_memory
   import config_pkg::*;
@@ -24,7 +24,7 @@ module interleaved_memory
 
   generate
     for (genvar k = 0; k < FifoEntryWidth; k++) begin : gen_blocks
-      sdpram_block #(
+      atl_sdpram_block #(
           .FifoSizeBits(FifoBlockSize * 8),
           .AddrSize(FifoBlockAddrWidth)
       ) block (
