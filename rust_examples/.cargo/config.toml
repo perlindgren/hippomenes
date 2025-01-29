@@ -1,6 +1,5 @@
 [target.riscv32i-unknown-none-elf]
 runner = "./run.sh"
-
 rustflags = [
     # LLD (shipped with the Rust toolchain) is used as the default linker
     "-g",

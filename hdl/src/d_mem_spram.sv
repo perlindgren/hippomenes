@@ -4,7 +4,12 @@
 module d_mem_spram
   import config_pkg::*;
   import mem_pkg::*;
-(
+#(
+    parameter string BLOCK_0_INIT_FILE = "",
+    parameter string BLOCK_1_INIT_FILE = "",
+    parameter string BLOCK_2_INIT_FILE = "",
+    parameter string BLOCK_3_INIT_FILE = ""
+) (
     input logic clk,
     input logic reset,
     // input logic write_enable,
@@ -15,7 +20,6 @@ module d_mem_spram
     input logic write_enable,
     output logic [31:0] data_out
 );
-  //logic [31:0] data_out;
   logic [DMemAddrWidth-1:0] address_clocked;
   mem_width_t width_clocked;
   logic sign_extend_clocked;
@@ -38,7 +42,8 @@ module d_mem_spram
 
 
   atl_sp_bram #(
-      .BRAM_DEPTH(512)
+      .BRAM_DEPTH(512),
+      .INIT_FILE (BLOCK_0_INIT_FILE)
   ) block_0 (
       .clk_i (clk),
       .rst_i (reset),
@@ -49,7 +54,8 @@ module d_mem_spram
   );
 
   atl_sp_bram #(
-      .BRAM_DEPTH(512)
+      .BRAM_DEPTH(512),
+      .INIT_FILE (BLOCK_1_INIT_FILE)
   ) block_1 (
       .clk_i (clk),
       .rst_i (reset),
@@ -59,7 +65,8 @@ module d_mem_spram
       .data_o(block_1_dout)
   );
   atl_sp_bram #(
-      .BRAM_DEPTH(512)
+      .BRAM_DEPTH(512),
+      .INIT_FILE (BLOCK_2_INIT_FILE)
   ) block_2 (
       .clk_i (clk),
       .rst_i (reset),
@@ -69,7 +76,8 @@ module d_mem_spram
       .data_o(block_2_dout)
   );
   atl_sp_bram #(
-      .BRAM_DEPTH(512)
+      .BRAM_DEPTH(512),
+      .INIT_FILE (BLOCK_3_INIT_FILE)
   ) block_3 (
       .clk_i (clk),
       .rst_i (reset),

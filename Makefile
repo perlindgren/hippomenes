@@ -56,3 +56,7 @@ simv: init
 .PHONY: clean
 clean:
 	@rm -rf $(VERIL_BUILD_DIR)
+
+.PHONY: wave
+wave:
+	gtkwave $(VERIL_BUILD_DIR)/top_arty.fst &

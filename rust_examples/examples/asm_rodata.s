@@ -14,7 +14,7 @@ main:
     la t0, rodata 
 loop:
     lw t1, 0(t0)
-    csrw 0x51, t1
+    csrw 0x0, t1
     addi t0, t0, 1
     bne t0, t2, loop
 
@@ -30,8 +30,7 @@ stop:  j stop
 
 
        .rodata
-rodata: .word 0x70706968
-        .word 0x2121216F
-        .word 0x74726175
+rodata: .word 0x04030201
+        .word 0x01020304
 led:    .word 0x00000001
 

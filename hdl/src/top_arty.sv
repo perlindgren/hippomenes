@@ -7,7 +7,12 @@ import decoder_pkg::*;
 import mem_pkg::*;
 
 module top_arty #(
-    parameter string INIT_IMEM_FILE = ""
+    parameter string INIT_IMEM_FILE = "",
+    parameter string BLOCK_0_INIT_FILE = "",
+    parameter string BLOCK_1_INIT_FILE = "",
+    parameter string BLOCK_2_INIT_FILE = "",
+    parameter string BLOCK_3_INIT_FILE = ""
+
 ) (
     input  logic clk,
     input  logic reset,
@@ -93,8 +98,8 @@ module top_arty #(
       .clk_i(clk),
       .rst_i(reset),
 
-      .addr_i(pc_reg_out[IMemAddrWidth-1:0]),
-
+      //.addr_i(pc_reg_out[IMemAddrWidth-1:0] >> 2),
+      .addr_i(pc_interrupt_mux_out[IMemAddrWidth-1:0] >> 2),
       .we_i  (0),
       .data_i('0),
       .data_o(imem_data_out)
@@ -313,7 +318,12 @@ module top_arty #(
 
   word  dmem_data_out;
   logic dmem_alignment_error;
-  d_mem_spram dmem (
+  d_mem_spram #(
+      .BLOCK_0_INIT_FILE(BLOCK_0_INIT_FILE),
+      .BLOCK_1_INIT_FILE(BLOCK_1_INIT_FILE),
+      .BLOCK_2_INIT_FILE(BLOCK_2_INIT_FILE),
+      .BLOCK_3_INIT_FILE(BLOCK_3_INIT_FILE)
+  ) dmem (
       // in
       .clk(clk),
       .reset,

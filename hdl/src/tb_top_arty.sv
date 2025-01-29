@@ -13,7 +13,11 @@ module tb_top_arty;
   logic tx;
 
   top_arty #(
-      .INIT_IMEM_FILE("../../rust_examples/text.mem")
+      .INIT_IMEM_FILE("../../rust_examples/text.mem"),
+      .BLOCK_0_INIT_FILE("../../rust_examples/data_0.mem"),
+      .BLOCK_1_INIT_FILE("../../rust_examples/data_1.mem"),
+      .BLOCK_2_INIT_FILE("../../rust_examples/data_2.mem"),
+      .BLOCK_3_INIT_FILE("../../rust_examples/data_3.mem")
   ) top (
       // in
       .clk,
