@@ -1,7 +1,8 @@
-DUT = top_arty
+DUT = top_arty_edf
 
-TOP_MODULE = tb_top_arty 
-BENDER_TARGETS = simulation 
+TOP_MODULE = tb_top_arty_edf 
+# -t before each target
+BENDER_TARGETS = -t edf 
 BUILD_DIR       ?= $(realpath $(CURDIR))/build
 VERIL_DIR       ?= $(realpath $(CURDIR))/verilator
 VERIL_BUILD_DIR ?= $(BUILD_DIR)/verilator_build
@@ -24,7 +25,7 @@ VERIL_FLAGS ?= \
 	--build \
 	--binary   \
 	--top-module $(TOP_MODULE) \
-	$(shell bender script flist -t $(BENDER_TARGETS)) \
+	$(shell bender script flist $(BENDER_TARGETS)) \
 	--Mdir $(VERIL_BUILD_DIR)/obj_dir \
 	--build \
 	-j `nproc`
@@ -38,7 +39,7 @@ init:
 lint:
 	verilator 										\
 	--lint-only 									\
-	$(shell bender script flist -t simulation) 	\
+	$(shell bender script flist $(BENDER_TARGETS)) 	\
 	--top-module $(DUT)						\
 	--timing                      \
 	$(VERIL_WARN_SUPPRESS)

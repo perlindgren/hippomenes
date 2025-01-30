@@ -225,6 +225,54 @@ module n_clic
       assign csr_vec_data[k] = IMemAddrStore'(temp_vec[k]);
     end
   endgenerate
+
+  // EDF RELATED STUFF
+
+
+  logic csr_we;
+  assign csr_we = (csr_op == CSRRW) && (csr_enable);
+
+  // pull out pending bits out of the interrupt CSRs
+  logic [VecSize-1:0] pendings;
+  genvar i;
+  generate
+    for (i = 0; i < VecSize; i++) begin : gen_pendings
+      //assign pendings[i] = (csr_op == CSRRW) && (csr_enable) && csr_addr == (i + cfg base addr) && csr_data[]
+    end
+  endgenerate
+
+  // EDF thing output
+  logic [$clog2(VecSize)-1:0] edf_ic_o;
+  logic edf_valid;
+  word edf_rdata_o;
+  edf_ic #(
+      // assumed to be byte address
+      .BaseAddr('h89 << 2),
+      .NrIrqs  (VecSize),
+      .TsWidth (32)
+  ) edf_ic (
+      .clk_i (clk),
+      .rst_ni(~reset),
+
+      .cfg_req_i(csr_enable),
+      .cfg_we_i(csr_we),
+      // assumed to be byte address
+      .cfg_addr_i(csr_addr << 2),
+      .cfg_wdata_i(rs1_data),
+      .cfg_rdata_o(edf_rdata_o),
+
+      .mtime_i(mono_timer_out),
+
+      .irq_i(pendings),
+
+      .irq_id_o(edf_ic_o),
+      .irq_valid_o(edf_valid),
+
+      // this should probably be int_out? it's like an ACK
+      .irq_ready_i(interrupt_out)
+  );
+  // END EDF RELATED STUFF
+
   logic         [VecSize-1:0] pended_timer;
   // simple implementation to find max priority
   PrioT                       max_prio     [VecSize];
