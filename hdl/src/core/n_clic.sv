@@ -237,7 +237,11 @@ module n_clic
   genvar i;
   generate
     for (i = 0; i < VecSize; i++) begin : gen_pendings
-      //assign pendings[i] = (csr_op == CSRRW) && (csr_enable) && csr_addr == (i + cfg base addr) && csr_data[]
+      assign pendings[i] = (csr_op == CSRRW) &&
+        (csr_enable) &&
+        csr_addr == (i + EntryCsrBase) &&
+        entry[i].pended &&
+        entry[i].enabled;
     end
   endgenerate
 
@@ -337,6 +341,21 @@ module n_clic
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
       timer_interrupt_clear = 0;
+    end else if (entry[edf_ic_o].pended &&
+                 entry[edf_ic_o].enabled &&
+                 m_int_thresh.data < PrioNum - 1) begin
+      // take EDF interrupt
+      push = 1;
+      pop = 0;
+      int_id = edf_ic_o;
+      int_addr = csr_vec_data[edf_ic_o];
+      int_prio = PrioNum - 1;
+      m_int_thresh_data = PrioNum - 1;
+      m_int_thresh_write_enable = 1;
+      interrupt_out = 1;
+      pc_interrupt_sel = PC_INTERRUPT;
+      ext_write_enable[edf_ic_o] = 0;
+      ext_entry_data[edf_ic_o] = entry[edf_ic_o] & ~1;
     end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
       // take higher priority interrupt
       push = 1;

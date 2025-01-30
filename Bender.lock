@@ -1,7 +1,14 @@
 packages:
   edf-ic:
-    revision: null
+    revision: 78e1e160e99d71a2943ad135c9e5a7ad142b4d30
     version: null
     source:
-      Path: ../../edf-ic
+      Git: git@github.com:ANurmi/edf-ic.git
+    dependencies:
+    - hippomenes-tree
+  hippomenes-tree:
+    revision: bd668f3e29077a8f51c9445eff4ec241f5a2d979
+    version: null
+    source:
+      Git: git@github.com:onsdagens/hippomenes-tree.git
     dependencies: []
