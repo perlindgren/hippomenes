@@ -52,6 +52,7 @@ module xilinx_sp_BRAM #(
     output logic [        DataWidth-1:0] rdata_o
 );
 
+  (* ram_style = "block" *)
   logic [DataWidth-1:0] BRAM[RAM_DEPTH];
   //logic [$clog2(RAM_DEPTH)-1:0] addr_q;
 

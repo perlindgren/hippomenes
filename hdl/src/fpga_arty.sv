@@ -12,10 +12,10 @@ module fpga_arty (
 
     output logic [3:0] led_b,
 
-    output logic rx,  // host 
-    input  logic tx,  // host
+    //output logic rx,  // host 
+    //input  logic tx,  // host
 
-    input logic [1:0] sw,
+    input logic [3:0] sw,
 
     input logic [3:0] btn
     // input logic btn1,
@@ -52,25 +52,25 @@ module fpga_arty (
   assign led_r[2] = 0;
   assign led_r[3] = 0;
 
-  assign led_g[0] = 0;
-  assign led_g[1] = 0;
-  assign led_g[2] = 0;
-  assign led_g[3] = 0;
+  //assign led_g[0] = 0;
+  //assign led_g[1] = 0;
+  //assign led_g[2] = 0;
+  //assign led_g[3] = 0;
 
-  assign led_b[0] = 0;
-  assign led_b[1] = 0;
-  assign led_b[2] = 0;
-  assign led_b[3] = 0;
+  //assign led_b[0] = 0;
+  //assign led_b[1] = 0;
+  //assign led_b[2] = 0;
+  //assign led_b[3] = 0;
 
   always_comb begin
 
   end
-
+  logic rx;
   top_arty hippo (
       .clk,
       .reset(tmp_sw1),
       .btn(btn),
-      .led(led),
+      .led(led_g),
       .tx(rx)
       // .gpio_in({led1, rx, tx}),
       // .gpio_out({led1, rx, tx}),
@@ -86,11 +86,37 @@ module fpga_arty (
       .reset(tmp_sw0),
       .locked
   );
+  
+  ila_0 ila (
+    .clk(sysclk),
+    
+    .probe0(hippo.imem_data_out),
+    .probe1(hippo.imem.addr_i),
+    .probe2(tmp_sw1)
+  );
+  logic [7:0] jtag_out;
+  logic [14:0] jtag_addr_out;
+  jtag_top jtag (
+    .clk_i(clk),
+    .rst_i(tmp_sw1),
+    .sel(led_r[0]),
+    //.led_g(led),
+    //.led_b,
+    .sw(sw[3:2]),
+    .data_o(jtag_out),
+    .write_addr_o(jtag_addr_out)
+  );
 
-  // clock devider
+  always_comb begin
+    led = jtag_out[3:0];
+    led_b = jtag_out[7:4];
+    //led_r[0] = (jtag_addr_out > 4095);
+  end
+
+  // clock divider
   always @(posedge clk) begin
     r_count  <= r_count + 1;
-    led_r[0] <= r_count[22];
+    //led_r[0] <= r_count[22];
   end
 
 endmodule

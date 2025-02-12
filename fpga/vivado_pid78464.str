@@ -1,0 +1,3137 @@
+/*
+
+AMD Vivado v2023.2 (64-bit) [Major: 2023, Minor: 2]
+SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+
+Process ID (PID): 78464
+License: Customer
+Mode: GUI Mode
+
+Current time: 	Fri Jan 31 10:55:16 CET 2025
+Time zone: 	Central European Standard Time (Europe/Stockholm)
+
+OS: DISTRIB_ID="Arch"
+OS Version: 6.12.10-arch1-1
+OS Architecture: amd64
+Available processors (cores): 32
+LSB Release Description: DISTRIB_ID=Arch
+
+Display: 1
+Screen size: 3440x1440
+Local screen bounds: x = 0, y = 0, width = 3440, height = 1440
+Screen resolution (DPI): 100
+Available screens: 2
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+Scale size: 12
+OS font scaling: 100%
+Anti-Alias Enabled: false
+
+Java version: 	17.0.7 64-bit
+JavaFX version: 17.0.1
+Java home: 	/home/pawel/.local/bin/Xilinx/Vivado/2023.2/tps/lnx64/jre17.0.7_7
+Java executable: 	/home/pawel/.local/bin/Xilinx/Vivado/2023.2/tps/lnx64/jre17.0.7_7/bin/java
+Java arguments: 	[-Dsun.java2d.pmoffscreen=false, -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2, -Dsun.java2d.xrender=false, -Djdk.gtk.version=2, -Dsun.java2d.uiScale.enabled=false, -Dswing.aatext=true, -XX:-UsePerfData, -Djdk.map.althashing.threshold=512, -XX:StringTableSize=4072, -XX:+UseStringDeduplication, -XX:MaxGCPauseMillis=200, -XX:+ParallelRefProcEnabled, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.base/java.nio=ALL-UNNAMED, --add-opens=java.desktop/sun.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/java.awt.event=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.base/java.nio=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.table=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED, --add-exports=java.base/sun.security.action=ALL-UNNAMED, --add-exports=java.desktop/sun.font=ALL-UNNAMED, --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED, -XX:NewSize=80m, -XX:MaxNewSize=80m, -Xms512m, -Xmx4072m, -Xss10m, -Xrs, -Dawt.useSystemAAFontSettings=on, -Dswing.aatext=true, -Dsun.java2d.xrender=true]
+Java initial memory (-Xms): 	512 MB
+Java maximum memory (-Xmx):	 3 GB
+
+User name: 	pawel
+User home directory: /home/pawel
+User working directory: /home/pawel/hippo-edf/hippomenes/fpga
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/pawel/.local/bin/Xilinx/Vivado
+HDI_APPROOT: /home/pawel/.local/bin/Xilinx/Vivado/2023.2
+RDI_DATADIR: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/data
+RDI_BINDIR: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/bin
+
+Vivado preferences file: /home/pawel/.Xilinx/Vivado/2023.2/vivado.xml
+Vivado preferences directory: /home/pawel/.Xilinx/Vivado/2023.2/
+Vivado layouts directory: /home/pawel/.Xilinx/Vivado/2023.2/data/layouts
+PlanAhead jar file: 	/home/pawel/.local/bin/Xilinx/Vivado/2023.2/lib/classes/planAhead.jar
+Vivado log file: 	/home/pawel/hippo-edf/hippomenes/fpga/vivado.log
+Vivado journal file: 	/home/pawel/hippo-edf/hippomenes/fpga/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-78464-archlinux
+Non-Default Parameters:	[]
+
+Xilinx & AMD Environment Variables
+--------------------------------------------------------------------------------------------
+PICO_SDK_PATH: /usr/share/pico-sdk
+RDI_APPROOT: /home/pawel/.local/bin/Xilinx/Vivado/2023.2
+RDI_BASEROOT: /home/pawel/.local/bin/Xilinx/Vivado
+RDI_BINROOT: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/bin
+RDI_BUILD: yes
+RDI_DATADIR: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/data
+RDI_INSTALLROOT: /home/pawel/.local/bin/Xilinx
+RDI_INSTALLVER: 2023.2
+RDI_JAVA_PLATFORM: 
+RDI_JAVA_VERSION: 17.0.7_7
+RDI_LIBDIR: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/lib/lnx64.o/Default:/home/pawel/.local/bin/Xilinx/Vivado/2023.2/lib/lnx64.o
+RDI_OPT_EXT: .o
+RDI_PATCHROOT: 
+RDI_PLATFORM: lnx64
+RDI_PREPEND_PATH: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/ids_lite/ISE/bin/lin64
+RDI_PROG: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/bin/unwrapped/lnx64.o/vivado
+RDI_SESSION_INFO: /home/pawel/hippo-edf/hippomenes/fpga:archlinux_1738317308_78409
+RDI_SHARED_DATA: /home/pawel/.local/bin/Xilinx/SharedData/2023.2/data
+RDI_TPS_ROOT: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/tps/lnx64
+RDI_USE_JDK17: True
+SHELL: /usr/bin/fish
+XILINX: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/ids_lite/ISE
+XILINX_DSP: /home/pawel/.local/bin/Xilinx/Vivado/2023.2/ids_lite/ISE
+XILINX_HLS: /home/pawel/.local/bin/Xilinx/Vitis_HLS/2023.2
+XILINX_PLANAHEAD: /home/pawel/.local/bin/Xilinx/Vivado/2023.2
+XILINX_VIVADO: /home/pawel/.local/bin/Xilinx/Vivado/2023.2
+XILINX_VIVADO_HLS: /home/pawel/.local/bin/Xilinx/Vivado/2023.2
+_JAVA_AWT_WM_NONREPARENTING: 1
+_JAVA_OPTIONS: -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.xrender=true
+
+
+GUI allocated memory:	512 MB
+GUI max memory:		4,072 MB
+Engine allocated memory: 1,582 MB
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// HMemoryUtils.trashcanNow. Engine heap size: 1,607 MB. GUI used memory: 59 MB. Current time: 1/31/25, 10:55:17 AM CET
+selectList(PAResourceQtoS.SyntheticaGettingStartedView_RECENT_PROJECTS, "/home/pawel/hippo-edf/hippomenes/fpga/arty/arty.xpr", 0); // b.c (PAResourceQtoS.SyntheticaGettingStartedView_RECENT_PROJECTS)
+// Opening Vivado Project: /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.xpr. Version: Vivado v2023.2 
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: FLOW_ADDED
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: COMPOSITE_FILE_CHANGE
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 112 MB (+115297kb) [00:00:08]
+// [Engine Memory]: 1,651 MB (+1579559kb) [00:00:08]
+// [GUI Memory]: 124 MB (+6830kb) [00:00:08]
+// [Engine Memory]: 1,796 MB (+65998kb) [00:00:08]
+// Tcl Message: open_project /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/pawel/.local/bin/Xilinx/Vivado/2023.2/data/ip'. 
+// [GUI Memory]: 137 MB (+6887kb) [00:00:09]
+// Project name: arty; location: /home/pawel/hippo-edf/hippomenes/fpga/arty; part: xc7a35ticsg324-1L
+dismissDialog("Open Project"); // bq (Open Project Progress)
+selectTab((HResource) null, (HResource) null, "Tcl Console", 0); // aa
+// Tcl Message: update_compile_order -fileset sources_1 
+// Tcl (Dont Echo) Command: 'rdi::info_commands {w*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_info*}'
+// Elapsed time: 27 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info test.mmi", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'write_mem_info test.mmi'
+// Tcl Command: 'write_mem_info test.mmi'
+// Tcl Message: write_mem_info test.mmi 
+// Tcl Message: ERROR: [Common 17-53] User Exception: No open design. Please open an elaborated, synthesized or implemented design before executing this command. 
+// Tcl (Dont Echo) Command: 'rdi::info_commands {pwd*}'
+// Elapsed time: 21 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "pwd", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'pwd'
+// Tcl Command: 'pwd'
+// Tcl Message: pwd 
+// Tcl Message: /home/pawel/hippo-edf/hippomenes/fpga 
+// Tcl (Dont Echo) Command: 'rdi::info_commands {open*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {open_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {open_p*}'
+// Elapsed time: 12 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "open_p", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+selectCodeEditor(RDIResource.TclConsoleView_TCL_CONSOLE_CODE_EDITOR, 369, 106); // cD (RDIResource.TclConsoleView_TCL_CONSOLE_CODE_EDITOR)
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "open_project ./arty/arty.xpr", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'open_project ./arty/arty.xpr'
+// Tcl Command: 'open_project ./arty/arty.xpr'
+// Tcl Message: open_project ./arty/arty.xpr 
+// Tcl Message: ERROR: [Coretcl 2-101] Project './arty/arty.xpr' is already open. 
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design]", 19, true); // f (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree) - Node
+// Run Command: PAResourceCommand.PACommandNames_GOTO_IMPLEMENTED_DESIGN
+// Tcl Message: open_run impl_1 
+// TclEventType: SDC_CONSTRAINT_ADD
+// TclEventType: POWER_CNS_STALE
+// TclEventType: SDC_CONSTRAINT_ADD
+// TclEventType: FLOORPLAN_MODIFY
+// TclEventType: DESIGN_NEW
+// HMemoryUtils.trashcanNow. Engine heap size: 2,732 MB. GUI used memory: 69 MB. Current time: 1/31/25, 10:56:52 AM CET
+// [Engine Memory]: 2,732 MB (+886629kb) [00:01:41]
+// TclEventType: DESIGN_NEW
+// TclEventType: HFED_INIT_ROUTE_STORAGE_COMPLETED
+// [Engine Memory]: 2,958 MB (+93791kb) [00:01:42]
+// [GUI Memory]: 147 MB (+2603kb) [00:01:42]
+// [GUI Memory]: 155 MB (+673kb) [00:01:42]
+// DeviceView Instantiated
+// TclEventType: CURR_DESIGN_SET
+// Tcl Message: INFO: [Device 21-403] Loading part xc7a35ticsg324-1L 
+// Tcl Message: Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 8101.531 ; gain = 0.000 ; free physical = 17779 ; free virtual = 26119 
+// Tcl Message: INFO: [Netlist 29-17] Analyzing 399 Unisim elements for replacement INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds INFO: [Project 1-479] Netlist was created with Vivado 2023.2 INFO: [Project 1-570] Preparing netlist for logic optimization 
+// Tcl Message: Read ShapeDB Complete: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 8175.250 ; gain = 0.000 ; free physical = 17694 ; free virtual = 26034 
+// Tcl Message: INFO: [Timing 38-478] Restoring timing data from binary archive. INFO: [Timing 38-479] Binary timing data restore complete. INFO: [Project 1-856] Restoring constraints from binary archive. INFO: [Project 1-853] Binary constraint restore complete. INFO: [Designutils 20-5722] Start Reading Physical Databases. 
+// Tcl Message: Reading placement. 
+// Tcl Message: Read Netlist Cache: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 8731.805 ; gain = 0.000 ; free physical = 17213 ; free virtual = 25553 
+// Tcl Message: Reading placer database... 
+// Tcl Message: Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 8731.805 ; gain = 0.000 ; free physical = 17213 ; free virtual = 25553 Read PlaceDB: Time (s): cpu = 00:00:00.09 ; elapsed = 00:00:00.09 . Memory (MB): peak = 8741.805 ; gain = 10.000 ; free physical = 17213 ; free virtual = 25553 Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 8741.805 ; gain = 0.000 ; free physical = 17213 ; free virtual = 25553 
+// Tcl Message: Reading routing. 
+// Tcl Message: Read RouteStorage: Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.05 . Memory (MB): peak = 8741.805 ; gain = 0.000 ; free physical = 17213 ; free virtual = 25553 Read Physdb Files: Time (s): cpu = 00:00:00.15 ; elapsed = 00:00:00.15 . Memory (MB): peak = 8741.805 ; gain = 10.000 ; free physical = 17213 ; free virtual = 25553 
+// Tcl Message: Restored from archive | CPU: 0.150000 secs | Memory: 7.331985 MB | 
+// Tcl Message: Finished XDEF File Restore: Time (s): cpu = 00:00:00.15 ; elapsed = 00:00:00.15 . Memory (MB): peak = 8741.805 ; gain = 10.000 ; free physical = 17213 ; free virtual = 25553 Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 8741.805 ; gain = 0.000 ; free physical = 17213 ; free virtual = 25553 
+// Tcl Message: INFO: [Project 1-111] Unisim Transformation Summary:   A total of 59 instances were transformed.   RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 43 instances   RAM32X1D => RAM32X1D (RAMD32(x2)): 16 instances  
+// Device view-level: 0.0
+// RouteApi: Init Delay Mediator Swing Worker Finished
+// TclEventType: DRC_ADDED
+// Tcl Message: open_run: Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 9008.484 ; gain = 1100.391 ; free physical = 16924 ; free virtual = 25265 
+// TclEventType: DRC_ADDED
+// TclEventType: METHODOLOGY_ADDED
+// TclEventType: POWER_UPDATED
+// [GUI Memory]: 168 MB (+5806kb) [00:01:42]
+// [GUI Memory]: 177 MB (+605kb) [00:01:42]
+// TclEventType: TIMING_SUMMARY_UPDATED
+// 'dB' command handler elapsed time: 7 seconds
+dismissDialog("Open Implemented Design"); // bq (Open Implemented Design Progress)
+selectTab((HResource) null, (HResource) null, "Tcl Console", 0); // aa
+// [GUI Memory]: 195 MB (+10107kb) [00:01:44]
+// Tcl (Dont Echo) Command: 'rdi::info_commands {wri*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_i*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_info*}'
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info test.mmi", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'write_mem_info test.mmi'
+// Tcl Command: 'write_mem_info test.mmi'
+// Tcl Message: write_mem_info test.mmi 
+// Tcl Message: ERROR: [Common 17-69] Command failed: Failed to create the: /home/pawel/hippo-edf/hippomenes/fpga/test.mmi file. You will not be able to use the updatemem program to update the bitstream with new data. 
+// Tcl (Dont Echo) Command: 'rdi::info_commands {pwd*}'
+// Elapsed time: 14 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "pwd", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'pwd'
+// Tcl Command: 'pwd'
+// Tcl Message: pwd 
+// Tcl Message: /home/pawel/hippo-edf/hippomenes/fpga 
+// Tcl (Dont Echo) Command: 'rdi::info_commands {wr*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_*}'
+// Elapsed time: 15 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info --help", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'write_mem_info --help'
+// Tcl Command: 'write_mem_info --help'
+// Tcl Message: write_mem_info --help 
+// Tcl Message: ERROR: [Common 17-170] Unknown option '--help', please type 'write_mem_info -help' for usage info. 
+// Tcl (Dont Echo) Command: 'rdi::match_options {write_mem_info} {}'
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info -help", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'write_mem_info -help'
+// Tcl Command: 'write_mem_info -help'
+// Tcl Message: write_mem_info -help 
+// HMemoryUtils.trashcanNow. Engine heap size: 3,047 MB. GUI used memory: 192 MB. Current time: 1/31/25, 10:57:42 AM CET
+// Tcl (Dont Echo) Command: 'rdi::info_commands {w*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {wr*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {writ*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_*}'
+// Elapsed time: 28 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info"); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+selectCodeEditor(RDIResource.TclConsoleView_TCL_CONSOLE_CODE_EDITOR, 500, 139); // cD (RDIResource.TclConsoleView_TCL_CONSOLE_CODE_EDITOR)
+// Tcl (Dont Echo) Command: 'rdi::match_options {write_mem_info} {f}'
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info hello.mmi -f", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'write_mem_info hello.mmi -f'
+// Tcl Command: 'write_mem_info hello.mmi -f'
+// Tcl Message: write_mem_info hello.mmi -f 
+// Tcl Message: ERROR: '-f' option is ambiguous and matches 'file', 'force', and 'force_detect_xpm' 
+// Tcl (Dont Echo) Command: 'rdi::match_options {write_mem_info} {for}'
+// Elapsed time: 10 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info hello.mmi -force", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'write_mem_info hello.mmi -force'
+// Tcl Command: 'write_mem_info hello.mmi -force'
+// Tcl Message: write_mem_info hello.mmi -force 
+// Tcl Message: ERROR: [Common 17-69] Command failed: Failed to create the: /home/pawel/hippo-edf/hippomenes/fpga/hello.mmi file. You will not be able to use the updatemem program to update the bitstream with new data. 
+// Tcl (Dont Echo) Command: 'rdi::info_commands {pwd*}'
+// Elapsed time: 101 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "pwd", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'pwd'
+// Tcl Command: 'pwd'
+// Tcl Message: pwd 
+// Tcl Message: /home/pawel/hippo-edf/hippomenes/fpga 
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+// Tcl (Dont Echo) Command: 'rdi::info_commands bd::match_path'
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "source ../help.tcl", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'source ../help.tcl'
+// Tcl Command: 'source ../help.tcl'
+// Tcl Message: source ../help.tcl 
+dismissDialog("Tcl Command"); // bq (Tcl Command Progress)
+// Tcl (Dont Echo) Command: 'rdi::info_commands {w*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {wi*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_info*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_info_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_info_int*}'
+// Elapsed time: 36 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info_int test.mmi", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'write_mem_info_int test.mmi'
+// Tcl Command: 'write_mem_info_int test.mmi'
+// Tcl Message: write_mem_info_int test.mmi 
+// Tcl Message: /home/pawel/hippo-edf/hippomenes/fpga/test.mmi MMI file is created. The updatemem command template below can be used to populate the BRAM: Cant find bit file at arty.runs/impl_1 Have you run write_bitstream? updatemem -force -debug -meminfo test.mmi   -bit <BIT FILE>.bit -out download.bit > dump.txt 
+// HMemoryUtils.trashcanNow. Engine heap size: 3,051 MB. GUI used memory: 193 MB. Current time: 1/31/25, 11:00:53 AM CET
+dismissDialog("Tcl Command"); // bq (Tcl Command Progress)
+// Elapsed time: 74 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "pwd", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'pwd'
+// Tcl Command: 'pwd'
+// Tcl Message: pwd 
+// Tcl Message: /home/pawel/hippo-edf/hippomenes/fpga 
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "cd arty", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'cd arty'
+// Tcl Command: 'cd arty'
+// Tcl Message: cd arty 
+// Tcl (Dont Echo) Command: 'rdi::info_commands {l*}'
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "pwd", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'pwd'
+// Tcl Command: 'pwd'
+// Tcl Message: pwd 
+// Tcl Message: /home/pawel/hippo-edf/hippomenes/fpga/arty 
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_ino*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_in*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_info*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_info_*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {write_mem_info_i*}'
+// Elapsed time: 18 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "write_mem_info_int test.mmi", true); // h.b (RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE)
+// Tcl Command: 'write_mem_info_int test.mmi'
+// Tcl Command: 'write_mem_info_int test.mmi'
+// Tcl Message: write_mem_info_int test.mmi 
+// Tcl Message: /home/pawel/hippo-edf/hippomenes/fpga/arty/test.mmi MMI file is created. The updatemem command template below can be used to populate the BRAM: updatemem -force -debug -meminfo test.mmi   -bit arty.runs/impl_1/fpga_arty.bit -out download.bit > dump.txt 
+dismissDialog("Tcl Command"); // bq (Tcl Command Progress)
+// [GUI Memory]: 209 MB (+3762kb) [00:09:57]
+// Elapsed time: 149 seconds
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty)]", 4); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram)]", 12, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram)]", 12); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Nets (3146)]", 15); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Nets (3146)]", 15); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Node
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, true, false, false, false, false, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Double Click - Node
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, true, false, false, false, true, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Popup Trigger - Node
+selectMenuItem(RDIResourceCommand.RDICommands_PROPERTIES, "Cell Properties..."); // ao (RDIResourceCommand.RDICommands_PROPERTIES, edit_properties_menu)
+// Run Command: RDIResourceCommand.RDICommands_PROPERTIES
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Properties", 1); // g (RDIResource.PropertiesView_TABBED_PANE)
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Statistics", 2); // g (RDIResource.PropertiesView_TABBED_PANE)
+selectButton(RDIResource.PropertiesView_PREVIOUS_OBJECT, "Properties_backward"); // B (RDIResource.PropertiesView_PREVIOUS_OBJECT, Properties_backward)
+selectButton(RDIResource.PropertiesView_PREVIOUS_OBJECT, "Properties_backward"); // B (RDIResource.PropertiesView_PREVIOUS_OBJECT, Properties_backward)
+selectTab((HResource) null, (HResource) null, "Netlist", 1); // aa
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Node
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, true, false, false, false, false, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Double Click - Node
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Leaf Cells (2184)]", 16, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Leaf Cells (2184)]", 16, false, false, false, false, false, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Double Click
+// Elapsed time: 54 seconds
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Leaf Cells (2184), g_byte_write[1].BRAM_reg (RAMB36E1)]", 2035, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+// HMemoryUtils.trashcanNow. Engine heap size: 3,057 MB. GUI used memory: 163 MB. Current time: 1/31/25, 11:06:42 AM CET
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Leaf Cells (2184), g_byte_write[1].BRAM_reg (RAMB36E1)]", 2035, false, false, false, false, false, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Double Click
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Leaf Cells (2184), g_byte_write[1].BRAM_reg (RAMB36E1)]", 2035, false, false, false, false, true, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Popup Trigger
+selectMenuItem(RDIResourceCommand.RDICommands_PROPERTIES, "Cell Properties..."); // ao (RDIResourceCommand.RDICommands_PROPERTIES, edit_properties_menu)
+// Run Command: RDIResourceCommand.RDICommands_PROPERTIES
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Properties", 1); // g (RDIResource.PropertiesView_TABBED_PANE)
+// [Engine Memory]: 3,188 MB (+86309kb) [00:11:44]
+// HMemoryUtils.trashcanNow. Engine heap size: 3,201 MB. GUI used memory: 124 MB. Current time: 1/31/25, 11:06:57 AM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 3,201 MB. GUI used memory: 182 MB. Current time: 1/31/25, 11:07:35 AM CET
+// [GUI Memory]: 220 MB (+224kb) [00:12:26]
+// Elapsed time: 72 seconds
+selectTab((HResource) null, (HResource) null, "Sources", 0); // aa
+selectTab((HResource) null, (HResource) null, "Netlist", 1); // aa
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Leaf Cells (2184)]", 16); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram)]", 12); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram)]", 12); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Nets (3146)]", 15); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Nets (3146), data_out]", 22, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Node
+// Elapsed time: 28 seconds
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Nets (3146)]", 15, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Node
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM), Nets (3146)]", 15); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram)]", 12); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+// Elapsed time: 18 seconds
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu)]", 7); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207)]", 8); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207), alu_a_mux_out]", 9, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Node
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207), alu_a_mux_out]", 9); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207), alu_a_mux_out]", 9); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Leaf Cells (48)]", 84); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Leaf Cells (48)]", 84); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207), S]", 37); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+collapseTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207), S]", 37); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207), data_reg_0_3_12_16_i_42_n_1]", 81, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207), data_reg_0_3_12_16_i_42_n_1]", 81, false, false, false, false, false, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Double Click
+// HMemoryUtils.trashcanNow. Engine heap size: 3,202 MB. GUI used memory: 147 MB. Current time: 1/31/25, 11:09:41 AM CET
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207), data_reg_0_3_12_16_i_42_n_1]", 81, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), alu (alu), Nets (207), data_reg_0_3_12_16_i_42_n_1]", 81, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTab((HResource) null, (HResource) null, "Sources", 0); // aa
+selectTab((HResource) null, (HResource) null, "Net Properties", 2); // aa
+// Elapsed time: 61 seconds
+selectTab((HResource) null, (HResource) null, "Reports", 3); // aa
+selectTab((HResource) null, (HResource) null, "Design Runs", 4); // aa
+selectTab((HResource) null, (HResource) null, "Log", 2); // aa
+// Elapsed time: 13 seconds
+selectTab(PAResourceItoN.LogView_TABBED_PANE, (HResource) null, "Implementation", 1); // g (PAResourceItoN.LogView_TABBED_PANE, MonitorView)
+// Elapsed time: 38 seconds
+selectTab(PAResourceItoN.LogView_TABBED_PANE, (HResource) null, "Synthesis", 0); // g (PAResourceItoN.LogView_TABBED_PANE, MonitorView)
+// HMemoryUtils.trashcanNow. Engine heap size: 3,204 MB. GUI used memory: 207 MB. Current time: 1/31/25, 11:11:53 AM CET
+// Elapsed time: 35 seconds
+unMinimizeFrame(PAResourceOtoP.PAViews_REPORTS, "Reports"); // R (PAResourceOtoP.PAViews_REPORTS, Reports)
+// Elapsed time: 12 seconds
+selectTreeTable(PAResourceEtoH.ExpReportTreePanel_EXP_REPORT_TREE_TABLE, "Utilization - Place Design ; report_utilization ;  ; Fri Jan 31 10:36:38 CET 2025 ; 11300", 19, "Utilization - Place Design", 0, false); // J (PAResourceEtoH.ExpReportTreePanel_EXP_REPORT_TREE_TABLE)
+expandTreeTable(PAResourceEtoH.ExpReportTreePanel_EXP_REPORT_TREE_TABLE, "Utilization - Place Design ; report_utilization ;  ; Fri Jan 31 10:36:38 CET 2025 ; 11300", 19); // J (PAResourceEtoH.ExpReportTreePanel_EXP_REPORT_TREE_TABLE)
+selectTreeTable(PAResourceEtoH.ExpReportTreePanel_EXP_REPORT_TREE_TABLE, "Utilization - Place Design ; report_utilization ;  ; Fri Jan 31 10:36:38 CET 2025 ; 11300", 19, "Utilization - Place Design", 0, false, false, false, false, false, true); // J (PAResourceEtoH.ExpReportTreePanel_EXP_REPORT_TREE_TABLE) - Double Click
+// HMemoryUtils.trashcanNow. Engine heap size: 3,245 MB. GUI used memory: 122 MB. Current time: 1/31/25, 11:12:32 AM CET
+// Elapsed time: 229 seconds
+selectTab((HResource) null, (HResource) null, "Sources", 0); // aa
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv)]", 1, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv)]", 1, true, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv)]", 2, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), pc_branch_mux : pc_branch_mux (pc_branch_mux.sv)]", 4, false, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), imem : atl_sp_bram (atl_sp_bram.sv)]", 7, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), imem : atl_sp_bram (atl_sp_bram.sv)]", 7, true, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), imem : atl_sp_bram (atl_sp_bram.sv), bram : xilinx_sp_BRAM (xilinx_sp_BRAM.sv)]", 8, false); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), imem : atl_sp_bram (atl_sp_bram.sv), bram : xilinx_sp_BRAM (xilinx_sp_BRAM.sv)]", 8, false, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click
+selectCodeEditor("xilinx_sp_BRAM.sv", 135, 160); // ad (xilinx_sp_BRAM.sv)
+typeControlKey((HResource) null, "xilinx_sp_BRAM.sv", 'v'); // ad (xilinx_sp_BRAM.sv)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("xilinx_sp_BRAM.sv", 4, 181); // ad (xilinx_sp_BRAM.sv)
+// Elapsed Time for: 'L.f': 21m:18s
+// Elapsed Time for: 'L.f': 21m:20s
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'L.f': 21m:24s
+// Elapsed Time for: 'L.f': 21m:26s
+// Elapsed time: 11 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), dmem : d_mem_spram (d_mem_spram.sv)]", 23, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), dmem : d_mem_spram (d_mem_spram.sv)]", 23, true, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), dmem : d_mem_spram (d_mem_spram.sv), block_0 : atl_sp_bram (atl_sp_bram.sv)]", 24, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), dmem : d_mem_spram (d_mem_spram.sv), block_0 : atl_sp_bram (atl_sp_bram.sv)]", 24, true, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), dmem : d_mem_spram (d_mem_spram.sv), block_0 : atl_sp_bram (atl_sp_bram.sv), bram : xilinx_sp_BRAM (xilinx_sp_BRAM.sv)]", 25, false); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), dmem : d_mem_spram (d_mem_spram.sv), block_0 : atl_sp_bram (atl_sp_bram.sv), bram : xilinx_sp_BRAM (xilinx_sp_BRAM.sv)]", 25, false, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click
+// HMemoryUtils.trashcanNow. Engine heap size: 3,259 MB. GUI used memory: 125 MB. Current time: 1/31/25, 11:16:52 AM CET
+// Elapsed time: 23 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Generate Bitstream]", 32, false); // f (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree)
+// Run Command: PAResourceCommand.PACommandNames_RUN_BITGEN
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (RDIResource.BaseDialog_YES)
+dismissDialog("Synthesis is Out-of-date"); // u (dialog0)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+closeView(PAResourceOtoP.PAViews_PAR_REPORT, "PAR Report"); // c (PAResourceOtoP.PAViews_PAR_REPORT, PlanAheadTabPAR Report)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// Tcl Message: INFO: [Project 1-1160] Copying file /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.runs/synth_1/fpga_arty.dcp to /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.srcs/utils_1/imports/synth_1 and adding it to utils fileset 
+dismissDialog("Resetting Runs"); // bq (Resetting Runs Progress)
+// TclEventType: RUN_LAUNCH
+// TclEventType: DESIGN_STALE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -to_step write_bitstream -jobs 16 
+// Tcl Message: [Fri Jan 31 11:17:17 2025] Launched synth_1... Run output will be captured here: /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.runs/synth_1/runme.log [Fri Jan 31 11:17:17 2025] Launched impl_1... Run output will be captured here: /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 134 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (RDIResource.BaseDialog_CANCEL)
+dismissDialog("Bitstream Generation Completed"); // Q.a (dialog1)
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; synth_design Complete! ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 4821 ; 1706 ; 1.0 ; 0 ; 8 ; Fri Jan 31 11:17:17 CET 2025 ; 00:01:23 ; Vivado Synthesis Defaults (Vivado Synthesis 2023) ; Vivado Synthesis Default Reports (Vivado Synthesis 2023) ; xc7a35ticsg324-1L ; archlinux ; Vivado Synthesis Defaults", 0, "4821", 16, true); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE) - Node
+collapseTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; synth_design Complete! ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 4821 ; 1706 ; 1.0 ; 0 ; 8 ; Fri Jan 31 11:17:17 CET 2025 ; 00:01:23 ; Vivado Synthesis Defaults (Vivado Synthesis 2023) ; Vivado Synthesis Default Reports (Vivado Synthesis 2023) ; xc7a35ticsg324-1L ; archlinux ; Vivado Synthesis Defaults", 0); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE)
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; synth_design Complete! ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 4821 ; 1706 ; 1.0 ; 0 ; 8 ; Fri Jan 31 11:17:17 CET 2025 ; 00:01:23 ; Vivado Synthesis Defaults (Vivado Synthesis 2023) ; Vivado Synthesis Default Reports (Vivado Synthesis 2023) ; xc7a35ticsg324-1L ; archlinux ; Vivado Synthesis Defaults", 0, "4821", 16, true, false, false, false, false, true); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE) - Double Click - Node
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; synth_design Complete! ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 4821 ; 1706 ; 1.0 ; 0 ; 8 ; Fri Jan 31 11:17:17 CET 2025 ; 00:01:23 ; Vivado Synthesis Defaults (Vivado Synthesis 2023) ; Vivado Synthesis Default Reports (Vivado Synthesis 2023) ; xc7a35ticsg324-1L ; archlinux ; Vivado Synthesis Defaults", 0, "4821", 16, true); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE) - Node
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; synth_design Complete! ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 4821 ; 1706 ; 1.0 ; 0 ; 8 ; Fri Jan 31 11:17:17 CET 2025 ; 00:01:23 ; Vivado Synthesis Defaults (Vivado Synthesis 2023) ; Vivado Synthesis Default Reports (Vivado Synthesis 2023) ; xc7a35ticsg324-1L ; archlinux ; Vivado Synthesis Defaults", 0, "4821", 16, true); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE) - Node
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; synth_design Complete! ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 4821 ; 1706 ; 1.0 ; 0 ; 8 ; Fri Jan 31 11:17:17 CET 2025 ; 00:01:23 ; Vivado Synthesis Defaults (Vivado Synthesis 2023) ; Vivado Synthesis Default Reports (Vivado Synthesis 2023) ; xc7a35ticsg324-1L ; archlinux ; Vivado Synthesis Defaults", 0, "4821", 16, true); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE) - Node
+expandTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; synth_design Complete! ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 4821 ; 1706 ; 1.0 ; 0 ; 8 ; Fri Jan 31 11:17:17 CET 2025 ; 00:01:23 ; Vivado Synthesis Defaults (Vivado Synthesis 2023) ; Vivado Synthesis Default Reports (Vivado Synthesis 2023) ; xc7a35ticsg324-1L ; archlinux ; Vivado Synthesis Defaults", 0); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE)
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; synth_design Complete! ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 4821 ; 1706 ; 1.0 ; 0 ; 8 ; Fri Jan 31 11:17:17 CET 2025 ; 00:01:23 ; Vivado Synthesis Defaults (Vivado Synthesis 2023) ; Vivado Synthesis Default Reports (Vivado Synthesis 2023) ; xc7a35ticsg324-1L ; archlinux ; Vivado Synthesis Defaults", 0, "4821", 16, true, false, false, false, false, true); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE) - Double Click - Node
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; synth_design Complete! ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 4821 ; 1706 ; 1.0 ; 0 ; 8 ; Fri Jan 31 11:17:17 CET 2025 ; 00:01:23 ; Vivado Synthesis Defaults (Vivado Synthesis 2023) ; Vivado Synthesis Default Reports (Vivado Synthesis 2023) ; xc7a35ticsg324-1L ; archlinux ; Vivado Synthesis Defaults", 0, "4821", 16, true, false, false, false, true, false); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE) - Popup Trigger - Node
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "Out-of-Context Module Runs ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; ", 2, "Out-of-Context Module Runs", 0, true); // ao (PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE) - Node
+// HMemoryUtils.trashcanNow. Engine heap size: 3,246 MB. GUI used memory: 130 MB. Current time: 1/31/25, 11:46:52 AM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 3,246 MB. GUI used memory: 112 MB. Current time: 1/31/25, 12:16:52 PM CET
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'L.f': 01h:29m:00s
+// Elapsed Time for: 'L.f': 01h:29m:02s
+// HMemoryUtils.trashcanNow. Engine heap size: 3,292 MB. GUI used memory: 113 MB. Current time: 1/31/25, 12:24:22 PM CET
+// Elapsed time: 3950 seconds
+selectButton(PAResourceTtoZ.TaskBanner_CLOSE, (String) null); // j (PAResourceTtoZ.TaskBanner_CLOSE)
+closeTask("Implementation", "Implemented Design", "DesignTask.RESULTS_ANALYSIS");
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (RDIResource.BaseDialog_OK)
+dismissDialog("Confirm Close"); // u (dialog2)
+// TclEventType: DESIGN_CLOSE
+// HMemoryUtils.trashcanNow. Engine heap size: 3,283 MB. GUI used memory: 89 MB. Current time: 1/31/25, 12:25:42 PM CET
+// TclEventType: TIMING_RESULTS_UNLOAD
+// Engine heap size: 3,283 MB. GUI used memory: 89 MB. Current time: 1/31/25, 12:25:42 PM CET
+// TclEventType: CURR_DESIGN_SET
+// Tcl Message: close_design 
+// TclEventType: DESIGN_CLOSE
+dismissDialog("Close"); // bq (Close Progress)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv)]", 1, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv)]", 1, true, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click - Node
+// Elapsed time: 10 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Generate Bitstream]", 31, false); // f (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree)
+// Run Command: PAResourceCommand.PACommandNames_RUN_BITGEN
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (RDIResource.BaseDialog_YES)
+// TclEventType: RUN_MODIFY
+dismissDialog("Synthesis is Out-of-date"); // u (dialog3)
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// Tcl Message: INFO: [Project 1-1161] Replacing file /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.srcs/utils_1/imports/synth_1/fpga_arty.dcp with file /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.runs/synth_1/fpga_arty.dcp 
+dismissDialog("Resetting Runs"); // bq (Resetting Runs Progress)
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -to_step write_bitstream -jobs 16 
+// Tcl Message: [Fri Jan 31 12:25:58 2025] Launched synth_1... Run output will be captured here: /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.runs/synth_1/runme.log [Fri Jan 31 12:25:58 2025] Launched impl_1... Run output will be captured here: /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 134 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (RDIResource.BaseDialog_CANCEL)
+dismissDialog("Bitstream Generation Completed"); // Q.a (dialog4)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv)]", 1, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv)]", 1, true, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv)]", 2, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), pc_branch_mux : pc_branch_mux (pc_branch_mux.sv)]", 4, false, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click
+selectCodeEditor("top_arty.sv", 297, 497); // ad (top_arty.sv)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'L.f': 01h:33m:26s
+// Elapsed Time for: 'L.f': 01h:33m:28s
+// Elapsed time: 36 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), dmem : d_mem_spram (d_mem_spram.sv)]", 22, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_arty (fpga_arty.sv), hippo : top_arty (top_arty.sv), dmem : d_mem_spram (d_mem_spram.sv), block_3 : atl_sp_bram (atl_sp_bram.sv)]", 26, true, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click - Node
+selectCodeEditor("d_mem_spram.sv", 195, 300); // ad (d_mem_spram.sv)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed Time for: 'L.f': 01h:34m:02s
+// Elapsed Time for: 'L.f': 01h:34m:04s
+// Elapsed time: 22 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Generate Bitstream]", 31, false); // f (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree)
+// Run Command: PAResourceCommand.PACommandNames_RUN_BITGEN
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (RDIResource.BaseDialog_YES)
+dismissDialog("Synthesis is Out-of-date"); // u (dialog5)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// Tcl Message: INFO: [Project 1-1161] Replacing file /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.srcs/utils_1/imports/synth_1/fpga_arty.dcp with file /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.runs/synth_1/fpga_arty.dcp 
+dismissDialog("Resetting Runs"); // bq (Resetting Runs Progress)
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -to_step write_bitstream -jobs 16 
+// Tcl Message: [Fri Jan 31 12:29:26 2025] Launched synth_1... Run output will be captured here: /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.runs/synth_1/runme.log [Fri Jan 31 12:29:26 2025] Launched impl_1... Run output will be captured here: /home/pawel/hippo-edf/hippomenes/fpga/arty/arty.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 145 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (RDIResource.BaseDialog_CANCEL)
+dismissDialog("Bitstream Generation Completed"); // Q.a (dialog6)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design]", 19, true); // f (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree) - Node
+// Run Command: PAResourceCommand.PACommandNames_GOTO_IMPLEMENTED_DESIGN
+// Tcl Message: open_run impl_1 
+// TclEventType: SDC_CONSTRAINT_ADD
+// TclEventType: POWER_CNS_STALE
+// TclEventType: SDC_CONSTRAINT_ADD
+// TclEventType: FLOORPLAN_MODIFY
+// TclEventType: DESIGN_NEW
+// HMemoryUtils.trashcanNow. Engine heap size: 3,311 MB. GUI used memory: 69 MB. Current time: 1/31/25, 12:31:55 PM CET
+// TclEventType: DESIGN_NEW
+// [Engine Memory]: 3,397 MB (+51940kb) [01:36:44]
+// TclEventType: HFED_INIT_ROUTE_STORAGE_COMPLETED
+// DeviceView Instantiated
+// TclEventType: CURR_DESIGN_SET
+// Tcl Message: Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15385 ; free virtual = 24219 
+// Tcl Message: INFO: [Netlist 29-17] Analyzing 402 Unisim elements for replacement INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds INFO: [Project 1-479] Netlist was created with Vivado 2023.2 INFO: [Project 1-570] Preparing netlist for logic optimization 
+// Tcl Message: Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15356 ; free virtual = 24190 
+// Tcl Message: INFO: [Timing 38-478] Restoring timing data from binary archive. INFO: [Timing 38-479] Binary timing data restore complete. INFO: [Project 1-856] Restoring constraints from binary archive. INFO: [Project 1-853] Binary constraint restore complete. INFO: [Designutils 20-5722] Start Reading Physical Databases. 
+// Tcl Message: Reading placement. 
+// Tcl Message: Read Netlist Cache: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15346 ; free virtual = 24180 
+// Tcl Message: Reading placer database... 
+// Tcl Message: Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15345 ; free virtual = 24179 Read PlaceDB: Time (s): cpu = 00:00:00.1 ; elapsed = 00:00:00.09 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15351 ; free virtual = 24186 Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15351 ; free virtual = 24186 
+// Tcl Message: Reading routing. 
+// Tcl Message: Read RouteStorage: Time (s): cpu = 00:00:00.06 ; elapsed = 00:00:00.06 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15351 ; free virtual = 24185 Read Physdb Files: Time (s): cpu = 00:00:00.17 ; elapsed = 00:00:00.16 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15351 ; free virtual = 24185 
+// Tcl Message: Restored from archive | CPU: 0.170000 secs | Memory: 7.544334 MB | 
+// Tcl Message: Finished XDEF File Restore: Time (s): cpu = 00:00:00.17 ; elapsed = 00:00:00.16 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15351 ; free virtual = 24185 Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 9299.887 ; gain = 0.000 ; free physical = 15351 ; free virtual = 24185 
+// Tcl Message: INFO: [Project 1-111] Unisim Transformation Summary:   A total of 59 instances were transformed.   RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 43 instances   RAM32X1D => RAM32X1D (RAMD32(x2)): 16 instances  
+// Device view-level: 0.0
+// RouteApi: Init Delay Mediator Swing Worker Finished
+// TclEventType: DRC_ADDED
+// TclEventType: METHODOLOGY_ADDED
+// TclEventType: POWER_UPDATED
+// TclEventType: TIMING_SUMMARY_UPDATED
+dismissDialog("Open Implemented Design"); // bq (Open Implemented Design Progress)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty)]", 4); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+// Elapsed time: 12 seconds
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram)]", 12); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+expandTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE)
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Node
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, true, false, false, false, false, true); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Double Click - Node
+selectTree(PAResourceItoN.NetlistTreeView_NETLIST_TREE, "[fpga_arty, hippo (top_arty), imem (atl_sp_bram), bram (xilinx_sp_BRAM)]", 14, true, false, false, false, true, false); // aF (PAResourceItoN.NetlistTreeView_NETLIST_TREE) - Popup Trigger - Node
+selectMenuItem(RDIResourceCommand.RDICommands_PROPERTIES, "Cell Properties..."); // ao (RDIResourceCommand.RDICommands_PROPERTIES, edit_properties_menu)
+// Run Command: RDIResourceCommand.RDICommands_PROPERTIES
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "Statistics", 2); // g (RDIResource.PropertiesView_TABBED_PANE)
+selectTab(RDIResource.PropertiesView_TABBED_PANE, (HResource) null, "General", 0); // g (RDIResource.PropertiesView_TABBED_PANE)
+closeFrame(RDIResource.RDIViews_PROPERTIES, "Source File Properties"); // R (RDIResource.RDIViews_PROPERTIES, Properties)
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:38:37 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:38:40 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:38:43 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:38:46 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:38:49 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:38:52 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:38:55 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:38:58 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:01 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:04 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:07 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:10 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:13 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:16 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:19 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:22 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:25 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:28 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+// [GUI Memory]: 232 MB (+1281kb) [01:44:21]
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:31 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:34 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:37 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:40 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:43 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:46 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:49 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:52 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:55 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:39:58 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:01 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:04 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:07 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:10 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:13 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:16 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:19 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:22 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:25 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:28 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:31 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:34 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:37 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:40 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:43 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:46 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:49 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:52 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:55 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:40:58 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:01 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:04 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:07 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:10 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:13 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:16 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:19 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:22 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:25 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:28 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:31 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:34 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:37 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:40 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:43 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:46 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:49 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:52 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:55 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:41:58 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:01 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:04 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:07 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:10 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:13 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:16 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:19 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:22 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:25 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:28 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:31 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:34 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:37 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:40 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:43 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:46 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:49 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:52 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:55 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:42:58 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:01 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:04 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:07 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:10 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:13 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:16 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:19 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:22 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:25 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:28 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:31 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:34 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:37 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:40 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:43 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:46 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:49 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:52 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:55 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:43:58 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:01 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:04 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:07 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:10 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:13 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:16 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:19 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:22 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:25 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:28 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:31 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:34 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:37 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:40 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:43 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:46 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:49 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:52 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:55 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:44:58 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:45:01 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+/*
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2023.2 (64-bit)
+# SW Build: 4029153 on Fri Oct 13 20:13:54 MDT 2023
+# IP Build: 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build: 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Current time: Fri Jan 31 12:45:04 CET 2025
+# Process ID (PID): 78464
+# OS: DISTRIB_ID="Arch"
+# User: pawel
+# Project: arty
+# Part: xc7a35ticsg324-1L
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+java.lang.IllegalArgumentException: Width (0) and height (0) cannot be <= 0 (See /home/pawel/hippo-edf/hippomenes/fpga/vivado_pid78464.debug)
+*/
+// HMemoryUtils.trashcanNow. Engine heap size: 3,472 MB. GUI used memory: 122 MB. Current time: 1/31/25, 1:01:57 PM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 3,325 MB. GUI used memory: 120 MB. Current time: 1/31/25, 1:31:57 PM CET

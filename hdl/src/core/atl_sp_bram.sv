@@ -28,12 +28,11 @@ module atl_sp_bram
       .clk_i,
       .rst_ni(~rst_i),
 
-      // this is a ROM we are probably fine with
+      // we are probably fine with
       // tying this to 1?
       .req_i(1),
 
-      // same here
-      .wdata_i(0),
+      .wdata_i(we_i),
 
       .addr_i(addr_i),
 

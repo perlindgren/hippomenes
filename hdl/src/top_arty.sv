@@ -93,7 +93,8 @@ module top_arty #(
 */
   atl_sp_bram #(
       .BRAM_WIDTH_BITS(32),
-      .INIT_FILE(INIT_IMEM_FILE)
+      .INIT_FILE(INIT_IMEM_FILE),
+      .BRAM_DEPTH(1024)
   ) imem (
       .clk_i(clk),
       .rst_i(reset),

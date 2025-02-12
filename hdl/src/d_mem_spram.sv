@@ -42,7 +42,7 @@ module d_mem_spram
 
 
   atl_sp_bram #(
-      .BRAM_DEPTH(512),
+      .BRAM_DEPTH(4096),
       .INIT_FILE (BLOCK_0_INIT_FILE)
   ) block_0 (
       .clk_i (clk),
@@ -54,7 +54,7 @@ module d_mem_spram
   );
 
   atl_sp_bram #(
-      .BRAM_DEPTH(512),
+      .BRAM_DEPTH(4096),
       .INIT_FILE (BLOCK_1_INIT_FILE)
   ) block_1 (
       .clk_i (clk),
@@ -65,7 +65,7 @@ module d_mem_spram
       .data_o(block_1_dout)
   );
   atl_sp_bram #(
-      .BRAM_DEPTH(512),
+      .BRAM_DEPTH(4096),
       .INIT_FILE (BLOCK_2_INIT_FILE)
   ) block_2 (
       .clk_i (clk),
@@ -76,7 +76,7 @@ module d_mem_spram
       .data_o(block_2_dout)
   );
   atl_sp_bram #(
-      .BRAM_DEPTH(512),
+      .BRAM_DEPTH(4096),
       .INIT_FILE (BLOCK_3_INIT_FILE)
   ) block_3 (
       .clk_i (clk),
