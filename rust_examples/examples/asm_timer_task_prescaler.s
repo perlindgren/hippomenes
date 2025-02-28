@@ -14,14 +14,16 @@ init:       la      sp, _stack_start        # set stack pointer
             sw      zero, 0(t0)
 main:       csrwi   0x300, 8                # enable global interrupts
 
+  # Timer 1 setup
             la      t1, isr_0
             srl     t1, t1, 2
             csrw    0xB00, t1               # setup isr_0 address
             li      t2,  0b100000000001110  #interrupt every 512 << 14 cycles ~ 8.4M, yields 20MHz/8.4M = 2.38Hz 
             csrw    0x400, t2               # timer.counter_top CSR
-            la t1,  0b1010                  # prio 0b11, enable, 0b1, pend 0b0
+            la t1,  0b1010                  # prio 0b10, enable, 0b1, pend 0b0
             csrw    0xB20, t1
-            
+           
+  # Timer 2 setup
             la      t1, isr_1
             srl     t1, t1, 2
             csrw    0xB01, t1               # setup isr_1 address
@@ -29,7 +31,8 @@ main:       csrwi   0x300, 8                # enable global interrupts
             csrw    0x401, t2               # timer.counter_top CSR
             la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
             csrw    0xB21, t1
-
+  
+  # Timer 3 setup
           #  la      t1, isr_2
           #  srl     t1, t1, 2
           #  csrw    0xB02, t1               # setup isr_2 address
