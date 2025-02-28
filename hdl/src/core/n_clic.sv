@@ -34,10 +34,18 @@ module n_clic
 );
 
   // CSR timer
-  word timer_direct_out;  // not used
-  word timer_out;
-  logic timer_interrupt_set;
-  logic timer_interrupt_clear;
+  word timer_1_direct_out;  // not used
+ // word timer_2_direct_out;  // not used
+ // word timer_3_direct_out;  // not used
+  word timer_1_out;
+  logic timer_1_interrupt_set;
+  logic timer_1_interrupt_clear;
+//  logic timer_2_interrupt_set;
+//  logic timer_2_interrupt_clear;
+//  logic timer_3_interrupt_set;
+//  logic timer_3_interrupt_clear;
+  
+  
   word timer_csr_out;
   MonoTimerT mono_timer_out;
   mono_timer mono_timer (
@@ -57,7 +65,7 @@ module n_clic
       .csr_out(timer_csr_out)
   );
 
-  timer timer (
+    timer #(.TimerAddr('h400)) timer_1 (
       // in
       .clk,
       .reset,
@@ -68,15 +76,57 @@ module n_clic
       .rs1_data,
       .ext_data(TimerT'(0)),
       .ext_write_enable(1'b0),
-      .interrupt_clear(timer_interrupt_clear),
+      .interrupt_clear(timer_1_interrupt_clear),
       .vcsr_width,
       .vcsr_offset,
       .vcsr_addr,
       // out
-      .interrupt_set(timer_interrupt_set),
-      .csr_direct_out(timer_direct_out),
-      .csr_out(timer_out)
-  );
+      .interrupt_set(timer_1_interrupt_set),
+      .csr_direct_out(timer_1_direct_out),
+      .csr_out(timer_1_out)
+    );
+ /*   timer #(.TimerAddr('h401)) timer_2 (
+      // in
+      .clk,
+      .reset,
+      .csr_enable,
+      .csr_addr,
+      .csr_op,
+      .rs1_zimm,
+      .rs1_data,
+      .ext_data(TimerT'(0)),
+      .ext_write_enable(1'b0),
+      .interrupt_clear(timer_2_interrupt_clear),
+      .vcsr_width,
+      .vcsr_offset,
+      .vcsr_addr,
+      // out
+      .interrupt_set(timer_2_interrupt_set),
+      .csr_direct_out(timer_2_direct_out),
+      .csr_out(timer_2_out)
+    );
+  */
+ /*   timer #(.TimerAddr('h402)) timer_3 (
+        // in
+        .clk,
+        .reset,
+        .csr_enable,
+        .csr_addr,
+        .csr_op,
+        .rs1_zimm,
+        .rs1_data,
+        .ext_data(TimerT'(0)),
+        .ext_write_enable(1'b0),
+        .interrupt_clear(timer_3_interrupt_clear),
+        .vcsr_width,
+        .vcsr_offset,
+        .vcsr_addr,
+        // out
+        .interrupt_set(timer_3_interrupt_set),
+        .csr_direct_out(timer_3_direct_out),
+        .csr_out(timer_3_out)
+    );
+  */
 
   // CSR m_int_thresh
   logic m_int_thresh_write_enable;
@@ -264,11 +314,23 @@ module n_clic
     ext_write_enable = '{default: '0};  // we don't touch the csr:s by default
     ext_entry_data   = '{default: '0};
     tail_chain = 0;
-    if (timer_interrupt_set) begin
+    if (timer_1_interrupt_set) begin
       // pend 0 if timer interrupt
       ext_write_enable[0] = 1;
       ext_entry_data[0]   = entry[0] | 1;  // set pend bit
     end
+    
+   // if (timer_2_interrupt_set) begin
+      // pend 0 if timer interrupt
+    //  ext_write_enable[1] = 1;
+    //  ext_entry_data[1]   = entry[1] | 1;  // set pend bit
+    //end
+    
+    //if (timer_3_interrupt_set) begin
+      // pend 0 if timer interrupt
+   //   ext_write_enable[2] = 1;
+   //   ext_entry_data[2]   = entry[2] | 1;  // set pend bit
+   // end
 
     if (mstatus_direct_out[3] == 0) begin
       push = 0;
@@ -280,7 +342,9 @@ module n_clic
       int_prio = m_int_thresh.direct_out;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
-      timer_interrupt_clear = 0;
+      timer_1_interrupt_clear = 0;
+     // timer_2_interrupt_clear = 0;
+     // timer_3_interrupt_clear = 0;
     end else if (max_prio[VecSize-1] > m_int_thresh.data) begin
       // take higher priority interrupt
       push = 1;
@@ -296,8 +360,18 @@ module n_clic
       ext_entry_data[max_i] = entry[max_i] & ~1;  // clear pend bit
       if (max_i == 0) begin
         $display("take timer");
-        timer_interrupt_clear = 1;
-      end else timer_interrupt_clear = 0;
+        timer_1_interrupt_clear = 1;
+       // timer_2_interrupt_clear = 0;
+      //  timer_3_interrupt_clear = 0;
+     // end else if (max_i == 1) begin
+        //timer_1_interrupt_clear = 0;
+       // timer_2_interrupt_clear = 1;
+      //  timer_3_interrupt_clear = 0;
+      end 
+      else begin 
+          timer_1_interrupt_clear = 0;
+          //timer_2_interrupt_clear = 0;
+      end
       $display("max_i: %d", max_i);
       $display("max_index[VecSize-1] %d", max_index[VecSize-1]);
       $display("interrupt take int_addr %d", int_addr);
@@ -318,8 +392,18 @@ module n_clic
       ext_entry_data[max_i] = entry[max_i] & ~1;  // clear pend bit
       if (max_i == 0) begin
         $display("take timer");
-        timer_interrupt_clear = 1;
-      end else timer_interrupt_clear = 0;
+        timer_1_interrupt_clear = 1;
+        //timer_2_interrupt_clear = 0;
+        //timer_3_interrupt_clear = 0;
+      //end else if (max_i == 1) begin
+        //timer_2_interrupt_clear = 1;
+        //timer_1_interrupt_clear = 0;
+       // timer_3_interrupt_clear = 0;
+      end 
+      else begin 
+          timer_1_interrupt_clear = 0;
+         // timer_2_interrupt_clear = 0;
+      end
       tail_chain = 1;
       $display("tail chaining level_out %d, pop %d", level_out, pop);
     end else if (pc_in == ~(IMemAddrWidth'(0))) begin
@@ -333,7 +417,8 @@ module n_clic
       m_int_thresh_write_enable = 1;
       interrupt_out = 0;
       pc_interrupt_sel = PC_INTERRUPT;
-      timer_interrupt_clear = 0;
+      timer_1_interrupt_clear = 0;
+     // timer_2_interrupt_clear = 0;
       $display("interrupt return");
     end else begin
       // no interrupt
@@ -345,7 +430,8 @@ module n_clic
       int_prio = m_int_thresh.direct_out;
       interrupt_out = 0;
       pc_interrupt_sel = PC_NORMAL;
-      timer_interrupt_clear = 0;
+      timer_1_interrupt_clear = 0;
+     // timer_2_interrupt_clear = 0;
       // $display("interrupt NOT take");
     end
   end
@@ -353,10 +439,18 @@ module n_clic
   // set csr_out
   always_comb begin
     csr_out = 0;
-    if (csr_addr == TimerAddr) begin
-      csr_out = timer_out;
+    if (csr_addr == 'h400) begin
+      csr_out = timer_1_out;
 
-      $display("!!! CSR timer_out !!!");
+      $display("!!! CSR timer_1_out !!!");
+    //end else if (csr_addr == 'h401) begin
+    //  csr_out = timer_2_out;
+
+    //  $display("!!! CSR m_thresh_out !!!");
+    //end else if (csr_addr == 'h402) begin
+    //  csr_out = timer_3_out;
+
+    //  $display("!!! CSR m_thresh_out !!!");
     end else if (csr_addr == MIntThreshAddr) begin
       csr_out = m_int_thresh_out;
 

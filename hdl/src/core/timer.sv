@@ -5,6 +5,9 @@
 module timer
   import config_pkg::*;
   import decoder_pkg::*;
+  #(
+  parameter CsrAddrT TimerAddr = 'h400
+  )
 (
     input logic clk,
     input logic reset,

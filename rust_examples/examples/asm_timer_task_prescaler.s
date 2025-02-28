@@ -6,27 +6,81 @@
 # The interrupt blinks the LED at a ~1s period (@20MHz)
 
 init:       la      sp, _stack_start        # set stack pointer
-            la      t0, toggled 
+            la      t0, toggled_0 
+            sw      zero, 0(t0)
+            la      t0, toggled_1 
+            sw      zero, 0(t0)
+            la      t0, toggled_2 
             sw      zero, 0(t0)
 main:       csrwi   0x300, 8                # enable global interrupts
+
             la      t1, isr_0
             srl     t1, t1, 2
             csrw    0xB00, t1               # setup isr_0 address
             li      t2,  0b100000000001110  #interrupt every 512 << 14 cycles ~ 8.4M, yields 20MHz/8.4M = 2.38Hz 
             csrw    0x400, t2               # timer.counter_top CSR
-            la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
+            la t1,  0b1010                  # prio 0b11, enable, 0b1, pend 0b0
             csrw    0xB20, t1
+            
+            la      t1, isr_1
+            srl     t1, t1, 2
+            csrw    0xB01, t1               # setup isr_1 address
+            li      t2,  0b100000000001101  # more often 
+            csrw    0x401, t2               # timer.counter_top CSR
+            la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
+            csrw    0xB21, t1
+
+          #  la      t1, isr_2
+          #  srl     t1, t1, 2
+          #  csrw    0xB02, t1               # setup isr_2 address
+          #  li      t2,  0b100000000001100  # even more often 
+           # li      t2,  0b100000000001101  
+          #  csrw    0x402, t2               # timer.counter_top CSR
+          #  la t1,  0b1110                  # prio 0b11, enable, 0b1, pend 0b0
+          #  csrw    0xB22, t1
+
+
 stop:       j       stop                    # wait for interrupt
 
-isr_0:      la      t0, toggled             # &static mut toggled state
+isr_0:      la      t0, toggled_0             # &static mut toggled state
             lw      t1, 0(t0)               # deref toggled
-            xori    t1, t1, 1               # toggle bit 0
+            beq     t1, zero, clear_0
+            csrsi   0x0, 0b1
+            j cont_0
+clear_0:    csrci   0x0, 0b1
+cont_0:     xori    t1, t1, 1               # toggle bit 0
             csrw    0x0, t1                 # set bit 0 (t1 = 1) in GPIO CSR (LED on/off)
             sw      t1, 0(t0)               # store toggled value
-            csrr    t3, 0xB40               # read captured timestamp
-            sw      t3, 4(t0)               # store timestamp
+
             jr      ra                      # return 
 
+isr_1:      la      t0, toggled_1             # &static mut toggled state
+            lw      t1, 0(t0)               # deref toggled
+            beq     t1, zero, clear_1
+            csrsi   0x0, 0b10
+            j cont_1
+clear_1:    csrci   0x0, 0b10
+cont_1:     xori    t1, t1, 1               # toggle bit 0
+            sw      t1, 0(t0)               # store toggled value
+
+            jr      ra                      # return 
+
+isr_2:      la      t0, toggled_2             # &static mut toggled state
+            lw      t1, 0(t0)               # deref toggled
+            beq     t1, zero, clear_2
+            csrsi   0x0, 0b100
+            j cont_2
+clear_2:    csrci   0x0, 0b100
+cont_2:     xori    t1, t1, 1               # toggle bit 0
+            sw      t1, 0(t0)               # store toggled value
+
+            jr      ra                      # return 
+
+
             .rodata
-toggled:    .word   0x0                     # state
+toggled_0:    .word   0x0                     # state
+            .word   0x0                     # time-stamp
+toggled_1:    .word   0x0                     # state
+            .word   0x0                     # time-stamp
+toggled_2:    .word   0x0                     # state
             .word   0x0                     # time-stamp

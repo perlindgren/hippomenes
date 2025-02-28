@@ -72,7 +72,7 @@ package config_pkg;
   typedef logic [$clog2(MaxFieldWidth)-1:0] vcsr_width_t;
   typedef logic [$clog2(VcsrAmount)-1:0] vcsr_idx_t;
   // Peripheral timer
-  localparam CsrAddrT TimerAddr = 'h400;
+  // localparam CsrAddrT TimerAddr = 'h400;
   localparam integer unsigned TimerWidth = 16;
   localparam integer unsigned TimerPreWith = 4;
   localparam integer unsigned TimerCounterWidth = TimerWidth + 2 ** TimerPreWith;
