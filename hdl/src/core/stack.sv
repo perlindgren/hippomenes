@@ -25,6 +25,7 @@ module stack
   always_ff @(posedge clk) begin
     if (reset) begin
       index <= StackDepthWidth'(StackDepth - 1);  // growing towards lower index
+      data  <= '{default: '0}; 
     end else if (pop) begin
       $display("--- pop ---");
       index <= index + 1;

@@ -7,6 +7,9 @@
 # which prints "Software" to UART.
 
 init:       la      sp, _stack_start        # set stack pointer
+            
+
+
 
 main:       csrwi   0x300, 8                # enable global interrupts
             la      t1, isr_0
